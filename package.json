@@ -1,0 +1,15 @@
+{
+  "name": "homogen",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "express": "*",
+    "mongodb": "*",
+    "body-parser": "*",
+    "connect-multiparty": "*",
+    "mv":"*"
+  }
+}
