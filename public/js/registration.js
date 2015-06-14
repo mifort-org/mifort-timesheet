@@ -1,11 +1,11 @@
 angular.module('registrationApp', ['ngFileUpload'])
 .controller('RegistrationCtrl', ['$http', 'Upload', function ($http, Upload) {
-	this.user = {};
-	var ctrl = this;
+    this.user = {};
+    var ctrl = this;
 
-	this.register = function(){
-		alert(ctrl.file);
-		Upload.upload({
+    this.register = function(){
+        alert(ctrl.file);
+        Upload.upload({
             url: '/register',
             fields: ctrl.user,
             file: ctrl.file,
@@ -16,5 +16,5 @@ angular.module('registrationApp', ['ngFileUpload'])
         }).success(function (data, status, headers, config) {
             ctrl.log = 'file uploaded. Response: ' + JSON.stringify(data);
         });
-	};
+    };
 }]);
