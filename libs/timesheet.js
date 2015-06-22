@@ -1,9 +1,23 @@
 var moment = require('moment');
 
-exports.table = function(req, res, next) {
+var Timesheet = function(pool) {
+	this.pool = pool;
+};
+
+Timesheet.prototype.table = function(req, res, next) {
 	var monthDates = createDaysObjects();
 	var context = {monthDates: monthDates}
 	res.render('timesheet', context);
+};
+
+Timesheet.prototype.save = function(req, res, next) {
+	if(req.body) {
+		console.log(req.body);
+		for(var timelog in req.body) {
+			console.log(req.body[timelog]);
+		}
+	}
+	res.redirect('/timesheet');
 };
 
 function createDaysObjects() {
@@ -18,3 +32,5 @@ function createDaysObjects() {
     }
     return monthDates;
 }
+
+module.exports = Timesheet;
