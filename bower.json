@@ -1,0 +1,14 @@
+{
+  "name": "homogen",
+  "description": "homogen description",
+  "version": "0.0.0",
+  "homepage": "https://homogen.com/",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "angular": "~1.4.0",
+    "angular-route": "~1.4.0",
+    "angular-loader": "~1.4.0",
+    "angular-mocks": "~1.4.0"
+  }
+}
