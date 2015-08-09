@@ -4,3 +4,4 @@ logs/*
 tmp
 .DS_Store
 .idea
+npm-debug.log

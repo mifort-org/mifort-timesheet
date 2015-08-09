@@ -33,7 +33,8 @@ function initApplication(db) {
     app.use(express.static('frontend'));
     app.use(bodyParser.json());
 
-    app.get('/project/13/timesheet', timesheet.getByProjectName(db));
+    app.get('/project/:id/timesheet', timesheet.getByProjectName(db));
+    app.post('/project', timesheet.save(db));
 
     //run application after mongo connection
     app.listen(app.get('port'), function() {
