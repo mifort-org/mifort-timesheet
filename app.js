@@ -1,20 +1,3 @@
-'use strict';
-
-// Declare app level module which depends on views, and components
-angular.module('myApp', [
-    'ngRoute',
-    'ui.bootstrap',
-    'myApp.timesheet',
-    'myApp.timesheetManagement',
-    'myApp.projectReport',
-    'myApp.projectManagement',
-    'myApp.peopleReport'
-]).
-    config(['$routeProvider', function ($routeProvider) {
-        $routeProvider.otherwise({redirectTo: '/timesheet'});
-    }]);
-
-
 //MongoDb dependencies && config
 var timesheet = require('./backend/timesheet');
 var MongoClient = require('mongodb').MongoClient;
@@ -31,6 +14,7 @@ MongoClient.connect(mongodbUrl, function(err, db){
 function initApplication(db) {
     var app = express();
     app.set('port', process.env.PORT || 1313);
+    app.use(express.static('frontend'));
     app.use(bodyParser.json());
 
     app.get('/project/13/timesheet', timesheet.getByProjectName(db));

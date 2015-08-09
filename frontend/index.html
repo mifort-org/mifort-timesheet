@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="utf-8">
+    <title>Homogen</title>
+    <link rel="stylesheet" href="common/scss/styles.css">
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
+</head>
+<body>
+
+<div ng-controller="TabsDemoCtrl">
+    <tabset vertical="true" type="pills">
+        <tab ng-repeat="tab in tabs" heading="{{tab.title}}" active="tab.active" select="changeTab(tab)">
+            {{tab.content}}
+        </tab>
+    </tabset>
+</div>
+
+<div ng-view></div>
+
+<!--Libraries-->
+<script src="bower_components/angular/angular.js"></script>
+<script src="bower_components/angular-route/angular-route.js"></script>
+<script src="bower_components/angular-bootstrap/ui-bootstrap.js"></script>
+<script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+<script src="app.js"></script>
+
+<!--Custom components-->
+<script src="components/bootstrapTabs.js"></script>
+
+<!--Main-->
+<script src="timesheet/timesheetController.js"></script>
+<script src="timesheet/timesheetService.js"></script>
+
+<script src="timesheetManagement/timesheetManagementController.js"></script>
+<script src="timesheetManagement/timesheetManagementService.js"></script>
+
+<script src="projectManagement/projectManagementController.js"></script>
+<script src="projectManagement/projectManagementService.js"></script>
+
+<script src="peopleReport/peopleReportController.js"></script>
+<script src="peopleReport/peopleReportService.js"></script>
+
+<script src="projectReport/projectReportController.js"></script>
+<script src="projectReport/projectReportService.js"></script>
+
+
+</body>
+</html>
