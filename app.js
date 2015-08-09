@@ -4,7 +4,7 @@ var MongoClient = require('mongodb').MongoClient;
 var express = require('express');
 var bodyParser = require('body-parser');
 
-var mongodbUrl = 'mongodb://localhost:27017/homogen';
+var mongodbUrl = process.env.MONGOLAB_URI || 'mongodb://localhost:27017/homogen';
 
 MongoClient.connect(mongodbUrl, function(err, db){
     if(err) {
