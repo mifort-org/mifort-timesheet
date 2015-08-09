@@ -2,23 +2,20 @@ var ObjectId = require('mongodb').ObjectID;
 
 exports.getByProjectName = function(db) {
     return function(req, res) {
-        var projectId = req.params.id;
-        if(!projectId) {
-            res.status(400).json({ error: 'Project ID is not specified!' });
-            return;
-        }
-
-        var projects = db.collection('projects');
-        projects.find({_id: new ObjectId(projectId)}, 
-                      {calendar:1, periods:1})
-            .toArray(function(err, docs) {
-                if(err) {
-            	   res.status(500).json(err);
-                    return;
+        var projectId = getProjectId(req, res);
+        if(projectId) {
+            var projects = db.collection('projects');
+            projects.findOne({_id: new ObjectId(projectId)}, 
+                            {calendar:1, periods:1}, 
+                function(err, doc) {
+                    if(err) {
+                        res.status(500).json(err);
+                        return;
+                    }
+                    res.json(doc);
                 }
-                res.json(docs);
-            }
-        );
+            );
+        }
     }
 }
 
@@ -43,4 +40,47 @@ exports.save = function(db) {
             });
         }
     }
+}
+
+//??? just returns periods
+exports.getCalendarByPeriod = function(db) {
+    return function(req, res) {
+        var periodId = getPeriodId(req, res);
+        var projectId = getProjectId(req, res);
+        if(periodId  && projectId) {
+            var projects = db.collection('projects');
+            projects.findOne({ //query
+                                _id : new ObjectId(projectId), 
+                             "periods.id": parseInt(periodId)
+                             }, 
+                             { // what is needed to select
+                                _id:0, 
+                                periods: {$elemMatch: {id: parseInt(periodId)}}
+                             }, 
+                function(err, doc) {
+                    if(err) {
+                        res.status(500).json(err);
+                        return;
+                    }
+                    res.json(doc);
+                }
+            );
+        }
+    }
+}
+
+function getPeriodId(req, res) {
+    var periodId = req.query.periodId;
+    if(!periodId) {
+        res.status(400).json({ error: 'Period ID is not specified!' });
+    }
+    return periodId;
+}
+
+function getProjectId(req, res) {
+    var projectId = req.params.id;
+    if(!projectId) {
+        res.status(400).json({ error: 'Project ID is not specified!' });
+    }
+    return projectId;
 }

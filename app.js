@@ -35,6 +35,7 @@ function initApplication(db) {
 
     app.get('/project/:id/timesheet', timesheet.getByProjectName(db));
     app.post('/project', timesheet.save(db));
+    app.get('/project/:id/timesheet/template', timesheet.getCalendarByPeriod(db));
 
     //run application after mongo connection
     app.listen(app.get('port'), function() {
