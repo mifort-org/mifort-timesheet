@@ -4,7 +4,7 @@ angular.module('myApp.projectManagement', ['ngRoute'])
 
     .config(['$routeProvider', function ($routeProvider) {
         $routeProvider.when('/projectManagement', {
-            templateUrl: 'frontend/projectManagement/projectManagementView.html',
+            templateUrl: 'projectManagement/projectManagementView.html',
             controller: 'projectManagementController'
         });
     }])

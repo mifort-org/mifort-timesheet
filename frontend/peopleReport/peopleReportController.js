@@ -4,7 +4,7 @@ angular.module('myApp.peopleReport', ['ngRoute'])
 
     .config(['$routeProvider', function ($routeProvider) {
         $routeProvider.when('/peopleReport', {
-            templateUrl: 'frontend/peopleReport/peopleReportView.html',
+            templateUrl: 'peopleReport/peopleReportView.html',
             controller: 'peopleReportController'
         });
     }])
