@@ -3,20 +3,23 @@
 <head>
     <meta charset="utf-8">
     <title>Homogen</title>
-    <link rel="stylesheet" href="common/scss/styles.css">
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="common/scss/styles.css">
 </head>
 <body>
 
-<div ng-controller="TabsDemoCtrl">
-    <tabset vertical="true" type="pills">
-        <tab ng-repeat="tab in tabs" heading="{{tab.title}}" active="tab.active" select="changeTab(tab)">
-            {{tab.content}}
-        </tab>
-    </tabset>
+<div class="row">
+    <div class="col-md-3">
+        <div ng-controller="TabsDemoCtrl" class="tabs-left">
+            <tabset vertical="true">
+                <tab ng-repeat="tab in tabs" heading="{{tab.title}}" active="tab.active" select="changeTab(tab)"></tab>
+            </tabset>
+        </div>
+    </div>
+
+    <div class="col-md-7" ng-view></div>
 </div>
 
-<div ng-view></div>
 
 <!--Libraries-->
 <script src="bower_components/angular/angular.js"></script>
