@@ -1,6 +1,9 @@
 body {
     padding: 20px;
-    /*background: #eee;*/
+}
+.main-tabs{
+    width: 200px;
+    float: left;
 }
 .tabs-left {
     padding-top: 2px;
@@ -24,4 +27,15 @@ body {
 }
 .tabs-left li {
     margin-right: -1px;
+}
+
+.main-container{
+    float: left;
+    padding: 0 0 20px 20px;
+    width: calc(100% - 200px);
+}
+
+/*Timelog*/
+.timelog-comment{
+    width: 100%;
 }

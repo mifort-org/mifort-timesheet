@@ -9,7 +9,7 @@
 <body>
 
 <div class="row">
-    <div class="col-md-3">
+    <div class="main-tabs">
         <div ng-controller="TabsDemoCtrl" class="tabs-left">
             <tabset vertical="true">
                 <tab ng-repeat="tab in tabs" heading="{{tab.title}}" active="tab.active" select="changeTab(tab)"></tab>
@@ -17,7 +17,7 @@
         </div>
     </div>
 
-    <div class="col-md-7" ng-view></div>
+    <div class="main-container" ng-view></div>
 </div>
 
 

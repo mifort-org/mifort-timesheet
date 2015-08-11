@@ -9,6 +9,6 @@ angular.module('myApp.timesheet', ['ngRoute'])
         });
     }])
 
-    .controller('timesheetController', ['$scope', function ($scope) {
-        $scope.page = 'timesheet';
+    .controller('timesheetController', ['$scope', 'timeSheetService', function ($scope, timeSheetService) {
+        $scope.timelogData = timeSheetService.get();
     }]);
