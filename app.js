@@ -33,9 +33,9 @@ function initApplication(db) {
     app.use(express.static('frontend'));
     app.use(bodyParser.json());
 
-    app.get('/project/:id/timelog', timesheet.getByProjectName(db));
+    app.get('/project/:id/timesheet', timesheet.getByProjectName(db));
     app.post('/project', timesheet.save(db));
-    app.get('/project/:id/timelog/template', timesheet.getCalendarByPeriod(db));
+    app.get('/project/:id/timesheet/calendar', timesheet.getCalendarByPeriod(db));
 
     //run application after mongo connection
     app.listen(app.get('port'), function() {
