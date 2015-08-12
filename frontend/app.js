@@ -4,12 +4,12 @@
 angular.module('myApp', [
     'ngRoute',
     'ui.bootstrap',
-    'myApp.timesheet',
+    'myApp.timelog',
     'myApp.timesheetManagement',
     'myApp.projectReport',
     'myApp.projectManagement',
     'myApp.peopleReport'
 ]).
     config(['$routeProvider', function ($routeProvider) {
-        $routeProvider.otherwise({redirectTo: '/timesheet'});
+        $routeProvider.otherwise({redirectTo: '/timelog'});
     }]);

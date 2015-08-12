@@ -3,20 +3,23 @@
 <head>
     <meta charset="utf-8">
     <title>Homogen</title>
-    <link rel="stylesheet" href="common/scss/styles.css">
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="common/scss/styles.css">
 </head>
 <body>
 
-<div ng-controller="TabsDemoCtrl">
-    <tabset vertical="true" type="pills">
-        <tab ng-repeat="tab in tabs" heading="{{tab.title}}" active="tab.active" select="changeTab(tab)">
-            {{tab.content}}
-        </tab>
-    </tabset>
+<div class="row">
+    <div class="main-tabs">
+        <div ng-controller="TabsDemoCtrl" class="tabs-left">
+            <tabset vertical="true">
+                <tab ng-repeat="tab in tabs" heading="{{tab.title}}" active="tab.active" select="changeTab(tab)"></tab>
+            </tabset>
+        </div>
+    </div>
+
+    <div class="main-container" ng-view></div>
 </div>
 
-<div ng-view></div>
 
 <!--Libraries-->
 <script src="bower_components/angular/angular.js"></script>
@@ -29,8 +32,8 @@
 <script src="components/bootstrapTabs.js"></script>
 
 <!--Main-->
-<script src="timesheet/timesheetController.js"></script>
-<script src="timesheet/timesheetService.js"></script>
+<script src="timelog/timelogController.js"></script>
+<script src="timelog/timelogService.js"></script>
 
 <script src="timesheetManagement/timesheetManagementController.js"></script>
 <script src="timesheetManagement/timesheetManagementService.js"></script>
