@@ -54,7 +54,6 @@ exports.getCalendarByPeriod = function(db) {
                              "periods.id": parseInt(periodId)
                              }, 
                              { // what is needed to select
-                                _id:0, 
                                 periods: {$elemMatch: {id: parseInt(periodId)}}
                              }, 
                 function(err, doc) {
@@ -62,11 +61,33 @@ exports.getCalendarByPeriod = function(db) {
                         res.status(500).json(err);
                         return;
                     }
-                    res.json(doc);
+                    getCalendarByPeriod(projects, projectId, doc.periods[0], res);
                 }
             );
         }
     }
+}
+
+function getCalendarByPeriod(collection, projectId, period, res) {
+    console.log(period);
+
+    collection.find({
+                        _id: new ObjectId(projectId),
+                    },
+                    {
+                        calendar: {$elemMatch: {dateId:{
+                                $lte: period.endDateId,
+                                $gte: period.startDateId
+                            }}
+                        }
+                    }).toArray(
+                        function(err, docs) {
+                            if(err) {
+                                res.status(500).json(err);
+                            }
+                            res.json(docs);
+                        }
+                    );
 }
 
 function getPeriodId(req, res) {
