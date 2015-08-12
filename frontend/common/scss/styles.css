@@ -1,6 +1,14 @@
 body {
     padding: 20px;
 }
+/*Login*/
+.form-signin {
+    max-width: 330px;
+    padding: 15px;
+    margin: 0 auto;
+}
+
+/*Tabs*/
 .main-tabs{
     width: 200px;
     float: left;

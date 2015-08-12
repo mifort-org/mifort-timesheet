@@ -4,6 +4,7 @@
 angular.module('myApp', [
     'ngRoute',
     'ui.bootstrap',
+    'myApp.login',
     'myApp.timelog',
     'myApp.timesheetManagement',
     'myApp.projectReport',
@@ -11,5 +12,5 @@ angular.module('myApp', [
     'myApp.peopleReport'
 ]).
     config(['$routeProvider', function ($routeProvider) {
-        $routeProvider.otherwise({redirectTo: '/timelog'});
+        $routeProvider.otherwise({redirectTo: '/login'});
     }]);
