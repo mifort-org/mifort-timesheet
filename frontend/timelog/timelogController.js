@@ -9,6 +9,9 @@ angular.module('myApp.timelog', ['ngRoute'])
         });
     }])
 
-    .controller('timelogController', ['$scope', 'timelogService', function ($scope, timelogService) {
-        $scope.timelogData = timelogService.get();
+    .controller('timelogController', ['$scope', 'timelogService', 'timesheetManagementService', function ($scope, timelogService, timesheetManagementService) {
+        var timesheetStructure = timesheetManagementService.get(),
+        userTimelog = timelogService.get();
+
+        $scope.timelog = angular.extend(timesheetStructure.calendar, userTimelog.timelog);
     }]);
