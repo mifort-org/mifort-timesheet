@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('myApp.timesheet').factory('timeSheetService',
+angular.module('myApp.timelog').factory('timelogService',
     ['$http', function ($http) {
         var service = {
             get: function (userId, periodId) {

@@ -2,7 +2,7 @@
 
 angular.module('myApp').controller('TabsDemoCtrl', function ($scope, $location) {
     $scope.tabs = [
-        {title: 'timesheet'},
+        {title: 'timelog'},
         {title: 'timesheetManagement'},
         {title: 'projectReport'},
         {title: 'projectManagement'},
