@@ -8,17 +8,7 @@
 </head>
 <body>
 
-<div class="row">
-    <div class="main-tabs">
-        <div ng-controller="TabsDemoCtrl" class="tabs-left">
-            <tabset vertical="true">
-                <tab ng-repeat="tab in tabs" heading="{{tab.title}}" active="tab.active" select="changeTab(tab)"></tab>
-            </tabset>
-        </div>
-    </div>
-
-    <div class="main-container" ng-view></div>
-</div>
+<div class="main-container" ng-view></div>
 
 
 <!--Libraries-->
@@ -29,7 +19,7 @@
 <script src="app.js"></script>
 
 <!--Custom components-->
-<script src="components/bootstrapTabs.js"></script>
+<script src="components/tabs/bootstrapTabs.js"></script>
 
 <!--Main-->
 <script src="timelog/timelogController.js"></script>
