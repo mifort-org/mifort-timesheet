@@ -11,7 +11,12 @@ angular.module('myApp.timelog', ['ngRoute'])
 
     .controller('timelogController', ['$scope', 'timelogService', 'timesheetManagementService', function ($scope, timelogService, timesheetManagementService) {
         var timesheetStructure = timesheetManagementService.get(),
-        userTimelog = timelogService.get();
+        userTimelog = timelogService.getTimelog();
 
+        $scope.timelogKeys = timelogService.getTimelogKeys();
         $scope.timelog = angular.extend(timesheetStructure.calendar, userTimelog.timelog);
+
+        $scope.addRow = function (rowIndex) {
+            $scope.timelog.splice(rowIndex, 0, timesheetStructure[rowIndex]);
+        }
     }]);

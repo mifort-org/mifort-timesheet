@@ -3,7 +3,7 @@
 angular.module('myApp.timelog').factory('timelogService',
     ['$http', function ($http) {
         var service = {
-            get: function (userId, periodId) {
+            getTimelog: function (userId, periodId) {
                 return {
                     '_id': '12312312312',
                     'userId': '13',
@@ -34,8 +34,16 @@ angular.module('myApp.timelog').factory('timelogService',
                     ]
                 }
             },
-            update: function (data) {
-                //return $http.put(orgsManagement.url.restRoot + 'organizations/subscribedproducts/addorupdate', data);
+            getTimelogKeys: function () {
+                return {
+                    'date': 'Date',
+                    'dateId': 'Assigment',
+                    'time': 'Time',
+                    'comment': 'Comment'
+                }
+            },
+            updateTimelog: function (data) {
+                //return $http.put(url.restRoot + 'blabla/blabla', data);
             }
         };
 

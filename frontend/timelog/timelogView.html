@@ -1,18 +1,23 @@
 <table class="table table-striped timelog">
+    <thead>
+    <th ng-repeat="timelogKey in timelogKeys">{{timelogKey}}</th>
+    </thead>
+    <tbody>
     <tr ng-repeat="log in timelog track by log.dateId">
         <td>
             {{log.date}}
-            <button type="button" class="btn btn-success glyphicon-plus btn-xs"></button>
+            <button type="button" class="btn btn-success glyphicon-plus btn-xs" ng-click="addRow($index)">{{$index}}</button>
         </td>
 
         <td>
-            <select name="" >
+            <select name="">
                 <option value="{{log.assignmentId}}">assignmentId: {{log.assignmentId}}</option>
             </select>
         </td>
 
-        <td>{{log.time}}</td>
+        <td><input class="timelog-hours" type="text" ng-model="log.time"/></td>
 
         <td><input class="timelog-comment" type="text" value="{{log.comment}}"/></td>
     </tr>
+    </tbody>
 </table>

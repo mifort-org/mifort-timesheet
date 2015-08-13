@@ -10,14 +10,13 @@ angular.module('myApp.login', ['ngRoute'])
     }])
 
     .controller('loginController', ['$scope', '$location', 'loginService', 'preferences', function ($scope, $location, loginService, preferences) {
+        $scope.$parent.isLoggedIn = false;
         $scope.user = loginService.getUser();
         $scope.login = function () {
-            //success
-            var key = 'user';
-            var value = {id: 123, name: 'John', surname: 'Galt'};
+            var value = {id: 1001, name: 'John', surname: 'Galt'};
             $scope.$parent.isLoggedIn = true;
             $location.path('/timelog');
-            preferences.set(key, typeof value === 'object' ? JSON.stringify(value) : value);
+            preferences.set('user', typeof value === 'object' ? JSON.stringify(value) : value);
             console.log(localStorage);
         };
     }]);

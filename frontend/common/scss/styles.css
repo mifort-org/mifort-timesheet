@@ -49,3 +49,7 @@ body {
 .timelog-comment{
     width: 100%;
 }
+.timelog-hours{
+    width: 30px;
+    text-align: center;
+}

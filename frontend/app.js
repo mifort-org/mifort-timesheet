@@ -11,7 +11,16 @@ angular.module('myApp', [
     'myApp.projectManagement',
     'myApp.peopleReport',
     'preferences'
-]).
-    config(['$routeProvider', function ($routeProvider) {
+])
+    .config(['$routeProvider', function ($routeProvider) {
         $routeProvider.otherwise({redirectTo: '/login'});
+    }])
+
+    .controller('myAppController', ['$scope', '$location', 'loginService', 'preferences', function ($scope, $location, loginService, preferences) {
+        if(preferences.get('user')){
+            $scope.isLoggedIn = true;
+        }
+        else{
+            $location.path('/login');
+        }
     }]);
