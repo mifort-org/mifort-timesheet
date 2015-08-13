@@ -31,6 +31,7 @@ function initApplicationWithoutDB() {
 function initApplication(db) {
     var app = express();
     app.set('port', process.env.PORT || 1313);
+    app.set('db', db);
     app.use(express.static('frontend'));
     app.use(bodyParser.json());
     

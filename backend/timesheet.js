@@ -21,26 +21,7 @@ exports.getByProjectName = function(db) {
 }
 
 exports.save = function(db) {
-    return function(req, res) {
-        if(req.body) {
-            console.log(req.body);
-            var currentDate = new Date();
-            var project = req.body;
-            if(!project.createdOn) {
-                project.createdOn = currentDate;
-            }
-            project.updatedOn = currentDate;
-            var projects = db.collection('projects');
-            projects.save(project, {safe:true}, function (err, results) {
-                if(err) {
-                    res.status(500).json(err);
-                } else {
-                    console.log(results);
-                    res.json(results.ops[0]);
-                }
-            });
-        }
-    }
+    return utils.save(db, "projects");
 }
 
 exports.getCalendarByPeriod = function(db) {
