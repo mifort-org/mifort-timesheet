@@ -22,18 +22,20 @@ exports.save = function(db) {
                     res.json(results.ops[0]);
                 }
             });
+        } else {
+            res.status(500).json({"error": "Cannot save empty object"});
         }
     }
 };
 
-// NOT IMPLEMENTED YET!!!!!
-exports.getTimelogForPeriod = function(db) {
+exports.getForPeriod = function(db) {
     return function(req, res) {
-        var periodId = utils.getPeriodId(req, res);
-        if(periodId) {
+        var periodIdP = utils.getPeriodId(req, res);
+        var userIdP = utils.getUserId(req, res);
+        if(periodIdP) {
             var timelogs = db.collection('timelogs');
-            timelogs.findOne({_id: new ObjectId(periodId)}, 
-                             {timelog: 1}, 
+            timelogs.findOne({userId : parseInt(userIdP), //dangerous
+                              periodId: parseInt(periodIdP) }, //dangerous
                 function(err, doc) {
                     if(err) {
                         res.status(500).json(err);

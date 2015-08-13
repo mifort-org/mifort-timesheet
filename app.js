@@ -17,7 +17,7 @@ MongoClient.connect(mongodbUrl, function(err, db){
 
 //temporary method
 function initApplicationWithoutDB() {
-	console.log("...Without DB...")
+	console.log("...Without DB...");
     var app = express();
     app.set('port', process.env.PORT || 1313);
     app.use(express.static('frontend'));
@@ -41,7 +41,7 @@ function initApplication(db) {
 
     //timelog
     app.post('/timelog', timelog.save(db));
-
+    app.get('/timelog/:userId', timelog.getForPeriod(db));
 
     //run application after mongo
     app.listen(app.get('port'), function() {
