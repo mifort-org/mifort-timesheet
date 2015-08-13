@@ -1,8 +1,9 @@
 var ObjectId = require('mongodb').ObjectID;
+var utils = require('./utils');
 
 exports.getByProjectName = function(db) {
     return function(req, res) {
-        var projectId = getProjectId(req, res);
+        var projectId = utils.getProjectId(req, res);
         if(projectId) {
             var projects = db.collection('projects');
             projects.findOne({_id: new ObjectId(projectId)}, 
@@ -42,11 +43,10 @@ exports.save = function(db) {
     }
 }
 
-//??? just returns periods
 exports.getCalendarByPeriod = function(db) {
     return function(req, res) {
-        var periodId = getPeriodId(req, res);
-        var projectId = getProjectId(req, res);
+        var periodId = utils.getPeriodId(req, res);
+        var projectId = utils.getProjectId(req, res);
         if(periodId  && projectId) {
             var projects = db.collection('projects');
             projects.findOne({ //query
@@ -69,9 +69,7 @@ exports.getCalendarByPeriod = function(db) {
 }
 
 function getCalendarByPeriod(collection, projectId, period, res) {
-    console.log(period);
-
-    collection.find({
+     collection.find({
                         _id: new ObjectId(projectId),
                     },
                     {
@@ -80,6 +78,9 @@ function getCalendarByPeriod(collection, projectId, period, res) {
                                 $gte: period.startDateId
                             }}
                         }
+                    },
+                    {
+                        "sort": "dateId"
                     }).toArray(
                         function(err, docs) {
                             if(err) {
@@ -88,20 +89,4 @@ function getCalendarByPeriod(collection, projectId, period, res) {
                             res.json(docs);
                         }
                     );
-}
-
-function getPeriodId(req, res) {
-    var periodId = req.query.periodId;
-    if(!periodId) {
-        res.status(400).json({ error: 'Period ID is not specified!' });
-    }
-    return periodId;
-}
-
-function getProjectId(req, res) {
-    var projectId = req.params.id;
-    if(!projectId) {
-        res.status(400).json({ error: 'Project ID is not specified!' });
-    }
-    return projectId;
 }

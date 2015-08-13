@@ -1,5 +1,6 @@
 //MongoDb dependencies && config
 var timesheet = require('./backend/timesheet');
+var timelog = require('./backend/timelog');
 var MongoClient = require('mongodb').MongoClient;
 var express = require('express');
 var bodyParser = require('body-parser');
@@ -32,12 +33,17 @@ function initApplication(db) {
     app.set('port', process.env.PORT || 1313);
     app.use(express.static('frontend'));
     app.use(bodyParser.json());
-
-    app.get('/project/:id/timesheet', timesheet.getByProjectName(db));
+    
+    //timesheet
     app.post('/project', timesheet.save(db));
+    app.get('/project/:id/timesheet', timesheet.getByProjectName(db));
     app.get('/project/:id/timesheet/calendar', timesheet.getCalendarByPeriod(db));
 
-    //run application after mongo connection
+    //timelog
+    app.post('/timelog', timelog.save(db));
+
+
+    //run application after mongo
     app.listen(app.get('port'), function() {
         console.log('Homogen server is started on port: ' + app.get('port'));
     });
