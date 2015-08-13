@@ -9,7 +9,8 @@ angular.module('myApp', [
     'myApp.timesheetManagement',
     'myApp.projectReport',
     'myApp.projectManagement',
-    'myApp.peopleReport'
+    'myApp.peopleReport',
+    'preferences'
 ]).
     config(['$routeProvider', function ($routeProvider) {
         $routeProvider.otherwise({redirectTo: '/login'});

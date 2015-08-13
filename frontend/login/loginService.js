@@ -3,7 +3,7 @@
 angular.module('myApp.login').factory('loginService',
     ['$http', function ($http) {
         var service = {
-            post: function (postRequest) {
+            getUser: function (postRequest) {
                 return {
                     '_id': '12312312312',
                     'userId': '13',

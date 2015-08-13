@@ -8,6 +8,7 @@
 </head>
 <body>
 
+<div ng-if="isLoggedIn" bootstrap-tabs></div>
 <div class="main-container" ng-view></div>
 
 
@@ -20,6 +21,9 @@
 
 <!--Custom components-->
 <script src="components/tabs/bootstrapTabs.js"></script>
+
+<script src="components/preferences/preferences.js"></script>
+<script src="components/preferences/preferencesService.js"></script>
 
 <!--Main-->
 <script src="timelog/timelogController.js"></script>
@@ -39,6 +43,8 @@
 
 <script src="login/loginController.js"></script>
 <script src="login/loginService.js"></script>
+
+
 
 </body>
 </html>
