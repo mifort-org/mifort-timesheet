@@ -1,6 +1,7 @@
 body {
     padding: 20px;
 }
+
 /*Login*/
 .form-signin {
     max-width: 330px;
@@ -9,47 +10,59 @@ body {
 }
 
 /*Tabs*/
-.main-tabs{
+.main-tabs {
     width: 200px;
     float: left;
     padding-right: 20px;
 }
+
 .tabs-left {
     padding-top: 2px;
     padding-bottom: 2px;
     border-right: 1px solid #ddd;
 }
-.tabs-left .nav-tabs{
+
+.tabs-left .nav-tabs {
     border-bottom: 0;
 }
+
 .tabs-left li.active a, .tabs-left li.active a:hover, .tabs-left li.active a:focus {
     border-bottom-color: #ddd;
     border-right-color: transparent;
 }
+
 .tabs-left li a {
     border-radius: 4px 0 0 4px;
     margin-right: 0;
     display: block;
 }
-.tabs-left li a:hover{
+
+.tabs-left li a:hover {
     border-bottom-color: #eee;
 }
+
 .tabs-left li {
     margin-right: -1px;
 }
 
-.main-container{
+.main-container {
     padding: 0 0 20px 20px;
 }
 
 /*Timelog*/
-.timelog{
+.timelog {
     width: calc(100% - 200px);
 }
-.timelog-comment{
+
+.timelog-comment {
     width: 100%;
 }
-.timelog-hours{
+
+.timelog-hours {
     width: 30px;
     text-align: center;
+}
+
+.weekend {
+    background: #bed3ff !important;
 }

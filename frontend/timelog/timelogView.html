@@ -3,15 +3,19 @@
     <th ng-repeat="timelogKey in timelogKeys">{{timelogKey}}</th>
     </thead>
     <tbody>
-    <tr ng-repeat="log in timelog track by log.dateId">
+    <tr ng-repeat="log in timelog track by $index" ng-class="{'weekend': isWeekend(log.date)}">
         <td>
             {{log.date}}
-            <button type="button" class="btn btn-success glyphicon-plus btn-xs" ng-click="addRow($index)">{{$index}}</button>
+            <button type="button" class="btn btn-success glyphicon-plus btn-xs" ng-click="addRow(log.dateId, $index)"></button>
         </td>
 
         <td>
             <select name="">
-                <option value="{{log.assignmentId}}">assignmentId: {{log.assignmentId}}</option>
+                <option ng-selected="selected"
+                        ng-repeat="assignment in timelogAssigments"
+                        value="{{assignment.assignmentId}}">
+                    {{assignment.role}}
+                </option>
             </select>
         </td>
 

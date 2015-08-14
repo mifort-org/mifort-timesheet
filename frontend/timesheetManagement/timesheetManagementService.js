@@ -3,7 +3,7 @@
 angular.module('myApp.timesheetManagement').factory('timesheetManagementService',
     ['$http', function ($http) {
         var service = {
-            get: function (projectId, periodId) {
+            getTimesheet: function (projectId, periodId) {
                 return {
                     'calendar': [
                         {

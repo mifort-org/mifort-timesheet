@@ -13,10 +13,9 @@ angular.module('myApp.login', ['ngRoute'])
         $scope.$parent.isLoggedIn = false;
         $scope.user = loginService.getUser();
         $scope.login = function () {
-            var value = {id: 1001, name: 'John', surname: 'Galt'};
             $scope.$parent.isLoggedIn = true;
             $location.path('/timelog');
-            preferences.set('user', typeof value === 'object' ? JSON.stringify(value) : value);
+            preferences.set('user', typeof $scope.user === 'object' ? JSON.stringify($scope.user) : $scope.user);
             console.log(localStorage);
         };
     }]);

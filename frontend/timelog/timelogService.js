@@ -18,7 +18,7 @@ angular.module('myApp.timelog').factory('timelogService',
                             'comment': 'Save the world!'
                         },
                         {
-                            'date': '02/01/2015',
+                            'date': '01/02/2015',
                             'dateId': 2,
                             'time': 8,
                             'assignmentId': 2,
