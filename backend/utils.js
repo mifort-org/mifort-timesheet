@@ -1,8 +1,9 @@
 exports.getPeriodId = function(req, res) {
     var periodId = req.query.periodId;
-    if(!periodId) {
-        res.status(400).json({ error: 'Period ID is not specified!' });
-    }
+    //????
+    // if(!periodId) {
+    //     res.status(400).json({ error: 'Period ID is not specified!' });
+    // }
     return periodId;
 };
 

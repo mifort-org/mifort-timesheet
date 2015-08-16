@@ -1,9 +1,9 @@
-//MongoDb dependencies && config
 var timesheet = require('./backend/timesheet');
 var timelog = require('./backend/timelog');
 var MongoClient = require('mongodb').MongoClient;
 var express = require('express');
 var bodyParser = require('body-parser');
+var moment = require('moment');
 
 var mongodbUrl = process.env.MONGOLAB_URI || 'mongodb://localhost:27017/homogen';
 
@@ -33,12 +33,12 @@ function initApplication(db) {
     app.set('port', process.env.PORT || 1313);
     app.set('db', db);
     app.use(express.static('frontend'));
-    app.use(bodyParser.json());
+    app.use(bodyParser.json({reviver:parseDate}));
     
     //timesheet
-    app.post('/project', timesheet.save(db));
-    app.get('/project/:id/timesheet', timesheet.getByProjectName(db));
-    app.get('/project/:id/timesheet/calendar', timesheet.getCalendarByPeriod(db));
+    app.post('/timesheet', timesheet.save(db));
+    app.get('/timesheet/:id', timesheet.getByProjectId(db));
+    app.get('/timesheet/:id/calendar', timesheet.getCalendarByPeriod(db));
 
     //timelog
     app.post('/timelog', timelog.save(db));
@@ -48,4 +48,11 @@ function initApplication(db) {
     app.listen(app.get('port'), function() {
         console.log('Homogen server is started on port: ' + app.get('port'));
     });
+}
+
+function parseDate(key, value) {
+    if (typeof value === 'string' && key.toLowerCase().indexOf('date') > -1) {
+        return moment(value, "MM-DD-YYYY").toDate();
+    }
+    return value;
 }

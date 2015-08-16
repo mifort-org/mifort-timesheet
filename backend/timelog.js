@@ -1,9 +1,10 @@
 var ObjectId = require('mongodb').ObjectID;
 var utils = require('./utils');
 
-//extract to separate file: db-management
+var dbCollectionName = 'timelogs';
+
 exports.save = function(db) {
-    return utils.save(db, "timelogs");
+    return utils.save(db, dbCollectionName);
 };
 
 exports.getForPeriod = function(db) {
@@ -11,7 +12,7 @@ exports.getForPeriod = function(db) {
         var periodIdP = utils.getPeriodId(req, res);
         var userIdP = utils.getUserId(req, res);
         if(periodIdP && userIdP) {
-            var timelogs = db.collection('timelogs');
+            var timelogs = db.collection(dbCollectionName);
             timelogs.findOne({userId : parseInt(userIdP), //dangerous
                               periodId: parseInt(periodIdP) }, //dangerous
                 function(err, doc) {
