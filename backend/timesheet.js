@@ -38,10 +38,9 @@ exports.getCalendarByPeriod = function(db) {
                         return;
                     }
                     if(doc) {
-                        console.log(doc);
-                        getCalendarByPeriod(timesheets, query[0], doc.periods[0], res);
+                        res.json({calendar: getCalendarByPeriod(doc.calendar, doc.periods[0]) });
                     } else{
-                        res.json(doc);
+                        res.status(400).json({});
                     }
                 }
             );
@@ -63,7 +62,8 @@ function getQueryObject(req, res) {
                     "periods.id": parseInt(periodId)
                 },
                 {
-                    periods: {$elemMatch: {id: parseInt(periodId)}}
+                    periods: {$elemMatch: {id: parseInt(periodId)}},
+                    calendar: 1
                 }];
     } else {
         return [
@@ -74,25 +74,16 @@ function getQueryObject(req, res) {
             },
             {
                 periods: {$elemMatch: {startDate: { $lte : currentDate},
-                                       endDate: {$gte: currentDate}}}
+                                       endDate: {$gte: currentDate}}},
+                calendar: 1
             }];
 
     }
 }
 
-function getCalendarByPeriod(collection, query, period, res) {
-     collection.find(query,
-                    {
-                        calendar: {$elemMatch: {date: {$gte: period.startDate, $lte: period.endDate}}}
-                    },
-                    {
-                        "sort": "calendar.date"
-                    }).toArray(
-                        function(err, docs) {
-                            if(err) {
-                                res.status(500).json(err);
-                            }
-                            res.json(docs);
-                        }
-                    );
+function getCalendarByPeriod(calendar, period) {
+    var calendarForPeriod = calendar.filter(function(day) {
+        return day.date <= period.endDate && day.date >= period.startDate; 
+    });
+    return calendarForPeriod;
 }
