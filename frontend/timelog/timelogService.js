@@ -2,8 +2,10 @@
 
 angular.module('myApp.timelog').factory('timelogService',
     ['$http', function ($http) {
-        var service = {
+        var restRoot = 'timelog/',
+            service = {
             getTimelog: function (userId, periodId) {
+                //return $http.get(url.restRoot + userId + '?periodId=' + periodId);
                 return {
                     '_id': '12312312312',
                     'userId': '13',
@@ -42,8 +44,8 @@ angular.module('myApp.timelog').factory('timelogService',
                     'comment': 'Comment'
                 }
             },
-            updateTimelog: function (data) {
-                //return $http.put(url.restRoot + 'blabla/blabla', data);
+            updateTimelog: function (userId, periodId) {
+                //return $http.put(url.restRoot + userId + '?periodId=' + periodId);
             }
         };
 

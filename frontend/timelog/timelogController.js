@@ -25,5 +25,13 @@ angular.module('myApp.timelog', ['ngRoute'])
 
         $scope.isWeekend = function (date) {
             return $filter('isWeekendDay')(date);
-        }
+        };
+
+        $scope.$watch('timelog', function () {
+            var userId,
+                periodId;
+
+            console.log('changed');
+            timelogService.updateTimelog(userId, periodId);
+        }, true);
     }]);

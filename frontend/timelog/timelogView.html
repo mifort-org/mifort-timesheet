@@ -9,19 +9,19 @@
             <button type="button" class="btn btn-success glyphicon-plus btn-xs" ng-click="addRow(log.dateId, $index)"></button>
         </td>
 
-        <td>
-            <select name="">
-                <option ng-selected="selected"
+        <td>{{log.assignmentId}}
+            <select name="" ng-model="log.assignmentId">
+                <option
                         ng-repeat="assignment in timelogAssigments"
                         value="{{assignment.assignmentId}}">
-                    {{assignment.role}}
+                    {{assignment.role}}/{{assignment.assignmentId}}
                 </option>
             </select>
         </td>
 
         <td><input class="timelog-hours" type="text" ng-model="log.time"/></td>
 
-        <td><input class="timelog-comment" type="text" value="{{log.comment}}"/></td>
+        <td><input class="timelog-comment" type="text" ng-model="log.comment"/>{{log}}</td>
     </tr>
     </tbody>
 </table>
