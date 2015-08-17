@@ -1,13 +1,13 @@
 var ObjectId = require('mongodb').ObjectID;
 var utils = require('./utils');
 
-var dbCollectionName = "timesheets";
+var timesheetCollectionName = "timesheets";
 
 exports.getByProjectId = function(db) {
     return function(req, res) {
         var projectId = utils.getProjectId(req, res);
         if(projectId) {
-            var timesheets = db.collection(dbCollectionName);
+            var timesheets = db.collection(timesheetCollectionName);
             timesheets.findOne({projectId: projectId}, 
                 function(err, doc) {
                     if(err) {
@@ -22,14 +22,14 @@ exports.getByProjectId = function(db) {
 }
 
 exports.save = function(db) {
-    return utils.save(db, dbCollectionName);
+    return utils.save(db, timesheetCollectionName);
 }
 
 exports.getCalendarByPeriod = function(db) {
     return function(req, res) {
         var query = getQueryObject(req, res);
         if(query) {
-            var timesheets = db.collection(dbCollectionName);
+            var timesheets = db.collection(timesheetCollectionName);
             timesheets.findOne(query[0],
                                query[1], 
                 function(err, doc) {

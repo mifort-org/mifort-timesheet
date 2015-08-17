@@ -37,8 +37,8 @@ function initApplication(db) {
     
     //timesheet
     app.post('/timesheet', timesheet.save(db));
-    app.get('/timesheet/:id', timesheet.getByProjectId(db));
-    app.get('/timesheet/:id/calendar', timesheet.getCalendarByPeriod(db));
+    app.get('/timesheet/:projectId', timesheet.getByProjectId(db));
+    app.get('/timesheet/:projectId/calendar', timesheet.getCalendarByPeriod(db));
 
     //timelog
     app.post('/timelog', timelog.save(db));

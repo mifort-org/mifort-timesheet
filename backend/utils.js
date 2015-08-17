@@ -1,5 +1,5 @@
 exports.getPeriodId = function(req, res) {
-    var periodId = req.query.periodId;
+    var periodId = req.params.periodId || req.query.periodId;
     //????
     // if(!periodId) {
     //     res.status(400).json({ error: 'Period ID is not specified!' });
@@ -8,7 +8,7 @@ exports.getPeriodId = function(req, res) {
 };
 
 exports.getProjectId = function(req, res) {
-    var projectId = req.params.id;
+    var projectId = req.params.projectId || req.query.projectId;
     if(!projectId) {
         res.status(400).json({ error: 'Project ID is not specified!' });
     }
@@ -16,7 +16,7 @@ exports.getProjectId = function(req, res) {
 };
 
 exports.getUserId = function(req, res) {
-    var userId = req.params.userId;
+    var userId = req.params.userId || req.query.userId;
     if(!userId) {
         res.status(400).json({ error: 'User ID is not specified!' });
     }
