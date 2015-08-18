@@ -8,13 +8,14 @@ body {
     padding: 15px;
     margin: 0 auto;
 }
-.logout-button{
-    float: right;
+
+.main-controls {
+    text-align: right;
 }
 
 /*Tabs*/
 .main-tabs {
-    width: 200px;
+    /*width: 200px;*/
     float: left;
     padding-right: 20px;
 }
@@ -62,10 +63,27 @@ body {
 }
 
 .timelog-hours {
-    width: 30px;
+    width: 42px;
     text-align: center;
+}
+
+.timelog-new {
+    margin-left: 10px;
+}
+
+.timelog-data {
+    line-height: 2.5;
 }
 
 .weekend {
     background: #bed3ff !important;
+}
+
+/*Timesheet*/
+.timesheet-controls{
+    float: right;
+    /*width: 200px;*/
+}
+.timesheet-day{
+    width: 10px;
 }

@@ -1,7 +1,52 @@
-<label for="period">Report Period:</label>
-<select id="period"
-        ng-options="period as period for period in periods"
-        ng-model="log.assignmentId">
-</select>
+<div class="timesheet-controls col-lg-3">
+    <div class="row">
+        <label for="period">Report Period:</label>
+    </div>
 
-<label for="startDate">Start Date:</label>
+    <div class="row">
+        <select id="period"
+                ng-options="period as period for period in periodSettings"
+                ng-model="log.assignmentId"
+                class="form-control">
+        </select>
+    </div>
+
+    <div class="row">
+        <label for="startDate">Start Date:</label>
+    </div>
+
+    <div class="row">
+        <p class="input-group">
+            <input type="date" class="form-control" datepicker-popup ng-model="dt" is-open="status.opened"
+                   min-date="minDate" max-date="'2020-06-22'" datepicker-options="dateOptions"
+                   date-disabled="disabled(date, mode)" ng-required="true" close-text="Close"/>
+
+
+        <span class="input-group-btn">
+            <button type="button" class="btn btn-default" ng-click="open($event)">
+                <i class="glyphicon glyphicon-calendar"></i>
+            </button>
+        </span>
+        </p>
+    </div>
+</div>
+
+<div class="periods col-lg-6">
+    <div ng-repeat="timesheet in timesheets">
+        <table class="table table-striped">
+            <thead>
+            <th ng-repeat="day in weekDays">{{day}}</th>
+            </thead>
+            <tbody>
+            <tr ng-repeat="week in timesheet track by $index">
+                <td ng-repeat="day in week track by $index" ng-class="{'weekend': isWeekend(day.date)}">
+                    <span class="timelog-data">
+                        {{day.date}}
+                        <input type="text" class="form-control timesheet-day" ng-model="day.workload"/>
+                    </span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -8,7 +8,9 @@
 </head>
 <body ng-controller="myAppController">
 
-<button class="btn btn-default logout-button" ng-click="logout()">logout</button>
+<div class="main-controls">
+    <button class="btn btn-default" ng-click="logout()">logout</button>
+</div>
 
 <div ng-if="isLoggedIn" bootstrap-tabs></div>
 <div class="main-container" ng-view></div>
