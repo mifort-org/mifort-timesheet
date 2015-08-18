@@ -1,23 +1,21 @@
 var ObjectId = require('mongodb').ObjectID;
 var utils = require('./utils');
-
-var timelogCollectionName = 'timelogs';
-var timesheetCollectionName = 'timesheets';
+var collections = require('./collection_names');
 
 exports.save = function(db) {
-    return utils.save(db, timelogCollectionName);
+    return utils.save(db, collections.timelog);
 };
 
 exports.getForPeriod = function(db) {
     return function(req, res) {
         getCurrentPeriod(req, res, db, findTimeLog);
     }
-}
+};
 
 function getCurrentPeriod(req, res, db, callback) {
     var query = getPeriodQueryObject(req, res);
     if(query) {
-        var timesheets = db.collection(timesheetCollectionName);
+        var timesheets = db.collection(collections.timesheet);
         timesheets.findOne(query[0],
                            query[1], 
                 function(err, doc) {
@@ -42,7 +40,7 @@ function findTimeLog(req, res, db, period) {
     var userId = utils.getUserId(req, res);
     var projectId = utils.getProjectId(req, res);
     if(userId && period && projectId) {
-        var timelogs = db.collection(timelogCollectionName);
+        var timelogs = db.collection(collections.timelog);
         timelogs.findOne({userId : parseInt(userId), //dangerous
                           periodId: period.id,
                           projectId: projectId},
