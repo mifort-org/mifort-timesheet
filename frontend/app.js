@@ -23,4 +23,9 @@ angular.module('myApp', [
         else{
             $location.path('/login');
         }
+
+        $scope.logout = function () {
+            preferences.remove('user');
+            $location.path('/login');
+        }
     }]);

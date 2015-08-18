@@ -10,8 +10,11 @@ angular.module('preferences').factory('preferences', ['$q', function ($q) {
         get: function (key) {
             var data = localStorage.getItem(key);
             if (data && typeof data === 'string' && (data[0] === '[' || data[0] === '{')) {
-                data = JSON.parse(data);
+                data = JSON.parse(data, function(k, v) {
+                    return (typeof v === "object" || isNaN(v)) ? v : parseInt(v, 10);
+                });
             }
+
             return data === 'true' || (data === 'false' ? false : data);
         },
 

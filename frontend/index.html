@@ -7,6 +7,9 @@
     <link rel="stylesheet" href="common/scss/styles.css">
 </head>
 <body ng-controller="myAppController">
+
+<button class="btn btn-default logout-button" ng-click="logout()">logout</button>
+
 <div ng-if="isLoggedIn" bootstrap-tabs></div>
 <div class="main-container" ng-view></div>
 

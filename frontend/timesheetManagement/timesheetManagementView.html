@@ -1,1 +1,7 @@
-{{page}}
+<label for="period">Report Period:</label>
+<select id="period"
+        ng-options="period as period for period in periods"
+        ng-model="log.assignmentId">
+</select>
+
+<label for="startDate">Start Date:</label>

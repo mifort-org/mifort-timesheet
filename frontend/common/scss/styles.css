@@ -8,6 +8,9 @@ body {
     padding: 15px;
     margin: 0 auto;
 }
+.logout-button{
+    float: right;
+}
 
 /*Tabs*/
 .main-tabs {

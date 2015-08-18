@@ -10,5 +10,5 @@ angular.module('myApp.timesheetManagement', ['ngRoute'])
     }])
 
     .controller('timesheetManagementController', ['$scope', function ($scope) {
-        $scope.page = 'timesheetManagement';
+        $scope.periods = ['week', 'month', 'decade', 'year']
     }]);
