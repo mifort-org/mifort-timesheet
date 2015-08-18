@@ -1,32 +1,36 @@
-<table class="table table-striped timelog">
-    <thead>
-    <th ng-repeat="timelogKey in timelogKeys">{{timelogKey}}</th>
-    </thead>
-    <tbody>
-    <tr ng-repeat="log in timelog track by $index" ng-class="{'weekend': isWeekend(log.date)}">
-        <td>
+<div class="col-lg-9">
+    <table class="table table-striped timelog">
+        <thead>
+        <th ng-repeat="timelogKey in timelogKeys">{{timelogKey}}</th>
+        </thead>
+        <tbody>
+        <tr ng-repeat="log in timelog track by $index" ng-class="{'weekend': isWeekend(log.date)}">
+            <td>
             <span class="timelog-data">
                 {{log.date}}
                 <button type="button" class="timelog-new btn btn-success glyphicon-plus btn-xs"
                         ng-click="addRow(log.dateId, $index)"></button>
             </span>
-        </td>
+            </td>
 
-        <td>
-            <select ng-options="assignment.assignmentId as assignment.role for assignment in timelogAssigments track by assignment.assignmentId"
-                    ng-model="log.assignmentId"
-                    class="form-control">
-            </select>
-        </td>
+            <td>
+                <select ng-options="assignment.assignmentId as assignment.role for assignment in timelogAssigments track by assignment.assignmentId"
+                        ng-model="log.assignmentId"
+                        class="form-control">
+                </select>
+            </td>
 
-        <td><input class="timelog-hours form-control" type="text" ng-model="log.time"/></td>
+            <td><input class="timelog-hours form-control" type="text" ng-model="log.time"/></td>
 
-        <td>
-            <input class="timelog-comment form-control" type="text" ng-model="log.comment"/>
-            <!--<small>{{log}}</small>-->
-        </td>
-    </tr>
-    </tbody>
-</table>
-
-<small>{{timelog}}</small>
+            <td>
+                <input class="timelog-comment form-control" type="text" ng-model="log.comment"/>
+                <!--<small>{{log}}</small>-->
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    
+    <div>
+        <small>{{timelog}}</small>
+    </div>
+</div>

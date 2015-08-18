@@ -55,7 +55,7 @@ body {
 
 /*Timelog*/
 .timelog {
-    width: calc(100% - 200px);
+    /*width: calc(100% - 200px);*/
 }
 
 .timelog-comment {
