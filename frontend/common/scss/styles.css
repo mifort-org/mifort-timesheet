@@ -62,7 +62,8 @@ body {
     width: 100%;
 }
 
-.timelog-hours {
+.timelog-hours,
+.timesheet-hours{
     width: 42px;
     text-align: center;
 }

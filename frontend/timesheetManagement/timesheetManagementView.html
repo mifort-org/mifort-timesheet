@@ -5,10 +5,11 @@
 
     <div class="row">
         <select id="period"
-                ng-options="period as period for period in periodSettings"
-                ng-model="log.assignmentId"
+                ng-options="period as period.periodName for period in periodSettings"
+                ng-model="selectedPeriod"
                 class="form-control">
         </select>
+        {{selectedPeriod}}
     </div>
 
     <div class="row">
@@ -22,10 +23,10 @@
                    date-disabled="disabled(date, mode)" ng-required="true" close-text="Close"/>
 
 
-        <span class="input-group-btn">
-            <button type="button" class="btn btn-default" ng-click="open($event)">
-                <i class="glyphicon glyphicon-calendar"></i>
-            </button>
+            <span class="input-group-btn">
+                <button type="button" class="btn btn-default" ng-click="open($event)">
+                    <i class="glyphicon glyphicon-calendar"></i>
+                </button>
         </span>
         </p>
     </div>
@@ -35,14 +36,15 @@
     <div ng-repeat="timesheet in timesheets">
         <table class="table table-striped">
             <thead>
-            <th ng-repeat="day in weekDays">{{day}}</th>
+                <th ng-repeat="day in weekDays">{{day}}</th>
             </thead>
             <tbody>
             <tr ng-repeat="week in timesheet track by $index">
+                <!--<td ng-repeat="day in week track by $index" ng-class="{'weekend': isWeekend(day.date)}">-->
                 <td ng-repeat="day in week track by $index" ng-class="{'weekend': isWeekend(day.date)}">
                     <span class="timelog-data">
-                        {{day.date}}
-                        <input type="text" class="form-control timesheet-day" ng-model="day.workload"/>
+                        <!--{{week}}-->
+                        <input type="text" class="form-control timesheet-hours" ng-model="day.time"/>
                     </span>
                 </td>
             </tr>
