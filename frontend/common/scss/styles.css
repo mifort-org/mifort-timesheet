@@ -11,6 +11,7 @@ body {
 
 .main-controls {
     text-align: right;
+    margin-bottom: 20px;
 }
 
 /*Tabs*/
@@ -46,7 +47,7 @@ body {
 }
 
 .tabs-left li {
-    margin-right: -1px;
+    margin-right: -2px;
 }
 
 .main-container {
@@ -54,12 +55,12 @@ body {
 }
 
 /*Timelog*/
-.timelog {
-    /*width: calc(100% - 200px);*/
-}
-
 .timelog-comment {
     width: 100%;
+}
+
+.timelog-validation{
+    padding: 10px;
 }
 
 .timelog-hours,
@@ -78,6 +79,10 @@ body {
 
 .weekend {
     background: #bed3ff !important;
+}
+
+.projects-state-wrapper{
+    float: right;
 }
 
 /*Timesheet*/

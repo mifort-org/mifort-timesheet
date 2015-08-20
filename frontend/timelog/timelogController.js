@@ -14,6 +14,7 @@ angular.module('myApp.timelog', ['ngRoute'])
             timesheetStructure = timesheetManagementService.getTimesheet(projectId).calendar,
             userTimelog = timelogService.getTimelog().timelog;
 
+        $scope.currentTimelogStart = 0;
         $scope.timelog = angular.extend(angular.copy(timesheetStructure), angular.copy(userTimelog));
         $scope.timelogKeys = timelogService.getTimelogKeys();
         $scope.timelogAssigments = preferences.get('user').assignments;
@@ -27,11 +28,19 @@ angular.module('myApp.timelog', ['ngRoute'])
             return $filter('isWeekendDay')(date);
         };
 
+        $scope.previousPeriod = function () {
+            $scope.currentTimelogStart -=7
+        };
+
+        $scope.nextPeriod = function () {
+            $scope.currentTimelogStart +=7
+        };
+
         $scope.$watch('timelog', function () {
             var userId,
                 periodId;
 
-            console.log('changed');
+            console.log('Tmelog saved');
             timelogService.updateTimelog(userId, periodId);
         }, true);
     }]);
