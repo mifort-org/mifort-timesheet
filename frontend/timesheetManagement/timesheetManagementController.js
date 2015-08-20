@@ -10,35 +10,57 @@ angular.module('myApp.timesheetManagement', ['ngRoute'])
     }])
 
     .controller('timesheetManagementController', ['$scope', 'timesheetManagementService', function ($scope, timesheetManagementService) {
-        var projectId, periodId;
+        var projectId,
+            periodId;
+
         $scope.periodSettings = [
             {
                 periodName: 'week',
-                daysAmount: 7
+                days: 7
             },
             {
                 periodName: 'month',
-                daysAmount: 30
+                days: 30
             },
             {
                 periodName: 'decade',
-                daysAmount: 90
+                days: 90
             },
             {
                 periodName: 'year',
-                daysAmount: 365
+                days: 365
             }
         ];
 
-        $scope.status = {
-            opened: false
-        };
-
+        $scope.selectedPeriod = $scope.periodSettings[0]; //default value is week
+        $scope.calendarIsOpened = false;
         $scope.weekDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+        $scope.timesheet = timesheetManagementService.getTimesheet(projectId, periodId).calendar;
+        $scope.splittedTimesheet = [];
 
-        $scope.open = function($event) {
-            $scope.status.opened = true;
+        $scope.openCalendar = function ($event) {
+            $scope.calendarIsOpened = true;
         };
 
-        $scope.timesheets = timesheetManagementService.getTimesheet(projectId, periodId);
+        $scope.range = function (n) {
+            return new Array(n);
+        };
+
+        $scope.split = function () {
+            var periodDuration = $scope.selectedPeriod.days;
+
+            for (var i = 0; i < $scope.timesheet.length/$scope.selectedPeriod.days; i++) {
+                $scope.splittedTimesheet.push($scope.timesheet.slice(i * periodDuration, i * periodDuration + periodDuration));
+                $scope.splittedTimesheet[i][0].isPeriodStartDate = true;
+
+                //temp
+                if($scope.splittedTimesheet[i][periodDuration-1]){
+                    $scope.splittedTimesheet[i][periodDuration-1].isPeriodEndDate = true;
+                }
+            }
+
+            console.log($scope.splittedTimesheet);
+        };
+        $scope.split();
+
     }]);

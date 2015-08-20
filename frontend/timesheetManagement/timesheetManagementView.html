@@ -18,37 +18,43 @@
 
     <div class="row">
         <p class="input-group">
-            <input type="date" class="form-control" datepicker-popup ng-model="dt" is-open="status.opened"
+            <input id="startDate" type="date" class="form-control" datepicker-popup ng-model="dt" is-open="calendarIsOpened"
                    min-date="minDate" max-date="'2020-06-22'" datepicker-options="dateOptions"
                    date-disabled="disabled(date, mode)" ng-required="true" close-text="Close"/>
 
-
             <span class="input-group-btn">
-                <button type="button" class="btn btn-default" ng-click="open($event)">
+                <button type="button" class="btn btn-default" ng-click="openCalendar($event)">
                     <i class="glyphicon glyphicon-calendar"></i>
                 </button>
-        </span>
+            </span>
+            <div>
+                <button type="button" class="btn btn-warning" ng-click="split()">
+                    Split
+                </button>
+            </div>
         </p>
     </div>
 </div>
 
-<div class="periods col-lg-7">
-    <div ng-repeat="timesheet in timesheets">
-        <table class="table table-striped">
+<div class="col-lg-5">
+    <!--<div ng-repeat="timesheet in timesheets">-->
+        <table class="periods table table-striped table-bordered">
             <thead>
                 <th ng-repeat="day in weekDays">{{day}}</th>
             </thead>
             <tbody>
-            <tr ng-repeat="week in timesheet track by $index">
-                <!--<td ng-repeat="day in week track by $index" ng-class="{'weekend': isWeekend(day.date)}">-->
-                <td ng-repeat="day in week track by $index" ng-class="{'weekend': isWeekend(day.date)}">
+            <tr ng-repeat="a in range(weekDays.length) track by $index">
+                <td ng-repeat="day in timesheet.slice($index*weekDays.length, $index*weekDays.length+weekDays.length)"
+                    ng-class="{'period-start': day.isPeriodStartDate, 'period-end': day.isPeriodEndDate}">
+                    {{day.date}}<br/>{{day.isPeriodStartDate}}
                     <span class="timelog-data">
-                        <!--{{week}}-->
                         <input type="text" class="form-control timesheet-hours" ng-model="day.time"/>
                     </span>
                 </td>
             </tr>
             </tbody>
         </table>
-    </div>
+    <!--</div>-->
 </div>
+
+<!--{{splittedTimesheet}}-->

@@ -59,12 +59,12 @@ body {
     width: 100%;
 }
 
-.timelog-validation{
+.timelog-validation {
     padding: 10px;
 }
 
 .timelog-hours,
-.timesheet-hours{
+.timesheet-hours {
     width: 42px;
     text-align: center;
 }
@@ -81,15 +81,64 @@ body {
     background: #bed3ff !important;
 }
 
-.projects-state-wrapper{
+.projects-state-wrapper {
     float: right;
 }
 
 /*Timesheet*/
-.timesheet-controls{
+.timesheet-controls {
     float: right;
     /*width: 200px;*/
 }
-.timesheet-day{
+
+.periods {
+    border-collapse: separate;
+}
+
+.periods td {
+    position: relative;
+}
+
+.periods td,
+.periods th,
+.periods td input {
+    text-align: center;
+    margin: 0 auto;
+}
+
+.timesheet-day {
     width: 10px;
+}
+
+.period-start {
+    border-left-color: red !important;
+}
+.period-end {
+    border-right-color: blue !important;
+}
+
+.period-start:before,
+.period-start:after,
+.period-end:before,
+.period-end:after {
+    position: absolute;
+    top: -1px;
+    left: 0;
+    display: block;
+    width: 20px;
+    border-top: 1px red solid;
+    content: ''
+}
+
+.period-end:before,
+.period-end:after{
+    left: auto;
+    right: 0;
+    border-color: blue;
+}
+
+.period-start:after,
+.period-end:after {
+    top: auto;
+    bottom: -1px;
 }
