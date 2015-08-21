@@ -46,6 +46,7 @@ angular.module('myApp.timesheetManagement', ['ngRoute'])
             return new Array(n);
         };
 
+        //underscore added, replace the z[x][y] logic with it
         $scope.split = function () {
             var periodDuration = $scope.selectedPeriod.days;
 
