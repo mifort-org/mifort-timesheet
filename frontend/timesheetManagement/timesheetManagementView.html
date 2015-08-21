@@ -43,14 +43,10 @@
                 <th ng-repeat="day in weekDays">{{day}}</th>
             </thead>
             <tbody>
-            <tr ng-repeat="a in range(weekDays.length) track by $index">
-                <td ng-repeat="day in timesheet.slice($index*weekDays.length, $index*weekDays.length+weekDays.length)"
-                    ng-class="{'period-start': day.isPeriodStartDate, 'period-end': day.isPeriodEndDate}">
-                    {{day.date}}<br/>{{day.isPeriodStartDate}}
-                    <span class="timelog-data">
-                        <input type="text" class="form-control timesheet-hours" ng-model="day.time"/>
-                    </span>
-                </td>
+            <tr ng-repeat="week in splittedTimesheet track by $index">
+                <td table-cell
+                    ng-repeat="day in week"
+                    ng-class="{'period-start': day.isPeriodStartDate, 'period-end': day.isPeriodEndDate}"></td>
             </tr>
             </tbody>
         </table>

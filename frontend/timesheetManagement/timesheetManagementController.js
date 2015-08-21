@@ -49,18 +49,26 @@ angular.module('myApp.timesheetManagement', ['ngRoute'])
         $scope.split = function () {
             var periodDuration = $scope.selectedPeriod.days;
 
-            for (var i = 0; i < $scope.timesheet.length/$scope.selectedPeriod.days; i++) {
+            for (var i = 0; i < $scope.timesheet.length / $scope.selectedPeriod.days; i++) {
                 $scope.splittedTimesheet.push($scope.timesheet.slice(i * periodDuration, i * periodDuration + periodDuration));
                 $scope.splittedTimesheet[i][0].isPeriodStartDate = true;
 
                 //temp
-                if($scope.splittedTimesheet[i][periodDuration-1]){
-                    $scope.splittedTimesheet[i][periodDuration-1].isPeriodEndDate = true;
+                if ($scope.splittedTimesheet[i][periodDuration - 1]) {
+                    $scope.splittedTimesheet[i][periodDuration - 1].isPeriodEndDate = true;
                 }
             }
-
-            console.log($scope.splittedTimesheet);
         };
         $scope.split();
 
+        $scope.periodTimeChanged = function (day, weekIndex, dayIndex) {
+            console.log(true);
+
+            if(day.isPeriodStartDate){
+                //$scope.splittedTimesheet[weekIndex][dayIndex]
+            }
+            else{
+
+            }
+        };
     }]);
