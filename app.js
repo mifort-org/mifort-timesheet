@@ -25,7 +25,7 @@ app.get('/timesheet/:projectId/calendar', timesheet.getCalendarByPeriod);
 
 //timelog
 app.post('/timelog', timelog.save);
-app.get('/timelog/:userId', timelog.getForPeriod);
+app.get('/timelog/:userId', timelog.getByDates);
 
 //run application
 app.listen(app.get('port'), function() {
