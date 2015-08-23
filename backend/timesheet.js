@@ -1,49 +1,42 @@
-var ObjectId = require('mongodb').ObjectID;
-var utils = require('./utils');
-var collections = require('./collection_names');
+var utils = require('./libs/utils');
+var dbSettings = require('./libs/mongodb_settings');
 
-exports.getByProjectId = function(db) {
-    return function(req, res) {
-        var projectId = utils.getProjectId(req, res);
-        if(projectId) {
-            var timesheets = db.collection(collections.timesheet);
-            timesheets.findOne({projectId: projectId}, 
-                function(err, doc) {
-                    if(err) {
-                        res.status(500).json(err);
-                        return;
-                    }
-                    res.json(doc);
+exports.getByProjectId = function(req, res) {
+    var projectId = utils.getProjectId(req, res);
+    if(projectId) {
+        var timesheets = dbSettings.timesheetsCollection();
+        timesheets.findOne({projectId: projectId}, 
+            function(err, doc) {
+                if(err) {
+                    res.status(500).json(err);
+                    return;
                 }
-            );
-        }
+                res.json(doc);
+            }
+        );
     }
-}
+};
 
-exports.save = function(db) {
-    return utils.save(db, collections.timesheet);
-}
+exports.save = utils.save(dbSettings.db, dbSettings.timesheet);
 
-exports.getCalendarByPeriod = function(db) {
-    return function(req, res) {
-        var query = getQueryObject(req, res);
-        if(query) {
-            var timesheets = db.collection(collections.timesheet);
-            timesheets.findOne(query[0],
-                               query[1], 
-                function(err, doc) {
-                    if(err) {
-                        res.status(500).json(err);
-                        return;
-                    }
-                    if(doc) {
-                        res.json({calendar: getCalendarByPeriod(doc.calendar, doc.periods[0]) });
-                    } else{
-                        res.status(400).json({});
-                    }
+exports.getCalendarByPeriod = function(req, res) {
+    var query = getQueryObject(req, res);
+    if(query) {
+        var timesheets = dbSettings.timesheetsCollection();
+        timesheets.findOne(query[0],
+                           query[1], 
+            function(err, doc) {
+                if(err) {
+                    res.status(500).json(err);
+                    return;
                 }
-            );
-        }
+                if(doc) {
+                    res.json({calendar: getCalendarByPeriod(doc.calendar, doc.periods[0]) });
+                } else{
+                    res.status(400).json({});
+                }
+            }
+        );
     }
 }
 

@@ -1,3 +1,6 @@
+var ObjectID = require('mongodb').ObjectID;
+var moment = require('moment');
+
 exports.getPeriodId = function(req, res) {
     var periodId = req.params.periodId || req.query.periodId;
     //????
@@ -23,18 +26,17 @@ exports.getUserId = function(req, res) {
     return userId;
 };
 
-exports.save = function(db, collectionName) {
+exports.save = function(collection) {
     return function(req, res) {
         if(req.body) {
             console.log(req.body);
             var currentDate = new Date();
-            var project = req.body;
-            if(!project.createdOn) {
-                project.createdOn = currentDate;
+            var object = req.body;
+            if(!object.createdOn) {
+                object.createdOn = currentDate;
             }
-            project.updatedOn = currentDate;
-            var projects = db.collection(collectionName);
-            projects.save(project, {safe:true}, function (err, results) {
+            object.updatedOn = currentDate;
+            collection().save(object, {safe:true}, function (err, results) {
                 if(err) {
                     res.status(500).json(err);
                 } else {
@@ -45,3 +47,15 @@ exports.save = function(db, collectionName) {
         }
     }
 };
+
+exports.jsonParse = function(key, value) {
+    if (typeof value === 'string' ) {
+        if (key.toLowerCase().indexOf('date') > -1) {
+            return moment(value, "MM-DD-YYYY").toDate();
+        }
+        if(key.toLowerCase() == '_id' && ObjectID.isValid(value)) {
+            return new ObjectID(value);
+        }
+    }    
+    return value;
+}

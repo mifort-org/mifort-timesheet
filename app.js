@@ -1,58 +1,33 @@
-var timesheet = require('./backend/timesheet');
-var timelog = require('./backend/timelog');
-var MongoClient = require('mongodb').MongoClient;
 var express = require('express');
 var bodyParser = require('body-parser');
-var moment = require('moment');
+var cookieParser = require('cookie-parser');
+var session = require('express-session');
 
-var mongodbUrl = process.env.MONGOLAB_URI || 'mongodb://localhost:27017/homogen';
+var timesheet = require('./backend/timesheet');
+var timelog = require('./backend/timelog');
+var auth = require('./backend/libs/auth');
+var util = require('./backend/libs/utils');
 
-MongoClient.connect(mongodbUrl, function(err, db){
-    if(err) {
-    	initApplicationWithoutDB();
-    } else {
-    	initApplication(db);
-    }
-});
-
-//temporary method
-function initApplicationWithoutDB() {
-	console.log("...Without DB...");
-    var app = express();
-    app.set('port', process.env.PORT || 1313);
-    app.use(express.static('frontend'));
-    app.use(bodyParser.json());
-    //run application after mongo connection
-    app.listen(app.get('port'), function() {
-        console.log('Homogen server is started on port: ' + app.get('port'));
-    });
-}
-
-function initApplication(db) {
-    var app = express();
-    app.set('port', process.env.PORT || 1313);
-    app.set('db', db);
-    app.use(express.static('frontend'));
-    app.use(bodyParser.json({reviver:parseDate}));
+var app = express();
+app.set('port', process.env.PORT || 1313);
     
-    //timesheet
-    app.post('/timesheet', timesheet.save(db));
-    app.get('/timesheet/:projectId', timesheet.getByProjectId(db));
-    app.get('/timesheet/:projectId/calendar', timesheet.getCalendarByPeriod(db));
+app.use(cookieParser());
+app.use(express.static('frontend'));
+app.use(bodyParser.json({reviver:util.jsonParse}));
+app.use(session({ secret: 'homogen cat' , name: 'kaas', resave: true, saveUninitialized: true}));
+//last step: init auth
+auth.init(app);
 
-    //timelog
-    app.post('/timelog', timelog.save(db));
-    app.get('/timelog/:userId', timelog.getForPeriod(db));
+//timesheet
+app.post('/timesheet', timesheet.save);
+app.get('/timesheet/:projectId', auth.ensureAuthenticated, timesheet.getByProjectId);
+app.get('/timesheet/:projectId/calendar', timesheet.getCalendarByPeriod);
 
-    //run application after mongo
-    app.listen(app.get('port'), function() {
-        console.log('Homogen server is started on port: ' + app.get('port'));
-    });
-}
+//timelog
+app.post('/timelog', timelog.save);
+app.get('/timelog/:userId', timelog.getForPeriod);
 
-function parseDate(key, value) {
-    if (typeof value === 'string' && key.toLowerCase().indexOf('date') > -1) {
-        return moment(value, "MM-DD-YYYY").toDate();
-    }
-    return value;
-}
+//run application
+app.listen(app.get('port'), function() {
+    console.log('Homogen server is started on port: ' + app.get('port'));
+});

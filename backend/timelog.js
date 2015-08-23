@@ -1,21 +1,48 @@
-var ObjectId = require('mongodb').ObjectID;
-var utils = require('./utils');
-var collections = require('./collection_names');
+var utils = require('./libs/utils');
+var dbSettings = require('./libs/mongodb_settings');
 
-exports.save = function(db) {
-    return utils.save(db, collections.timelog);
-};
+exports.save = function(req, res) {
+    if(req.body) {
+        var timelogCollection = dbSettings.timelogCollection();
+        var batch = timelogCollection.initializeUnorderedBulkOp({useLegacyOps: true});
+        
+        var ids = [];
+        var timelogs = req.body.timelog;
+        timelogs.forEach(function(log) {
+            if(log._id) {
+                ids.push(log._id);
+                batch.find({_id: log._id}).upsert().replaceOne(log);
+            } else {
+                batch.insert(log);
+            }
+        });
 
-exports.getForPeriod = function(db) {
-    return function(req, res) {
-        getCurrentPeriod(req, res, db, findTimeLog);
+        batch.execute(function(err, result) {
+            findAllTimelogsByIds(ids, function(err, timelogs) {
+                if(err) {
+                    res.status(500).json(err);
+                }
+                res.json({timelog: timelogs});
+            });
+        });
     }
 };
 
-function getCurrentPeriod(req, res, db, callback) {
+function findAllTimelogsByIds(ids, callback) {
+    var timelogCollection = dbSettings.timelogCollection();
+    timelogCollection.find({_id:{ $in: ids}}, {"sort": "date"}).toArray(function(err, timelogs) {
+        callback(err, timelogs);
+    });
+}
+
+exports.getForPeriod = function(req, res) {
+    getCurrentPeriod(req, res, findTimeLog);
+};
+
+function getCurrentPeriod(req, res, callback) {
     var query = getPeriodQueryObject(req, res);
     if(query) {
-        var timesheets = db.collection(collections.timesheet);
+        var timesheets = dbSettings.db.collection(dbSettings.timesheet);
         timesheets.findOne(query[0],
                            query[1], 
                 function(err, doc) {
@@ -26,7 +53,7 @@ function getCurrentPeriod(req, res, db, callback) {
                     if(doc) {
                         console.log(doc);
                         callback(req, res, db, doc.periods[0]);
-                    } else{
+                    } else {
                         res.status(400).json({});
                     }
                 }
@@ -36,11 +63,11 @@ function getCurrentPeriod(req, res, db, callback) {
     }
 }
 
-function findTimeLog(req, res, db, period) {
+function findTimeLog(req, res, period) {
     var userId = utils.getUserId(req, res);
     var projectId = utils.getProjectId(req, res);
     if(userId && period && projectId) {
-        var timelogs = db.collection(collections.timelog);
+        var timelogs = dbSettings.db.collection(dbSettings.timelog);
         timelogs.findOne({userId : parseInt(userId), //dangerous
                           periodId: period.id,
                           projectId: projectId},
