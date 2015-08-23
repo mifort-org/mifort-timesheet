@@ -18,23 +18,48 @@ exports.save = function(req, res) {
         });
 
         batch.execute(function(err, result) {
-            findAllTimelogsByIds(ids, function(err, timelogs) {
-                if(err) {
-                    res.status(500).json(err);
-                }
-                res.json({timelog: timelogs});
+            findAllByIds(ids, function(err, timelogs) {
+                returnTimelogArray(err, res, timelogs);
             });
         });
     }
 };
 
-function findAllTimelogsByIds(ids, callback) {
+exports.getByDates = function(req, res) {
+    var start = utils.getStartDate(req, res);
+    var end = utils.getEndDate(req, res);
+    var userId = utils.getUserId(req, res);
+
+    if(start && end && userId) {
+        var timelogCollection = dbSettings.timelogCollection();
+        var query = {
+            userId : userId,
+            date : {$gte: start,
+                    $lte: end}
+        };
+
+        timelogCollection.find(query, {'sort': 'date'}).toArray(function(err, timelogs){
+            returnTimelogArray(err, res, timelogs);
+        });
+    }
+};
+
+//private part
+function findAllByIds(ids, callback) {
     var timelogCollection = dbSettings.timelogCollection();
     timelogCollection.find({_id:{ $in: ids}}, {"sort": "date"}).toArray(function(err, timelogs) {
         callback(err, timelogs);
     });
 }
 
+function returnTimelogArray(err, res, timelogs) {
+    if(err) {
+        res.status(500).json(err);
+    }
+    res.json({timelog: timelogs});
+}
+
+//deprecated
 exports.getForPeriod = function(req, res) {
     getCurrentPeriod(req, res, findTimeLog);
 };
