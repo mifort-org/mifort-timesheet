@@ -10,11 +10,11 @@ exports.save = function(req, res) {
         var timelogs = req.body.timelog;
         timelogs.forEach(function(log) {
             if(log._id) {
-                ids.push(log._id);
                 batch.find({_id: log._id}).upsert().replaceOne(log);
             } else {
                 batch.insert(log);
             }
+            ids.push(log._id);
         });
 
         batch.execute(function(err, result) {
