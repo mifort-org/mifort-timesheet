@@ -3,7 +3,6 @@ var MongoClient = require('mongodb').MongoClient;
 var mongodbUrl = process.env.MONGOLAB_URI || 'mongodb://localhost:27017/homogen';
 
 var timelogCollectionName = 'timelogs';
-var timesheetCollectionName = 'timesheets';
 var projectCollectionName = 'projects';
 var companyCollectionName = 'companies';
 var userCollectionName = 'users';
@@ -20,11 +19,7 @@ MongoClient.connect(mongodbUrl, function(err, db) {
 });
 
 exports.timelogCollection = function() {
-    return cachedDb.collection(timelogCollectionName)
-}
-
-exports.timesheetsCollection = function() {
-    return cachedDb.collection(timesheetCollectionName);
+    return cachedDb.collection(timelogCollectionName);
 }
 
 exports.projectCollection = function() {
