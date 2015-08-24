@@ -27,7 +27,7 @@ exports.timesheetsCollection = function() {
     return cachedDb.collection(timesheetCollectionName);
 }
 
-exports.projectCollectionName = function() {
+exports.projectCollection = function() {
     return cachedDb.collection(projectCollectionName);
 }
 

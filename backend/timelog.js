@@ -55,6 +55,7 @@ function findAllByIds(ids, callback) {
 function returnTimelogArray(err, res, timelogs) {
     if(err) {
         res.status(500).json(err);
+        return;
     }
     res.json({timelog: timelogs});
 }

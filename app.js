@@ -3,7 +3,7 @@ var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
 
-var timesheet = require('./backend/timesheet');
+var project = require('./backend/project');
 var timelog = require('./backend/timelog');
 var auth = require('./backend/libs/auth');
 var util = require('./backend/libs/utils');
@@ -14,14 +14,20 @@ app.set('port', process.env.PORT || 1313);
 app.use(cookieParser());
 app.use(express.static('frontend'));
 app.use(bodyParser.json({reviver:util.jsonParse}));
-app.use(session({ secret: 'homogen cat' , name: 'kaas', resave: true, saveUninitialized: true}));
+app.use(session(
+    { secret: 'homogen cat' ,
+    name: 'kaas',
+    cookie: { maxAge : 3600000 },
+    resave: true, 
+    saveUninitialized: true})
+);
 //last step: init auth
 auth.init(app);
 
-//timesheet
-app.post('/timesheet', timesheet.save);
-app.get('/timesheet/:projectId', auth.ensureAuthenticated, timesheet.getByProjectId);
-app.get('/timesheet/:projectId/calendar', timesheet.getCalendarByPeriod);
+// add auth.ensureAuthenticated for each Rest API
+//timesheet || project
+app.post('/project', project.save);
+app.get('/project/:projectId', project.getByProjectId);
 
 //timelog
 app.post('/timelog', timelog.save);

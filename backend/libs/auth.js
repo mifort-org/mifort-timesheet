@@ -41,6 +41,11 @@ exports.ensureAuthenticated = function (req, res, next) {
     res.redirect('/login');
 };
 
+exports.logout = function(req, res) {
+    req.logout();
+    res.redirect('/');
+};
+
 exports.init = function(app) {
     app.use(passport.initialize());
     app.use(passport.session());
