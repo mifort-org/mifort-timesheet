@@ -7,11 +7,18 @@ var GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET || "put-your-credent
 var users = require('../user');
 
 passport.serializeUser(function(user, done) {
-    done(null, user);
+    done(null, user._id);
 });
 
-passport.deserializeUser(function(user, done) {
-    done(null, user);
+passport.deserializeUser(function(id, done) {
+    users.findUserById(id, function(error, user) {
+        if(error) {
+            done(err);
+        } else {
+            done(null, user);
+        }
+    });
+    
 });
 
 passport.use(new GoogleStrategy({

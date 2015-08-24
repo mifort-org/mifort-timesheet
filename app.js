@@ -5,6 +5,7 @@ var session = require('express-session');
 
 var project = require('./backend/project');
 var timelog = require('./backend/timelog');
+var user = require('./backend/user');
 var auth = require('./backend/libs/auth');
 var util = require('./backend/libs/utils');
 
@@ -24,14 +25,17 @@ app.use(session(
 //last step: init auth
 auth.init(app);
 
-// add auth.ensureAuthenticated for each Rest API
-//timesheet || project
+//add auth.ensureAuthenticated for each Rest API
+//project
 app.post('/project', project.save);
 app.get('/project/:projectId', project.getByProjectId);
 
 //timelog
 app.post('/timelog', timelog.save);
 app.get('/timelog/:userId', timelog.getByDates);
+
+//user
+app.get('/user/:userId', user.restGetUserById);
 
 //run application
 app.listen(app.get('port'), function() {
