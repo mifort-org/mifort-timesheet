@@ -1,5 +1,5 @@
 {
-    "id":"13",
+    "id":"p1",
     "name":"Super Project",
     "description": "Bla bla bla",
     "createdOn": "01/01/2015",
@@ -8,7 +8,7 @@
     "template": {
         "date": "",
         "role": "",
-        "time": "4",
+        "time": 4,
         "comment": ""
     },
     "defaultValues": [

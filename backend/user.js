@@ -23,15 +23,8 @@ exports.save = function(user, callback) {
     });
 };
 
+//or from db???
 exports.restGetUserById = function(req, res) {
-    var userId = utils.getUserId(req, res);
-    if(userId) {
-        findUserById(userId, function(err, user) {
-            if(err) {
-                res.status(400).json(err);
-            } else {
-                res.json(user);
-            }
-        });
-    }
+    var user = req.user;
+    res.json(user);
 };

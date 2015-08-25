@@ -20,16 +20,16 @@ MongoClient.connect(mongodbUrl, function(err, db) {
 
 exports.timelogCollection = function() {
     return cachedDb.collection(timelogCollectionName);
-}
+};
 
 exports.projectCollection = function() {
     return cachedDb.collection(projectCollectionName);
-}
+};
 
 exports.userCollection = function() {
     return cachedDb.collection(userCollectionName);
-}
+};
 
 exports.companyCollection = function() {
     return cachedDb.coollection(companyCollectionName);
-}
+};
