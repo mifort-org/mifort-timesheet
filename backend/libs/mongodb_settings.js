@@ -15,6 +15,7 @@ MongoClient.connect(mongodbUrl, function(err, db) {
     } else {
         cachedDb = db;
         exports.db = cachedDb;
+        console.log('Mongo DB: connected!');
     }
 });
 

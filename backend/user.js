@@ -1,4 +1,5 @@
 var dbSettings = require('./libs/mongodb_settings');
+var utils = require('./libs/utils');
 
 exports.findByEmail = function(email, callback) {
     var users = dbSettings.userCollection();
@@ -24,7 +25,9 @@ exports.save = function(user, callback) {
 };
 
 //or from db???
-exports.restGetUserById = function(req, res) {
+exports.restGetById = function(req, res) {
     var user = req.user;
     res.json(user);
 };
+
+exports.restSave = utils.saveObject(dbSettings.userCollection);

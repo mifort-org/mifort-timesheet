@@ -28,14 +28,15 @@ auth.init(app);
 //add auth.ensureAuthenticated for each Rest API
 //project
 app.post('/project', project.save);
-app.get('/project/:projectId', project.getByProjectId);
+app.get('/project/:projectId', project.getById);
 
 //timelog
 app.post('/timelog', timelog.save);
 app.get('/timelog/:userId', timelog.getByDates);
 
 //user
-app.get('/user/:userId', user.restGetUserById);
+app.get('/user/:userId', user.restGetById);
+app.post('/user', user.restSave);
 
 //run application
 app.listen(app.get('port'), function() {

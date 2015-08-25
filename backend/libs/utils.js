@@ -19,6 +19,30 @@ exports.getUserId = function(req, res) {
     return getParameter(req, res, 'userId');
 };
 
+exports.saveObject = function(collection) {
+    return function(req, res) {
+        if(req.body) {
+            var currentDate = new Date();
+            var object = req.body;
+            if(!object.createdOn) {
+                object.createdOn = currentDate;
+            }
+            object.updatedOn = currentDate;
+            var col = collection();
+            col.save(object, {safe:true}, function (err, results) {
+                if(err) {
+                    res.status(500).json(err);
+                } else {
+                    console.log(results);
+                    res.json(results.ops[0]);
+                }
+            });
+        } else {
+            res.status(500).json({error: "Empty body"});
+        }
+    };
+};
+
 //parse json. Date and ObjectId
 exports.jsonParse = function(key, value) {
     if (typeof value === 'string' ) {
