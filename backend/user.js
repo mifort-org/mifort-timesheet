@@ -1,15 +1,15 @@
 var dbSettings = require('./libs/mongodb_settings');
 
-exports.findUserByEmail = function(email, callback) {
+exports.findByEmail = function(email, callback) {
     var users = dbSettings.userCollection();
     users.findOne({email: email}, function(err, user){
         callback(err, user);
     });
 };
 
-exports.findUserById = findUserById;
+exports.findById = findById;
 
-function findUserById(id, callback) {
+function findById(id, callback) {
     var users = dbSettings.userCollection();
     users.findOne({_id: id}, function(err, user){
         callback(err, user);

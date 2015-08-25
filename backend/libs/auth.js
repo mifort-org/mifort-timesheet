@@ -11,7 +11,7 @@ passport.serializeUser(function(user, done) {
 });
 
 passport.deserializeUser(function(id, done) {
-    users.findUserById(id, function(error, user) {
+    users.findById(id, function(error, user) {
         if(error) {
             done(err);
         } else {
@@ -30,7 +30,7 @@ passport.use(new GoogleStrategy({
         // asynchronous verification, for effect...
         process.nextTick(function () {
             var email = profile.emails[0].value;
-            users.findUserByEmail(email, function(err, user){
+            users.findByEmail(email, function(err, user){
                 if(err) {
                   return done(null, false);
                 }
