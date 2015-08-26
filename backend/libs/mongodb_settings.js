@@ -32,5 +32,5 @@ exports.userCollection = function() {
 };
 
 exports.companyCollection = function() {
-    return cachedDb.coollection(companyCollectionName);
+    return cachedDb.collection(companyCollectionName);
 };

@@ -6,6 +6,7 @@ var session = require('express-session');
 var project = require('./backend/project');
 var timelog = require('./backend/timelog');
 var user = require('./backend/user');
+var company = require('./backend/company');
 var auth = require('./backend/libs/auth');
 var util = require('./backend/libs/utils');
 
@@ -36,7 +37,9 @@ app.get('/timelog/:userId', timelog.getByDates);
 
 //user
 app.get('/user/:userId', user.restGetById);
-app.post('/user', user.restSave);
+
+//company
+app.post('/company', company.restSave);
 
 //run application
 app.listen(app.get('port'), function() {

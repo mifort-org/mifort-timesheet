@@ -29,13 +29,8 @@ exports.saveObject = function(collection) {
             }
             object.updatedOn = currentDate;
             var col = collection();
-            col.save(object, {safe:true}, function (err, results) {
-                if(err) {
-                    res.status(500).json(err);
-                } else {
-                    console.log(results);
-                    res.json(results.ops[0]);
-                }
+            col.save(object, {safe:true}, function (err, result) {
+               sendSavedObject(err, res, object, result);
             });
         } else {
             res.status(500).json({error: "Empty body"});
@@ -57,6 +52,20 @@ exports.jsonParse = function(key, value) {
 };
 
 //private section
+function sendSavedObject(err, res, object, result) {
+    if(err) {
+        res.status(500).json(err);
+    } else { 
+        if(result.ok) {
+            if(result.ops) {
+                res.json(result.ops[0]);
+            } else {
+                res.json(object);
+            }
+        }    
+    }
+}
+
 function getDateParam(req, res, name) {
     var date = getParameter(req, res, name);
     if(date) {
