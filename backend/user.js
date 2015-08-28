@@ -28,6 +28,25 @@ exports.findById = function(id, callback) {
 
 exports.findByExample = findByExample;
 
+exports.restAddAssignment = function(req, res) {
+    var userInfo = req.body;
+    if(userInfo) {
+        var users = dbSettings.userCollection();
+        users.update({_id: userInfo._id}, 
+            {$push:{assignments: userInfo.assignment}},
+            function(err, result) {
+                if(err) {
+                    res.json(err);
+                } else {
+                    console.log('assignment inserted');
+                    console.dir(result);
+                }
+            });
+    } else {
+        res.status(500).json({err:'Empty body'});
+    }
+};
+
 //private 
 function findByExample(query, callback) {
     var users = dbSettings.userCollection();
