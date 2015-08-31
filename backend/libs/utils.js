@@ -14,7 +14,6 @@ exports.getProjectId = function(req, res) {
     return getParameter(req, res, 'projectId');
 };
 
-//from session or from param???
 exports.getUserId = function(req, res) {
     return getParameter(req, res, 'userId');
 };

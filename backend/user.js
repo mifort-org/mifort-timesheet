@@ -17,7 +17,7 @@ exports.findByEmail = function(email, callback) {
 };
 
 //or from db???
-exports.restGetById = function(req, res) {
+exports.restGetCurrent = function(req, res) {
     var user = req.user;
     res.json(user);
 };
@@ -36,10 +36,11 @@ exports.restAddAssignment = function(req, res) {
             {$push:{assignments: userInfo.assignment}},
             function(err, result) {
                 if(err) {
-                    res.json(err);
+                    res.status(500).json(err);
                 } else {
-                    console.log('assignment inserted');
+                    console.log('Assignment inserted');
                     console.dir(result);
+                    res.json(result);
                 }
             });
     } else {

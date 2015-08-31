@@ -36,7 +36,8 @@ app.post('/timelog', timelog.save);
 app.get('/timelog/:userId', timelog.getByDates);
 
 //user
-app.get('/user/:userId', user.restGetById);
+app.get('/user', user.restGetCurrent);
+app.post('/user/assignment', user.restAddAssignment);
 
 //company
 app.post('/company', company.restSave);
