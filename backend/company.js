@@ -24,6 +24,7 @@ exports.restSave = function(req, res) {
     }
 };
 
+exports.save = save;
 
 //private part
 function createUsersByEmails(company) {

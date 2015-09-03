@@ -23,7 +23,7 @@ exports.restGetCurrent = function(req, res) {
 };
 
 exports.findById = function(id, callback) {
-    findByExample({id:_id}, callback);
+    findByExample({_id:id}, callback);
 };
 
 exports.findByExample = findByExample;
