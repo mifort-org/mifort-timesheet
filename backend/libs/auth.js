@@ -38,15 +38,27 @@ passport.use(new GoogleStrategy({
                 if(err) {
                   return done(null, false);
                 } else {
+                    console.log(user);
                     console.log(profile);
-                    user.external = profile || "";
-                    if(req.session.redirect_to === loginRedirect) {
-                        console.log("LOGIN!!!!");
+                    if(user) {
+                        user.external = profile; //need to update user, because google data can be changed
+                        return done(null, user); 
+                    } else {
+                        var user = {
+                            email: email,
+                            external: profile
+                        }
+                        createUser(user, done);
                     }
-                    if(req.session.redirect_to === registrationRedirect) {
-                        console.log("REGISTRATION!!!!");
-                    }
-                    return done(null, user); 
+                    
+                    //Does we really need 'req' object? (Now we have only one button)
+                    // if(req.session.redirect_to === loginRedirect) {
+                    //     console.log("LOGIN!!!!");
+                    // }
+                    // if(req.session.redirect_to === registrationRedirect) {
+                    //     console.log("REGISTRATION!!!!");
+                    // }
+                    
                 }
             });
         });
@@ -95,3 +107,14 @@ exports.init = function(app) {
             }
     );
 };
+
+//private part
+function createUser(user, done) {
+    users.save(user, function(err, savedUser){
+        if(err) {
+            return done(err, false); 
+        } else {
+            return done(null, user);
+        }
+    });
+}
