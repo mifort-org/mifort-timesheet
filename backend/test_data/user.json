@@ -1,10 +1,8 @@
 {
-    "createdOn" :"01/01/2016",
-    "updatedOn" :"01/01/2016",
+    "email": "a.d.trofimov@gmail.com",
     "workload": 8,
     "assignments" : [ 
         {
-            "assignmentId": "1", //Do we really need assignment ID
             "role": "Developer",
             "workload": 4,
             "projectName": "Super puper project"
