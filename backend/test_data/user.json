@@ -1,5 +1,6 @@
 {
     "_id": "12312312312",
+    "email": "a.d.trofimov@gmail.com",
     "userId": "13", // from LDAP or from another DB
     "createdOn" :"01/01/2016",
     "updatedOn" :"01/01/2016",
