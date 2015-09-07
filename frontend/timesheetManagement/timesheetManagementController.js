@@ -13,6 +13,11 @@ angular.module('myApp.timesheetManagement', ['ngRoute'])
         var projectId,
             periodId;
 
+        $scope.daySettingsPopover = {
+            content: 'Hello, World!',
+            templateUrl: 'daySettimgs.html',
+            title: 'Day Settings'
+        };
         $scope.periodSettings = [
             {
                 periodName: 'week',
@@ -31,7 +36,6 @@ angular.module('myApp.timesheetManagement', ['ngRoute'])
                 days: 365
             }
         ];
-
         $scope.selectedPeriod = $scope.periodSettings[0]; //default value is week
         $scope.calendarIsOpened = false;
         $scope.weekDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
@@ -71,9 +75,5 @@ angular.module('myApp.timesheetManagement', ['ngRoute'])
             }
         };
 
-        $scope.daySettingsPopover = {
-            content: 'Hello, World!',
-            templateUrl: 'daySettimgs.html',
-            title: 'Day Settings'
-        };
+
     }]);

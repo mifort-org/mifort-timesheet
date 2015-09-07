@@ -8,23 +8,9 @@ angular.module('myApp')
                 var parentScope = scope.$parent;
 
                 element.on('click', function (e) {
-                    var dayIndex = _.findIndex(scope.week, scope.day);
-                    var weekIndex = _.findIndex(scope.splittedTimesheet, scope.week),
-                        nextDay,
-                        previousDay;
-
-                    if (scope.week[dayIndex + 1]) {
-                        nextDay = scope.week[dayIndex + 1];
-                    }
-                    else if (scope.splittedTimesheet[weekIndex + 1]) {
-                        nextDay = scope.splittedTimesheet[weekIndex + 1][0];
-                    }
-                    if (scope.week[dayIndex - 1]) {
-                        previousDay = scope.week[dayIndex - 1];
-                    }
-                    else if (scope.splittedTimesheet[weekIndex - 1]) {
-                        previousDay = scope.splittedTimesheet[weekIndex - 1][0];
-                    }
+                    var dayIndex = _.findIndex(scope.timesheet, scope.day);
+                    var nextDay = scope.timesheet[dayIndex + 1],
+                        previousDay = scope.timesheet[dayIndex - 1];
 
                     //left border click
                     if (e.pageX - 12 < $(this).offset().left) {
@@ -37,7 +23,7 @@ angular.module('myApp')
                         nextDay.isPeriodStartDate = !nextDay.isPeriodStartDate;
                     }
 
-                    scope.periodTimeChanged(scope.day, weekIndex, dayIndex);
+                    scope.periodTimeChanged(scope.day, dayIndex);
                     scope.$apply();
                 });
             },
