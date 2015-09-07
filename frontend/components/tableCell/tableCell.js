@@ -13,17 +13,20 @@ angular.module('myApp')
                         previousDay = scope.timesheet[dayIndex - 1];
 
                     //left border click
-                    if (e.pageX - 12 < $(this).offset().left) {
+                    if (e.pageX - 7 < $(this).offset().left) {
                         scope.day.isPeriodStartDate = !scope.day.isPeriodStartDate;
-                        previousDay.isPeriodEndDate = !previousDay.isPeriodEndDate;
+                        if(previousDay){
+                            previousDay.isPeriodEndDate = !previousDay.isPeriodEndDate;
+                        }
                     }
                     //right border click
-                    else if (e.pageX > $(this).offset().left + $(this).outerWidth() - 12) {
+                    else if (e.pageX > $(this).offset().left + $(this).outerWidth() - 7) {
                         scope.day.isPeriodEndDate = !scope.day.isPeriodEndDate;
-                        nextDay.isPeriodStartDate = !nextDay.isPeriodStartDate;
+                        if(nextDay) {
+                            nextDay.isPeriodStartDate = !nextDay.isPeriodStartDate;
+                        }
                     }
 
-                    scope.periodTimeChanged(scope.day, dayIndex);
                     scope.$apply();
                 });
             },

@@ -18,7 +18,8 @@
 
     <div class="row">
         <p class="input-group">
-            <input id="startDate" type="date" class="form-control" datepicker-popup ng-model="dt" is-open="calendarIsOpened"
+            <input id="startDate" type="date" class="form-control" datepicker-popup ng-model="dt"
+                   is-open="calendarIsOpened"
                    min-date="minDate" max-date="'2020-06-22'" datepicker-options="dateOptions"
                    date-disabled="disabled(date, mode)" ng-required="true" close-text="Close"/>
 
@@ -27,31 +28,31 @@
                     <i class="glyphicon glyphicon-calendar"></i>
                 </button>
             </span>
-            <div>
-                <button type="button" class="btn btn-warning" ng-click="split()">
-                    Split
-                </button>
-            </div>
+        <div>
+            <button type="button" class="btn btn-warning" ng-click="tableSplit()">
+                Split
+            </button>
+        </div>
         </p>
     </div>
 </div>
 
 <div class="col-lg-5">
-    <!--<div ng-repeat="timesheet in timesheets">-->
-        <table class="periods table table-striped table-bordered">
-            <thead>
-                <th ng-repeat="day in weekDays">{{day}}</th>
-            </thead>
-            <tbody>
-            <tr ng-repeat="week in splittedTimesheet track by $index">
-                <td table-cell
-                    ng-repeat="day in week"
-                    ng-class="{'period-start': day.isPeriodStartDate, 'period-end': day.isPeriodEndDate}"></td>
-            </tr>
-            </tbody>
-        </table>
-    <!--</div>-->
+    <table class="periods table table-striped table-bordered">
+        <thead>
+        <th ng-repeat="day in weekDays">{{day}}</th>
+        </thead>
+        <tbody>
+        <tr ng-repeat="week in splittedTimesheet track by $index">
+            <td table-cell
+                ng-repeat="day in week"
+                ng-class="{'period-start': day.isPeriodStartDate, 'period-end': day.isPeriodEndDate}"></td>
+        </tr>
+        </tbody>
+    </table>
 </div>
+
+<!--<small>{{splittedTimesheet}}</small>-->
 
 <script type="text/ng-template" id="daySettimgs.html">
     <div>{{dynamicPopover.content}}</div>
@@ -61,8 +62,6 @@
         <label>Type:</label>
         <input type="text" ng-model="day.type" class="form-control">
         <label>Comment:</label>
-        <input type="text" ng-model="day.comment" class="form-control">
+        <textarea type="text" ng-model="day.comment" class="form-control"></textarea>
     </div>
 </script>
-
-<!--{{splittedTimesheet}}-->

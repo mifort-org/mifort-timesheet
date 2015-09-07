@@ -11,7 +11,8 @@ angular.module('myApp.timesheetManagement', ['ngRoute'])
 
     .controller('timesheetManagementController', ['$scope', 'timesheetManagementService', function ($scope, timesheetManagementService) {
         var projectId,
-            periodId;
+            periodId,
+            daysInRow = 7;
 
         $scope.daySettingsPopover = {
             content: 'Hello, World!',
@@ -19,28 +20,21 @@ angular.module('myApp.timesheetManagement', ['ngRoute'])
             title: 'Day Settings'
         };
         $scope.periodSettings = [
-            {
-                periodName: 'week',
-                days: 7
-            },
-            {
-                periodName: 'month',
-                days: 30
-            },
-            {
-                periodName: 'decade',
-                days: 90
-            },
-            {
-                periodName: 'year',
-                days: 365
-            }
+            {periodName: 'week'},
+            {periodName: 'month'},
+            {periodName: 'decade'},
+            {periodName: 'year'}
         ];
         $scope.selectedPeriod = $scope.periodSettings[0]; //default value is week
         $scope.calendarIsOpened = false;
         $scope.weekDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-        $scope.timesheet = timesheetManagementService.getTimesheet(projectId, periodId).calendar;
         $scope.splittedTimesheet = [];
+
+        $scope.timesheet = timesheetManagementService.getProjet(projectId).calendar;
+        //use on success promise when REST will start working
+        for (var i = 0; i < $scope.timesheet.length / daysInRow; i++) {
+            $scope.splittedTimesheet.push($scope.timesheet.slice(i * daysInRow, i * daysInRow + daysInRow));
+        }
 
         $scope.openCalendar = function ($event) {
             $scope.calendarIsOpened = true;
@@ -49,31 +43,4 @@ angular.module('myApp.timesheetManagement', ['ngRoute'])
         $scope.range = function (n) {
             return new Array(n);
         };
-
-        //underscore added, replace the z[x][y] logic with it
-        $scope.split = function () {
-            var periodDuration = $scope.selectedPeriod.days;
-
-            for (var i = 0; i < $scope.timesheet.length / $scope.selectedPeriod.days; i++) {
-                $scope.splittedTimesheet.push($scope.timesheet.slice(i * periodDuration, i * periodDuration + periodDuration));
-                $scope.splittedTimesheet[i][0].isPeriodStartDate = true;
-
-                //temp
-                if ($scope.splittedTimesheet[i][periodDuration - 1]) {
-                    $scope.splittedTimesheet[i][periodDuration - 1].isPeriodEndDate = true;
-                }
-            }
-        };
-        $scope.split();
-
-        $scope.periodTimeChanged = function (day, weekIndex, dayIndex) {
-            if(day.isPeriodStartDate){
-                //$scope.splittedTimesheet[weekIndex][dayIndex]
-            }
-            else{
-
-            }
-        };
-
-
     }]);
