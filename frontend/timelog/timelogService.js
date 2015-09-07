@@ -7,10 +7,6 @@ angular.module('myApp.timelog').factory('timelogService',
             getTimelog: function (userId, periodId) {
                 //return $http.get(url.restRoot + userId + '?periodId=' + periodId);
                 return {
-                    '_id': '12312312312',
-                    'userId': '13',
-                    'createdOn': '01/01/2016',
-                    'updatedOn': '01/01/2016',
                     'timelog': [
                         {
                             'date': '01/01/2015',

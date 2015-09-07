@@ -1,7 +1,9 @@
 <td>
-    {{day.date}}
-{{$index}}
-    <span class="timelog-data">
+    <a href=""
+       popover-template="daySettingsPopover.templateUrl"
+       popover-title="{{daySettingsPopover.title}}"
+       popover-placement="bottom"
+       data-toggle="popover">{{day.date}}</a><span class="timelog-data">
         <input type="text" class="form-control timesheet-hours" ng-model="day.time"/>
     </span>
 </td>

@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
     <link rel="stylesheet" href="common/scss/styles.css">
 </head>
-<body ng-controller="myAppController">
+<body ng-controller="myAppController" closable-popovers>
 
 <div class="main-controls">
     <button class="btn btn-default" ng-click="logout()">logout</button>
@@ -28,6 +28,7 @@
 
 <!--Custom components-->
 <script src="components/tabs/bootstrapTabs.js"></script>
+<script src="components/popovers/closablePopovers.js"></script>
 <script src="components/tableCell/tableCell.js"></script>
 <script src="components/preferences/preferences.js"></script>
 <script src="components/preferences/preferencesService.js"></script>

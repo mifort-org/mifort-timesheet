@@ -63,13 +63,17 @@ angular.module('myApp.timesheetManagement', ['ngRoute'])
         $scope.split();
 
         $scope.periodTimeChanged = function (day, weekIndex, dayIndex) {
-            console.log(true);
-
             if(day.isPeriodStartDate){
                 //$scope.splittedTimesheet[weekIndex][dayIndex]
             }
             else{
 
             }
+        };
+
+        $scope.daySettingsPopover = {
+            content: 'Hello, World!',
+            templateUrl: 'daySettimgs.html',
+            title: 'Day Settings'
         };
     }]);
