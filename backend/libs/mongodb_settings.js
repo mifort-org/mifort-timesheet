@@ -1,5 +1,7 @@
 var MongoClient = require('mongodb').MongoClient;
 
+var testDataImporter = require('./test_data_importer');
+
 var mongodbUrl = process.env.MONGOLAB_URI || 'mongodb://localhost:27017/homogen';
 
 var timelogCollectionName = 'timelogs';
@@ -16,6 +18,7 @@ MongoClient.connect(mongodbUrl, function(err, db) {
         cachedDb = db;
         exports.db = cachedDb;
         console.log('Mongo DB: connected!');
+        testDataImporter.import();
     }
 });
 

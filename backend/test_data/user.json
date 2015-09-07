@@ -1,27 +1,12 @@
 {
-    "_id": "12312312312",
-    "userId": "13", // from LDAP or from another DB
     "createdOn" :"01/01/2016",
     "updatedOn" :"01/01/2016",
-    "companyId": "c1",
-    "name": "Andrew A",
-    "login": "rest",
     "workload": 8,
     "assignments" : [ 
         {
             "assignmentId": "1", //Do we really need assignment ID
-            "userId": "13",
             "role": "Developer",
             "workload": 4,
-            "projectId": "p1",
-            "projectName": "Super puper project"
-        },
-        {
-            "assignmentId": "2",
-            "userId": "13",
-            "role": "QA",
-            "workload": 4,
-            "projectId": "p1",
             "projectName": "Super puper project"
         }
     ]

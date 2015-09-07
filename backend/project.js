@@ -18,3 +18,14 @@ exports.getById = function(req, res) {
 };
 
 exports.save = utils.saveObject(dbSettings.projectCollection);
+
+exports.saveInDb = function(project, callback) {
+    var projects = dbSettings.projectCollection();
+    projects.save(project, {safe:true}, function (err, result) {
+        if(result.ops) {
+            callback(err, result.ops[0]);
+        } else {
+            callback(err, project);
+        }
+    });
+};

@@ -1,10 +1,8 @@
 {
-    "id":"p1",
     "name":"Super Project",
     "description": "Bla bla bla",
     "createdOn": "01/01/2015",
     "updatedOn": "01/02/2015",
-    "companyId": "c1",
     "template": {
         "date": "",
         "role": "",
