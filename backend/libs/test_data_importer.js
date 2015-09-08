@@ -83,7 +83,7 @@ exports.import = function() {
         projects.saveInDb(project, function(err, savedProject){
             user.assignments[0].projectId = savedProject._id;
             users.save(user, function(err, savedUser){
-                console.log('Test data imported!');
+                console.log('Test data is imported!');
             });
         });
     });
