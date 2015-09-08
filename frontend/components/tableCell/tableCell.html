@@ -4,7 +4,7 @@
        popover-template="daySettingsPopover.templateUrl"
        popover-title="{{daySettingsPopover.title}}"
        popover-placement="bottom"
-       data-toggle="popover">{{day.date}}</a><span class="timelog-data">
-        <input ng-if="day.date" type="text" class="form-control timesheet-hours" ng-model="day.time"/>
+       data-toggle="popover">{{day.date}}</a><span class="timelog-data" ng-if="day.date" >
+        <input type="text" class="form-control timesheet-hours" ng-model="day.time"/>
     </span>
 </td>

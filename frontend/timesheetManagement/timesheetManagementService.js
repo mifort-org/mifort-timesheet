@@ -19,29 +19,11 @@ angular.module('myApp.timesheetManagement').factory('timesheetManagementService'
                     'defaultValues': [
                         {
                             'date': '01/01/2015',
-                            'comment': 'AAAAA'
+                            'comment': 'AAAAA',
+                            'time': 4
                         }
                     ],
-                    'periods': [
-                        {
-                            'end': '01/05/2015'
-                        },
-                        {
-                            'start': '01/06/2015',
-                            'end': '01/08/2015'
-                        },
-                        {
-                            'start': '01/09/2015',
-                            'end': '01/13/2015'
-                        },
-                        {
-                            'start': '01/14/2015',
-                            'end': '01/14/2015'
-                        },
-                        {
-                            'start': '01/15/2015'
-                        }
-                    ]
+                    'periods': []
                 };
             }
         };
