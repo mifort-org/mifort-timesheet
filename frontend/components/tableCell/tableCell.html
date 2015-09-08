@@ -1,9 +1,10 @@
 <td>
-    <a href=""
+    <a ng-if="day.date"
+       href=""
        popover-template="daySettingsPopover.templateUrl"
        popover-title="{{daySettingsPopover.title}}"
        popover-placement="bottom"
        data-toggle="popover">{{day.date}}</a><span class="timelog-data">
-        <input type="text" class="form-control timesheet-hours" ng-model="day.time"/>
+        <input ng-if="day.date" type="text" class="form-control timesheet-hours" ng-model="day.time"/>
     </span>
 </td>

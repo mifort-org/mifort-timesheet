@@ -17,10 +17,18 @@
 
     <div class="row">
         <p class="input-group">
-            <input id="startDate" type="date" class="form-control" datepicker-popup ng-model="dt"
+            <input id="startDate"
+                   type="date"
+                   class="form-control"
+                   datepicker-popup
+                   ng-model="startDate"
                    is-open="calendarIsOpened"
-                   min-date="minDate" max-date="'2020-06-22'" datepicker-options="dateOptions"
-                   date-disabled="disabled(date, mode)" ng-required="true" close-text="Close"/>
+                   min-date="minDate"
+                   max-date="'2020-06-22'"
+                   datepicker-options="dateOptions"
+                   date-disabled="disabled(date, mode)"
+                   ng-required="true"
+                   close-text="Close"/>
 
             <span class="input-group-btn">
                 <button type="button" class="btn btn-default" ng-click="openCalendar($event)">
@@ -28,7 +36,7 @@
                 </button>
             </span>
         <div>
-            <button type="button" class="btn btn-warning" ng-click="splitTimesheet(selectedPeriod)">
+            <button type="button" class="btn btn-warning" ng-click="splitTimesheet(selectedPeriod, startDate)">
                 Split
             </button>
         </div>
@@ -36,7 +44,7 @@
     </div>
 </div>
 
-<div class="col-lg-5">
+<div class="col-lg-7">
     <table class="periods table table-striped table-bordered">
         <thead>
         <th ng-repeat="day in weekDays track by $index">{{day}}</th>
@@ -49,10 +57,13 @@
         </tr>
         </tbody>
     </table>
+
+    <small>{{project.periods}}</small>
+    <!--<small>{{$scope.timesheet}}</small>-->
+    <!--<small>{{splittedTimesheet}}</small>-->
 </div>
 
-<!--<small>{{$scope.timesheet}}</small>-->
-<!--<small>{{splittedTimesheet}}</small>-->
+
 
 <script type="text/ng-template" id="daySettimgs.html">
     <div class="form-group">
