@@ -1,5 +1,6 @@
 var utils = require('./libs/utils');
 var dbSettings = require('./libs/mongodb_settings');
+var ObjectID = require('mongodb').ObjectID;
 
 exports.save = function(req, res) {
     if(req.body) {
@@ -31,16 +32,20 @@ exports.getByDates = function(req, res) {
     var userId = utils.getUserId(req, res);
 
     if(start && end && userId) {
-        var timelogCollection = dbSettings.timelogCollection();
-        var query = {
-            userId : userId,
-            date : {$gte: start,
-                    $lte: end}
-        };
+        if(ObjectID.isValid(userId)) {
+            var timelogCollection = dbSettings.timelogCollection();
+            var query = {
+                userId : new ObjectID(userId),
+                date : {$gte: start,
+                        $lte: end}
+            };
 
-        timelogCollection.find(query, {'sort': 'date'}).toArray(function(err, timelogs){
-            returnTimelogArray(err, res, timelogs);
-        });
+            timelogCollection.find(query, {'sort': 'date'}).toArray(function(err, timelogs){
+                returnTimelogArray(err, res, timelogs);
+            });
+        } else {
+            res.status(500).json({error: 'Incorrect user id format!'});
+        }
     }
 };
 
