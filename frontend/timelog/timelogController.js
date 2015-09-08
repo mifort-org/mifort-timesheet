@@ -10,17 +10,41 @@ angular.module('myApp.timelog', ['ngRoute'])
     }])
 
     .controller('timelogController', ['$scope', '$filter', 'timelogService', 'timesheetManagementService', 'preferences', function ($scope, $filter, timelogService, timesheetManagementService, preferences) {
-        var projectId = 21, //hardcoded
-            timesheetStructure = timesheetManagementService.getTimesheet(projectId).calendar,
-            userTimelog = timelogService.getTimelog().timelog;
+        $scope.project = timesheetManagementService.getProject();
+        $scope.timelog = [];
+        $scope.currentTimelogIndex = 0;
 
-        $scope.currentTimelogStart = 0;
-        $scope.timelog = angular.extend(angular.copy(timesheetStructure), angular.copy(userTimelog));
+        var timesheetTemplate = $scope.project.template,
+            userTimelog = timelogService.getTimelog().timelog,
+            startDate = moment(new Date($scope.project.createdOn));
+
+        for (var i = 0; i < 50; i++) {
+            var dayToPush = _.clone(timesheetTemplate);
+            dayToPush.date = moment(new Date(startDate)).add(i, 'days').calendar();
+            $scope.timelog.push(dayToPush);
+        }
+        $scope.timelog = angular.extend($scope.timelog, userTimelog);
         $scope.timelogKeys = timelogService.getTimelogKeys();
-        $scope.timelogAssigments = preferences.get('user').assignments;
+        $scope.timelogAssigments = preferences.get('user').assignments.map(function (assignment) {
+            return assignment.role
+        });
+
+        $scope.project.defaultValues.forEach(function (day) {
+            angular.extend(_.findWhere($scope.timelog, {date: day.date}), day);
+        });
+
+        $scope.splittedTimelog = [];
+        $scope.project.periods.forEach(function (period) {
+            var timelogPeriod = [],
+                startIndex = _.findIndex($scope.timelog, {date: period.start}),
+                endIndex = _.findIndex($scope.timelog, {date: period.end});
+
+            timelogPeriod.push($scope.timelog.slice(startIndex, endIndex + 1));
+            $scope.splittedTimelog.push(timelogPeriod);
+        });
 
         $scope.addRow = function (dateId, rowIndex) {
-            var newRow = $filter('getByProperty')(timesheetStructure, dateId, 'dateId');
+            var newRow = $filter('getByProperty')(timesheetTemplate, dateId, 'dateId');
             $scope.timelog.splice(rowIndex, 0, newRow);
         };
 
@@ -29,18 +53,15 @@ angular.module('myApp.timelog', ['ngRoute'])
         };
 
         $scope.previousPeriod = function () {
-            $scope.currentTimelogStart -=7
+            $scope.currentTimelogIndex -= 7
         };
 
         $scope.nextPeriod = function () {
-            $scope.currentTimelogStart +=7
+            $scope.currentTimelogIndex += 7
         };
 
         $scope.$watch('timelog', function () {
-            var userId,
-                periodId;
-
             console.log('Tmelog saved');
-            timelogService.updateTimelog(userId, periodId);
+            timelogService.updateTimelog();
         }, true);
     }]);

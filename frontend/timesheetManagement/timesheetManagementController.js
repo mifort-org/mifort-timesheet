@@ -28,7 +28,7 @@ angular.module('myApp.timesheetManagement', ['ngRoute'])
         $scope.weekDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
         $scope.splittedTimesheet = [];
         $scope.selectedPeriod = $scope.periodSettings[0]; //default value is week
-        $scope.project = timesheetManagementService.getProjet(projectId);
+        $scope.project = timesheetManagementService.getProject(projectId);
         $scope.calendarIsOpened = false;
 
         $scope.range = function (n) {
@@ -45,7 +45,7 @@ angular.module('myApp.timesheetManagement', ['ngRoute'])
                 $scope.timesheet.push($scope.project.template);
             }
 
-            for (var i = 0; i < 50; i++) {
+            for (var i = 0; i < 100; i++) {
                 var dayToPush = _.clone($scope.project.template);
                 dayToPush.date = moment(new Date(startDate)).add(i, 'days').calendar();
                 $scope.timesheet.push(dayToPush);
@@ -72,7 +72,6 @@ angular.module('myApp.timesheetManagement', ['ngRoute'])
         $scope.generateTimesheet($scope.project);
 
 
-
         $scope.splitTimesheet = function (period, startDate) {
             if (period.periodName == 'month' && startDate.getDate() > 28) {
                 alert('Please choose the correct date for split');
@@ -80,25 +79,27 @@ angular.module('myApp.timesheetManagement', ['ngRoute'])
             }
 
             switch (period.periodName) {
-                case 'week':
+                case 'Week':
                     var startWeekDay = startDate.getDay(),
                         endWeekDay = startWeekDay == 0 ? 6 : startWeekDay - 1;
 
                     $scope.timesheet.forEach(function (day) {
-                        var currentDateWeekDay = new Date(day.date).getDay();
+                        if (day.date) {
+                            var currentDateWeekDay = new Date(day.date).getDay();
 
-                        if (day.date && moment(new Date(day.date)) >= moment(new Date(startDate))) {
-                            if (currentDateWeekDay == startWeekDay) {
-                                day.isPeriodStartDate = true;
-                            }
-                            else if (currentDateWeekDay == endWeekDay) {
-                                day.isPeriodEndDate = true;
+                            if (day.date && moment(new Date(day.date)) >= moment(new Date(startDate))) {
+                                if (currentDateWeekDay == startWeekDay) {
+                                    day.isPeriodStartDate = true;
+                                }
+                                else if (currentDateWeekDay == endWeekDay) {
+                                    day.isPeriodEndDate = true;
+                                }
                             }
                         }
                     });
                     break;
 
-                case 'month':
+                case 'Month':
                     var startDateDay = startDate.getDate();
 
                     $scope.timesheet.forEach(function (day) {
@@ -121,6 +122,7 @@ angular.module('myApp.timesheetManagement', ['ngRoute'])
             }
 
             $scope.timesheet[$scope.timesheet.length - 1].isPeriodEndDate = true;
+            //$scope.timesheet[0].isPeriodStartDate = true;
             $scope.aggregatePeriods($scope.timesheet);
         };
 
