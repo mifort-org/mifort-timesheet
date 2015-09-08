@@ -152,7 +152,7 @@ angular.module('myApp.timesheetManagement', ['ngRoute'])
         };
 
         $scope.$watch('timesheet', function (newValue, oldValue) {
-            if (oldValue && newValue != oldValue) {
+            if (oldValue && oldValue != newValue) {
                 var existedDayIndex,
                     changedDay = _.filter(oldValue, function (obj) {
                         return !_.findWhere(newValue, obj);
