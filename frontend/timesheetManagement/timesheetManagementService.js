@@ -19,8 +19,9 @@ angular.module('myApp.timesheetManagement').factory('timesheetManagementService'
                     'defaultValues': [
                         {
                             'date': '01/01/2015',
-                            'comment': 'AAAAA',
-                            'time': 4
+                            'role': '',
+                            'time': 4,
+                            'comment': 'AAAAA'
                         }
                     ],
                     'periods': []

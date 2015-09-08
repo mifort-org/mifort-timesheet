@@ -58,9 +58,7 @@
         </tbody>
     </table>
 
-    <small>{{project.periods}}</small>
-    <!--<small>{{$scope.timesheet}}</small>-->
-    <!--<small>{{splittedTimesheet}}</small>-->
+    <small>{{timesheet}}</small>
 </div>
 
 
@@ -70,7 +68,11 @@
         <label>Time:</label>
         <input type="text" ng-model="day.time" class="form-control">
         <label>Type:</label>
-        <input type="text" ng-model="day.type" class="form-control">
+        <select id="type"
+                ng-options="type as type.typeName for type in dayTypes"
+                ng-model="day.type"
+                class="form-control">
+        </select>
         <label>Comment:</label>
         <textarea type="text" ng-model="day.comment" class="form-control"></textarea>
     </div>

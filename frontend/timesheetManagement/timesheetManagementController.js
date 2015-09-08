@@ -18,8 +18,12 @@ angular.module('myApp.timesheetManagement', ['ngRoute'])
             title: 'Day Settings'
         };
         $scope.periodSettings = [
-            {periodName: 'week'},
-            {periodName: 'month'}
+            {periodName: 'Week'},
+            {periodName: 'Month'}
+        ];
+        $scope.dayTypes = [
+            {typeName: 'Weekend'},
+            {typeName: 'Holiday'}
         ];
         $scope.weekDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
         $scope.splittedTimesheet = [];
@@ -37,7 +41,7 @@ angular.module('myApp.timesheetManagement', ['ngRoute'])
             var startDate = moment(new Date($scope.project.createdOn)),
                 daysBeforeTimesheetStart = new Date(startDate.calendar()).getDay();
 
-            for (var j = 0; j < daysBeforeTimesheetStart; j++) {
+            for (var k = 0; k < daysBeforeTimesheetStart; k++) {
                 $scope.timesheet.push($scope.project.template);
             }
 
@@ -56,16 +60,18 @@ angular.module('myApp.timesheetManagement', ['ngRoute'])
                 }
             });
 
+            //use on success promise when REST will start working
+            for (var j = 0; j < $scope.timesheet.length / daysInRow; j++) {
+                $scope.splittedTimesheet.push($scope.timesheet.slice(j * daysInRow, j * daysInRow + daysInRow));
+            }
+
             $scope.project.defaultValues.forEach(function (day) {
                 angular.extend(_.findWhere($scope.timesheet, {date: day.date}), day);
             });
         };
         $scope.generateTimesheet($scope.project);
 
-        //use on success promise when REST will start working
-        for (var j = 0; j < $scope.timesheet.length / daysInRow; j++) {
-            $scope.splittedTimesheet.push($scope.timesheet.slice(j * daysInRow, j * daysInRow + daysInRow));
-        }
+
 
         $scope.splitTimesheet = function (period, startDate) {
             if (period.periodName == 'month' && startDate.getDate() > 28) {
@@ -130,8 +136,8 @@ angular.module('myApp.timesheetManagement', ['ngRoute'])
                 }
             });
 
-            periods = _.groupBy(periodSplitters, function(element, index){
-                return Math.floor(index/2);
+            periods = _.groupBy(periodSplitters, function (element, index) {
+                return Math.floor(index / 2);
             });
             periods = _.toArray(periods);
             _.map(periods, function (period, index) {
@@ -144,4 +150,26 @@ angular.module('myApp.timesheetManagement', ['ngRoute'])
         $scope.openCalendar = function ($event) {
             $scope.calendarIsOpened = true;
         };
+
+        $scope.$watch('timesheet', function (newValue, oldValue) {
+            if (oldValue && newValue != oldValue) {
+                var existedDayIndex,
+                    changedDay = _.filter(oldValue, function (obj) {
+                        return !_.findWhere(newValue, obj);
+                    });
+
+                $scope.project.defaultValues.forEach(function (defaultDay, index) {
+                    if (changedDay[0] && defaultDay.date == changedDay.date) {
+                        existedDayIndex = index;
+                    }
+                });
+
+                if (existedDayIndex >= 0) {
+                    angular.extend($scope.project.defaultValues[existedDayIndex], changedDay);
+                }
+                else {
+                    $scope.project.defaultValues.push(changedDay);
+                }
+            }
+        }, true);
     }]);
