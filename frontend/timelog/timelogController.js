@@ -9,7 +9,7 @@ angular.module('myApp.timelog', ['ngRoute'])
         });
     }])
 
-    .controller('timelogController', ['$scope', '$filter', 'timelogService', 'timesheetManagementService', 'preferences', function ($scope, $filter, timelogService, timesheetManagementService, preferences) {
+    .controller('timelogController', ['$scope', '$filter', 'timelogService', 'timesheetManagementService', '$cookies', function ($scope, $filter, timelogService, timesheetManagementService, $cookies) {
         //TODO: get projectId from user
         timesheetManagementService.getProject('55ee8bb048b0829c0e213b1d').success(function (data) {
             $scope.project = data;
@@ -33,7 +33,7 @@ angular.module('myApp.timelog', ['ngRoute'])
                 angular.extend(_.findWhere($scope.timelog, {date: day.date}), day);
             });
 
-            $scope.timelogAssigments = preferences.get('user').assignments.map(function (assignment) {
+            $scope.timelogAssigments = $cookies.get('user').assignments.map(function (assignment) {
                 return assignment.role
             });
 

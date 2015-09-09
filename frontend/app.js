@@ -11,15 +11,15 @@ angular.module('myApp', [
     'myApp.projectReport',
     'myApp.projectManagement',
     'myApp.peopleReport',
-    'preferences',
+    //'preferences',
     'angularMoment'
 ])
     .config(['$routeProvider', function ($routeProvider) {
         $routeProvider.otherwise({redirectTo: '/login'});
     }])
 
-    .controller('myAppController', ['$scope', '$location', 'loginService', 'preferences', function ($scope, $location, loginService, preferences) {
-        if(preferences.get('user')){
+    .controller('myAppController', ['$scope', '$location', 'loginService', '$cookies', function ($scope, $location, loginService, $cookies) {
+        if($cookies.get('user')){
             $scope.isLoggedIn = true;
         }
         else{
@@ -27,7 +27,7 @@ angular.module('myApp', [
         }
 
         $scope.logout = function () {
-            preferences.remove('user');
+            $cookies.remove('user');
             $location.path('/login');
         }
     }]);

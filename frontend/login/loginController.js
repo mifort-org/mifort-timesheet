@@ -9,17 +9,20 @@ angular.module('myApp.login', ['ngRoute'])
         });
     }])
 
-    .controller('loginController', ['$scope', '$location', 'loginService', 'preferences', '$cookies', function ($scope, $location, loginService, preferences, $cookies) {
+    .controller('loginController', ['$scope', '$location', 'loginService', '$cookies', function ($scope, $location, loginService, $cookies) {
         $scope.$parent.isLoggedIn = false;
-        //$scope.user = loginService.getUser();
+        $scope.user = loginService.getUser().success(function (data) {
+            if(data){
+                $cookies.put('user', data)
+                $scope.$parent.isLoggedIn = true;
+                $location.path('/timelog');
+            }
+        });
 
-        if($cookies.get('user')){
-
-        };
         $scope.login = function () {
             $scope.$parent.isLoggedIn = true;
             $location.path('/timelog');
-            preferences.set('user', typeof $scope.user === 'object' ? JSON.stringify($scope.user) : $scope.user);
             console.log(localStorage);
+            console.log($cookies.getAll());
         };
     }]);
