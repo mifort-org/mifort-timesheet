@@ -71,7 +71,7 @@ function sendSavedObject(err, res, object, result) {
     if(err) {
         res.status(500).json(err);
     } else { 
-        if(result.ok) {
+        if(result.result.ok) {
             if(result.ops) {
                 res.json(result.ops[0]);
             } else {
