@@ -6,7 +6,7 @@
         </th>
         </thead>
         <tbody>
-        <tr ng-if="currentTimelogIndex >= 0" ng-repeat="log in splittedTimelog | limitTo:7:currentTimelogIndex"
+        <tr ng-if="currentTimelogIndex >= 0" ng-repeat="log in splittedTimelog[currentTimelogIndex]"
             ng-class="{'weekend': isWeekend(log.date)}">
             <td>
                 <span class="timelog-data">
@@ -30,13 +30,12 @@
         </tbody>
     </table>
 
-    <!--{{currentTimelogIndex}}|{{timelog.length}}-->
-    <button ng-if="currentTimelogIndex >= 7" class="btn" ng-click="previousPeriod()"><</button>
-    <button ng-if="currentTimelogIndex < timelog.length - 7" class="btn" ng-click="nextPeriod()">></button>
-
+    <button ng-if="currentTimelogIndex" class="btn" ng-click="previousPeriod()"><</button>
+    <button ng-if="currentTimelogIndex < splittedTimelog[currentTimelogIndex].length" class="btn" ng-click="nextPeriod()">></button>
     <div>
         <!--<small>{{project.periods}}</small>-->
-        <small>{{splittedTimelog}}</small>
+        <!--<small>{{splittedTimelog}}</small>-->
+        <!--<small>{{timelog}}</small>-->
     </div>
 </div>
 

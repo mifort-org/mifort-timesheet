@@ -10,42 +10,50 @@ angular.module('myApp.timesheetManagement', ['ngRoute'])
     }])
 
     .controller('timesheetManagementController', ['$scope', 'timesheetManagementService', 'moment', function ($scope, timesheetManagementService, moment) {
-        var projectId,
-            daysInRow = 7;
+        var daysInRow = 7;
 
         $scope.daySettingsPopover = {
             templateUrl: 'daySettimgs.html',
             title: 'Day Settings'
         };
-        $scope.periodSettings = [
-            {periodName: 'Week'},
-            {periodName: 'Month'}
-        ];
-        $scope.dayTypes = [
-            {typeName: 'Weekend'},
-            {typeName: 'Holiday'}
-        ];
-        $scope.weekDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+        $scope.periodSettings = timesheetManagementService.getPeriodSettings();
+        $scope.dayTypes = timesheetManagementService.getDayTypes();
+        $scope.weekDays = timesheetManagementService.getWeekDays();
+        //TODO: get projectId from user
+        timesheetManagementService.getProject('55ee8bb048b0829c0e213b1d').success(function (data) {
+            $scope.project = data;
+        }).then(function () {
+            $scope.init();
+        });
+
+        $scope.selectedPeriod = $scope.periodSettings[0]; //default period is week
         $scope.splittedTimesheet = [];
-        $scope.selectedPeriod = $scope.periodSettings[0]; //default value is week
-        $scope.project = timesheetManagementService.getProject(projectId);
         $scope.calendarIsOpened = false;
 
         $scope.range = function (n) {
             return new Array(n);
         };
 
-        $scope.generateTimesheet = function () {
-            $scope.startDate = new Date($scope.project.createdOn);
-            $scope.timesheet = [];
-            var startDate = moment(new Date($scope.project.createdOn)),
-                daysBeforeTimesheetStart = new Date(startDate.calendar()).getDay();
+        $scope.init = function () {
+            generateTimesheet();
+            initWatchers();
+        };
 
+        function generateTimesheet() {
+            $scope.startDate = new Date($scope.project.periods[0].start); //default for perios split date
+            $scope.timesheet = [];
+            var startDate = moment(new Date($scope.project.periods[0].start)),
+                endDate = moment(new Date($scope.project.periods[$scope.project.periods.length - 1].end)),
+                daysBeforeTimesheetStart = new Date(startDate.calendar()).getDay(),
+                daysToGenerate = endDate.diff(startDate, 'days');
+
+            //empty cells adding
             for (var k = 0; k < daysBeforeTimesheetStart; k++) {
                 $scope.timesheet.push($scope.project.template);
             }
 
-            for (var i = 0; i < 100; i++) {
+            //TODO: remove +1 when timezone conflict will be resolved
+            for (var i = 0; i < daysToGenerate + 1; i++) {
                 var dayToPush = _.clone($scope.project.template);
                 dayToPush.date = moment(new Date(startDate)).add(i, 'days').calendar();
                 $scope.timesheet.push(dayToPush);
@@ -53,10 +61,10 @@ angular.module('myApp.timesheetManagement', ['ngRoute'])
 
             $scope.project.periods.forEach(function (period) {
                 if (period.start) {
-                    _.findWhere($scope.timesheet, {date: period.start}).isPeriodStartDate = true;
+                    _.findWhere($scope.timesheet, {date: moment(new Date(period.start)).calendar()}).isPeriodStartDate = true;
                 }
                 if (period.end) {
-                    _.findWhere($scope.timesheet, {date: period.end}).isPeriodEndDate = true;
+                    _.findWhere($scope.timesheet, {date: moment(new Date(period.end)).calendar()}).isPeriodEndDate = true;
                 }
             });
 
@@ -65,29 +73,59 @@ angular.module('myApp.timesheetManagement', ['ngRoute'])
                 $scope.splittedTimesheet.push($scope.timesheet.slice(j * daysInRow, j * daysInRow + daysInRow));
             }
 
-            $scope.project.defaultValues.forEach(function (day) {
-                angular.extend(_.findWhere($scope.timesheet, {date: day.date}), day);
-            });
-        };
-        $scope.generateTimesheet($scope.project);
+            if ($scope.project.defaultValues) {
+                $scope.project.defaultValues.forEach(function (day) {
+                    angular.extend(_.findWhere($scope.timesheet, {date: day.date}), day);
+                });
+            }
 
 
-        $scope.splitTimesheet = function (period, startDate) {
-            if (period.periodName == 'month' && startDate.getDate() > 28) {
+        }
+
+        function initWatchers() {
+            $scope.$watch('timesheet', function (newValue, oldValue) {
+                if (oldValue && oldValue != newValue) {
+                    var existedDayIndex,
+                        changedDay = _.filter(oldValue, function (obj) {
+                            return !_.findWhere(newValue, obj);
+                        });
+
+                    $scope.project.defaultValues = $scope.project.defaultValues || [];
+
+                    $scope.project.defaultValues.forEach(function (defaultDay, index) {
+                        if (changedDay[0] && defaultDay.date == changedDay.date) {
+                            existedDayIndex = index;
+                        }
+                    });
+
+                    if (existedDayIndex >= 0) {
+                        angular.extend($scope.project.defaultValues[existedDayIndex], changedDay);
+                    }
+                    else {
+                        $scope.project.defaultValues.push(changedDay);
+                    }
+                }
+
+                timesheetManagementService.saveProject($scope.project._id, $scope.project);
+            }, true);
+        }
+
+        $scope.splitTimesheet = function (period, splitStartDate) {
+            if (period.periodName == 'month' && splitStartDate.getDate() > 28) {
                 alert('Please choose the correct date for split');
                 return;
             }
 
             switch (period.periodName) {
                 case 'Week':
-                    var startWeekDay = startDate.getDay(),
+                    var startWeekDay = splitStartDate.getDay(),
                         endWeekDay = startWeekDay == 0 ? 6 : startWeekDay - 1;
 
                     $scope.timesheet.forEach(function (day) {
                         if (day.date) {
                             var currentDateWeekDay = new Date(day.date).getDay();
 
-                            if (day.date && moment(new Date(day.date)) >= moment(new Date(startDate))) {
+                            if (day.date && moment(new Date(day.date)) >= moment(new Date(splitStartDate))) {
                                 if (currentDateWeekDay == startWeekDay) {
                                     day.isPeriodStartDate = true;
                                 }
@@ -100,13 +138,13 @@ angular.module('myApp.timesheetManagement', ['ngRoute'])
                     break;
 
                 case 'Month':
-                    var startDateDay = startDate.getDate();
+                    var startDateDay = splitStartDate.getDate();
 
                     $scope.timesheet.forEach(function (day) {
                         var currentDateDay,
                             endDateDay;
 
-                        if (day.date && moment(new Date(day.date)) >= moment(new Date(startDate))) {
+                        if (day.date && moment(new Date(day.date)) >= moment(new Date(splitStartDate))) {
                             currentDateDay = new Date(day.date).getDate();
                             endDateDay = startDateDay - 1 || new Date(moment(new Date(day.date)).endOf('month').calendar()).getDate();
 
@@ -126,6 +164,7 @@ angular.module('myApp.timesheetManagement', ['ngRoute'])
             $scope.aggregatePeriods($scope.timesheet);
         };
 
+        //used by tableCell directive
         $scope.aggregatePeriods = function (timesheet) {
             var periodSplitters = [],
                 periods = [];
@@ -152,26 +191,4 @@ angular.module('myApp.timesheetManagement', ['ngRoute'])
         $scope.openCalendar = function ($event) {
             $scope.calendarIsOpened = true;
         };
-
-        $scope.$watch('timesheet', function (newValue, oldValue) {
-            if (oldValue && oldValue != newValue) {
-                var existedDayIndex,
-                    changedDay = _.filter(oldValue, function (obj) {
-                        return !_.findWhere(newValue, obj);
-                    });
-
-                $scope.project.defaultValues.forEach(function (defaultDay, index) {
-                    if (changedDay[0] && defaultDay.date == changedDay.date) {
-                        existedDayIndex = index;
-                    }
-                });
-
-                if (existedDayIndex >= 0) {
-                    angular.extend($scope.project.defaultValues[existedDayIndex], changedDay);
-                }
-                else {
-                    $scope.project.defaultValues.push(changedDay);
-                }
-            }
-        }, true);
     }]);
