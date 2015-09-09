@@ -12,7 +12,7 @@ var util = require('./backend/libs/utils');
 
 var app = express();
 app.set('port', process.env.PORT || 1313);
-    
+
 app.use(cookieParser());
 app.use(express.static('frontend'));
 app.use(bodyParser.json({reviver:util.jsonParse}));

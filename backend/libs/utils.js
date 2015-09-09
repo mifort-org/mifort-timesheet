@@ -11,11 +11,11 @@ exports.getEndDate = function(req, res) {
 }; 
 
 exports.getProjectId = function(req, res) {
-    return getParameter(req, res, 'projectId');
+    return getObjectIdParam(req, res, 'projectId')
 };
 
 exports.getUserId = function(req, res) {
-    return getParameter(req, res, 'userId');
+    return getObjectIdParam(req, res, 'userId');
 };
 
 exports.saveObject = function(collection) {
@@ -43,7 +43,12 @@ exports.jsonParse = function(key, value) {
         if (key.toLowerCase().indexOf('date') > -1) {
             return moment(value, dateFormat).toDate();
         }
-        if(key.toLowerCase() == '_id' && ObjectID.isValid(value)) {
+        var keyName = key.toLowerCase();
+        var isIdField = keyName == '_id' 
+                        || keyName == 'userId' 
+                        || keyName == 'projectId'
+                        || keyName == 'companyId';
+        if(isIdField && ObjectID.isValid(value)) {
             return new ObjectID(value);
         }
     }    
@@ -51,6 +56,17 @@ exports.jsonParse = function(key, value) {
 };
 
 //private section
+function getObjectIdParam(req, res, name) {
+    var entityObjectId = getParameter(req, res, name);
+    if(entityObjectId && ObjectID.isValid(entityObjectId)) {
+        entityObjectId = new ObjectID(entityObjectId);
+    } else {
+        res.status(500).json({error: 'Invalid ' + name + ' format!'});
+        entityObjectId = false;
+    }
+    return entityObjectId;
+}
+
 function sendSavedObject(err, res, object, result) {
     if(err) {
         res.status(500).json(err);

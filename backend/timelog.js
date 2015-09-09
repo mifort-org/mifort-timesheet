@@ -30,22 +30,20 @@ exports.getByDates = function(req, res) {
     var start = utils.getStartDate(req, res);
     var end = utils.getEndDate(req, res);
     var userId = utils.getUserId(req, res);
+    var projectId = utils.getProjectId(req, res);
 
-    if(start && end && userId) {
-        if(ObjectID.isValid(userId)) {
-            var timelogCollection = dbSettings.timelogCollection();
-            var query = {
-                userId : new ObjectID(userId),
-                date : {$gte: start,
-                        $lte: end}
-            };
+    if(start && end && userId && projectId) {
+        var timelogCollection = dbSettings.timelogCollection();
+        var query = {
+            userId : userId,
+            projectId: projectId,
+            date : {$gte: start,
+                    $lte: end}
+        };
 
-            timelogCollection.find(query, {'sort': 'date'}).toArray(function(err, timelogs){
-                returnTimelogArray(err, res, timelogs);
-            });
-        } else {
-            res.status(500).json({error: 'Incorrect user id format!'});
-        }
+        timelogCollection.find(query, {'sort': 'date'}).toArray(function(err, timelogs){
+            returnTimelogArray(err, res, timelogs);
+        });
     }
 };
 
