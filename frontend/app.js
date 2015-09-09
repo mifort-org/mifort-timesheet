@@ -18,7 +18,7 @@ angular.module('myApp', [
         $routeProvider.otherwise({redirectTo: '/login'});
     }])
 
-    .controller('myAppController', ['$scope', '$location', 'loginService', '$cookies', function ($scope, $location, loginService, $cookies) {
+    .controller('myAppController', ['$scope', '$location', '$cookies', '$http', function ($scope, $location, $cookies, $http) {
         if($cookies.get('user')){
             $scope.isLoggedIn = true;
         }
@@ -28,6 +28,8 @@ angular.module('myApp', [
 
         $scope.logout = function () {
             $cookies.remove('user');
-            $location.path('/login');
+            $http.get('logout').then(function () {
+                $location.path('login');
+            });
         }
     }]);

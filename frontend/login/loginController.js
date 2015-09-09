@@ -13,7 +13,7 @@ angular.module('myApp.login', ['ngRoute'])
         $scope.$parent.isLoggedIn = false;
         $scope.user = loginService.getUser().success(function (data) {
             if(data){
-                $cookies.put('user', data)
+                $cookies.put('user', data);
                 $scope.$parent.isLoggedIn = true;
                 $location.path('/timelog');
             }
