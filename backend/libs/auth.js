@@ -10,7 +10,7 @@ var users = require('../user');
 var loginRedirect = '/';
 var registrationRedirect = '/company';
 
-passport.serializeUser(function(user, done) {
+passport.serializeUser(function(user, done)  {
     done(null, user._id);
 });
  
@@ -76,11 +76,6 @@ exports.ensureAuthenticated = function (req, res, next) {
     res.redirect(loginRedirect);
 };
 
-exports.logout = function(req, res) {
-    req.logout();
-    res.redirect(loginRedirect);
-};
-
 exports.init = function(app) {
     app.use(passport.initialize());
     app.use(passport.session());
@@ -110,9 +105,16 @@ exports.init = function(app) {
                 res.redirect(req.session.redirect_to || loginRedirect);
             }
     );
+
+    app.get('/logout', logout);
 };
 
 //private part
+function logout (req, res) {
+    req.logout();
+    res.redirect(loginRedirect);
+}
+
 function createUser(user, done) {
     users.save(user, function(err, savedUser){
         if(err) {
