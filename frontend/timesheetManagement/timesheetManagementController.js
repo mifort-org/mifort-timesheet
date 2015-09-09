@@ -9,7 +9,7 @@ angular.module('myApp.timesheetManagement', ['ngRoute'])
         });
     }])
 
-    .controller('timesheetManagementController', ['$scope', 'timesheetManagementService', 'moment', function ($scope, timesheetManagementService, moment) {
+    .controller('timesheetManagementController', ['$scope', 'timesheetManagementService', 'moment', 'preferences', function ($scope, timesheetManagementService, moment, preferences) {
         var daysInRow = 7;
 
         $scope.daySettingsPopover = {
@@ -20,7 +20,7 @@ angular.module('myApp.timesheetManagement', ['ngRoute'])
         $scope.dayTypes = timesheetManagementService.getDayTypes();
         $scope.weekDays = timesheetManagementService.getWeekDays();
         //TODO: get projectId from user
-        timesheetManagementService.getProject('55ee8bb048b0829c0e213b1d').success(function (data) {
+        timesheetManagementService.getProject(preferences.get('user').assignments[0].projectId).success(function (data) {
             $scope.project = data;
         }).then(function () {
             $scope.init();
@@ -75,25 +75,26 @@ angular.module('myApp.timesheetManagement', ['ngRoute'])
 
             if ($scope.project.defaultValues) {
                 $scope.project.defaultValues.forEach(function (day) {
-                    angular.extend(_.findWhere($scope.timesheet, {date: day.date}), day);
+                    var dayExisted = _.findWhere($scope.timesheet, {date: moment(new Date(day.date)).calendar()});
+                    if(dayExisted){
+                        angular.extend(dayExisted, day);
+                    }
                 });
             }
-
-
         }
 
         function initWatchers() {
             $scope.$watch('timesheet', function (newValue, oldValue) {
                 if (oldValue && oldValue != newValue) {
                     var existedDayIndex,
-                        changedDay = _.filter(oldValue, function (obj) {
-                            return !_.findWhere(newValue, obj);
-                        });
+                        changedDay = _.filter(newValue, function (obj) {
+                            return !_.findWhere(oldValue, obj);
+                        })[0];
 
                     $scope.project.defaultValues = $scope.project.defaultValues || [];
 
                     $scope.project.defaultValues.forEach(function (defaultDay, index) {
-                        if (changedDay[0] && defaultDay.date == changedDay.date) {
+                        if (changedDay && defaultDay.date == changedDay.date) {
                             existedDayIndex = index;
                         }
                     });
@@ -107,6 +108,7 @@ angular.module('myApp.timesheetManagement', ['ngRoute'])
                 }
 
                 timesheetManagementService.saveProject($scope.project._id, $scope.project);
+
             }, true);
         }
 

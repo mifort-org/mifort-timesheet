@@ -11,7 +11,7 @@ angular.module('myApp.timelog', ['ngRoute'])
 
     .controller('timelogController', ['$scope', '$filter', 'timelogService', 'timesheetManagementService', 'preferences', function ($scope, $filter, timelogService, timesheetManagementService, preferences) {
         //TODO: get projectId from user
-        timesheetManagementService.getProject('55ee8bb048b0829c0e213b1d').success(function (data) {
+        timesheetManagementService.getProject(preferences.get('user').assignments[0].projectId).success(function (data) {
             $scope.project = data;
         }).then(function () {
             $scope.init();
@@ -39,7 +39,10 @@ angular.module('myApp.timelog', ['ngRoute'])
 
             if ($scope.project.defaultValues) {
                 $scope.project.defaultValues.forEach(function (day) {
-                    angular.extend(_.findWhere($scope.timelog, {date: day.date}), day);
+                    var dayExisted = _.findWhere($scope.timelog, {date: moment(new Date(day.date)).calendar()});
+                    if(dayExisted){
+                        angular.extend(dayExisted, day);
+                    }
                 });
             }
 
