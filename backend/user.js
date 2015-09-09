@@ -16,7 +16,6 @@ exports.findByEmail = function(email, callback) {
     findByExample({email: email}, callback);
 };
 
-//or from db???
 exports.restGetCurrent = function(req, res) {
     var user = req.user;
     res.json(user);

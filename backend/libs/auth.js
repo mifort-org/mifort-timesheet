@@ -55,7 +55,7 @@ passport.use(new GoogleStrategy({
                         createUser(user, done);
                     }
                     
-                    //Does we really need 'req' object? (Now we have only one button)
+                    //Do we really need 'req' object? (Now we have only one button)
                     // if(req.session.redirect_to === loginRedirect) {
                     //     console.log("LOGIN!!!!");
                     // }
@@ -89,15 +89,6 @@ exports.init = function(app) {
             })(req, res, next);
     });
 
-    app.get('/registration', function (req, res, next) {
-        req.session.redirect_to = registrationRedirect;
-        passport.authenticate('google', 
-            {
-                scope: ['https://www.googleapis.com/auth/userinfo.email',
-                      'https://www.googleapis.com/auth/userinfo.profile']
-            })(req, res, next);
-    });
-
     app.get('/oauth2callback', 
         passport.authenticate('google', { failureRedirect: loginRedirect }),
             function(req, res) {
@@ -110,7 +101,7 @@ exports.init = function(app) {
 };
 
 //private part
-function logout (req, res) {
+function logout(req, res) {
     req.logout();
     res.redirect(loginRedirect);
 }
