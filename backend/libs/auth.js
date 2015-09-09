@@ -1,5 +1,6 @@
 var passport = require('passport');
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+var ObjectID = require('mongodb').ObjectID;
 
 var GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || "833601973800-a3itkus9nvoo1k92avt0na4evge44fut.apps.googleusercontent.com";
 var GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET || "9LUsqy6tU7PIohpWQyYoIKbH";
@@ -14,14 +15,17 @@ passport.serializeUser(function(user, done) {
 });
  
 passport.deserializeUser(function(id, done) {
-    users.findById(id, function(error, user) {
-        if(error) {
-            done(err);
-        } else {
-            done(null, user);
-        }
-    });
-    
+    if(ObjectID.isValid(id)) {
+        users.findById(new ObjectID(id), function(error, user) {
+            if(error) {
+                done(err);
+            } else {
+                done(null, user);
+            }
+        });
+    } else {
+        done(null, false);
+    }
 });
 
 passport.use(new GoogleStrategy({
