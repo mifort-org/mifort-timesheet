@@ -3,6 +3,7 @@
 // Declare app level module which depends on views, and components
 angular.module('myApp', [
     'ngRoute',
+    'ngCookies',
     'ui.bootstrap',
     'myApp.login',
     'myApp.timelog',

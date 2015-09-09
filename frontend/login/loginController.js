@@ -9,9 +9,13 @@ angular.module('myApp.login', ['ngRoute'])
         });
     }])
 
-    .controller('loginController', ['$scope', '$location', 'loginService', 'preferences', function ($scope, $location, loginService, preferences) {
+    .controller('loginController', ['$scope', '$location', 'loginService', 'preferences', '$cookies', function ($scope, $location, loginService, preferences, $cookies) {
         $scope.$parent.isLoggedIn = false;
-        $scope.user = loginService.getUser();
+        //$scope.user = loginService.getUser();
+
+        if($cookies.get('user')){
+
+        };
         $scope.login = function () {
             $scope.$parent.isLoggedIn = true;
             $location.path('/timelog');

@@ -4,9 +4,12 @@ body {
 
 /*Login*/
 .form-signin {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    margin-left: -165px;
     max-width: 330px;
     padding: 15px;
-    margin: 0 auto;
 }
 
 .main-controls {
