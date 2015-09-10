@@ -1,5 +1,10 @@
-<div class="col-lg-8">
-    <table class="table table-striped timelog">
+<div class="timelog-wrapper">
+    <h2>
+        <a href="" class="collapse-timelog"></a>
+        {{project.name}}
+    </h2>
+
+    <table class="table table-bordered timelog">
         <thead>
         <th ng-repeat="timelogKey in timelogKeys">
             {{timelogKey}}
@@ -11,8 +16,8 @@
             <td>
                 <span class="timelog-data">
                     {{log.date}}
-                    <button type="button" class="timelog-new btn btn-success glyphicon-plus btn-xs"
-                            ng-click="addRow(log.dateId, $index)"></button>
+
+                    <a href="" class="add-timelog" ng-click="addRow(log.dateId, $index)">+</a>
                 </span>
             </td>
 
@@ -33,28 +38,8 @@
     <button ng-if="currentTimelogIndex" class="btn" ng-click="previousPeriod()"><</button>
     <button ng-if="currentTimelogIndex < splittedTimelog[currentTimelogIndex].length" class="btn" ng-click="nextPeriod()">></button>
     <div>
-        <small>{{project.periods}}</small>
+        <!--<small>{{project.periods}}</small>-->
         <!--<small>{{splittedTimelog}}</small>-->
         <!--<small>{{timelog}}</small>-->
     </div>
-</div>
-
-
-<div class="projects-state-wrapper col-lg-2">
-    <table class="table">
-        <tbody>
-        <tr>
-            <td><a href="">Project1</a></td>
-            <td>15/20</td>
-        </tr>
-        <tr>
-            <td><a href="">Project2</a></td>
-            <td>5/20</td>
-        </tr>
-        <tr>
-            <td>Total</td>
-            <td>20/40</td>
-        </tr>
-        </tbody>
-    </table>
 </div>

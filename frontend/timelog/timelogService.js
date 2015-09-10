@@ -4,7 +4,7 @@ angular.module('myApp.timelog').factory('timelogService',
     ['$http', function ($http) {
         return {
             getTimelog: function (userId, periodId) {
-                return $http.get('project/' + projectId);
+                //return $http.get('project/' + projectId);
                 
                 return {
                     'timelog': [
