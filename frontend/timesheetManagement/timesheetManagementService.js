@@ -6,7 +6,7 @@ angular.module('myApp.timesheetManagement').factory('timesheetManagementService'
             getProject: function (projectId) {
                 return $http.get('project/' + projectId);
             },
-            saveProject: function (projectId, parameters) {
+            saveProject: function (parameters) {
                 $http.post('project', parameters);
             },
             getPeriodSettings: function () {

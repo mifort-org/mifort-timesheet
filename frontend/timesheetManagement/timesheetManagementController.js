@@ -107,7 +107,7 @@ angular.module('myApp.timesheetManagement', ['ngRoute'])
                     }
                 }
 
-                timesheetManagementService.saveProject($scope.project._id, $scope.project);
+                timesheetManagementService.saveProject($scope.project);
 
             }, true);
         }
