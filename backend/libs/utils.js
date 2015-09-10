@@ -40,7 +40,8 @@ exports.saveObject = function(collection) {
 //parse json. Date and ObjectId
 exports.jsonParse = function(key, value) {
     if (typeof value === 'string' ) {
-        if (key.toLowerCase().indexOf('date') > -1) {
+        if (key.toLowerCase().indexOf('date') > -1
+                && moment(value).isValid()) {
             return moment(value, dateFormat).toDate();
         }
         var keyName = key.toLowerCase();
