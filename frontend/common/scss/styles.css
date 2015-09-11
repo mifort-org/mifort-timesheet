@@ -366,6 +366,7 @@ h2 {
 .timesheet-wrapper {
     float: left;
     width: 60%;
+    min-width: 542px;
     margin-right: 40px;
     padding: 25px;
     background: #fff;
@@ -374,6 +375,8 @@ h2 {
 .timesheet-controls {
     float: right;
     width: calc(40% - 42px);
+    min-width: 325px;
+    max-width: 420px;
     font-size: 1.8em;
     background: #fff;
     padding: 25px;

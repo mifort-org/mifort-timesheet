@@ -24,9 +24,10 @@ angular.module('myApp.timelog', ['ngRoute'])
         $scope.init = function (userTimelog) {
             $scope.timelog = [];
             var startDate = moment(new Date($scope.project.periods[0].start)),
-                endDate = moment(new Date($scope.project.periods[$scope.project.periods.length - 1].end));
+                endDate = moment(new Date($scope.project.periods[$scope.project.periods.length - 1].end)),
+                daysToGenerate = endDate.diff(startDate, 'days');
 
-            for (var i = 0; i < 150; i++) {
+            for (var i = 0; i < daysToGenerate + 1; i++) {
                 var dayToPush;
 
                 $scope.project.template.workload = preferences.get('user').workload;
@@ -36,7 +37,6 @@ angular.module('myApp.timelog', ['ngRoute'])
 
                 dayToPush = _.clone($scope.project.template);
                 dayToPush.date = angular.copy(startDate).add(i, 'days').calendar();
-                dayToPush.index = i;
                 if($scope.timelog[i-1] && $scope.timelog[i-1].date == dayToPush.date){
                     dayToPush.isNotFirstDayRecord = true;
                 }
