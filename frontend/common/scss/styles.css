@@ -90,7 +90,7 @@ h2 {
     text-align: right;
 }
 
-.main-controls a{
+.main-controls a {
     margin-left: 30px;
     font-size: 1.8em;
     color: #000;
@@ -102,11 +102,13 @@ h2 {
     font-size: 2.4em;
     color: #000;
 }
-.logo:hover{
+
+.logo:hover {
     color: #000;
     text-decoration: none;
 }
-.logo .timelog-icon{
+
+.logo .timelog-icon {
     background-position: -7px -267px;
     width: 25px;
     /*height: 25px;*/
@@ -114,14 +116,16 @@ h2 {
 
 .main-controls .info,
 .main-controls .profile,
-.main-controls .logout{
+.main-controls .logout {
     padding: 2px 0 2px 36px;
     background: url("../images/icons.png") -2px -471px no-repeat;
 }
-.main-controls .logout{
+
+.main-controls .logout {
     background-position: -2px -587px;
 }
-.main-controls .profile{
+
+.main-controls .profile {
     background-position: -2px -526px;
 }
 
@@ -319,6 +323,17 @@ h2 {
     line-height: 1;
 }
 
+.add-timelog:hover,
+.add-timelog:focus,
+.add-timelog:active {
+    text-decoration: none;
+}
+
+.add-timelog:focus,
+.add-timelog:active {
+    color: #19b5fe;
+}
+
 .timelog-comment {
     width: 100%;
 }
@@ -405,7 +420,7 @@ h2 {
     border-collapse: separate;
 }
 
-.periods th{
+.periods th {
     font-size: 1.4em;
 }
 
@@ -428,33 +443,35 @@ h2 {
     margin: 0 auto;
 }
 
-
 .timesheet-day {
     position: relative;
     text-align: right;
 }
 
 .timesheet-date,
-.timesheet-time{
+.timesheet-time {
     font-size: 1.8em;
 }
 
-.timesheet-date{
+.timesheet-date {
     position: absolute;
     top: 3px;
     left: 7px;
     color: #9c9d9f;
     font-weight: 300;
 }
+
 .timesheet-time,
-.timesheet-hours-label{
+.timesheet-hours-label {
     position: absolute;
     right: 8px;
     bottom: 15px;
 }
-.timesheet-hours-label{
+
+.timesheet-hours-label {
     bottom: 5px;
 }
+
 .periods > tbody > tr > .period-start {
     border-left-color: red;
 }
@@ -463,7 +480,7 @@ h2 {
     border-right-color: blue;
 }
 
-.timesheet-hours-label{
+.timesheet-hours-label {
     color: #999;
     font-size: 1.2em;
 }
