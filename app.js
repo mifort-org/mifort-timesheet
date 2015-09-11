@@ -12,6 +12,7 @@ var util = require('./backend/libs/utils');
 
 var app = express();
 app.set('port', process.env.PORT || 1313);
+app.set('json replacer', util.jsonStringify);
 
 app.use(cookieParser());
 app.use(express.static('frontend'));
