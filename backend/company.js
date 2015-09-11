@@ -1,11 +1,18 @@
 var dbSettings = require('./libs/mongodb_settings');
 var users = require('./user');
+var utils = require('./libs/utils');
 
-exports.findById = function(id, callback) {
-    var companies = dbSettings.companyCollection();
-    companies.findOne({companyId: id}, function(err, company){
-        callback(err, company);
-    });
+exports.restfindById = function(req, res) {
+    var companyId = utils.getCompanyId(req, res);
+    if(companyId) {
+        findById(companyId, function(err, company) {
+            if(err) {
+                res.status(400).json({error: 'Canot find company!'});
+            } else {
+                res.json(company);
+            }
+        });
+    }
 };
 
 exports.restSave = function(req, res) {
@@ -27,6 +34,13 @@ exports.restSave = function(req, res) {
 exports.save = save;
 
 //private part
+function findById(id, callback) {
+    var companies = dbSettings.companyCollection();
+    companies.findOne({_id: id}, function(err, company){
+        callback(err, company);
+    });
+}
+
 function createUsersByEmails(company) {
     var emails = company.emails;
     if(emails) {

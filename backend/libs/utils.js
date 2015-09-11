@@ -1,21 +1,31 @@
 var ObjectID = require('mongodb').ObjectID;
 var moment = require('moment');
-var dateFormat = "MM/DD/YYYY";
+
+var dateFormat = 'MM/DD/YYYY';
+var startDateParam = 'startDate';
+var endDateParam = 'endDate';
+var projectIdParam = 'projectId';
+var userIdParam = 'userId';
+var companyIdParam ='companyId';
 
 exports.getStartDate = function(req, res) {
-    return getDateParam(req, res, 'startDate');
+    return getDateParam(req, res, startDateParam);
 };
 
 exports.getEndDate = function(req, res) {
-    return getDateParam(req, res, 'endDate');
+    return getDateParam(req, res, endDateParam);
 }; 
 
 exports.getProjectId = function(req, res) {
-    return getObjectIdParam(req, res, 'projectId')
+    return getObjectIdParam(req, res, projectIdParam)
 };
 
 exports.getUserId = function(req, res) {
-    return getObjectIdParam(req, res, 'userId');
+    return getObjectIdParam(req, res, userIdParam);
+};
+
+exports.getCompanyId = function(req, res) {
+    return getObjectIdParam(req, res, companyIdParam);
 };
 
 exports.saveObject = function(collection) {
