@@ -9,7 +9,7 @@ angular.module('myApp.timesheetManagement', ['ngRoute'])
         });
     }])
 
-    .controller('timesheetManagementController', ['$scope', 'timesheetManagementService', 'moment', 'preferences', function ($scope, timesheetManagementService, moment, preferences) {
+    .controller('timesheetManagementController', ['$scope', '$filter', 'timesheetManagementService', 'moment', 'preferences', function ($scope, $filter, timesheetManagementService, moment, preferences) {
         var daysInRow = 7;
 
         $scope.daySettingsPopover = {
@@ -19,7 +19,7 @@ angular.module('myApp.timesheetManagement', ['ngRoute'])
         $scope.periodSettings = timesheetManagementService.getPeriodSettings();
         $scope.dayTypes = timesheetManagementService.getDayTypes();
         $scope.weekDays = timesheetManagementService.getWeekDays();
-        //TODO: get projectId from user
+
         timesheetManagementService.getProject(preferences.get('user').assignments[0].projectId).success(function (data) {
             $scope.project = data;
         }).then(function () {
@@ -192,5 +192,9 @@ angular.module('myApp.timesheetManagement', ['ngRoute'])
 
         $scope.openCalendar = function ($event) {
             $scope.calendarIsOpened = true;
+        };
+
+        $scope.isWeekend = function (date) {
+            return $filter('isWeekendDay')(date);
         };
     }]);

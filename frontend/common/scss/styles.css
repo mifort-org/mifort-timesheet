@@ -67,22 +67,68 @@ body {
     font-family: 'Open Sans', sans-serif;
 }
 
-h2{
+h2 {
     padding-bottom: 32px;
     font-size: 1.8em;
     font-weight: 600;
 }
 
 .main-container {
+    position: relative;
     float: left;
-    width: calc(100% - 250px);
-    padding: 50px;
+    width: calc(100% - 251px);
+    height: calc(100% - 100px);
+    padding: 70px 55px 70px 50px;
     background: #f5f7f9;
+    border-left: 1px #f2f4f7 solid;
+}
+
+.main-controls {
+    height: 100px;
+    padding: 0 25px;
+    line-height: 100px;
+    text-align: right;
+}
+
+.main-controls a{
+    margin-left: 30px;
+    font-size: 1.8em;
+    color: #000;
+}
+
+.logo {
+    float: left;
+    margin-left: 0;
+    font-size: 2.4em;
+    color: #000;
+}
+.logo:hover{
+    color: #000;
+    text-decoration: none;
+}
+.logo .timelog-icon{
+    background-position: -7px -267px;
+    width: 25px;
+    /*height: 25px;*/
+}
+
+.main-controls .info,
+.main-controls .profile,
+.main-controls .logout{
+    padding: 2px 0 2px 36px;
+    background: url("../images/icons.png") -2px -471px no-repeat;
+}
+.main-controls .logout{
+    background-position: -2px -587px;
+}
+.main-controls .profile{
+    background-position: -2px -526px;
 }
 
 /*Login*/
 .login-wrapper {
     height: 100%;
+    width: 100%;
     background: url("../images/login-background.JPG") center center;
     background-size: cover;
 }
@@ -169,7 +215,6 @@ h2{
 }
 
 .tabs-left {
-    padding-top: 2px;
     padding-bottom: 2px;
     font-size: 1.6em;
     /*border-right: 1px solid #ddd;*/
@@ -179,28 +224,43 @@ h2{
     border-bottom: 0;
 }
 
-.tabs-left li.active a, .tabs-left li.active a:hover, .tabs-left li.active a:focus {
-    border-bottom-color: #ddd;
-    border-right-color: transparent;
+.nav-tabs > li {
+    margin-bottom: 0;
+}
+
+.nav-stacked > li + li {
+    margin: 0;
 }
 
 .tabs-left li {
     border-bottom: 1px #f2f4f7 solid;
+    /*border-right: 1px #f5f7f9 solid;*/
+}
+
+.tabs-left li:first-child {
+    border-top: 1px #f2f4f7 solid;
+}
+
+.tabs-left li.active a,
+.tabs-left li.active a:hover,
+.tabs-left li.active a:focus {
+    /*background: #eaeff7;*/
+    color: #19b5fe;
+    border-color: transparent;
+    border-right-color: transparent;
 }
 
 .tabs-left li a {
     border-radius: 4px 0 0 4px;
     margin-right: 0;
-    padding: 10px 25px;
+    padding: 17px 25px;
+    color: #000;
     display: block;
 }
 
 .tabs-left li a:hover {
+    background: #eaeff7;
     border-bottom-color: #eee;
-}
-
-.tabs-left li {
-    margin-right: -2px;
 }
 
 /*Timelog*/
@@ -209,7 +269,7 @@ h2{
     padding: 25px;
 }
 
-.collapse-timelog{
+.collapse-timelog {
     float: left;
     padding: 7px;
     margin: 4px 8px 0 0;
@@ -223,6 +283,25 @@ h2{
     border-color: #eaeff7;
 }
 
+.timelog-controls {
+    position: absolute;
+    right: 55px;
+    top: 20px;
+}
+
+.previous-period,
+.next-period {
+    width: 30px;
+    height: 30px;
+    background: url("../images/icons.png") -3px -359px no-repeat;
+    border: 0;
+    outline: 0;
+}
+
+.next-period {
+    background-position: -3px -407px;
+}
+
 .table-bordered > tbody > tr > td,
 .table-bordered > thead > tr > th {
     border-color: #eaeff7;
@@ -230,10 +309,9 @@ h2{
     vertical-align: middle;
 }
 
-.add-timelog{
+.add-timelog {
     position: relative;
-    top: 2px;
-    
+    top: 3px;
     color: #19b5fe;
     opacity: 0.7;
     font-size: 1.65em;
@@ -251,7 +329,9 @@ h2{
 
 .timelog-hours,
 .timesheet-hours {
+    float: left;
     width: 42px;
+    margin-right: 10px;
     text-align: center;
 }
 
@@ -260,7 +340,7 @@ h2{
 }
 
 .weekend {
-    background: #bed3ff !important;
+    background: #f3cce1 !important;
 }
 
 .projects-state-wrapper {
@@ -268,13 +348,65 @@ h2{
 }
 
 /*Timesheet*/
+.timesheet-wrapper {
+    float: left;
+    width: 60%;
+    margin-right: 40px;
+    padding: 25px;
+    background: #fff;
+}
+
 .timesheet-controls {
     float: right;
-    /*width: 200px;*/
+    width: calc(40% - 42px);
+    font-size: 1.8em;
+    background: #fff;
+    padding: 25px;
+}
+
+.timesheet-controls label {
+    float: left;
+    line-height: 1.8;
+    margin-bottom: 20px;
+}
+
+.timesheet-controls .timesheet-control {
+    float: right;
+    width: 150px;
+}
+
+.timesheet-controls .timesheet-control .form-control {
+    width: 111px;
+}
+
+.primary-button {
+    display: block;
+    width: 140px;
+    height: 36px;
+    margin: 0 auto;
+    color: #fff;
+    font-weight: 300;
+    background: #3eb5f1;
+    border: 0;
+    border-bottom: 5px #2574a9 solid;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+    outline: 0;
+}
+
+.primary-button:active {
+    height: 32px;
+    margin-top: 4px;
+    border-bottom-width: 1px;
 }
 
 .periods {
     border-collapse: separate;
+}
+
+.periods th{
+    font-size: 1.4em;
 }
 
 .periods .popover {
@@ -283,8 +415,9 @@ h2{
 
 .periods > tbody > tr > td {
     position: relative;
-    padding: 10px 5px;
-    border-width: 2px;
+    height: 70px;
+    width: 70px;
+    /*border-width: 2px;*/
     vertical-align: middle;
 }
 
@@ -295,10 +428,33 @@ h2{
     margin: 0 auto;
 }
 
+
 .timesheet-day {
-    width: 10px;
+    position: relative;
+    text-align: right;
 }
 
+.timesheet-date,
+.timesheet-time{
+    font-size: 1.8em;
+}
+
+.timesheet-date{
+    position: absolute;
+    top: 3px;
+    left: 7px;
+    color: #9c9d9f;
+    font-weight: 300;
+}
+.timesheet-time,
+.timesheet-hours-label{
+    position: absolute;
+    right: 8px;
+    bottom: 15px;
+}
+.timesheet-hours-label{
+    bottom: 5px;
+}
 .periods > tbody > tr > .period-start {
     border-left-color: red;
 }
@@ -307,28 +463,7 @@ h2{
     border-right-color: blue;
 }
 
-/*.period-start:before,*/
-/*.period-start:after,*/
-/*.period-end:before,*/
-/*.period-end:after {*/
-/*position: absolute;*/
-/*top: -2px;*/
-/*left: -1px;*/
-/*display: block;*/
-/*width: 20px;*/
-/*border-top: 2px red solid;*/
-/*content: ''*/
-/*}*/
-
-/*.period-end:before,*/
-/*.period-end:after{*/
-/*left: auto;*/
-/*right: 0;*/
-/*border-color: blue;*/
-/*}*/
-
-/*.period-start:after,*/
-/*.period-end:after {*/
-/*top: auto;*/
-/*bottom: -2px;*/
-/*}*/
+.timesheet-hours-label{
+    color: #999;
+    font-size: 1.2em;
+}

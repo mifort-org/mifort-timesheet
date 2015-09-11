@@ -10,7 +10,14 @@
 <body ng-controller="myAppController" closable-popovers>
 
 <div ng-if="isLoggedIn" class="main-controls">
-    <button class="btn btn-default" ng-click="logout()">logout</button>
+    <a class="logo" href="">
+        <span class="timelog-icon"></span>
+        Timelog
+    </a>
+
+    <a href="" class="info">Info</a>
+    <a href="" class="profile">Profile</a>
+    <a href="" class="logout" ng-click="logout()">logout</a>
 </div>
 
 <div ng-if="isLoggedIn" bootstrap-tabs class="main-tabs"></div>

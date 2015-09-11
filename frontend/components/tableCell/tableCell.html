@@ -1,11 +1,15 @@
-<td>
+<td class="timesheet-day">
     <a ng-if="day.date"
        href=""
+       class="timesheet-date"
        popover-template="daySettingsPopover.templateUrl"
        popover-title="{{daySettingsPopover.title}}"
        popover-placement="bottom"
-       data-toggle="popover">{{day.date}}</a><span class="timelog-data" ng-if="day.date" >
-    <br/>
-    {{day.time}}
+       data-toggle="popover">{{day.date.slice(3, 5)}}</a>
+
+    <span class="timelog-data" ng-if="day.date">
+        <span class="timesheet-time">{{day.time}}</span>
+        <br/>
+        <span class="timesheet-hours-label">hours</span>
     </span>
 </td>

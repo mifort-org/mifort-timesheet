@@ -1,79 +1,75 @@
-<div class="timesheet-controls col-lg-2">
-    <div class="row">
-        <label for="period">Report Period:</label>
+<div class="timesheet-wrapper">
+    <div>
+        <table class="periods table table-bordered">
+            <thead>
+            <th ng-repeat="day in weekDays track by $index">{{day}}</th>
+            </thead>
+            <tbody>
+            <tr ng-repeat="week in splittedTimesheet track by $index">
+                <td table-cell
+                    ng-repeat="day in week track by $index"
+                    ng-class="{'period-start': day.isPeriodStartDate, 'period-end': day.isPeriodEndDate, 'weekend': isWeekend(day.date)}"></td>
+            </tr>
+            </tbody>
+        </table>
+
+        <!--<small>{{timesheet}}</small>-->
     </div>
 
-    <div class="row">
+
+    <script type="text/ng-template" id="daySettimgs.html">
+        <div class="form-group">
+            <label>Time:</label>
+            <input type="text" ng-model="day.time" class="form-control">
+            <label>Type:</label>
+            <select id="type"
+                    ng-options="type as type.typeName for type in dayTypes"
+                    ng-model="day.type"
+                    class="form-control">
+            </select>
+            <label>Comment:</label>
+            <textarea type="text" ng-model="day.comment" class="form-control"></textarea>
+        </div>
+    </script>
+</div>
+
+<div class="timesheet-controls">
+    <div class="clearfix">
+        <label for="period">Report Period</label>
         <select id="period"
                 ng-options="period as period.periodName for period in periodSettings"
                 ng-model="selectedPeriod"
-                class="form-control">
+                class="form-control timesheet-control">
         </select>
     </div>
 
-    <div class="row">
-        <label for="startDate">Start Date:</label>
-    </div>
+    <div class="clearfix">
+        <label for="startDate">Start Date</label>
 
-    <div class="row">
-        <p class="input-group">
-            <input id="startDate"
-                   type="date"
-                   class="form-control"
-                   datepicker-popup
-                   ng-model="startDate"
-                   is-open="calendarIsOpened"
-                   min-date="minDate"
-                   max-date="'2020-06-22'"
-                   datepicker-options="dateOptions"
-                   date-disabled="disabled(date, mode)"
-                   ng-required="true"
-                   close-text="Close"/>
+        <div class="timesheet-control">
+            <p class="input-group ">
+                <input id="startDate"
+                       class="form-control"
+                       datepicker-popup
+                       ng-model="startDate"
+                       is-open="calendarIsOpened"
+                       min-date="minDate"
+                       max-date="'2020-06-22'"
+                       datepicker-options="dateOptions"
+                       date-disabled="disabled(date, mode)"
+                       ng-required="true"
+                       close-text="Close"/>
 
-            <span class="input-group-btn">
-                <button type="button" class="btn btn-default" ng-click="openCalendar($event)">
-                    <i class="glyphicon glyphicon-calendar"></i>
-                </button>
-            </span>
-        <div>
-            <button type="button" class="btn btn-warning" ng-click="splitTimesheet(selectedPeriod, startDate)">
-                Split
-            </button>
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-click="openCalendar($event)">
+                        <i class="glyphicon glyphicon-calendar"></i>
+                    </button>
+                </span>
+            </p>
         </div>
-        </p>
     </div>
+
+        <button type="button" class="primary-button" ng-click="splitTimesheet(selectedPeriod, startDate)">
+            Split
+        </button>
 </div>
-
-<div class="col-lg-7">
-    <table class="periods table table-striped table-bordered">
-        <thead>
-        <th ng-repeat="day in weekDays track by $index">{{day}}</th>
-        </thead>
-        <tbody>
-        <tr ng-repeat="week in splittedTimesheet track by $index">
-            <td table-cell
-                ng-repeat="day in week track by $index"
-                ng-class="{'period-start': day.isPeriodStartDate, 'period-end': day.isPeriodEndDate}"></td>
-        </tr>
-        </tbody>
-    </table>
-
-    <!--<small>{{timesheet}}</small>-->
-</div>
-
-
-
-<script type="text/ng-template" id="daySettimgs.html">
-    <div class="form-group">
-        <label>Time:</label>
-        <input type="text" ng-model="day.time" class="form-control">
-        <label>Type:</label>
-        <select id="type"
-                ng-options="type as type.typeName for type in dayTypes"
-                ng-model="day.type"
-                class="form-control">
-        </select>
-        <label>Comment:</label>
-        <textarea type="text" ng-model="day.comment" class="form-control"></textarea>
-    </div>
-</script>
