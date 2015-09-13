@@ -18,7 +18,7 @@ exports.restGetById = function(req, res) {
     }
 };
 
-exports.restSave = utils.saveObject(dbSettings.projectCollection);
+exports.restSave = utils.restSaveObject(dbSettings.projectCollection);
 
 //Public API
 exports.saveInDb = function(project, callback) {

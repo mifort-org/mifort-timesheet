@@ -2,6 +2,7 @@ var ObjectID = require('mongodb').ObjectID;
 var moment = require('moment');
 
 var dateFormat = 'MM/DD/YYYY';
+
 var startDateParam = 'startDate';
 var endDateParam = 'endDate';
 var projectIdParam = 'projectId';
@@ -28,24 +29,32 @@ exports.getCompanyId = function(req, res) {
     return getObjectIdParam(req, res, companyIdParam);
 };
 
-exports.saveObject = function(collection) {
-    return function(req, res) {
-        if(req.body) {
-            var currentDate = new Date();
-            var object = req.body;
-            if(!object.createdOn) {
-                object.createdOn = currentDate;
-            }
-            object.updatedOn = currentDate;
-            var col = collection();
-            col.save(object, {safe:true}, function (err, result) {
-               sendSavedObject(err, res, object, result);
-            });
-        } else {
-            res.status(500).json({error: "Empty body"});
-        }
-    };
+//private section
+function getObjectIdParam(req, res, name) {
+    var entityObjectId = getParameter(req, res, name);
+    if(entityObjectId && ObjectID.isValid(entityObjectId)) {
+        entityObjectId = new ObjectID(entityObjectId);
+    } else {
+        res.status(500).json({error: 'Invalid ' + name + ' format!'});
+        entityObjectId = false;
+    }
+    return entityObjectId;
+}
+
+function getDateParam(req, res, name) {
+    var date = getParameter(req, res, name);
+    if(date) {
+        return moment(date, dateFormat).toDate();
+    }
 };
+
+function getParameter(req, res, name) {
+    var param = req.params[name] || req.query[name];
+    if(!param) {
+        res.status(400).json({ error: name + ' is not specified!' });
+    }
+    return param;
+}
 
 //parse json. Date and ObjectId
 exports.jsonParse = function(key, value) {
@@ -77,17 +86,25 @@ exports.jsonStringify = function(key, value) {
     return value;
 };
 
-//private section
-function getObjectIdParam(req, res, name) {
-    var entityObjectId = getParameter(req, res, name);
-    if(entityObjectId && ObjectID.isValid(entityObjectId)) {
-        entityObjectId = new ObjectID(entityObjectId);
-    } else {
-        res.status(500).json({error: 'Invalid ' + name + ' format!'});
-        entityObjectId = false;
-    }
-    return entityObjectId;
-}
+//Common Rest API
+exports.restSaveObject = function(collection) {
+    return function(req, res) {
+        if(req.body) {
+            var currentDate = new Date();
+            var object = req.body;
+            if(!object.createdOn) {
+                object.createdOn = currentDate;
+            }
+            object.updatedOn = currentDate;
+            var col = collection();
+            col.save(object, {safe:true}, function (err, result) {
+               sendSavedObject(err, res, object, result);
+            });
+        } else {
+            res.status(500).json({error: "Empty body"});
+        }
+    };
+};
 
 function sendSavedObject(err, res, object, result) {
     if(err) {
@@ -101,19 +118,4 @@ function sendSavedObject(err, res, object, result) {
             }
         }    
     }
-}
-
-function getDateParam(req, res, name) {
-    var date = getParameter(req, res, name);
-    if(date) {
-        return moment(date, dateFormat).toDate();
-    }
-};
-
-function getParameter(req, res, name) {
-    var param = req.params[name] || req.query[name];
-    if(!param) {
-        res.status(400).json({ error: name + ' is not specified!' });
-    }
-    return param;
 }
