@@ -1,6 +1,7 @@
 var dbSettings = require('./libs/mongodb_settings');
 var users = require('./user');
 var utils = require('./libs/utils');
+var moment = require('moment');
 
 //Rest API
 exports.restFindById = function(req, res) {
@@ -34,6 +35,41 @@ exports.restSave = function(req, res) {
 
 //Public API
 exports.save = save;
+
+exports.generateDefaulfCompany = function() {
+    var periods = [];
+    
+    var momentEndOfFirstPeriod = moment.utc().endOf('week');
+    var firstPeriod = {
+        start: moment.utc().toDate(),
+        end: momentEndOfFirstPeriod.toDate()
+    };
+    periods.push(firstPeriod);
+    
+    //generate 53 weeks (1 year)
+    var momentStartDate = momentEndOfFirstPeriod.add(1,'day');
+    var momentEndDate = momentStartDate.endOf('week');
+    for (var i = 0; i < 53; i++) {
+        periods.push({
+            start: momentStartDate.toDate(),
+            end: momentEndDate.toDate()
+        });
+        momentStartDate = momentEndDate.add(1,'day');
+        momentEndDate = momentStartDate.endOf('week');
+    };
+
+    var company = {
+        template : {
+            date: "",
+            role: "",
+            time: 8,
+            comment: ""
+        },
+        periods: periods
+    }
+
+    return company;
+};
 
 //private part
 function findById(id, callback) {

@@ -46,5 +46,5 @@ app.get('company/:companyId', company.restFindById);
 
 //run application
 app.listen(app.get('port'), function() {
-    console.log('Homogen server is started on port: ' + app.get('port'));
+    console.log('Mifort-timesheet server is started on port: ' + app.get('port'));
 });
