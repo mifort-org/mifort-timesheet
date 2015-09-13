@@ -1,7 +1,8 @@
 var dbSettings = require('./libs/mongodb_settings');
 var utils = require('./libs/utils');
 
-exports.getById = function(req, res) {
+//Rest API
+exports.restGetById = function(req, res) {
     var projectId = utils.getProjectId(req, res);
     if(projectId) {
         var projects = dbSettings.projectCollection();
@@ -17,8 +18,9 @@ exports.getById = function(req, res) {
     }
 };
 
-exports.save = utils.saveObject(dbSettings.projectCollection);
+exports.restSave = utils.saveObject(dbSettings.projectCollection);
 
+//Public API
 exports.saveInDb = function(project, callback) {
     var projects = dbSettings.projectCollection();
     projects.save(project, {safe:true}, function (err, result) {

@@ -2,12 +2,13 @@ var dbSettings = require('./libs/mongodb_settings');
 var users = require('./user');
 var utils = require('./libs/utils');
 
-exports.restfindById = function(req, res) {
+//Rest API
+exports.restFindById = function(req, res) {
     var companyId = utils.getCompanyId(req, res);
     if(companyId) {
         findById(companyId, function(err, company) {
             if(err) {
-                res.status(400).json({error: 'Canot find company!'});
+                res.status(400).json({error: 'Cannot find company!'});
             } else {
                 res.json(company);
             }
@@ -31,6 +32,7 @@ exports.restSave = function(req, res) {
     }
 };
 
+//Public API
 exports.save = save;
 
 //private part

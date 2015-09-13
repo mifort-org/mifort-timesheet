@@ -29,12 +29,12 @@ auth.init(app);
 
 //add auth.ensureAuthenticated for each Rest API
 //project
-app.post('/project', project.save);
-app.get('/project/:projectId', project.getById);
+app.post('/project', project.restSave);
+app.get('/project/:projectId', project.restGetById);
 
 //timelog
-app.post('/timelog', timelog.save);
-app.get('/timelog/:userId', timelog.getByDates);
+app.post('/timelog', timelog.restSave);
+app.get('/timelog/:userId', timelog.restGetByDates);
 
 //user
 app.get('/user', user.restGetCurrent);
@@ -42,7 +42,7 @@ app.post('/user/assignment', user.restAddAssignment);
 
 //company
 app.post('/company', company.restSave);
-app.get('company/:companyId', company.restfindById);
+app.get('company/:companyId', company.restFindById);
 
 //run application
 app.listen(app.get('port'), function() {

@@ -2,7 +2,8 @@ var utils = require('./libs/utils');
 var dbSettings = require('./libs/mongodb_settings');
 var ObjectID = require('mongodb').ObjectID;
 
-exports.save = function(req, res) {
+//Rest API
+exports.restSave = function(req, res) {
     if(req.body) {
         var timelogCollection = dbSettings.timelogCollection();
         var batch = timelogCollection.initializeUnorderedBulkOp({useLegacyOps: true});
@@ -26,7 +27,7 @@ exports.save = function(req, res) {
     }
 };
 
-exports.getByDates = function(req, res) {
+exports.restGetByDates = function(req, res) {
     var start = utils.getStartDate(req, res);
     var end = utils.getEndDate(req, res);
     var userId = utils.getUserId(req, res);
