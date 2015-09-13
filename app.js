@@ -42,7 +42,7 @@ app.post('/user/assignment', user.restAddAssignment);
 
 //company
 app.post('/company', company.restSave);
-app.get('company/:companyId', company.restFindById);
+app.get('/company/:companyId', company.restFindById);
 
 //run application
 app.listen(app.get('port'), function() {

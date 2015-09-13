@@ -39,23 +39,22 @@ exports.save = save;
 exports.generateDefaulfCompany = function() {
     var periods = [];
     
-    var momentEndOfFirstPeriod = moment.utc().endOf('week');
     var firstPeriod = {
         start: moment.utc().toDate(),
-        end: momentEndOfFirstPeriod.toDate()
+        end: moment.utc().endOf('week').toDate()
     };
     periods.push(firstPeriod);
     
     //generate 53 weeks (1 year)
-    var momentStartDate = momentEndOfFirstPeriod.add(1,'day');
-    var momentEndDate = momentStartDate.endOf('week');
+    var startDate = moment.utc(firstPeriod.end).add(1,'day').toDate();
+    var endDate = moment.utc(startDate).endOf('week').toDate();
     for (var i = 0; i < 53; i++) {
         periods.push({
-            start: momentStartDate.toDate(),
-            end: momentEndDate.toDate()
+            start: startDate,
+            end: endDate
         });
-        momentStartDate = momentEndDate.add(1,'day');
-        momentEndDate = momentStartDate.endOf('week');
+        startDate = moment.utc(endDate).add(1,'day').toDate();
+        endDate = moment.utc(startDate).endOf('week').toDate();
     };
 
     var company = {

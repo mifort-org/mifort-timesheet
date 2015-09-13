@@ -107,11 +107,11 @@ function logout(req, res) {
 }
 
 function createUser(user, done) {
-    users.save(user, function(err, savedUser){
+    users.createUser(user, function(err, savedUser){
         if(err) {
             return done(err, false); 
         } else {
-            return done(null, user);
+            return done(null, savedUser);
         }
     });
 }

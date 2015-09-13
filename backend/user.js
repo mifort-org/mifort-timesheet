@@ -38,7 +38,7 @@ exports.createUser = function(user, callback) {
             company.ownerId = user._id;
             companies.save(company, function(err, company){
                 console.log('Defaul company is created!');
-                callback(err, company);
+                callback(err, user);
             });
         }
     });
