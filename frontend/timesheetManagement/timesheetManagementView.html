@@ -1,38 +1,3 @@
-<div class="timesheet-wrapper">
-    <div>
-        <table class="periods table table-bordered">
-            <thead>
-            <th ng-repeat="day in weekDays track by $index">{{day}}</th>
-            </thead>
-            <tbody>
-            <tr ng-repeat="week in splittedTimesheet track by $index">
-                <td table-cell
-                    ng-repeat="day in week track by $index"
-                    ng-class="{'period-start': day.isPeriodStartDate, 'period-end': day.isPeriodEndDate, 'weekend': isWeekend(day.date)}"></td>
-            </tr>
-            </tbody>
-        </table>
-
-        <!--<small>{{timesheet}}</small>-->
-    </div>
-
-
-    <script type="text/ng-template" id="daySettimgs.html">
-        <div class="form-group">
-            <label>Time:</label>
-            <input type="text" ng-model="day.time" class="form-control">
-            <label>Type:</label>
-            <select id="type"
-                    ng-options="type as type.typeName for type in dayTypes"
-                    ng-model="day.type"
-                    class="form-control">
-            </select>
-            <label>Comment:</label>
-            <textarea type="text" ng-model="day.comment" class="form-control"></textarea>
-        </div>
-    </script>
-</div>
-
 <div class="timesheet-controls">
     <div class="clearfix">
         <label for="period">Report Period</label>
@@ -69,7 +34,42 @@
         </div>
     </div>
 
-        <button type="button" class="primary-button" ng-click="splitTimesheet(selectedPeriod, startDate)">
-            Split
-        </button>
+    <button type="button" class="primary-button" ng-click="splitTimesheet(selectedPeriod, startDate)">
+        Split
+    </button>
+</div>
+
+<div class="timesheet-wrapper">
+    <div>
+        <table class="periods table table-bordered">
+            <thead>
+            <th ng-repeat="day in weekDays track by $index">{{day}}</th>
+            </thead>
+            <tbody>
+            <tr ng-repeat="week in splittedTimesheet track by $index">
+                <td table-cell
+                    ng-repeat="day in week track by $index"
+                    ng-class="{'period-start': day.isPeriodStartDate, 'period-end': day.isPeriodEndDate, 'weekend': isWeekend(day.date)}"></td>
+            </tr>
+            </tbody>
+        </table>
+
+        <!--<small>{{timesheet}}</small>-->
+    </div>
+
+
+    <script type="text/ng-template" id="daySettimgs.html">
+        <div class="form-group">
+            <label>Time:</label>
+            <input type="text" ng-model="day.time" class="form-control">
+            <label>Type:</label>
+            <select id="type"
+                    ng-options="type as type.typeName for type in dayTypes"
+                    ng-model="day.type"
+                    class="form-control">
+            </select>
+            <label>Comment:</label>
+            <textarea type="text" ng-model="day.comment" class="form-control"></textarea>
+        </div>
+    </script>
 </div>

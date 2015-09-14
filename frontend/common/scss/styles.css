@@ -57,6 +57,11 @@ html {
     box-sizing: inherit;
 }
 
+html,
+body {
+    height: 100%;
+}
+
 a:focus {
     text-decoration: none;
 }
@@ -91,10 +96,13 @@ h2 a:focus {
     position: relative;
     float: left;
     width: calc(100% - 251px);
-    height: calc(100% - 100px);
+    height: calc(100% - 101px);
+    min-height: 295px;
     padding: 70px 55px 70px 50px;
     background: #f5f7f9;
+    border-top: 1px #f5f7f9 solid;
     border-left: 1px #f2f4f7 solid;
+    overflow-y: auto;
 }
 
 .main-controls {
@@ -418,6 +426,7 @@ h2 a:focus {
     width: calc(40% - 42px);
     min-width: 325px;
     max-width: 420px;
+    margin-bottom: 55px;
     font-size: 1.8em;
     background: #fff;
     padding: 25px;
