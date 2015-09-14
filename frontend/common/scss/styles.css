@@ -281,9 +281,11 @@ h2 {
     font-size: 0.9em;
     background: url("../images/icons.png") -12px -321px no-repeat;
 }
-.collapse-timelog.collapsed{
+
+.collapse-timelog.collapsed {
     background-position: -12px -637px;
 }
+
 .timelog {
     font-size: 1.8em;
     border-color: #eaeff7;
@@ -315,7 +317,14 @@ h2 {
     vertical-align: middle;
 }
 
-.add-timelog {
+.table-bordered > tbody > tr > .is-not-first-day-log{
+    border: 0;
+}
+.table-bordered > tbody > tr > .is-first-day-log{
+    border-bottom: 0;
+}
+.add-timelog,
+.remove-timelog{
     position: relative;
     top: 3px;
     color: #19b5fe;
@@ -325,15 +334,29 @@ h2 {
     line-height: 1;
 }
 
+.remove-timelog{
+    color: red;
+    float: right;
+}
 .add-timelog:hover,
 .add-timelog:focus,
-.add-timelog:active {
+.add-timelog:active,
+.remove-timelog:hover,
+.remove-timelog:focus,
+.remove-timelog:active{
     text-decoration: none;
 }
 
+.add-timelog:hover,
 .add-timelog:focus,
 .add-timelog:active {
     color: #19b5fe;
+}
+
+.remove-timelog:hover,
+.remove-timelog:focus,
+.remove-timelog:active {
+    color: darkred;
 }
 
 .timelog-comment {

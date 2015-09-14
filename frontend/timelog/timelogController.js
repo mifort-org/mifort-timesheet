@@ -38,9 +38,8 @@ angular.module('myApp.timelog', ['ngRoute'])
 
                 dayToPush = _.clone($scope.project.template);
                 dayToPush.date = angular.copy(startDate).add(i, 'days').calendar();
-                if($scope.timelog[i-1] && $scope.timelog[i-1].date == dayToPush.date){
-                    //dayToPush.isNotFirstDayRecord = true;
-                }
+                dayToPush.isFirstDayRecord = true;
+
                 $scope.timelog.push(dayToPush);
             }
 
@@ -54,8 +53,18 @@ angular.module('myApp.timelog', ['ngRoute'])
             }
 
             //$scope.timelog = angular.extend($scope.timelog, userTimelog);
-            userTimelog.forEach(function (day) {
-                angular.extend(_.findWhere($scope.timelog, {date: day.date}), day);
+            userTimelog.forEach(function (day, index) {
+                var timelogDayIndex = _.findIndex($scope.timelog, {date: moment(new Date(day.date)).calendar()});
+                day.isFirstDayRecord = false;
+
+                //if current iterated log is not the first for this date to push
+                if(userTimelog[index - 1] && userTimelog[index - 1].date == day.date){
+                    $scope.timelog.splice(timelogDayIndex + 1, 0, day);
+                }
+                else{
+                    day.isFirstDayRecord = true;
+                    angular.extend(_.findWhere($scope.timelog, {date: day.date}), day);
+                }
             });
 
             $scope.timelogAssigments = preferences.get('user').assignments.map(function (assignment) {
@@ -82,11 +91,15 @@ angular.module('myApp.timelog', ['ngRoute'])
         }
 
         $scope.addRow = function (log, dayIndex) {
-            //var newRow = $filter('getByProperty')($scope.project.template, log.date, 'date');
             var newRow = angular.copy($scope.project.template);
             newRow.date = log.date;
             newRow.isNotFirstDayRecord = true;
             $scope.timelog.splice(dayIndex+1, 0, newRow);
+            splitPeriods();
+        };
+
+        $scope.removeRow = function (log, dayIndex) {
+            $scope.timelog.splice(dayIndex, 1);
             splitPeriods();
         };
 

@@ -19,12 +19,13 @@
             <tbody>
             <tr ng-if="currentTimelogIndex >= 0" ng-repeat="log in splittedTimelog[currentTimelogIndex]"
                 ng-class="{'weekend': isWeekend(log.date)}">
-                <td>
-                <span ng-if="!log.isNotFirstDayRecord" class="timelog-data">
-                    {{log.date}}
+                <td ng-class="log.isFirstDayRecord ? 'is-first-day-log' : 'is-not-first-day-log'">
+                    <span class="timelog-data">
+                        <span ng-if="log.isFirstDayRecord">{{log.date}}</span>
 
-                    <a href="" class="add-timelog" ng-click="addRow(log, $index)">+</a>
-                </span>
+                        <a href="" ng-if="log.isFirstDayRecord" class="add-timelog" ng-click="addRow(log, $index)">+</a>
+                        <a href="" ng-if="!log.isFirstDayRecord" class="remove-timelog" ng-click="removeRow(log, $index)">&#8211;</a>
+                    </span>
                 </td>
 
                 <td>
