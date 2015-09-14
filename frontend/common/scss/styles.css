@@ -281,7 +281,9 @@ h2 {
     font-size: 0.9em;
     background: url("../images/icons.png") -12px -321px no-repeat;
 }
-
+.collapse-timelog.collapsed{
+    background-position: -12px -637px;
+}
 .timelog {
     font-size: 1.8em;
     border-color: #eaeff7;

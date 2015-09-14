@@ -5,47 +5,50 @@
 
 <div class="timelog-wrapper">
     <h2>
-        <a href="" class="collapse-timelog"></a>
+        <a href="" class="collapse-timelog" ng-class="{'collapsed': isCollapsed}" ng-click="isCollapsed = !isCollapsed"></a>
         {{project.name}}
     </h2>
-{{currentTimelogIndex}}
-    <table class="table table-bordered timelog">
-        <thead>
-        <th ng-repeat="timelogKey in timelogKeys">
-            {{timelogKey}}
-        </th>
-        </thead>
-        <tbody>
-        <tr ng-if="currentTimelogIndex >= 0" ng-repeat="log in splittedTimelog[currentTimelogIndex]"
-            ng-class="{'weekend': isWeekend(log.date)}">
-            <td>
+
+    <div collapse="isCollapsed">
+        <table class="table table-bordered timelog">
+            <thead>
+            <th ng-repeat="timelogKey in timelogKeys">
+                {{timelogKey}}
+            </th>
+            </thead>
+            <tbody>
+            <tr ng-if="currentTimelogIndex >= 0" ng-repeat="log in splittedTimelog[currentTimelogIndex]"
+                ng-class="{'weekend': isWeekend(log.date)}">
+                <td>
                 <span ng-if="!log.isNotFirstDayRecord" class="timelog-data">
                     {{log.date}}
 
                     <a href="" class="add-timelog" ng-click="addRow(log, $index)">+</a>
                 </span>
-            </td>
+                </td>
 
-            <td>
-                <select ng-options="assignment as assignment for assignment in timelogAssigments"
-                        ng-model="log.role"
-                        class="form-control">
-                </select>
-            </td>
+                <td>
+                    <select ng-options="assignment as assignment for assignment in timelogAssigments"
+                            ng-model="log.role"
+                            class="form-control">
+                    </select>
+                </td>
 
-            <td>
-                <input class="timelog-hours form-control" type="text" ng-model="log.time"/>
-                <span>hours</span>
-            </td>
+                <td>
+                    <input class="timelog-hours form-control" type="text" ng-model="log.time"/>
+                    <span>hours</span>
+                </td>
 
-            <td><input class="timelog-comment form-control" type="text" ng-model="log.comment"/></td>
-        </tr>
-        </tbody>
-    </table>
+                <td><input class="timelog-comment form-control" type="text" ng-model="log.comment"/></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
 
     <div>
         <!--<small>{{project.periods}}</small>-->
-        <small>{{splittedTimelog.length}}</small>
+        <!--<small>{{splittedTimelog.length}}</small>-->
         <!--<small>{{timelog}}</small>-->
     </div>
 </div>

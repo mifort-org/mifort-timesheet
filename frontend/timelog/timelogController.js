@@ -11,6 +11,7 @@ angular.module('myApp.timelog', ['ngRoute'])
 
     .controller('timelogController', ['$scope', '$filter', 'timelogService', 'timesheetManagementService', 'preferences', function ($scope, $filter, timelogService, timesheetManagementService, preferences) {
         $scope.currentTimelogIndex = 0;
+        $scope.isCollapsed = false;
         $scope.timelogKeys = timelogService.getTimelogKeys();
 
         timesheetManagementService.getProject(preferences.get('user').assignments[0].projectId).success(function (data) {
@@ -38,7 +39,7 @@ angular.module('myApp.timelog', ['ngRoute'])
                 dayToPush = _.clone($scope.project.template);
                 dayToPush.date = angular.copy(startDate).add(i, 'days').calendar();
                 if($scope.timelog[i-1] && $scope.timelog[i-1].date == dayToPush.date){
-                    dayToPush.isNotFirstDayRecord = true;
+                    //dayToPush.isNotFirstDayRecord = true;
                 }
                 $scope.timelog.push(dayToPush);
             }
