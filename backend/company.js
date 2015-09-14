@@ -36,7 +36,7 @@ exports.restSave = function(req, res) {
 //Public API
 exports.save = save;
 
-exports.generateDefaulfCompany = function() {
+exports.generateDefaultCompany = function() {
     var periods = [];
     
     var firstPeriod = {

@@ -31,3 +31,14 @@ exports.saveInDb = function(project, callback) {
         }
     });
 };
+
+exports.generateDefaultProject = function(company) {
+    var project = {
+        name: company.name,
+        template: company.template,
+        periods: company.periods,
+        companyId: company._id
+    };
+
+    return project;
+};
