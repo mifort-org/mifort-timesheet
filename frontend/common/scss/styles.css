@@ -57,8 +57,12 @@ html {
     box-sizing: inherit;
 }
 
-html, body {
-    height: 100%;
+a:focus {
+    text-decoration: none;
+}
+
+a:focus:hover {
+    text-decoration: underline;
 }
 
 body {
@@ -71,6 +75,16 @@ h2 {
     padding-bottom: 32px;
     font-size: 1.8em;
     font-weight: 600;
+}
+
+h2.timelog-collapsed {
+    padding-bottom: 15px;
+}
+
+h2 a,
+h2 a:hover,
+h2 a:focus {
+    color: #000;
 }
 
 .main-container {
@@ -131,6 +145,7 @@ h2 {
 
 /*Login*/
 .login-wrapper {
+    position: absolute;
     height: 100%;
     width: 100%;
     background: url("../images/login-background.JPG") center center;
@@ -275,9 +290,7 @@ h2 {
 
 .collapse-timelog {
     float: left;
-    padding: 7px;
-    margin: 4px 8px 0 0;
-    color: #545454;
+    padding-left: 20px;
     font-size: 0.9em;
     background: url("../images/icons.png") -12px -321px no-repeat;
 }
@@ -317,14 +330,16 @@ h2 {
     vertical-align: middle;
 }
 
-.table-bordered > tbody > tr > .is-not-first-day-log{
+.table-bordered > tbody > tr > .is-not-first-day-log {
     border: 0;
 }
-.table-bordered > tbody > tr > .is-first-day-log{
+
+.table-bordered > tbody > tr > .is-first-day-log {
     border-bottom: 0;
 }
+
 .add-timelog,
-.remove-timelog{
+.remove-timelog {
     position: relative;
     top: 3px;
     color: #19b5fe;
@@ -334,16 +349,17 @@ h2 {
     line-height: 1;
 }
 
-.remove-timelog{
+.remove-timelog {
     color: red;
     float: right;
 }
+
 .add-timelog:hover,
 .add-timelog:focus,
 .add-timelog:active,
 .remove-timelog:hover,
 .remove-timelog:focus,
-.remove-timelog:active{
+.remove-timelog:active {
     text-decoration: none;
 }
 
