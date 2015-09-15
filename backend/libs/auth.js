@@ -5,10 +5,10 @@ var ObjectID = require('mongodb').ObjectID;
 var GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || "833601973800-a3itkus9nvoo1k92avt0na4evge44fut.apps.googleusercontent.com";
 var GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET || "9LUsqy6tU7PIohpWQyYoIKbH";
 
-var users = require('../user');  
+var users = require('../user');
+var registration = require('./registration');
 
 var loginRedirect = '/';
-var registrationRedirect = '/company';
 
 passport.serializeUser(function(user, done)  {
     done(null, user._id);
@@ -107,7 +107,7 @@ function logout(req, res) {
 }
 
 function createUser(user, done) {
-    users.createUser(user, function(err, savedUser){
+    registration.createUser(user, function(err, savedUser){
         if(err) {
             return done(err, false); 
         } else {
