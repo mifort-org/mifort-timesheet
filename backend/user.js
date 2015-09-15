@@ -29,21 +29,6 @@ exports.restAddAssignment = function(req, res) {
 };
 
 //Public API
-exports.createUser = function(user, callback) {
-    exports.save(user, function(err, user){
-        if(err) {
-            callback(err, user);
-        } else {
-            var company = companies.generateDefaultCompany();
-            company.ownerId = user._id;
-            companies.save(company, function(err, company){
-                console.log('Defaul company is created!');
-                callback(err, user);
-            });
-        }
-    });
-};
-
 exports.save = function(user, callback) {
     var users = dbSettings.userCollection();
     users.save(user, {safe:true}, function (err, result) {
