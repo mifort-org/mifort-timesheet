@@ -1,12 +1,7 @@
-<div class="timelog-controls">
-    <button ng-if="currentTimelogIndex" class="previous-period" ng-click="previousPeriod()"></button>
-    <button ng-if="currentTimelogIndex < splittedTimelog.length - 1" class="next-period" ng-click="nextPeriod()"></button>
-</div>
-
 <div class="collapse-wrapper">
     <h2 ng-class="{'timelog-collapsed': isCollapsed}">
         <a href="" class="collapse-item" ng-class="{'collapsed': isCollapsed}" ng-click="isCollapsed = !isCollapsed">
-            {{project.name}}
+            {{project.name}}name
         </a>
     </h2>
 
@@ -36,20 +31,14 @@
                     </select>
                 </td>
 
-                <td>
-                    <input class="timelog-hours form-control" type="text" ng-model="log.time"/>
-                    <span>hours</span>
-                </td>
-
                 <td><input class="timelog-comment form-control" type="text" ng-model="log.comment"/></td>
+            </tr>
+            <tr>
+                <td><input type="text"/></td>
+                <td><select name="" id=""></select></td>
+                <td><input type="text"/></td>
             </tr>
             </tbody>
         </table>
-    </div>
-
-    <div>
-        <!--<small>{{project.periods}}</small>-->
-        <!--<small>{{splittedTimelog.length}}</small>-->
-        <!--<small>{{timelog}}</small>-->
     </div>
 </div>

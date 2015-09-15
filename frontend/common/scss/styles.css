@@ -291,19 +291,19 @@ h2 a:focus {
 }
 
 /*Timelog*/
-.timelog-wrapper {
+.collapse-wrapper {
     background: #fff;
     padding: 25px;
 }
 
-.collapse-timelog {
+.collapse-item {
     float: left;
     padding-left: 20px;
     font-size: 0.9em;
     background: url("../images/icons.png") -12px -321px no-repeat;
 }
 
-.collapse-timelog.collapsed {
+.collapse-item.collapsed {
     background-position: -12px -637px;
 }
 

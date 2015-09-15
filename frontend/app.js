@@ -7,6 +7,7 @@ angular.module('myApp', [
     'ui.bootstrap',
     'myApp.login',
     'myApp.company',
+    'myApp.projects',
     'myApp.timelog',
     'myApp.timesheetManagement',
     'myApp.projectReport',
