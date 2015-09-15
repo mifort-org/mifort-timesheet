@@ -463,8 +463,21 @@ h2 a:focus {
     outline: 0;
 }
 
+.primary-button.large-button {
+    width: 226px;
+    height: 46px;
+    font-size: 24px;
+    font-weight: 400;
+}
+
 .primary-button:active {
     height: 32px;
+    margin-top: 4px;
+    border-bottom-width: 1px;
+}
+
+.primary-button.large-button:active {
+    height: 42px;
     margin-top: 4px;
     border-bottom-width: 1px;
 }
@@ -536,4 +549,60 @@ h2 a:focus {
 .timesheet-hours-label {
     color: #999;
     font-size: 1.2em;
+}
+
+/*Company*/
+.company-wrapper {
+    padding: 75px 0;
+    text-align: center;
+    background: #fff;
+}
+
+.company-wrapper h1 {
+    font-size: 3em;
+    font-weight: 600;
+    padding-bottom: 40px;
+}
+
+.company-wrapper form {
+    font-size: 1.8em;
+}
+
+.company-wrapper table {
+    width: 100%;
+    text-align: left;
+}
+
+.company-wrapper table td {
+    vertical-align: top;
+}
+
+.company-wrapper table button {
+    margin: 0;
+}
+
+.company-wrapper table td:first-child {
+    text-align: right;
+}
+
+.company-wrapper label {
+    font-weight: 600;
+    vertical-align: top;
+    margin: 4px 20px 0 0;
+}
+
+.company-wrapper input,
+.company-wrapper textarea {
+    width: 70%;
+    height: 38px;
+    line-height: 38px;
+    margin-bottom: 25px;
+    padding: 10px 15px;
+    border: 1px #eaeff7 solid;
+}
+
+.company-wrapper textarea {
+    min-height: 120px;
+    line-height: 1.2;
+    resize: vertical;
 }
