@@ -5,10 +5,10 @@
             {{project.name}}
         </a>
     </h2>
-
+    {{projects[$index].timelog[0]}}
     <div class="timelog-controls">
-        <button ng-if="currentTimelogIndex" class="previous-period" ng-click="previousPeriod()"></button>
-        <button ng-if="currentTimelogIndex < splittedTimelog.length - 1" class="next-period" ng-click="nextPeriod()"></button>
+        <button ng-if="project.currentTimelogIndex" class="previous-period" ng-click="previousPeriod(project)"></button>
+        <button ng-if="project.currentTimelogIndex < project.splittedTimelog.length - 1" class="next-period" ng-click="nextPeriod(project)"></button>
     </div>
 
     <div collapse="isCollapsed">
@@ -19,7 +19,7 @@
             </th>
             </thead>
             <tbody>
-            <tr ng-if="currentTimelogIndex >= 0" ng-repeat="log in splittedTimelog[currentTimelogIndex]"
+            <tr ng-if="project.currentTimelogIndex >= 0" ng-repeat="log in project.splittedTimelog[project.currentTimelogIndex]"
                 ng-class="{'weekend': isWeekend(log.date)}">
                 <td ng-class="log.isFirstDayRecord ? 'is-first-day-log' : 'is-not-first-day-log'">
                     <span class="timelog-data">
