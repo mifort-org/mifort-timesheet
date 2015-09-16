@@ -31,6 +31,7 @@ auth.init(app);
 //project
 app.post('/project', project.restSave);
 app.get('/project/:projectId', project.restGetById);
+app.get('/projects', project.restGetByCompanyId);
 
 //timelog
 app.post('/timelog', timelog.restSave);
