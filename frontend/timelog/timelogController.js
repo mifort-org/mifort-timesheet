@@ -13,6 +13,7 @@ angular.module('myApp.timelog', ['ngRoute'])
         $scope.currentTimelogIndex = 0;
         $scope.isCollapsed = false;
         $scope.timelogKeys = timelogService.getTimelogKeys();
+        $scope.projects = preferences.get('user').assignments;
 
         timesheetManagementService.getProject(preferences.get('user').assignments[0].projectId).success(function (data) {
             $scope.project = data;

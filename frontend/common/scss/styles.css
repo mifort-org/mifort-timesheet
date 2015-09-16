@@ -295,6 +295,9 @@ h2 a:focus {
     background: #fff;
     padding: 25px;
 }
+.collapse-wrapper h2{
+    float: left;
+}
 
 .collapse-item {
     float: left;
@@ -313,7 +316,7 @@ h2 a:focus {
 }
 
 .timelog-controls {
-    position: absolute;
+    float: right;
     right: 55px;
     top: 20px;
 }

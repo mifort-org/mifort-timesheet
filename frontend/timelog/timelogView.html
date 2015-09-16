@@ -1,7 +1,4 @@
-<div class="timelog-controls">
-    <button ng-if="currentTimelogIndex" class="previous-period" ng-click="previousPeriod()"></button>
-    <button ng-if="currentTimelogIndex < splittedTimelog.length - 1" class="next-period" ng-click="nextPeriod()"></button>
-</div>
+
 
 <div class="collapse-wrapper">
     <h2 ng-class="{'timelog-collapsed': isCollapsed}">
@@ -9,6 +6,10 @@
             {{project.name}}
         </a>
     </h2>
+    <div class="timelog-controls">
+        <button ng-if="currentTimelogIndex" class="previous-period" ng-click="previousPeriod()"></button>
+        <button ng-if="currentTimelogIndex < splittedTimelog.length - 1" class="next-period" ng-click="nextPeriod()"></button>
+    </div>
 
     <div collapse="isCollapsed">
         <table class="table table-bordered timelog">
