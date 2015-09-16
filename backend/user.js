@@ -28,6 +28,22 @@ exports.restAddAssignment = function(req, res) {
     }
 };
 
+exports.restGetByProjectId = function(req, res) {
+    var projectIdParam = utils.getProjectId(req, res);
+    if(projectIdParam) {
+        var users = dbSettings.userCollection();
+        users.find({'assignments.projectId': projectIdParam},
+                   { assignments: {$elemMatch: {projectId: projectIdParam}}})
+          .toArray(function(err, projectUsers){
+            if(err) {
+                res.status(400).json({error: 'Cannot find users'});
+            } else {
+                res.json(projectUsers);
+            }
+        });
+    }
+};
+
 //Public API
 exports.save = function(user, callback) {
     var users = dbSettings.userCollection();

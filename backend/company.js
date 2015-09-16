@@ -17,7 +17,7 @@ exports.restFindById = function(req, res) {
     }
 };
 
-exports.restSave = function(req, res) {
+exports.restCreateCompany = function(req, res) {
     var company = req.body;
     if(company) {
         save(company, function(err, savedCompany) {
