@@ -20,6 +20,20 @@ exports.restGetById = function(req, res) {
 
 exports.restSave = utils.restSaveObject(dbSettings.projectCollection);
 
+exports.restGetByCompanyId = function(req, res) {
+    var companyId = utils.getCompanyId(req, res);
+    if(companyId) {
+        var projects = dbSettings.projectCollection();
+        projects.find({companyId: companyId}).toArray(function(err, findedProjects){
+            if(err) {
+                res.status(400).json({error: 'Cannot find projects!'});
+            } else {
+                res.json(findedProjects);
+            }
+        });
+    }
+};
+
 //Public API
 exports.saveInDb = function(project, callback) {
     var projects = dbSettings.projectCollection();
