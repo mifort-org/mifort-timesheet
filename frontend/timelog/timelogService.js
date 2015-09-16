@@ -6,6 +6,9 @@ angular.module('myApp.timelog').factory('timelogService',
             getTimelog: function (userId, projectId, startDate, endDate) {
                 return $http.get('timelog/' + userId + '?projectId=' + projectId + '&startDate=' + startDate+ '&endDate=' + endDate);
             },
+            removeTimelog: function (log) {
+                return $http.delete('timelog/', log);
+            },
             getTimelogKeys: function () {
                 return {
                     'date': 'Date',

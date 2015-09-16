@@ -100,6 +100,7 @@ angular.module('myApp.timelog', ['ngRoute'])
 
         $scope.removeRow = function (log, dayIndex) {
             $scope.timelog.splice(dayIndex, 1);
+            timelogService.removeTimelog(log);
             splitPeriods();
         };
 
