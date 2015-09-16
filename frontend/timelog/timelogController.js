@@ -2,86 +2,102 @@
 
 angular.module('myApp.timelog', ['ngRoute'])
 
-    .config(['$routeProvider', function ($routeProvider) {
+    .config(['$routeProvider', function($routeProvider) {
         $routeProvider.when('/timelog', {
             templateUrl: 'timelog/timelogView.html',
             controller: 'timelogController'
         });
     }])
 
-    .controller('timelogController', ['$scope', '$filter', 'timelogService', 'timesheetManagementService', 'preferences', function ($scope, $filter, timelogService, timesheetManagementService, preferences) {
+    .controller('timelogController', ['$scope', '$filter', 'timelogService', 'timesheetManagementService', 'preferences', function($scope, $filter, timelogService, timesheetManagementService, preferences) {
         $scope.currentTimelogIndex = 0;
         $scope.isCollapsed = false;
+        $scope.projects = [];
+        $scope.userTimelogs = [];
+        $scope.timelog = [];
+        $scope.splittedTimelog = [];
         $scope.timelogKeys = timelogService.getTimelogKeys();
-        $scope.projects = preferences.get('user').assignments;
+        $scope.assignments = preferences.get('user').assignments;
 
-        timesheetManagementService.getProject(preferences.get('user').assignments[0].projectId).success(function (data) {
-            $scope.project = data;
-        }).then(function () {
-            timelogService.getTimelog(preferences.get('user')._id, $scope.project._id, $scope.project.periods[0].start, $scope.project.periods[0].end).success(function (data) {
-                $scope.init(data.timelog);
-            })
+        $scope.assignments.forEach(function(assignment, index) {
+            timesheetManagementService.getProject(assignment.projectId).success(function(project) {
+                $scope.projects.push(project);
+            }).then(function() {
+                var currentProject = $scope.projects[index],
+                    startDate = currentProject.periods[0].start,
+                    endDate = currentProject.periods[0].end;
+                timelogService.getTimelog(preferences.get('user')._id, currentProject._id, startDate, endDate).success(function(projectTimelog) {
+                    $scope.userTimelogs.push.apply($scope.userTimelogs, projectTimelog.timelog);
+
+                    if($scope.assignments.length == index + 1) {
+                        $scope.init();
+                    }
+                })
+            });
         });
 
-        $scope.init = function (userTimelog) {
-            $scope.timelog = [];
-            var startDate = moment(new Date($scope.project.periods[0].start)),
-                endDate = moment(new Date($scope.project.periods[$scope.project.periods.length - 1].end)),
-                daysToGenerate = endDate.diff(startDate, 'days');
+        $scope.init = function() {
+            $scope.projects.forEach(function(project) {
+                var startDate = moment(new Date(project.periods[0].start)),
+                    endDate = moment(new Date(project.periods[project.periods.length - 1].end)),
+                    daysToGenerate = endDate.diff(startDate, 'days');
 
-            for (var i = 0; i < daysToGenerate + 1; i++) {
-                var dayToPush;
+                //template timelogs
+                for (var i = 0; i < daysToGenerate + 1; i++) {
+                    var dayToPush;
 
-                $scope.project.template.workload = preferences.get('user').workload;
-                $scope.project.template.userId = preferences.get('user')._id;
-                $scope.project.template.projectId = $scope.project._id;
-                $scope.project.template.projectName = $scope.project.name;
+                    project.template.workload = preferences.get('user').workload;
+                    project.template.userId = preferences.get('user')._id;
+                    project.template.projectId = project._id;
+                    project.template.projectName = project.name;
 
-                dayToPush = _.clone($scope.project.template);
-                dayToPush.date = angular.copy(startDate).add(i, 'days').calendar();
-                dayToPush.isFirstDayRecord = true;
+                    dayToPush = _.clone(project.template);
+                    dayToPush.date = angular.copy(startDate).add(i, 'days').calendar();
+                    dayToPush.isFirstDayRecord = true;
 
-                $scope.timelog.push(dayToPush);
-            }
+                    $scope.timelog.push(dayToPush);
+                }
 
-            if ($scope.project.defaultValues) {
-                $scope.project.defaultValues.forEach(function (day) {
-                    var dayExisted = _.findWhere($scope.timelog, {date: moment(new Date(day.date)).calendar()});
-                    if(dayExisted){
-                        angular.extend(dayExisted, day);
+                //timelogs data from timesheet
+                if(project.defaultValues) {
+                    project.defaultValues.forEach(function(day) {
+                        var dayExisted = _.findWhere($scope.timelog, {date: moment(new Date(day.date)).calendar()});
+                        if(dayExisted) {
+                            angular.extend(dayExisted, day);
+                        }
+                    });
+                }
+
+                //user timelogs
+                $scope.userTimelogs.forEach(function(day, index) {
+                    var timelogDayIndex = _.findIndex($scope.timelog, {date: moment(new Date(day.date)).calendar()});
+                    day.isFirstDayRecord = false;
+
+                    //if current iterated log is not the first for this date to push
+                    if($scope.userTimelogs[index - 1] && $scope.userTimelogs[index - 1].date == day.date) {
+                        $scope.timelog.splice(timelogDayIndex + 1, 0, day);
+                    }
+                    else {
+                        day.isFirstDayRecord = true;
+                        angular.extend(_.findWhere($scope.timelog, {date: day.date}), day);
                     }
                 });
-            }
 
-            //$scope.timelog = angular.extend($scope.timelog, userTimelog);
-            userTimelog.forEach(function (day, index) {
-                var timelogDayIndex = _.findIndex($scope.timelog, {date: moment(new Date(day.date)).calendar()});
-                day.isFirstDayRecord = false;
+                $scope.timelogAssigments = preferences.get('user').assignments.map(function(assignment) {
+                    return assignment.role
+                });
 
-                //if current iterated log is not the first for this date to push
-                if(userTimelog[index - 1] && userTimelog[index - 1].date == day.date){
-                    $scope.timelog.splice(timelogDayIndex + 1, 0, day);
-                }
-                else{
-                    day.isFirstDayRecord = true;
-                    angular.extend(_.findWhere($scope.timelog, {date: day.date}), day);
-                }
+                splitPeriods(project);
             });
 
-            $scope.timelogAssigments = preferences.get('user').assignments.map(function (assignment) {
-                return assignment.role
-            });
 
-            splitPeriods();
-
-            $scope.$watch('timelog', function () {
+            $scope.$watch('timelog', function() {
                 timelogService.updateTimelog(preferences.get('user')._id, $scope.timelog);
             }, true);
         };
 
-        function splitPeriods () {
-            $scope.splittedTimelog = [];
-            $scope.project.periods.forEach(function (period) {
+        function splitPeriods(project) {
+            project.periods.forEach(function(period) {
                 var timelogPeriod,
                     startIndex = _.findIndex($scope.timelog, {date: moment(new Date(period.start)).calendar()}),
                     endIndex = _.findIndex($scope.timelog, {date: moment(new Date(period.end)).calendar()});
@@ -91,29 +107,29 @@ angular.module('myApp.timelog', ['ngRoute'])
             });
         }
 
-        $scope.addRow = function (log, dayIndex) {
+        $scope.addRow = function(log, dayIndex) {
             var newRow = angular.copy($scope.project.template);
             newRow.date = log.date;
             newRow.isNotFirstDayRecord = true;
-            $scope.timelog.splice(dayIndex+1, 0, newRow);
+            $scope.timelog.splice(dayIndex + 1, 0, newRow);
             splitPeriods();
         };
 
-        $scope.removeRow = function (log, dayIndex) {
+        $scope.removeRow = function(log, dayIndex) {
             $scope.timelog.splice(dayIndex, 1);
             timelogService.removeTimelog(log);
             splitPeriods();
         };
 
-        $scope.isWeekend = function (date) {
+        $scope.isWeekend = function(date) {
             return $filter('isWeekendDay')(date);
         };
 
-        $scope.previousPeriod = function () {
+        $scope.previousPeriod = function() {
             $scope.currentTimelogIndex--;
         };
 
-        $scope.nextPeriod = function () {
+        $scope.nextPeriod = function() {
             $scope.currentTimelogIndex++;
         };
     }]);

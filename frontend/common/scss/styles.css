@@ -83,7 +83,7 @@ h2 {
 }
 
 h2.timelog-collapsed {
-    padding-bottom: 15px;
+    padding-bottom: 0;
 }
 
 h2 a,
@@ -293,10 +293,12 @@ h2 a:focus {
 /*Timelog*/
 .collapse-wrapper {
     background: #fff;
-    padding: 25px;
+    padding: 15px 25px;
+    margin-bottom: 25px;
 }
 .collapse-wrapper h2{
     float: left;
+    margin-top: 6px;
 }
 
 .collapse-item {
@@ -307,7 +309,7 @@ h2 a:focus {
 }
 
 .collapse-item.collapsed {
-    background-position: -12px -637px;
+    background-position: -12px -635px;
 }
 
 .timelog {
