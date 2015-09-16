@@ -41,9 +41,10 @@ app.delete('/timelog', timelog.restDelete);
 //user
 app.get('/user', user.restGetCurrent);
 app.post('/user/assignment', user.restAddAssignment);
+app.get('users', user.restGetByProjectId);
 
 //company
-app.post('/company', company.restSave);
+app.post('/company', company.restCreateCompany);
 app.get('/company/:companyId', company.restFindById);
 
 //run application
