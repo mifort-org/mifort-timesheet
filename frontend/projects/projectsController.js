@@ -9,10 +9,13 @@ angular.module('myApp.projects', ['ngRoute'])
         });
     }])
 
-    .controller('projectsController', ['$scope', '$location', 'projectsService', function ($scope, $location, projectsService) {
-        $scope.timelogKeys = [
+    .controller('projectsController', ['$scope', 'projectsService', 'preferences', function ($scope, projectsService, preferences) {
+        $scope.projectsKeys = [
             'Employee',
             'Assignment',
             'Workload'
-        ]
+        ];
+        $scope.currentProjectIndex = 0;
+
+        projectsService.getAssignments(preferences.get('user').companyId);
     }]);
