@@ -37,7 +37,7 @@ angular.module('myApp.timelog', ['ngRoute'])
         });
 
         $scope.init = function() {
-            $scope.projects.forEach(function(project) {
+            $scope.projects.forEach(function(project, projectIndex) {
                 var startDate = moment(new Date(project.periods[0].start)),
                     endDate = moment(new Date(project.periods[project.periods.length - 1].end)),
                     daysToGenerate = endDate.diff(startDate, 'days');
@@ -91,17 +91,13 @@ angular.module('myApp.timelog', ['ngRoute'])
                 });
 
                 splitPeriods(project);
-            });
 
-            $scope.$watch('projects', function(newValue, oldValue) {
-                if(newValue && newValue != oldValue) {
-                    newValue.forEach(function(project, projectIndex) {
-                        if(project.timelog != oldValue[projectIndex].timelog && project.timelog.length >= oldValue[projectIndex].timelog.length){
-                            timelogService.updateTimelog(preferences.get('user')._id, project.timelog);
-                        }
-                    });
-                }
-            }, true);
+                $scope.$watch('projects['+projectIndex+']', function(newValue, oldValue) {
+                    if(newValue && newValue.timelog != oldValue.timelog && newValue.timelog.length >= oldValue.timelog.length) {
+                        timelogService.updateTimelog(preferences.get('user')._id, newValue.timelog);
+                    }
+                }, true);
+            });
         };
 
         function splitPeriods(project) {
