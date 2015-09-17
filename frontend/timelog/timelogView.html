@@ -5,11 +5,12 @@
             {{project.name}}
         </a>
     </h2>
-    {{projects[$index].timelog[0]}}
+
     <div class="timelog-controls">
         <button ng-if="project.currentTimelogIndex" class="previous-period" ng-click="previousPeriod(project)"></button>
         <button ng-if="project.currentTimelogIndex < project.splittedTimelog.length - 1" class="next-period" ng-click="nextPeriod(project)"></button>
     </div>
+    {{projects[0].splittedTimelog.length}}
 
     <div collapse="isCollapsed">
         <table class="table table-bordered timelog">
@@ -25,8 +26,8 @@
                     <span class="timelog-data">
                         <span ng-if="log.isFirstDayRecord">{{log.date}}</span>
 
-                        <a href="" ng-if="log.isFirstDayRecord" class="add-timelog" ng-click="addRow(log, $index)">+</a>
-                        <a href="" ng-if="!log.isFirstDayRecord" class="remove-timelog" ng-click="removeRow(log, $index)">&#8211;</a>
+                        <a href="" ng-if="log.isFirstDayRecord" class="add-timelog" ng-click="addRow(log, $index, project)">+</a>
+                        <a href="" ng-if="!log.isFirstDayRecord" class="remove-timelog" ng-click="removeRow(log, $index, project)">&#8211;</a>
                     </span>
                 </td>
 
