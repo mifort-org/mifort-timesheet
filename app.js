@@ -41,7 +41,8 @@ app.delete('/timelog', timelog.restDelete);
 //user
 app.get('/user', user.restGetCurrent);
 app.post('/user/assignment', user.restAddAssignment);
-app.get('users', user.restGetByProjectId);
+app.get('/users', user.restGetByProjectId);
+app.post('/user/assignment/:projectId', user.restReplaceAssignments);
 
 //company
 app.post('/company', company.restCreateCompany);
