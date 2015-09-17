@@ -61,8 +61,10 @@ exports.restReplaceAssignments = function(req, res) {
                                      { $push: { assignments: { $each: assignments } }},
                             function(err, updatedUser){
                                 console.log(updatedUser);
-                                // return saved object ????
+                                res.json({ok: true}); //saved object???
                             });
+                    } else {
+                        res.status(400).json(err);
                     }
                 });
         } else {
