@@ -10,7 +10,6 @@
         <button ng-if="project.currentTimelogIndex" class="previous-period" ng-click="previousPeriod(project)"></button>
         <button ng-if="project.currentTimelogIndex < project.splittedTimelog.length - 1" class="next-period" ng-click="nextPeriod(project)"></button>
     </div>
-    {{projects[0].splittedTimelog.length}}
 
     <div collapse="isCollapsed">
         <table class="table table-bordered timelog">

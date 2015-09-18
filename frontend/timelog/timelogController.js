@@ -38,7 +38,8 @@ angular.module('myApp.timelog', ['ngRoute'])
 
         $scope.init = function() {
             $scope.projects.forEach(function(project, projectIndex) {
-                var startDate = moment(new Date(project.periods[0].start)),
+                var typingTimer = null,
+                    startDate = moment(new Date(project.periods[0].start)),
                     endDate = moment(new Date(project.periods[project.periods.length - 1].end)),
                     daysToGenerate = endDate.diff(startDate, 'days');
 
@@ -94,7 +95,10 @@ angular.module('myApp.timelog', ['ngRoute'])
 
                 $scope.$watch('projects['+projectIndex+']', function(newValue, oldValue) {
                     if(newValue && newValue.timelog != oldValue.timelog && newValue.timelog.length >= oldValue.timelog.length) {
-                        timelogService.updateTimelog(preferences.get('user')._id, newValue.timelog);
+                        clearTimeout(typingTimer);
+                        typingTimer = setTimeout(function() {
+                            timelogService.updateTimelog(preferences.get('user')._id, newValue.timelog);
+                        }, 500)
                     }
                 }, true);
             });
