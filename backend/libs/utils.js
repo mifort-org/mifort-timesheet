@@ -8,6 +8,7 @@ var endDateParam = 'endDate';
 var projectIdParam = 'projectId';
 var userIdParam = 'userId';
 var companyIdParam ='companyId';
+var timelogIdParam = 'timelogId';
 
 exports.getStartDate = function(req, res) {
     return getDateParam(req, res, startDateParam);
@@ -27,6 +28,10 @@ exports.getUserId = function(req, res) {
 
 exports.getCompanyId = function(req, res) {
     return getObjectIdParam(req, res, companyIdParam);
+};
+
+exports.getTimelogId = function(req, res) {
+    return getObjectIdParam(req, res, timelogIdParam);
 };
 
 //private section

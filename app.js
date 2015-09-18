@@ -36,7 +36,7 @@ app.get('/projects', project.restGetByCompanyId);
 //timelog
 app.post('/timelog', timelog.restSave);
 app.get('/timelog/:userId', timelog.restGetByDates);
-app.delete('/timelog', timelog.restDelete);
+app.delete('/timelog/:timelogId', timelog.restDelete);
 
 //user
 app.get('/user', user.restGetCurrent);
