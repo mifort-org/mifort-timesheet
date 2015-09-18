@@ -65,7 +65,8 @@ function getParameter(req, res, name) {
 exports.jsonParse = function(key, value) {
     if (typeof value === 'string') {
         if (key.toLowerCase().indexOf('date') > -1
-                && moment(value).isValid()) {
+                && moment(value, dateFormat).isValid()) {
+            console.log(value);
             return moment(value, dateFormat).toDate();
         }
         var isIdField = key === '_id' //maybe should be some prefix/postfix ???
@@ -85,7 +86,7 @@ exports.jsonStringify = function(key, value) {
         || keyName === 'start'
         || keyName === 'end'
     if (isDateField
-            && moment(value).isValid()) {
+            && moment(value, dateFormat).isValid()) {
         return moment(value).format(dateFormat);
     }
     return value;

@@ -33,6 +33,32 @@ exports.restCreateCompany = function(req, res) {
     }
 };
 
+exports.restUpdateCompany = function(req, res) {
+    var company = req.body;
+    if(company) {
+        save(company, function(err, savedCompany) {
+            if(err) {
+                res.status(500).json(err);        
+            } else {
+                //update all projects
+                var projects = dbSettings.projectCollection();
+                projects.update(
+                        {companyId: company._id},
+                        {$set: {template: company.template},
+                         $set: {periods: company.periods},
+                         $set: {defaultValues: company.defaultValues}},
+                        {multi:true}, 
+                    function(err, result){
+                        console.log('Company projects are updated!')
+                    });
+                res.json(savedCompany);
+            }
+        });
+    } else {
+        res.status(500).json({error: 'Empty request body'});
+    }
+};
+
 //Public API
 exports.save = save;
 
