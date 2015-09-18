@@ -93,11 +93,20 @@ angular.module('myApp.timelog', ['ngRoute'])
 
                 splitPeriods(project);
 
-                $scope.$watch('projects['+projectIndex+']', function(newValue, oldValue) {
+                $scope.$watch('projects[' + projectIndex + ']', function(newValue, oldValue) {
                     if(newValue && newValue.timelog != oldValue.timelog && newValue.timelog.length >= oldValue.timelog.length) {
                         clearTimeout(typingTimer);
                         typingTimer = setTimeout(function() {
-                            timelogService.updateTimelog(preferences.get('user')._id, newValue.timelog);
+                            timelogService.updateTimelog(preferences.get('user')._id, newValue.timelog).success(function(data) {
+                                var newRecordIndex = _.findIndex(newValue.timelog, function(log){
+                                    return !log._id;
+                                });
+
+                                if(newRecordIndex){
+                                    newValue.timelog[newRecordIndex]._id = data.timelog[newRecordIndex]._id;
+                                }
+
+                            });
                         }, 500)
                     }
                 }, true);
@@ -125,11 +134,14 @@ angular.module('myApp.timelog', ['ngRoute'])
         };
 
         $scope.removeRow = function(log, dayIndex, project) {
-            timelogService.removeTimelog(log).success(function() {
-                project.splittedTimelog[project.currentTimelogIndex].splice(dayIndex, 1);
-                project.timelog.splice(dayIndex, _.findIndex(project.timelog, {$$hashKey: log.$$hashKey}));
-                splitPeriods(project);
-            });
+            if(log._id) {
+                timelogService.removeTimelog(log).success(function() {
+                        project.splittedTimelog[project.currentTimelogIndex].splice(dayIndex, 1);
+                        project.timelog.splice(dayIndex, _.findIndex(project.timelog, {$$hashKey: log.$$hashKey}));
+                        splitPeriods(project);
+                    }
+                );
+            }
         };
 
         $scope.isWeekend = function(date) {

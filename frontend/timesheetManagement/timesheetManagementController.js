@@ -98,7 +98,7 @@ angular.module('myApp.timesheetManagement', ['ngRoute'])
                             existedDayIndex = index;
                         }
                     });
-
+f
                     if (existedDayIndex >= 0) {
                         angular.extend($scope.project.defaultValues[existedDayIndex], changedDay);
                     }
