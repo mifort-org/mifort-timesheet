@@ -23,7 +23,7 @@ angular.module('myApp.timelog', ['ngRoute'])
             }).then(function() {
                 var currentProject = $scope.projects[index],
                     startDate = currentProject.periods[0].start,
-                    endDate = currentProject.periods[0].end;
+                    endDate = currentProject.periods[currentProject.periods.length - 1].end;
                 timelogService.getTimelog(preferences.get('user')._id, currentProject._id, startDate, endDate).success(function(projectTimelog) {
                     var projectUserTimelogs = $scope.projects[index].userTimelogs;
 
@@ -104,15 +104,6 @@ angular.module('myApp.timelog', ['ngRoute'])
                                         day._id = data.timelog[index]._id
                                     }
                                 });
-
-                                //var newRecordIndex = _.findIndex(newValue.timelog, function(log){
-                                //    return !log._id;
-                                //});
-                                //
-                                //if(newRecordIndex && data.timelog[newRecordIndex]){
-                                //    newValue.timelog[newRecordIndex]._id = data.timelog[newRecordIndex]._id;
-                                //}
-
                             });
                         }, 500)
                     }
