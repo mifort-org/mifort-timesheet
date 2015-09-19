@@ -1,6 +1,6 @@
 <div class="collapse-wrapper clearfix" ng-repeat="project in projects">
-
-    <h2 ng-class="{'timelog-collapsed': isCollapsed}">
+<!--{{project.splittedTimelog}}-->
+    <h2 ng-class="{'timelog-col1lapsed': isCollapsed}">
         <a href="" class="collapse-item" ng-class="{'collapsed': isCollapsed}" ng-click="isCollapsed = !isCollapsed">
             {{project.name}}
         </a>
@@ -25,7 +25,7 @@
                     <span class="timelog-data">
                         <span ng-if="log.isFirstDayRecord">{{log.date}}</span>
 
-                        <a href="" ng-if="log.isFirstDayRecord" class="add-timelog" ng-click="addRow(log, $index, project)">+</a>
+                        <a href="" ng-if="log.isFirstDayRecord" class="add-timelog" ng-click="addRow(log, project)">+</a>
                         <a href="" ng-if="!log.isFirstDayRecord" class="remove-timelog" ng-click="removeRow(log, $index, project)">&#8211;</a>
                     </span>
                 </td>
@@ -52,4 +52,4 @@
 
 <!--<small>{{project.periods}}</small>-->
 <!--<small>{{splittedTimelog.length}}</small>-->
-<!--<small>{{timelog}}</small>-->
+<!--<small>{{projects[0].timelog}}</small>-->

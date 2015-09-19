@@ -98,13 +98,20 @@ angular.module('myApp.timelog', ['ngRoute'])
                         clearTimeout(typingTimer);
                         typingTimer = setTimeout(function() {
                             timelogService.updateTimelog(preferences.get('user')._id, newValue.timelog).success(function(data) {
-                                var newRecordIndex = _.findIndex(newValue.timelog, function(log){
-                                    return !log._id;
+
+                                _.map(newValue.timelog, function(day, index){
+                                    if(!day._id && data.timelog[index]){
+                                        day._id = data.timelog[index]._id
+                                    }
                                 });
 
-                                if(newRecordIndex){
-                                    newValue.timelog[newRecordIndex]._id = data.timelog[newRecordIndex]._id;
-                                }
+                                //var newRecordIndex = _.findIndex(newValue.timelog, function(log){
+                                //    return !log._id;
+                                //});
+                                //
+                                //if(newRecordIndex && data.timelog[newRecordIndex]){
+                                //    newValue.timelog[newRecordIndex]._id = data.timelog[newRecordIndex]._id;
+                                //}
 
                             });
                         }, 500)
@@ -118,15 +125,16 @@ angular.module('myApp.timelog', ['ngRoute'])
             project.periods.forEach(function(period) {
                 var timelogPeriod,
                     startIndex = _.findIndex(project.timelog, {date: moment(new Date(period.start)).calendar()}),
-                    endIndex = _.findIndex(project.timelog, {date: moment(new Date(period.end)).calendar()});
+                    endIndex = _.findLastIndex(project.timelog, {date: moment(new Date(period.end)).calendar()});
 
                 timelogPeriod = project.timelog.slice(startIndex, endIndex + 1);
                 project.splittedTimelog.push(timelogPeriod);
             });
         }
 
-        $scope.addRow = function(log, dayIndex, project) {
-            var newRow = angular.copy(project.template);
+        $scope.addRow = function(log, project) {
+            var newRow = angular.copy(project.template),
+                dayIndex = _.findIndex(project.timelog, {_id: log._id});
             newRow.date = log.date;
             newRow.isNotFirstDayRecord = true;
             project.timelog.splice(dayIndex + 1, 0, newRow);
@@ -137,7 +145,8 @@ angular.module('myApp.timelog', ['ngRoute'])
             if(log._id) {
                 timelogService.removeTimelog(log).success(function() {
                         project.splittedTimelog[project.currentTimelogIndex].splice(dayIndex, 1);
-                        project.timelog.splice(dayIndex, _.findIndex(project.timelog, {$$hashKey: log.$$hashKey}));
+                        //project.timelog.splice(dayIndex, _.findIndex(project.timelog, {$$hashKey: log.$$hashKey}));
+                        project.timelog.splice(dayIndex, 1);
                         splitPeriods(project);
                     }
                 );
