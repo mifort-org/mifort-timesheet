@@ -34,39 +34,11 @@ exports.getTimelogId = function(req, res) {
     return getObjectIdParam(req, res, timelogIdParam);
 };
 
-//private section
-function getObjectIdParam(req, res, name) {
-    var entityObjectId = getParameter(req, res, name);
-    if(entityObjectId && ObjectID.isValid(entityObjectId)) {
-        entityObjectId = new ObjectID(entityObjectId);
-    } else {
-        res.status(500).json({error: 'Invalid ' + name + ' format!'});
-        entityObjectId = false;
-    }
-    return entityObjectId;
-}
-
-function getDateParam(req, res, name) {
-    var date = getParameter(req, res, name);
-    if(date) {
-        return moment(date, dateFormat).toDate();
-    }
-};
-
-function getParameter(req, res, name) {
-    var param = req.params[name] || req.query[name];
-    if(!param) {
-        res.status(400).json({ error: name + ' is not specified!' });
-    }
-    return param;
-}
-
 //parse json. Date and ObjectId
 exports.jsonParse = function(key, value) {
     if (typeof value === 'string') {
         if (key.toLowerCase().indexOf('date') > -1
                 && moment(value, dateFormat).isValid()) {
-            console.log(value);
             return moment(value, dateFormat).toDate();
         }
         var isIdField = key === '_id' //maybe should be some prefix/postfix ???
@@ -111,6 +83,33 @@ exports.restSaveObject = function(collection) {
         }
     };
 };
+
+//private section
+function getObjectIdParam(req, res, name) {
+    var entityObjectId = getParameter(req, res, name);
+    if(entityObjectId && ObjectID.isValid(entityObjectId)) {
+        entityObjectId = new ObjectID(entityObjectId);
+    } else {
+        res.status(500).json({error: 'Invalid ' + name + ' format!'});
+        entityObjectId = false;
+    }
+    return entityObjectId;
+}
+
+function getDateParam(req, res, name) {
+    var date = getParameter(req, res, name);
+    if(date) {
+        return moment(date, dateFormat).toDate();
+    }
+};
+
+function getParameter(req, res, name) {
+    var param = req.params[name] || req.query[name];
+    if(!param) {
+        res.status(400).json({ error: name + ' is not specified!' });
+    }
+    return param;
+}
 
 function sendSavedObject(err, res, object, result) {
     if(err) {
