@@ -17,6 +17,7 @@ exports.restFindById = function(req, res) {
     }
 };
 
+//Deprecated ???
 exports.restCreateCompany = function(req, res) {
     var company = req.body;
     if(company) {
@@ -43,14 +44,15 @@ exports.restUpdateCompany = function(req, res) {
                 //update all projects
                 var projects = dbSettings.projectCollection();
                 projects.update(
-                        {companyId: company._id},
-                        {$set: {template: company.template},
-                         $set: {periods: company.periods},
-                         $set: {defaultValues: company.defaultValues}},
+                        {companyId: savedCompany._id},
+                        {$set: {template: savedCompany.template},
+                         $set: {periods: savedCompany.periods},
+                         $set: {defaultValues: savedCompany.defaultValues}},
                         {multi:true}, 
                     function(err, result){
                         console.log('Company projects are updated!')
                     });
+                createUsersByEmails(savedCompany);
                 res.json(savedCompany);
             }
         });
@@ -119,8 +121,8 @@ function createUsersByEmails(company) {
                         if(err) {
                             console.log(err);
                         } else {
-                            console.log("User saved:");
-                            console.log(savedUser);
+                            console.log('User saved:');
+                            console.log(savedUser.email);
                         }
                     });
                 }

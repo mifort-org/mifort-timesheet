@@ -40,15 +40,14 @@ app.delete('/timelog/:timelogId', timelog.restDelete);
 
 //user
 app.get('/user', user.restGetCurrent);
-app.post('/user/assignment', user.restAddAssignment);
 app.get('/users', user.restGetByProjectId);
 app.post('/user/assignment/:projectId', user.restReplaceAssignments);
 
 //company
-app.post('/company', company.restCreateCompany);
+app.post('/company', company.restUpdateCompany);
 app.get('/company/:companyId', company.restFindById);
 
 //run application
 app.listen(app.get('port'), function() {
-    console.log('Mifort-timesheet server is started on port: ' + app.get('port'));
+    console.log('MiTimesheet server is started on port: ' + app.get('port'));
 });
