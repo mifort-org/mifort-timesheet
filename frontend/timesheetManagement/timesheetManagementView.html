@@ -41,20 +41,21 @@
 
 <div class="timesheet-wrapper">
     <div class="timesheet-header">{{month}} October 2015{{year}}</div>
-    <table class="periods table table-bordered">
+    <table class="periods table table-bordered" ng-repeat="timesheet in splittedTimesheet">
         <thead>
         <th ng-repeat="day in weekDays track by $index">{{day}}</th>
         </thead>
         <tbody>
-        <tr ng-repeat="week in splittedTimesheet track by $index">
+        <tr ng-repeat="week in timesheet track by $index">
             <td table-cell
                 ng-repeat="day in week track by $index"
-                ng-class="{'period-start': day.isPeriodStartDate, 'period-end': day.isPeriodEndDate, 'weekend': isWeekend(day.date)}"></td>
+                ng-class="{'period-start': day.isPeriodStartDate, 'period-end': day.isPeriodEndDate, 'weekend': isWeekend(day.date), 'disabled-day': day.disabled}"></td>
         </tr>
         </tbody>
     </table>
 
-    <!--<small>{{timesheet}}</small>-->
+    <!--<small>{{splittedTimesheet}}</small>-->
+    <small>{{timesheet}}</small>
 
 
     <script type="text/ng-template" id="daySettimgs.html">
