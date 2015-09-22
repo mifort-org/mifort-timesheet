@@ -17,6 +17,7 @@ exports.restFindById = function(req, res) {
     }
 };
 
+//Deprecated ???
 exports.restCreateCompany = function(req, res) {
     var company = req.body;
     if(company) {
@@ -24,6 +25,33 @@ exports.restCreateCompany = function(req, res) {
             if(err) {
                 res.status(500).json(err);        
             } else {
+                createUsersByEmails(savedCompany);
+                res.json(savedCompany);
+            }
+        });
+    } else {
+        res.status(500).json({error: 'Empty request body'});
+    }
+};
+
+exports.restUpdateCompany = function(req, res) {
+    var company = req.body;
+    if(company) {
+        save(company, function(err, savedCompany) {
+            if(err) {
+                res.status(500).json(err);        
+            } else {
+                //update all projects
+                var projects = dbSettings.projectCollection();
+                projects.update(
+                        {companyId: savedCompany._id},
+                        {$set: {template: savedCompany.template},
+                         $set: {periods: savedCompany.periods},
+                         $set: {defaultValues: savedCompany.defaultValues}},
+                        {multi:true}, 
+                    function(err, result){
+                        console.log('Company projects are updated!')
+                    });
                 createUsersByEmails(savedCompany);
                 res.json(savedCompany);
             }
@@ -93,8 +121,8 @@ function createUsersByEmails(company) {
                         if(err) {
                             console.log(err);
                         } else {
-                            console.log("User saved:");
-                            console.log(savedUser);
+                            console.log('User saved:');
+                            console.log(savedUser.email);
                         }
                     });
                 }

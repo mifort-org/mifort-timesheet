@@ -8,26 +8,6 @@ exports.restGetCurrent = function(req, res) {
     res.json(user);
 };
 
-exports.restAddAssignment = function(req, res) {
-    var userInfo = req.body;
-    if(userInfo) {
-        var users = dbSettings.userCollection();
-        users.update({_id: userInfo._id}, 
-            {$push:{assignments: userInfo.assignment}},
-            function(err, result) {
-                if(err) {
-                    res.status(500).json(err);
-                } else {
-                    console.log('Assignment inserted');
-                    console.dir(result);
-                    res.json(result);
-                }
-            });
-    } else {
-        res.status(500).json({err:'Empty body'});
-    }
-};
-
 exports.restGetByProjectId = function(req, res) {
     var projectIdParam = utils.getProjectId(req, res);
     if(projectIdParam) {
@@ -50,7 +30,7 @@ exports.restReplaceAssignments = function(req, res) {
         if(req.body) {
             var user = req.body;
             var userId = user._id;
-            var assignments = user.assignments;
+            var assignments = user.assignments || {};
             var users = dbSettings.userCollection();
             users.update({ _id: userId },
                          { $pull: {assignments: {projectId: projectId} } },
@@ -60,7 +40,6 @@ exports.restReplaceAssignments = function(req, res) {
                         users.update({ _id: userId },
                                      { $push: { assignments: { $each: assignments } }},
                             function(err, updatedUser){
-                                console.log(updatedUser);
                                 res.json({ok: true}); //saved object???
                             });
                     } else {

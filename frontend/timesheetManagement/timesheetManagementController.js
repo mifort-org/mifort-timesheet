@@ -43,17 +43,10 @@ angular.module('myApp.timesheetManagement', ['ngRoute'])
             $scope.startDate = new Date($scope.project.periods[0].start); //default for perios split date
             $scope.timesheet = [];
             var startDate = moment(new Date($scope.project.periods[0].start)),
-                endDate = moment(new Date($scope.project.periods[$scope.project.periods.length - 1].end)),
-                daysBeforeTimesheetStart = new Date(startDate.calendar()).getDay(),
-                daysToGenerate = endDate.diff(startDate, 'days');
+                //daysToGenerate = endDate.diff(startDate, 'days');
+                daysToGenerate = 59;
 
-            //empty cells adding
-            for (var k = 0; k < daysBeforeTimesheetStart; k++) {
-                $scope.timesheet.push($scope.project.template);
-            }
-
-            //TODO: remove +1 when timezone conflict will be resolved
-            for (var i = 0; i < daysToGenerate + 1; i++) {
+            for (var i = 0; i < daysToGenerate; i++) {
                 var dayToPush = _.clone($scope.project.template);
                 dayToPush.date = moment(new Date(startDate)).add(i, 'days').calendar();
                 $scope.timesheet.push(dayToPush);
@@ -68,10 +61,51 @@ angular.module('myApp.timesheetManagement', ['ngRoute'])
                 }
             });
 
-            //use on success promise when REST will start working
-            for (var j = 0; j < $scope.timesheet.length / daysInRow; j++) {
-                $scope.splittedTimesheet.push($scope.timesheet.slice(j * daysInRow, j * daysInRow + daysInRow));
-            }
+            //Splitting the timesheet
+            $scope.timesheet.forEach(function(day, index) {
+                var currentDayMonth = moment(new Date(day.date)).get('month'),
+                    currentDayWeek = moment(new Date(day.date)).get('isoWeek'),
+                    daysBeforeTimesheetStart,
+                    daysAfterTimesheetEnd,
+                    generatedDay;
+
+                if($scope.splittedTimesheet[currentDayMonth]){
+                    if($scope.splittedTimesheet[currentDayMonth][currentDayWeek-1]){
+                        $scope.splittedTimesheet[currentDayMonth][currentDayWeek-1].push(day);
+                    }
+                    else{
+                        $scope.splittedTimesheet[currentDayMonth][currentDayWeek-1] = [];
+                        $scope.splittedTimesheet[currentDayMonth][currentDayWeek-1].push(day);
+                    }
+                }
+                else{
+                    daysBeforeTimesheetStart = moment(new Date(day.date)).isoWeekday();
+                    $scope.splittedTimesheet[currentDayMonth] = [];
+                    $scope.splittedTimesheet[currentDayMonth][0] = [];
+
+                    //generate days after previous month end
+                    if($scope.splittedTimesheet[currentDayMonth - 1]){
+                        daysAfterTimesheetEnd = $scope.timesheet[index-1] && 7 - moment(new Date($scope.timesheet[index-1].date)).isoWeekday();
+
+                        for (var i = 0; i < daysAfterTimesheetEnd; i++) {
+                            generatedDay =  _.clone($scope.project.template);
+                            generatedDay.date = moment(new Date(day.date)).subtract(i, 'day').calendar();
+                            generatedDay.disabled = true;
+                            $scope.splittedTimesheet[currentDayMonth - 1][$scope.splittedTimesheet[currentDayMonth - 1].length-1].push(generatedDay);
+                        }
+                    }
+
+                    //generate days before month start
+                    for (var k = 0; k < daysBeforeTimesheetStart-1; k++) {
+                        generatedDay =  _.clone($scope.project.template);
+                        generatedDay.date = moment(new Date(day.date)).subtract(k+1, 'day').calendar();
+                        generatedDay.disabled = true;
+                        $scope.splittedTimesheet[currentDayMonth][0].unshift(generatedDay);
+                    }
+
+                    $scope.splittedTimesheet[currentDayMonth][0].push(day);
+                }
+            });
 
             if ($scope.project.defaultValues) {
                 $scope.project.defaultValues.forEach(function (day) {

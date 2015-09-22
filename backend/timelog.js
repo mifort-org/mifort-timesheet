@@ -28,17 +28,18 @@ exports.restSave = function(req, res) {
 };
 
 exports.restDelete = function(req, res) {
-    if(req.body) {
-        var timelog = req.body;
+    var timelogId = utils.getTimelogId(req, res);
+    if(timelogId){
         var timelogCollection = dbSettings.timelogCollection();
-        timelogCollection.remove({_id:timelog._id}, function(err, numberOfDeleted){
+        timelogCollection.remove({_id:timelogId}, {single: true},
+          function(err, numberOfDeleted){
             if(err) {
                 res.status(500).json({error: 'Cannot delete timelog'});
             } else {
                 res.json(numberOfDeleted);
             }
         });
-    }
+    } 
 };
 
 exports.restGetByDates = function(req, res) {

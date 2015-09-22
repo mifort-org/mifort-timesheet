@@ -23,7 +23,7 @@ angular.module('myApp.timelog', ['ngRoute'])
             }).then(function() {
                 var currentProject = $scope.projects[index],
                     startDate = currentProject.periods[0].start,
-                    endDate = currentProject.periods[0].end;
+                    endDate = currentProject.periods[currentProject.periods.length - 1].end;
                 timelogService.getTimelog(preferences.get('user')._id, currentProject._id, startDate, endDate).success(function(projectTimelog) {
                     var projectUserTimelogs = $scope.projects[index].userTimelogs;
 
@@ -38,7 +38,8 @@ angular.module('myApp.timelog', ['ngRoute'])
 
         $scope.init = function() {
             $scope.projects.forEach(function(project, projectIndex) {
-                var startDate = moment(new Date(project.periods[0].start)),
+                var typingTimer = null,
+                    startDate = moment(new Date(project.periods[0].start)),
                     endDate = moment(new Date(project.periods[project.periods.length - 1].end)),
                     daysToGenerate = endDate.diff(startDate, 'days');
 
@@ -92,9 +93,19 @@ angular.module('myApp.timelog', ['ngRoute'])
 
                 splitPeriods(project);
 
-                $scope.$watch('projects['+projectIndex+']', function(newValue, oldValue) {
+                $scope.$watch('projects[' + projectIndex + ']', function(newValue, oldValue) {
                     if(newValue && newValue.timelog != oldValue.timelog && newValue.timelog.length >= oldValue.timelog.length) {
-                        timelogService.updateTimelog(preferences.get('user')._id, newValue.timelog);
+                        clearTimeout(typingTimer);
+                        typingTimer = setTimeout(function() {
+                            timelogService.updateTimelog(preferences.get('user')._id, newValue.timelog).success(function(data) {
+
+                                _.map(newValue.timelog, function(day, index){
+                                    if(!day._id && data.timelog[index]){
+                                        day._id = data.timelog[index]._id
+                                    }
+                                });
+                            });
+                        }, 500)
                     }
                 }, true);
             });
@@ -105,15 +116,16 @@ angular.module('myApp.timelog', ['ngRoute'])
             project.periods.forEach(function(period) {
                 var timelogPeriod,
                     startIndex = _.findIndex(project.timelog, {date: moment(new Date(period.start)).calendar()}),
-                    endIndex = _.findIndex(project.timelog, {date: moment(new Date(period.end)).calendar()});
+                    endIndex = _.findLastIndex(project.timelog, {date: moment(new Date(period.end)).calendar()});
 
                 timelogPeriod = project.timelog.slice(startIndex, endIndex + 1);
                 project.splittedTimelog.push(timelogPeriod);
             });
         }
 
-        $scope.addRow = function(log, dayIndex, project) {
-            var newRow = angular.copy(project.template);
+        $scope.addRow = function(log, project) {
+            var newRow = angular.copy(project.template),
+                dayIndex = _.findIndex(project.timelog, {_id: log._id});
             newRow.date = log.date;
             newRow.isNotFirstDayRecord = true;
             project.timelog.splice(dayIndex + 1, 0, newRow);
@@ -121,11 +133,15 @@ angular.module('myApp.timelog', ['ngRoute'])
         };
 
         $scope.removeRow = function(log, dayIndex, project) {
-            timelogService.removeTimelog(log).success(function() {
-                project.splittedTimelog[project.currentTimelogIndex].splice(dayIndex, 1);
-                project.timelog.splice(dayIndex, _.findIndex(project.timelog, {$$hashKey: log.$$hashKey}));
-                splitPeriods(project);
-            });
+            if(log._id) {
+                timelogService.removeTimelog(log).success(function() {
+                        project.splittedTimelog[project.currentTimelogIndex].splice(dayIndex, 1);
+                        //project.timelog.splice(dayIndex, _.findIndex(project.timelog, {$$hashKey: log.$$hashKey}));
+                        project.timelog.splice(dayIndex, 1);
+                        splitPeriods(project);
+                    }
+                );
+            }
         };
 
         $scope.isWeekend = function(date) {
