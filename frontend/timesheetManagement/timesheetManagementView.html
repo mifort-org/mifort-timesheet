@@ -39,9 +39,10 @@
     </button>
 </div>
 
-<div class="timesheet-wrapper">
-    <div class="timesheet-header">{{month}} October 2015{{year}}</div>
-    <table class="periods table table-bordered" ng-repeat="timesheet in splittedTimesheet">
+<div class="timesheet-wrapper" ng-repeat="timesheet in splittedTimesheet">
+    <div class="timesheet-header">{{getMonthName(timesheet)}}</div>
+    <!--<div class="timesheet-header">{{timesheet}}</div>-->
+    <table class="periods table table-bordered">
         <thead>
         <th ng-repeat="day in weekDays track by $index">{{day}}</th>
         </thead>
@@ -51,11 +52,16 @@
                 ng-repeat="day in week track by $index"
                 ng-class="{'period-start': day.isPeriodStartDate, 'period-end': day.isPeriodEndDate, 'weekend': isWeekend(day.date), 'disabled-day': day.disabled}"></td>
         </tr>
+        <!--<tfoot>-->
+        <!--<tr>-->
+            <!--<td colspan="7">{{timesheet}}</td>-->
+        <!--</tr>-->
+        <!--</tfoot>-->
         </tbody>
     </table>
 
     <!--<small>{{splittedTimesheet}}</small>-->
-    <small>{{timesheet}}</small>
+    <!--<small>{{timesheet}}</small>-->
 
 
     <script type="text/ng-template" id="daySettimgs.html">

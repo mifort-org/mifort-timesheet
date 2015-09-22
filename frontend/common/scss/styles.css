@@ -419,8 +419,8 @@ h2 a:focus {
 /*Timesheet*/
 .timesheet-wrapper {
     float: left;
-    width: 60%;
-    min-width: 542px;
+    clear: left;
+    width: 546px;
     margin-right: 40px;
     padding: 25px;
     background: #fff;
