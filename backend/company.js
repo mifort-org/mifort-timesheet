@@ -22,6 +22,10 @@ exports.restFindById = function(req, res) {
 exports.restCreateCompany = function(req, res) {
     var company = req.body;
     if(company) {
+        var defaultCompany = exports.generateDefaultCompany();
+        company.template = defaultCompany.template;
+        company.periods = defaultCompany.periods;
+
         save(company, function(err, savedCompany) {
             if(err) {
                 res.status(500).json(err);        
