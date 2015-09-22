@@ -31,10 +31,9 @@ passport.deserializeUser(function(id, done) {
 passport.use(new GoogleStrategy({
         clientID: GOOGLE_CLIENT_ID,
         clientSecret: GOOGLE_CLIENT_SECRET,
-        callbackURL: process.env.GOOGLE_CALLBACK || 'http://127.0.0.1:1313/oauth2callback',
-        passReqToCallback: true
+        callbackURL: process.env.GOOGLE_CALLBACK || 'http://127.0.0.1:1313/oauth2callback'
     },
-    function(req, accessToken, refreshToken, profile, done) {
+    function(accessToken, refreshToken, profile, done) {
         // asynchronous verification, for effect...
         process.nextTick(function () {
             var email = profile.emails[0].value;
@@ -55,14 +54,6 @@ passport.use(new GoogleStrategy({
                         createUser(user, done);
                     }
                     
-                    //Do we really need 'req' object? (Now we have only one button)
-                    // if(req.session.redirect_to === loginRedirect) {
-                    //     console.log("LOGIN!!!!");
-                    // }
-                    // if(req.session.redirect_to === registrationRedirect) {
-                    //     console.log("REGISTRATION!!!!");
-                    // }
-                    
                 }
             });
         });
@@ -81,7 +72,6 @@ exports.init = function(app) {
     app.use(passport.session());
 
     app.get('/login', function (req, res, next) {
-        req.session.redirect_to = loginRedirect;
         passport.authenticate('google', 
             {
                 scope: ['https://www.googleapis.com/auth/userinfo.email',
@@ -92,8 +82,7 @@ exports.init = function(app) {
     app.get('/oauth2callback', 
         passport.authenticate('google', { failureRedirect: loginRedirect }),
             function(req, res) {
-                console.log('Redirect:' + req.session.redirect_to);
-                res.redirect(req.session.redirect_to || loginRedirect);
+                res.redirect(loginRedirect);
             }
     );
 
@@ -107,7 +96,7 @@ function logout(req, res) {
 }
 
 function createUser(user, done) {
-    registration.createUser(user, function(err, savedUser){
+    registration.createUser(user, function(err, savedUser) {
         if(err) {
             return done(err, false); 
         } else {

@@ -1,7 +1,9 @@
+var moment = require('moment');
+
 var dbSettings = require('./libs/mongodb_settings');
 var users = require('./user');
 var utils = require('./libs/utils');
-var moment = require('moment');
+var registration = require('./libs/registration');
 
 //Rest API
 exports.restFindById = function(req, res) {
@@ -24,6 +26,7 @@ exports.restCreateCompany = function(req, res) {
             if(err) {
                 res.status(500).json(err);        
             } else {
+                registration.createDefaultProject(savedCompany, req.user); //Validation: check user!!!
                 createUsersByEmails(savedCompany);
                 res.json(savedCompany);
             }
