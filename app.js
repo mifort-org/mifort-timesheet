@@ -45,6 +45,7 @@ app.post('/user/assignment/:projectId', user.restReplaceAssignments);
 
 //company
 app.post('/company', company.restUpdateCompany);
+app.put('/company', company.restCreateCompany);
 app.get('/company/:companyId', company.restFindById);
 
 //run application

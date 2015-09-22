@@ -17,7 +17,6 @@ exports.restFindById = function(req, res) {
     }
 };
 
-//Deprecated ???
 exports.restCreateCompany = function(req, res) {
     var company = req.body;
     if(company) {
