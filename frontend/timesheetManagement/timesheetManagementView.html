@@ -1,4 +1,5 @@
-{{project.periods}}<div class="timesheet-controls">
+<!--<small>{{timesheet}}</small>-->
+<div class="timesheet-controls">
     <div class="clearfix">
         <label for="period">Report Period</label>
         <select id="period"
@@ -41,7 +42,6 @@
 
 <div class="timesheet-wrapper" ng-repeat="timesheet in splittedTimesheet">
     <div class="timesheet-header">{{getMonthName(timesheet)}}</div>
-    <!--<div class="timesheet-header">{{timesheet}}</div>-->
     <table class="periods table table-bordered">
         <thead>
         <th ng-repeat="day in weekDays track by $index">{{day}}</th>
@@ -50,18 +50,12 @@
         <tr ng-repeat="week in timesheet track by $index">
             <td table-cell
                 ng-repeat="day in week track by $index"
-                ng-class="{'period-start': day.isPeriodStartDate, 'period-end': day.isPeriodEndDate, 'weekend': isWeekend(day.date), 'disabled-day': day.disabled}"></td>
+                ng-class="{'period-start': day.isPeriodStartDate, 'period-end': day.isPeriodEndDate, 'weekend': day.weekend, 'disabled-day': day.disabled}"></td>
         </tr>
-        <!--<tfoot>-->
-        <!--<tr>-->
-            <!--<td colspan="7">{{timesheet}}</td>-->
-        <!--</tr>-->
-        <!--</tfoot>-->
         </tbody>
     </table>
 
-    <!--<small>{{splittedTimesheet}}</small>-->
-    <!--<small>{{timesheet}}</small>-->
+    <small>{{splittedTimesheet[$index]}}</small>
 
 
     <script type="text/ng-template" id="daySettimgs.html">

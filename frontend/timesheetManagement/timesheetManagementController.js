@@ -47,7 +47,7 @@ angular.module('myApp.timesheetManagement', ['ngRoute'])
             $scope.timesheet = [];
             var startDate = moment(new Date($scope.project.periods[0].start)),
                 endDate = moment(new Date($scope.project.periods[$scope.project.periods.length - 1].end)),
-                daysToGenerate = endDate.diff(startDate, 'days');
+                daysToGenerate = endDate.diff(startDate, 'days') + 1;
                 //daysToGenerate = 365;
 
             for (var i = 0; i < daysToGenerate; i++) {
@@ -58,20 +58,26 @@ angular.module('myApp.timesheetManagement', ['ngRoute'])
 
             $scope.project.periods.forEach(function (period) {
                 if (period.start) {
-                    _.findWhere($scope.timesheet, {date: moment(new Date(period.start)).calendar()}).isPeriodStartDate = true;
+                    _.findWhere($scope.timesheet, {date: moment(new Date(period.start)).format('MM/DD/YYYY')}).isPeriodStartDate = true;
                 }
                 if (period.end) {
-                    _.findWhere($scope.timesheet, {date: moment(new Date(period.end)).calendar()}).isPeriodEndDate = true;
+                    _.findWhere($scope.timesheet, {date: moment(new Date(period.end)).format('MM/DD/YYYY')}).isPeriodEndDate = true;
                 }
             });
 
             //Splitting the timesheet
             $scope.timesheet.forEach(function(day, index) {
-                var currentDayMonth = moment(new Date(day.date)).get('month'),
-                    currentDayWeek = moment(new Date(day.date)).get('isoWeek'),
+                var currentDate = new Date(day.date),
+                    currentDayYear = moment(currentDate).get('year'),
+                    currentDayMonth = moment(currentDate).get('month'),
+                    currentDayWeek = moment(currentDate).get('isoWeek'),
                     daysBeforeTimesheetStart,
                     daysAfterTimesheetEnd,
                     generatedDay;
+
+                if(currentDate.getDay() == 0 || currentDate.getDay() == 6){
+                    day.weekend = true;
+                }
 
                 if($scope.splittedTimesheet[currentDayMonth]){
                     if($scope.splittedTimesheet[currentDayMonth][currentDayWeek-1]){
@@ -83,17 +89,17 @@ angular.module('myApp.timesheetManagement', ['ngRoute'])
                     }
                 }
                 else{
-                    daysBeforeTimesheetStart = moment(new Date(day.date)).isoWeekday();
+                    daysBeforeTimesheetStart = moment(currentDate).isoWeekday();
                     $scope.splittedTimesheet[currentDayMonth] = [];
                     $scope.splittedTimesheet[currentDayMonth][currentDayWeek-1] = [];
 
-                    //generate days after previous month end
+                     //generate days after previous month end
                      if($scope.splittedTimesheet[currentDayMonth - 1]){
                          daysAfterTimesheetEnd = $scope.timesheet[index-1] && 7 - moment(new Date($scope.timesheet[index-1].date)).isoWeekday();
 
                          for (var i = 0; i < daysAfterTimesheetEnd; i++) {
                              generatedDay =  _.clone($scope.project.template);
-                             generatedDay.date = moment(new Date(day.date)).subtract(i, 'day').calendar();
+                             generatedDay.date = moment(currentDate).subtract(i, 'day').calendar();
                              generatedDay.disabled = true;
                              $scope.splittedTimesheet[currentDayMonth - 1][$scope.splittedTimesheet[currentDayMonth - 1].length-1].push(generatedDay);
                          }
@@ -102,7 +108,7 @@ angular.module('myApp.timesheetManagement', ['ngRoute'])
                      //generate days before month start
                      for (var k = 0; k < daysBeforeTimesheetStart-1; k++) {
                          generatedDay =  _.clone($scope.project.template);
-                         generatedDay.date = moment(new Date(day.date)).subtract(k+1, 'day').calendar();
+                         generatedDay.date = moment(currentDate).subtract(k+1, 'day').calendar();
                          generatedDay.disabled = true;
                          $scope.splittedTimesheet[currentDayMonth][currentDayWeek-1].unshift(generatedDay);
                      }
