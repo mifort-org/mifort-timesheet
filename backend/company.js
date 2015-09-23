@@ -30,6 +30,7 @@ exports.restCreateCompany = function(req, res) {
             if(err) {
                 res.status(500).json(err);        
             } else {
+                //Warning: asynchronous block!!! 
                 registration.createDefaultProject(savedCompany, req.user); //Validation: check user!!!
                 createUsersByEmails(savedCompany);
                 res.json(savedCompany);
