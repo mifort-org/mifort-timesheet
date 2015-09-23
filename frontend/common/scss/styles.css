@@ -422,7 +422,8 @@ h2 a:focus {
     clear: left;
     width: 546px;
     margin-right: 40px;
-    padding: 25px;
+    margin-bottom: 40px;
+    padding: 36px 27px;
     background: #fff;
 }
 
@@ -495,6 +496,7 @@ h2 a:focus {
 }
 
 .periods {
+    margin-bottom: 0;
     border-collapse: separate;
 }
 

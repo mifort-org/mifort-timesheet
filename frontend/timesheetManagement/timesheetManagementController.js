@@ -35,6 +35,9 @@ angular.module('myApp.timesheetManagement', ['ngRoute'])
         };
 
         $scope.init = function () {
+            //if(!$scope.project.periods.length){
+            //    $scope.project.periods.push({start: moment(new Date).calendar()});
+            //}
             generateTimesheet();
             initWatchers();
         };
@@ -45,7 +48,7 @@ angular.module('myApp.timesheetManagement', ['ngRoute'])
             var startDate = moment(new Date($scope.project.periods[0].start)),
                 endDate = moment(new Date($scope.project.periods[$scope.project.periods.length - 1].end)),
                 daysToGenerate = endDate.diff(startDate, 'days');
-                daysToGenerate = 365;
+                //daysToGenerate = 365;
 
             for (var i = 0; i < daysToGenerate; i++) {
                 var dayToPush = _.clone($scope.project.template);
@@ -234,6 +237,6 @@ angular.module('myApp.timesheetManagement', ['ngRoute'])
         };
 
         $scope.getMonthName = function(splittedTimesheet) {
-            return  moment(splittedTimesheet.slice(-1)[0][0].date).format('MMMM YYYY');
+            return  moment(new Date(splittedTimesheet.slice(-1)[0][0].date)).format('MMMM YYYY');
         }
     }]);

@@ -9,9 +9,21 @@ angular.module('myApp')
 
                 element.on('click', function (e) {
                     if(scope.day.date && $(e.target).is('td')){
-                        var dayIndex = _.findIndex(scope.timesheet, scope.day);
-                        var nextDay = scope.timesheet[dayIndex + 1],
+                        var dayIndex,
+                            dayweekIndex,
+                            nextDay = scope.timesheet[dayIndex + 1],
                             previousDay = scope.timesheet[dayIndex - 1];
+
+                        scope.timesheet.forEach(function(week, weekIndex){
+                            var currentWeekDayIndex = _.findIndex(week, {date: scope.day.date});
+                            if(currentWeekDayIndex != -1){
+                                dayIndex = currentWeekDayIndex;
+                                dayweekIndex = weekIndex;
+                                nextDay = scope.timesheet[dayweekIndex][dayIndex + 1] ||
+                                          scope.timesheet[dayweekIndex + 1][0] ||
+                                        true;
+                            }
+                        });
 
                         //left border click
                         if (e.pageX - clickableAreaWidth < $(this).offset().left) {
