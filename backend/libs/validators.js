@@ -6,6 +6,7 @@ var emptyBody = {
     message: 'Request body cannot be empty!'
 };
 
+//Project Rest Api validators
 exports.validateSaveProject = function(req, res, next) {
     var project = req.body;
     if(project) {
@@ -41,6 +42,18 @@ exports.validateGetProjectByCompanyId = function(req, res, next) {
     req.check(companyIdParam, 'Company id param is required and should have valid format')
             .notEmpty().isMongoId();
 
+    var errors = req.validationErrors(true);
+    if(errors) {
+        res.status(400).json(errors);
+        return;
+    }
+    next();
+};
+
+//User Rest API validators
+exports.validateGetUserByProjectId = function(req, res, next) {
+    req.check(projectIdParam, 'Project id param is required and should have valid format')
+            .notEmpty().isMongoId();
     var errors = req.validationErrors(true);
     if(errors) {
         res.status(400).json(errors);
