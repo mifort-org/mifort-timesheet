@@ -8,64 +8,54 @@ var registration = require('./libs/registration');
 //Rest API
 exports.restFindById = function(req, res) {
     var companyId = utils.getCompanyId(req, res);
-    if(companyId) {
-        findById(companyId, function(err, company) {
-            if(err) {
-                res.status(400).json({error: 'Cannot find company!'});
-            } else {
-                res.json(company);
-            }
-        });
-    }
+    findById(companyId, function(err, company) {
+        if(err) {
+            res.status(400).json({error: 'Cannot find company!'});
+        } else {
+            res.json(company);
+        }
+    });
 };
 
 exports.restCreateCompany = function(req, res) {
     var company = req.body;
-    if(company) {
-        var defaultCompany = exports.generateDefaultCompany();
-        company.template = defaultCompany.template;
-        company.periods = defaultCompany.periods;
+    var defaultCompany = exports.generateDefaultCompany();
+    company.template = defaultCompany.template;
+    company.periods = defaultCompany.periods;
 
-        save(company, function(err, savedCompany) {
-            if(err) {
-                res.status(500).json(err);        
-            } else {
-                //Warning: asynchronous block!!! 
-                registration.createDefaultProject(savedCompany, req.user); //Validation: check user!!!
-                createUsersByEmails(savedCompany);
-                res.json(savedCompany);
-            }
-        });
-    } else {
-        res.status(500).json({error: 'Empty request body'});
-    }
+    save(company, function(err, savedCompany) {
+        if(err) {
+            res.status(500).json(err);        
+        } else {
+            //Warning: asynchronous block!!! 
+            registration.createDefaultProject(savedCompany, req.user); //Validation: check user!!!
+            createUsersByEmails(savedCompany);
+            res.json(savedCompany);
+        }
+    });
 };
 
 exports.restUpdateCompany = function(req, res) {
     var company = req.body;
-    if(company) {
-        save(company, function(err, savedCompany) {
-            if(err) {
-                res.status(500).json(err);        
-            } else {
-                //update all projects
-                var projects = dbSettings.projectCollection();
-                projects.update(
-                        {companyId: savedCompany._id},
-                        {$set: {template: savedCompany.template},
-                         $set: {periods: savedCompany.periods},
-                         $set: {defaultValues: savedCompany.defaultValues}},
-                        {multi:true}, 
-                    function(err, result){
-                        console.log('Company projects are updated!')
-                    });
-                createUsersByEmails(savedCompany);
-                res.json(savedCompany);
-            }
-        });
-    } else {
-        res.status(500).json({error: 'Empty request body'});
-    }
+    save(company, function(err, savedCompany) {
+        if(err) {
+            res.status(500).json(err);        
+        } else {
+            //update all projects
+            var projects = dbSettings.projectCollection();
+            projects.update(
+                    {companyId: savedCompany._id},
+                    {$set: {template: savedCompany.template},
+                     $set: {periods: savedCompany.periods},
+                     $set: {defaultValues: savedCompany.defaultValues}},
+                    {multi:true}, 
+                function(err, result){
+                    console.log('Company projects are updated!')
+                });
+            createUsersByEmails(savedCompany);
+            res.json(savedCompany);
+        }
+    });
 };
 
 //Public API

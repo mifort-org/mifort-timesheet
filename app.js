@@ -52,12 +52,20 @@ app.get('/user', user.restGetCurrent);
 app.get('/users', 
         validators.validateGetUserByProjectId, 
         user.restGetByProjectId);
-app.post('/user/assignment/:projectId', user.restReplaceAssignments);
+app.post('/user/assignment/:projectId',
+        validators.validateReplaceAssignment,
+        user.restReplaceAssignments);
 
 //company
-app.post('/company', company.restUpdateCompany);
-app.put('/company', company.restCreateCompany);
-app.get('/company/:companyId', company.restFindById);
+app.post('/company', 
+        validators.validateUpdateCompany,
+        company.restUpdateCompany);
+app.put('/company',
+        validators.validateUpdateCompany,
+        company.restCreateCompany);
+app.get('/company/:companyId',
+        validators.validateGetCompanyById,
+        company.restFindById);
 
 //run application
 app.listen(app.get('port'), function() {

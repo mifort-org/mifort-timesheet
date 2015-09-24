@@ -61,3 +61,43 @@ exports.validateGetUserByProjectId = function(req, res, next) {
     }
     next();
 };
+
+exports.validateReplaceAssignment = function(req, res, next) {
+    req.checkParams(projectIdParam, 'Project id param is required and should have valid format')
+            .notEmpty().isMongoId();
+
+    var user = req.body;
+    if(!user) {
+        res.status(emptyBody.code).json({msg: emptyBody.message});
+        return;
+    }
+
+    var errors = req.validationErrors(true);
+    if(errors) {
+        res.status(400).json(errors);
+        return;
+    }
+    next();
+};
+
+//Company Rest API validation
+exports.validateUpdateCompany = function(req, res, next) {
+    var company = req.body;
+    if(!company) {
+        res.status(emptyBody.code).json({msg: emptyBody.message});
+        return;
+    }
+    next();
+};
+
+exports.validateGetCompanyById = function(req, res, next) {
+    req.checkParams(companyIdParam, 'Company id param is required and should have valid format')
+            .notEmpty().isMongoId();
+
+    var errors = req.validationErrors(true);
+    if(errors) {
+        res.status(400).json(errors);
+        return;
+    }
+    next();
+};

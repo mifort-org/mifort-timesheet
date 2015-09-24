@@ -24,30 +24,24 @@ exports.restGetByProjectId = function(req, res) {
 
 exports.restReplaceAssignments = function(req, res) {
     var projectId = utils.getProjectId(req, res);
-    if(projectId) {
-        if(req.body) {
-            var user = req.body;
-            var userId = user._id;
-            var assignments = user.assignments || {};
-            var users = dbSettings.userCollection();
-            users.update({ _id: userId },
-                         { $pull: {assignments: {projectId: projectId} } },
-                         { multi: true },
-                function(err, result) {
-                    if(!err) {
-                        users.update({ _id: userId },
-                                     { $push: { assignments: { $each: assignments } }},
-                            function(err, updatedUser){
-                                res.json({ok: true}); //saved object???
-                            });
-                    } else {
-                        res.status(400).json(err);
-                    }
-                });
-        } else {
-            res.status(500).json({error: 'Empty request body'});
-        }
-    }
+    var user = req.body;
+    var userId = user._id;
+    var assignments = user.assignments || {};
+    var users = dbSettings.userCollection();
+    users.update({ _id: userId },
+                 { $pull: {assignments: {projectId: projectId} } },
+                 { multi: true },
+        function(err, result) {
+            if(!err) {
+                users.update({ _id: userId },
+                             { $push: { assignments: { $each: assignments } }},
+                    function(err, updatedUser){
+                        res.json({ok: true}); //saved object???
+                    });
+            } else {
+                res.status(400).json(err);
+            }
+        });
 };
 
 //Public API
