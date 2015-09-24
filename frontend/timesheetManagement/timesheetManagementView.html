@@ -1,4 +1,5 @@
-{{project.periods}}<div class="timesheet-controls">
+<!--<small>{{splittedTimesheet}}</small>-->
+<div class="timesheet-controls">
     <div class="clearfix">
         <label for="period">Report Period</label>
         <select id="period"
@@ -39,43 +40,39 @@
     </button>
 </div>
 
-<div class="timesheet-wrapper" ng-repeat="timesheet in splittedTimesheet">
-    <div class="timesheet-header">{{getMonthName(timesheet)}}</div>
-    <!--<div class="timesheet-header">{{timesheet}}</div>-->
-    <table class="periods table table-bordered">
-        <thead>
-        <th ng-repeat="day in weekDays track by $index">{{day}}</th>
-        </thead>
-        <tbody>
-        <tr ng-repeat="week in timesheet track by $index">
-            <td table-cell
-                ng-repeat="day in week track by $index"
-                ng-class="{'period-start': day.isPeriodStartDate, 'period-end': day.isPeriodEndDate, 'weekend': isWeekend(day.date), 'disabled-day': day.disabled}"></td>
-        </tr>
-        <!--<tfoot>-->
-        <!--<tr>-->
-            <!--<td colspan="7">{{timesheet}}</td>-->
-        <!--</tr>-->
-        <!--</tfoot>-->
-        </tbody>
-    </table>
-
-    <!--<small>{{splittedTimesheet}}</small>-->
-    <!--<small>{{timesheet}}</small>-->
-
-
-    <script type="text/ng-template" id="daySettimgs.html">
-        <div class="form-group">
-            <label>Time:</label>
-            <input type="text" ng-model="day.time" class="form-control">
-            <label>Type:</label>
-            <select id="type"
-                    ng-options="type as type.typeName for type in dayTypes"
-                    ng-model="day.type"
-                    class="form-control">
-            </select>
-            <label>Comment:</label>
-            <textarea type="text" ng-model="day.comment" class="form-control"></textarea>
+<div ng-repeat="year in splittedTimesheet">
+    <div class="timesheet-wrapper" ng-if="month" ng-repeat="month in year track by $index">
+        <div class="timesheet-header">{{getMonthName(month)}}</div>
+        <div class="periods-wrapper">
+            <table class="periods table table-bordered">
+                <thead>
+                <th ng-repeat="day in weekDays track by $index">{{day}}</th>
+                </thead>
+                <tbody>
+                <tr ng-repeat="week in month track by $index">
+                    <td table-cell
+                        ng-repeat="day in week track by $index"
+                        ng-class="{'period-start': day.isPeriodStartDate, 'period-end': day.isPeriodEndDate, 'weekend': day.weekend, 'disabled-day': day.disabled}"></td>
+                </tr>
+                </tbody>
+            </table>
         </div>
-    </script>
+
+        <!--<small>{{splittedTimesheet[$index]}}</small>-->
+    </div>
 </div>
+
+<script type="text/ng-template" id="daySettimgs.html">
+    <div class="form-group">
+        <label>Time:</label>
+        <input type="text" ng-model="day.time" class="form-control">
+        <label>Type:</label>
+        <select id="type"
+                ng-options="type as type.typeName for type in dayTypes"
+                ng-model="day.type"
+                class="form-control">
+        </select>
+        <label>Comment:</label>
+        <textarea type="text" ng-model="day.comment" class="form-control"></textarea>
+    </div>
+</script>
