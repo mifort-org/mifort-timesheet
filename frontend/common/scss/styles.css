@@ -296,7 +296,8 @@ h2 a:focus {
     padding: 15px 25px;
     margin-bottom: 25px;
 }
-.collapse-wrapper h2{
+
+.collapse-wrapper h2 {
     float: left;
     margin-top: 6px;
 }
@@ -341,6 +342,14 @@ h2 a:focus {
     border-color: #eaeff7;
     border-bottom-width: 1px;
     vertical-align: middle;
+}
+
+.periods > tbody > tr > td:hover {
+    border-color: #bbbfc6;
+}
+
+.periods > tbody > tr > td:active {
+    border-color: #3eb5f1;
 }
 
 .table-bordered > tbody > tr > .is-not-first-day-log {
@@ -488,16 +497,19 @@ h2 a:focus {
     border-bottom-width: 1px;
 }
 
-.timesheet-header{
+.timesheet-header {
     font-size: 1.6em;
     padding: 8px 15px;
     background: #f5f7f9;
     border-bottom: 1px #fff solid;
 }
 
+.periods-wrapper {
+    /*overflow: hidden;*/
+}
+
 .periods {
     margin-bottom: 0;
-    border-collapse: separate;
 }
 
 .periods th {
@@ -510,8 +522,8 @@ h2 a:focus {
 
 .periods > tbody > tr > td {
     position: relative;
-    height: 70px;
-    width: 70px;
+    height: 71px;
+    width: 71px;
     /*border-width: 2px;*/
     vertical-align: middle;
 }
@@ -527,24 +539,29 @@ h2 a:focus {
     position: relative;
     text-align: right;
 }
-.disabled-day-data{
+
+.disabled-day-data {
     opacity: 0.2;
 }
-.disabled-day{
+
+.disabled-day {
     background: #f5f7f9;
 }
-.weekend.disabled-day{
+
+.weekend.disabled-day {
     background: #f9e3ef !important;
 }
-.timesheet-date,
-.timesheet-time {
+
+.timesheet-day-wrapper {
     font-size: 1.8em;
 }
 
-.timesheet-date {
+.timesheet-day-wrapper {
     position: absolute;
-    top: 3px;
-    left: 7px;
+    top: 0;
+    left: 8px;
+    right: 8px;
+    height: 70px;
     color: #9c9d9f;
     font-weight: 300;
 }
@@ -560,12 +577,53 @@ h2 a:focus {
     bottom: 5px;
 }
 
-.periods > tbody > tr > .period-start {
-    border-left-color: red;
+.start-splitter,
+.end-splitter {
+    position: absolute;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 8px;
+    height: 72px;
 }
 
-.periods > tbody > tr > .period-end {
-    border-right-color: blue;
+.end-splitter {
+    left: auto;
+    right: 0;
+}
+
+.periods > tbody > tr > td .start-splitter:hover:before,
+.periods > tbody > tr > td .end-splitter:hover:after {
+    position: absolute;
+    top: -1px;
+    left: -8px;
+    height: 72px;
+    width: 15px;
+    background: url("../../common/images/icons.png") 0 -794px no-repeat;
+    cursor: pointer;
+    content: '';
+}
+
+.periods > tbody > tr > .period-start .start-splitter:before,
+.periods > tbody > tr > .period-end .end-splitter:after {
+    position: absolute;
+    top: -1px;
+    left: -8px;
+    height: 72px;
+    width: 15px;
+    background: url("../../common/images/icons.png") 2px -695px no-repeat;
+    content: '';
+}
+
+.periods > tbody > tr > .period-end .end-splitter:after,
+.periods > tbody > tr > td .end-splitter:hover:after {
+    left: auto;
+    right: -8px;
+}
+
+.periods > tbody > tr > .period-start .start-splitter:hover:before,
+.periods > tbody > tr > .period-end .end-splitter:hover:before {
+    background: url("../../common/images/icons.png") 0 -894px no-repeat;
 }
 
 .timesheet-hours-label {

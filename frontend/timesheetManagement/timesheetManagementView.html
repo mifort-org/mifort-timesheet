@@ -43,18 +43,20 @@
 <div ng-repeat="year in splittedTimesheet">
     <div class="timesheet-wrapper" ng-if="month" ng-repeat="month in year track by $index">
         <div class="timesheet-header">{{getMonthName(month)}}</div>
-        <table class="periods table table-bordered">
-            <thead>
-            <th ng-repeat="day in weekDays track by $index">{{day}}</th>
-            </thead>
-            <tbody>
-            <tr ng-repeat="week in month track by $index">
-                <td table-cell
-                    ng-repeat="day in week track by $index"
-                    ng-class="{'period-start': day.isPeriodStartDate, 'period-end': day.isPeriodEndDate, 'weekend': day.weekend, 'disabled-day': day.disabled}"></td>
-            </tr>
-            </tbody>
-        </table>
+        <div class="periods-wrapper">
+            <table class="periods table table-bordered">
+                <thead>
+                <th ng-repeat="day in weekDays track by $index">{{day}}</th>
+                </thead>
+                <tbody>
+                <tr ng-repeat="week in month track by $index">
+                    <td table-cell
+                        ng-repeat="day in week track by $index"
+                        ng-class="{'period-start': day.isPeriodStartDate, 'period-end': day.isPeriodEndDate, 'weekend': day.weekend, 'disabled-day': day.disabled}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
 
         <!--<small>{{splittedTimesheet[$index]}}</small>-->
     </div>

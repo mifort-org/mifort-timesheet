@@ -8,7 +8,7 @@ angular.module('myApp')
                 var clickableAreaWidth = 7;
 
                 element.on('click', function (e) {
-                    if(scope.day.date && $(e.target).is('td')){
+                    if(scope.day.date && ($(e.target).hasClass('start-splitter') || $(e.target).hasClass('end-splitter'))){
                         var dayIndex = _.findIndex(scope.timesheet, scope.day);
                         var nextDay = scope.timesheet[dayIndex + 1],
                             previousDay = scope.timesheet[dayIndex - 1];
