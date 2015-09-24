@@ -67,20 +67,16 @@ exports.jsonStringify = function(key, value) {
 //Common Rest API
 exports.restSaveObject = function(collection) {
     return function(req, res) {
-        if(req.body) {
-            var currentDate = new Date();
-            var object = req.body;
-            if(!object.createdOn) {
-                object.createdOn = currentDate;
-            }
-            object.updatedOn = currentDate;
-            var col = collection();
-            col.save(object, {safe:true}, function (err, result) {
-               sendSavedObject(err, res, object, result);
-            });
-        } else {
-            res.status(500).json({error: "Empty body"});
+        var currentDate = new Date();
+        var object = req.body;
+        if(!object.createdOn) {
+            object.createdOn = currentDate;
         }
+        object.updatedOn = currentDate;
+        var col = collection();
+        col.save(object, {safe:true}, function (err, result) {
+           sendSavedObject(err, res, object, result);
+        });
     };
 };
 
@@ -89,9 +85,6 @@ function getObjectIdParam(req, res, name) {
     var entityObjectId = getParameter(req, res, name);
     if(entityObjectId && ObjectID.isValid(entityObjectId)) {
         entityObjectId = new ObjectID(entityObjectId);
-    } else {
-        res.status(500).json({error: 'Invalid ' + name + ' format!'});
-        entityObjectId = false;
     }
     return entityObjectId;
 }
@@ -104,11 +97,7 @@ function getDateParam(req, res, name) {
 };
 
 function getParameter(req, res, name) {
-    var param = req.params[name] || req.query[name];
-    if(!param) {
-        res.status(400).json({ error: name + ' is not specified!' });
-    }
-    return param;
+    return req.params[name] || req.query[name];
 }
 
 function sendSavedObject(err, res, object, result) {

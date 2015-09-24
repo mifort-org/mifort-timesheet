@@ -2,6 +2,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
+var expressValidator = require('express-validator');
 
 var project = require('./backend/project');
 var timelog = require('./backend/timelog');
@@ -9,6 +10,7 @@ var user = require('./backend/user');
 var company = require('./backend/company');
 var auth = require('./backend/libs/auth');
 var util = require('./backend/libs/utils');
+var validators = require('./backend/libs/validators');
 
 var app = express();
 app.set('port', process.env.PORT || 1313);
@@ -17,6 +19,7 @@ app.set('json replacer', util.jsonStringify);
 app.use(cookieParser());
 app.use(express.static('frontend'));
 app.use(bodyParser.json({reviver:util.jsonParse}));
+app.use(expressValidator());
 app.use(session(
     { secret: 'homogen cat' ,
     name: 'kaas',
@@ -29,9 +32,15 @@ auth.init(app);
 
 //add auth.ensureAuthenticated for each Rest API
 //project
-app.post('/project', project.restSave);
-app.get('/project/:projectId', project.restGetById);
-app.get('/projects', project.restGetByCompanyId);
+app.post('/project', 
+        validators.validateSaveProject, 
+        project.restSave);
+app.get('/project/:projectId', 
+        validators.validateGetProjectById, 
+        project.restGetById);
+app.get('/projects', 
+        validators.validateGetProjectByCompanyId, 
+        project.restGetByCompanyId);
 
 //timelog
 app.post('/timelog', timelog.restSave);
@@ -40,7 +49,9 @@ app.delete('/timelog/:timelogId', timelog.restDelete);
 
 //user
 app.get('/user', user.restGetCurrent);
-app.get('/users', user.restGetByProjectId);
+app.get('/users', 
+        validators.validateGetUserByProjectId, 
+        user.restGetByProjectId);
 app.post('/user/assignment/:projectId', user.restReplaceAssignments);
 
 //company
