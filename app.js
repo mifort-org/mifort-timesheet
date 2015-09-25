@@ -43,9 +43,15 @@ app.get('/projects',
         project.restGetByCompanyId);
 
 //timelog
-app.post('/timelog', timelog.restSave);
-app.get('/timelog/:userId', timelog.restGetByDates);
-app.delete('/timelog/:timelogId', timelog.restDelete);
+app.post('/timelog',
+        validators.validateSaveTimelog,
+        timelog.restSave);
+app.get('/timelog/:userId',
+        validators.validateGetTimelogByDates, 
+        timelog.restGetByDates);
+app.delete('/timelog/:timelogId',
+        validators.validateDeleteTimelog,
+        timelog.restDelete);
 
 //user
 app.get('/user', user.restGetCurrent);
