@@ -17,5 +17,10 @@ angular.module('myApp.projects', ['ngRoute'])
         ];
         $scope.currentProjectIndex = 0;
 
+         projectsService.getProjects(preferences.get('user').companyId).success(function(projects) {
+             $scope.projects = projects;
+
+             //projectsService.getAssignedUsers('');
+        });
         projectsService.getAssignments(preferences.get('user').companyId);
     }]);

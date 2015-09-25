@@ -1,6 +1,5 @@
 <div class="collapse-wrapper clearfix" ng-repeat="project in projects">
-<!--{{project.splittedTimelog}}-->
-    <h2 ng-class="{'timelog-col1lapsed': isCollapsed}">
+    <h2 ng-class="{'timelog-collapsed': isCollapsed}">
         <a href="" class="collapse-item" ng-class="{'collapsed': isCollapsed}" ng-click="isCollapsed = !isCollapsed">
             {{project.name}}
         </a>

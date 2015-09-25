@@ -1,7 +1,7 @@
-<div class="collapse-wrapper">
+<div class="collapse-wrapper" ng-repeat="project in projects">
     <h2 ng-class="{'timelog-collapsed': isCollapsed}">
         <a href="" class="collapse-item" ng-class="{'collapsed': isCollapsed}" ng-click="isCollapsed = !isCollapsed">
-            {{project.name}}name
+            {{project.name}}
         </a>
     </h2>
 
@@ -13,7 +13,7 @@
             </th>
             </thead>
             <tbody>
-            <tr ng-if="currentProjectIndex >= 0" ng-repeat="employee in projects[currentProjectIndex]">
+            <tr ng-if="currentProjectIndex >= 0" ng-repeat="employee in project">
                 <td><input type="text" ng-model="employee.name"/></td>
                 <td><select name="" ng-model="employee.role"></select></td>
                 <td><input type="text" ng-model="employee.workload"/></td>

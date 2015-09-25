@@ -8,6 +8,9 @@ angular.module('myApp.projects').factory('projectsService',
             },
             createProject: function (projectsData) {
                 return $http.post('projects/', projectsData);
+            },
+            getProjects: function(companyId){
+                return $http.get('projects?companyId=' + companyId);
             }
         }
     }
