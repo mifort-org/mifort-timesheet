@@ -1,3 +1,5 @@
+var validator = require('validator');
+
 var projectIdParam = 'projectId'; //the same as in utils.js. Refactoring is needed
 var companyIdParam ='companyId';
 var userIdParam = 'userId';
@@ -143,5 +145,37 @@ exports.validateSaveTimelog = function(req, res, next) {
         res.status(emptyBody.code).json({msg: emptyBody.message});
         return;
     }
+    req.checkBody('timelog', 'Incorrect timelog (Check: date, userId, projectId, projectName, date)')
+        .isTimelog();
+    
+    var errors = req.validationErrors(true);
+    if(errors) {
+        res.status(400).json(errors);
+        return;
+    }
+
     next();
 };
+
+//Custom validators for express-validator
+exports.isArray = function(value) {
+    return Array.isArray(value);
+};
+
+exports.timelogs = function(values) {
+    if(Array.isArray(values)) {
+        return values.every(function(val){
+            var isValid = true;
+            if(val._id){
+                isValid = validator.isMongoId(val);
+            }
+            isValid = isValid
+                && validator.isLength(val.userId, 1) //required
+                && validator.isLength(val.projectId, 1)
+                && validator.isLength(val.projectName, 1)
+                && validator.isDate(val.date);
+            return isValid;
+        });
+    }
+    return false;
+}

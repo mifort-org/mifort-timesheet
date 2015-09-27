@@ -19,7 +19,14 @@ app.set('json replacer', util.jsonStringify);
 app.use(cookieParser());
 app.use(express.static('frontend'));
 app.use(bodyParser.json({reviver:util.jsonParse}));
-app.use(expressValidator());
+
+app.use(expressValidator({
+    customValidators: {
+        isTimelog: validators.timelogs,
+        isArray: validators.isArray
+    }
+}));
+
 app.use(session(
     { secret: 'homogen cat' ,
     name: 'kaas',
