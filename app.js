@@ -23,7 +23,8 @@ app.use(bodyParser.json({reviver:util.jsonParse}));
 app.use(expressValidator({
     customValidators: {
         isTimelog: validators.timelogs,
-        isArray: validators.isArray
+        isArray: validators.isArray,
+        isAssignments: validators.assignments
     }
 }));
 

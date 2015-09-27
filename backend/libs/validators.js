@@ -78,6 +78,9 @@ exports.validateReplaceAssignment = function(req, res, next) {
         return;
     }
 
+    req.checkBody('assignments', 'Incorrect Assignments (Check: userId, projectId, projectName)')
+        .optional().isAssignments();
+
     var errors = req.validationErrors(true);
     if(errors) {
         res.status(400).json(errors);
@@ -145,7 +148,7 @@ exports.validateSaveTimelog = function(req, res, next) {
         res.status(emptyBody.code).json({msg: emptyBody.message});
         return;
     }
-    req.checkBody('timelog', 'Incorrect timelog (Check: date, userId, projectId, projectName, date)')
+    req.checkBody('timelog', 'Incorrect timelog (Check: date, userId, projectId, projectName)')
         .isTimelog();
     
     var errors = req.validationErrors(true);
@@ -170,12 +173,27 @@ exports.timelogs = function(values) {
                 isValid = validator.isMongoId(val);
             }
             isValid = isValid
-                && validator.isLength(val.userId, 1) //required
-                && validator.isLength(val.projectId, 1)
-                && validator.isLength(val.projectName, 1)
-                && validator.isDate(val.date);
+                && validator.isMongoId(val.userId) //required && format
+                && validator.isMongoId(val.projectId) //required && format
+                && validator.isLength(val.projectName, 1) //required
+                && validator.isDate(val.date); //required && format
             return isValid;
         });
     }
     return false;
-}
+};
+
+exports.assignments = function(values) {
+    if(values.length) { // if array is empty
+        return true;
+    }
+
+    if(Array.isArray(values)) {
+        return values.every(function(val){
+            return validator.isMongoId(val.projectId)
+                && validator.isLength(val.projectName, 1)
+                && validator.isMongoId(val.userId);
+        });
+    }
+    return false;
+};
