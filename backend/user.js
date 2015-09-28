@@ -12,7 +12,11 @@ exports.restGetByProjectId = function(req, res) {
     var projectIdParam = utils.getProjectId(req, res);
     var users = dbSettings.userCollection();
     users.find({'assignments.projectId': projectIdParam},
-               { assignments: {$elemMatch: {projectId: projectIdParam}}})
+               {
+                workload: 1,
+                displayName: 1, 
+                assignments: {$elemMatch: {projectId: projectIdParam}}
+               })
       .toArray(function(err, projectUsers) {
         if(err) {
             res.status(400).json({error: 'Cannot find users'});

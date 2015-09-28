@@ -49,7 +49,8 @@ passport.use(new GoogleStrategy({
                     } else {
                         var user = {
                             email: email,
-                            external: profile
+                            external: profile,
+                            displayName: profile.displayName
                         }
                         createUser(user, done);
                     }
