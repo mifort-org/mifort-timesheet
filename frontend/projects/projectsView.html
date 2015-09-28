@@ -13,16 +13,20 @@
             </th>
             </thead>
             <tbody>
-            <tr ng-if="currentProjectIndex >= 0" ng-repeat="employee in project">
-                <td><input type="text" ng-model="employee.name"/></td>
-                <td><select name="" ng-model="employee.role"></select></td>
-                <td><input type="text" ng-model="employee.workload"/></td>
-            </tr>
-
-            <tr>
-                <td><input type="text"/></td>
-                <td><select name=""></select></td>
-                <td><input type="text"/></td>
+            <tr ng-if="currentProjectIndex >= 0" ng-repeat="employee in project.employees">
+                <td>
+                    <input type="text" ng-model="employee.name"/>{{employee._id}}
+                </td>
+                <td>
+                    <select id="period"
+                            ng-options="period as period.periodName for period in periodSettings"
+                            ng-model="selectedPeriod"
+                            class="form-control timesheet-control">
+                    </select>
+                </td>
+                <td>
+                    <input type="text" ng-model="employee.workload"/>
+                </td>
             </tr>
             </tbody>
         </table>

@@ -11,6 +11,9 @@ angular.module('myApp.projects').factory('projectsService',
             },
             getProjects: function(companyId){
                 return $http.get('projects?companyId=' + companyId);
+            },
+            getAssignedUsers: function(projectId) {
+                return $http.get('users?projectId=' + projectId);
             }
         }
     }

@@ -19,8 +19,13 @@ angular.module('myApp.projects', ['ngRoute'])
 
          projectsService.getProjects(preferences.get('user').companyId).success(function(projects) {
              $scope.projects = projects;
+             console.log($scope.projects);
+             $scope.projects.forEach(function(project) {
+                 projectsService.getAssignedUsers(project._id).success(function(projectUsers) {
+                     project.employees = projectUsers;
+                 });
+             });
 
-             //projectsService.getAssignedUsers('');
         });
         projectsService.getAssignments(preferences.get('user').companyId);
     }]);
