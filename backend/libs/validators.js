@@ -78,6 +78,7 @@ exports.validateReplaceAssignment = function(req, res, next) {
         return;
     }
 
+    req.checkBody('_id', 'User id is required').notEmpty().isMongoId();
     req.checkBody('assignments', 'Incorrect Assignments (Check: userId, projectId, projectName)')
         .optional().isAssignments();
 
