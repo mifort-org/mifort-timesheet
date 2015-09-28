@@ -16,6 +16,7 @@
     "moment": "^2.10.6",
     "mongodb": "^2.0.34",
     "passport": "^0.2.2",
-    "passport-google-oauth": "^0.2.0"
+    "passport-google-oauth": "^0.2.0",
+    "validator": "^4.0.6"
   }
 }
