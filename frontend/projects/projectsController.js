@@ -23,9 +23,14 @@ angular.module('myApp.projects', ['ngRoute'])
              $scope.projects.forEach(function(project) {
                  projectsService.getAssignedUsers(project._id).success(function(projectUsers) {
                      project.employees = projectUsers;
+                     project.isCollapsed = false;
                  });
              });
-
         });
+
         projectsService.getAssignments(preferences.get('user').companyId);
+
+        $scope.changeProjectName = function(project) {
+            projectsService.saveProject(project);
+        }
     }]);

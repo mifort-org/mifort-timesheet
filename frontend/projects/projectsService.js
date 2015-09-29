@@ -6,6 +6,9 @@ angular.module('myApp.projects').factory('projectsService',
             getAssignments: function (projects) {
                 return $http.get('project/' + projects);
             },
+            saveProject: function (project) {
+                return $http.post('project/', project);
+            },
             createProject: function (projectsData) {
                 return $http.post('projects/', projectsData);
             },
