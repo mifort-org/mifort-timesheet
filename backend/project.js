@@ -17,6 +17,27 @@ exports.restGetById = function(req, res) {
 };
 
 exports.restSave = utils.restSaveObject(dbSettings.projectCollection);
+exports.restSave2 = function(req, res) {
+    var projects = dbSettings.projectCollection();
+    var project = req.body;
+    
+    if(project._id) { //update
+        projects.update({ _id: project._id },
+                        {$set: {
+                            name: project.name
+                        },
+                        $currentDate: { updatedOn: true }},
+            function(err, savedProject){
+                if(err) {
+                    res.status(500).json(err);
+                    return;
+                }
+                res.json(savedProject);
+            });
+    } else { //create
+
+    }
+};
 
 exports.restGetByCompanyId = function(req, res) {
     var companyId = utils.getCompanyId(req, res);
