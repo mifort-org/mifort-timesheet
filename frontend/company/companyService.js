@@ -3,8 +3,14 @@
 angular.module('myApp.company').factory('companyService',
     ['$http', function ($http) {
         return {
-            createCompany: function (companyData) {
-                return $http.put('company', companyData);
+            createCompany: function (company) {
+                return $http.put('company', company);
+            },
+            getCompany: function(companyId) {
+                return $http.get('company/' + companyId);
+            },
+            saveCompany: function(company) {
+                return $http.put('company', company);
             }
         }
     }

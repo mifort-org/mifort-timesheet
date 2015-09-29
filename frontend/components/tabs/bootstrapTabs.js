@@ -9,7 +9,8 @@ angular.module('myApp')
                     {title: 'projectManagement'},
                     {title: 'timesheetManagement'},
                     {title: 'timelog'},
-                    {title: 'company'},
+                    {title: 'companyCreate'},
+                    {title: 'companyEdit'},
                     {title: 'projectReport'},
                     {title: 'peopleReport'}
                 ];

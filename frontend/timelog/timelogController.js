@@ -56,7 +56,7 @@ angular.module('myApp.timelog', ['ngRoute'])
                     project.template.projectName = project.name;
 
                     dayToPush = _.clone(project.template);
-                    dayToPush.date = angular.copy(startDate).add(i, 'days').calendar();
+                    dayToPush.date = angular.copy(startDate).add(i, 'days').format("MM/DD/YYYY");
                     dayToPush.isFirstDayRecord = true;
 
                     project.timelog.push(dayToPush);
