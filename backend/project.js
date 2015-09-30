@@ -45,7 +45,7 @@ exports.restSave = function(req, res) {
             project.periods = company.periods;
             projects.insertOne(project, {safe: true}, 
                 function(err, result) {
-                    res.json(result);
+                    res.json(result.ops[0]);
                 });
         });
     }
