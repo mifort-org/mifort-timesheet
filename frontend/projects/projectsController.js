@@ -10,6 +10,7 @@ angular.module('myApp.projects', ['ngRoute'])
     }])
 
     .controller('projectsController', ['$scope', 'projectsService', 'preferences', function ($scope, projectsService, preferences) {
+        var companyId = preferences.get('user').companyId;
         $scope.projectsKeys = [
             'Employee',
             'Assignment',
@@ -17,9 +18,9 @@ angular.module('myApp.projects', ['ngRoute'])
         ];
         $scope.currentProjectIndex = 0;
 
-         projectsService.getProjects(preferences.get('user').companyId).success(function(projects) {
+         projectsService.getProjects(companyId).success(function(projects) {
              $scope.projects = projects;
-             console.log($scope.projects);
+
              $scope.projects.forEach(function(project) {
                  projectsService.getAssignedUsers(project._id).success(function(projectUsers) {
                      project.employees = projectUsers;
@@ -28,9 +29,22 @@ angular.module('myApp.projects', ['ngRoute'])
              });
         });
 
-        projectsService.getAssignments(preferences.get('user').companyId);
+        projectsService.getCompanyEmployers(companyId).success(function(employees) {
+            $scope.companyEmployees = employees;
+        });
 
         $scope.changeProjectName = function(project) {
-            projectsService.saveProject(project);
+            projectsService.saveOrCreateProject(project);
+        };
+
+        $scope.addProject = function() {
+            var newProject = {
+                name: 'New Project',
+                companyId: companyId
+            };
+            $scope.projects.push(newProject);
+            projectsService.saveOrCreateProject(newProject).success(function(project) {
+                newProject = project;
+            });
         }
     }]);

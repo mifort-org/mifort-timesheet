@@ -6,17 +6,17 @@ angular.module('myApp.projects').factory('projectsService',
             getAssignments: function (projects) {
                 return $http.get('project/' + projects);
             },
-            saveProject: function (project) {
+            saveOrCreateProject: function (project) {
                 return $http.post('project/', project);
-            },
-            createProject: function (projectsData) {
-                return $http.post('projects/', projectsData);
             },
             getProjects: function(companyId){
                 return $http.get('projects?companyId=' + companyId);
             },
             getAssignedUsers: function(projectId) {
                 return $http.get('users?projectId=' + projectId);
+            },
+            getCompanyEmployers: function(companyId) {
+                return $http.get('users?companyId=' + companyId);
             }
         }
     }

@@ -19,10 +19,34 @@
             <tbody>
             <tr ng-if="currentProjectIndex >= 0" ng-repeat="employee in project.employees">
                 <td>
-                    <input type="text" ng-model="employee.displayName"/>
+                    <select id="employee"
+                            ng-options="employee.displayName as employee.displayName for employee in project.employees"
+                            ng-model="employee.displayName"
+                            class="form-control timesheet-control">
+                    </select>
                 </td>
                 <td>
-                    <select id="period"
+                    <select id="role"
+                            ng-options="assignment.role as assignment.role for assignment in employee.assignments"
+                            ng-model="employee.assignments[0].role"
+                            class="form-control timesheet-control">
+                    </select>
+                </td>
+                <td>
+                    <input type="text" ng-model="employee.workload"/>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <select id="newEmployee"
+                            ng-options="employee.displayName as employee.displayName for employee in companyEmployees"
+                            ng-model="employee.displayName"
+                            class="form-control timesheet-control">
+                    </select>
+                </td>
+                <td>
+                    <select id="newRole"
                             ng-options="assignment.role as assignment.role for assignment in employee.assignments"
                             ng-model="employee.assignments[0].role"
                             class="form-control timesheet-control">
@@ -36,3 +60,5 @@
         </table>
     </div>
 </div>
+<!--{{projects}}-->
+<a href="" ng-click="addProject()" class="add-project">+</a>
