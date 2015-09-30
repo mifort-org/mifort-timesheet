@@ -64,22 +64,6 @@ exports.jsonStringify = function(key, value) {
     return value;
 };
 
-//Common Rest API
-exports.restSaveObject = function(collection) {
-    return function(req, res) {
-        var currentDate = new Date();
-        var object = req.body;
-        if(!object.createdOn) {
-            object.createdOn = currentDate;
-        }
-        object.updatedOn = currentDate;
-        var col = collection();
-        col.save(object, {safe:true}, function (err, result) {
-           sendSavedObject(err, res, object, result);
-        });
-    };
-};
-
 //private section
 function getObjectIdParam(req, res, name) {
     var entityObjectId = getParameter(req, res, name);

@@ -171,7 +171,7 @@ exports.timelogs = function(values) {
         return values.every(function(val){
             var isValid = true;
             if(val._id){
-                isValid = validator.isMongoId(val);
+                isValid = validator.isMongoId(val._id);
             }
             isValid = isValid
                 && validator.isMongoId(val.userId) //required && format

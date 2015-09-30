@@ -1,8 +1,12 @@
 <div class="collapse-wrapper" ng-repeat="project in projects">
-    <h2 ng-class="{'timelog-collapsed': isCollapsed}">
-        <a href="" class="collapse-item" ng-class="{'collapsed': isCollapsed}" ng-click="isCollapsed = !isCollapsed">
+    <h2 ng-class="{'timelog-collapsed': project.isCollapsed}">
+        <a href="" ng-if="!project.projectEdit" class="collapse-item" ng-class="{'collapsed': project.isCollapsed}" ng-click="project.isCollapsed = !project.isCollapsed">
             {{project.name}}
         </a>
+
+        <input ng-if="project.projectEdit" type="text" ng-model="project.name" ng-change="changeProjectName(project)"/>
+
+        <a href="" ng-click="project.projectEdit = !project.projectEdit">Edit</a>
     </h2>
 
     <div collapse="isCollapsed">

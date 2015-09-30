@@ -95,6 +95,8 @@ exports.generateDefaultCompany = function() {
     return company;
 };
 
+exports.findById = findById;
+
 //private part
 function findById(id, callback) {
     var companies = dbSettings.companyCollection();

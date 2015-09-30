@@ -1,5 +1,6 @@
 var dbSettings = require('./libs/mongodb_settings');
 var utils = require('./libs/utils');
+var companies = require('./company');
 
 //Rest API
 exports.restGetById = function(req, res) {
@@ -16,7 +17,39 @@ exports.restGetById = function(req, res) {
     );
 };
 
-exports.restSave = utils.restSaveObject(dbSettings.projectCollection);
+exports.restSave = function(req, res) {
+    var projects = dbSettings.projectCollection();
+    var project = req.body;
+    
+    if(project._id) { //update
+        projects.update({ _id: project._id },
+                        {$set: {
+                            name: project.name
+                        },
+                        $currentDate: { updatedOn: true }},
+            function(err, savedProject){
+                if(err) {
+                    res.status(500).json(err);
+                    return;
+                }
+                res.json(savedProject);
+            });
+    } else { //create
+        companies.findById(project.companyId, function(err, company) {
+            if(err) {
+                res.status(500).json(err);
+                return;
+            }
+            project.defaultValues = company.defaultValues;
+            project.template = company.template;
+            project.periods = company.periods;
+            projects.insertOne(project, {safe: true}, 
+                function(err, result) {
+                    res.json(result);
+                });
+        });
+    }
+};
 
 exports.restGetByCompanyId = function(req, res) {
     var companyId = utils.getCompanyId(req, res);
