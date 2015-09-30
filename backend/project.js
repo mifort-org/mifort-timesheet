@@ -17,8 +17,7 @@ exports.restGetById = function(req, res) {
     );
 };
 
-exports.restSave = utils.restSaveObject(dbSettings.projectCollection);
-exports.restSave2 = function(req, res) {
+exports.restSave = function(req, res) {
     var projects = dbSettings.projectCollection();
     var project = req.body;
     
