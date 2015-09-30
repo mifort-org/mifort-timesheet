@@ -19,11 +19,26 @@ exports.restGetByProjectId = function(req, res) {
                })
       .toArray(function(err, projectUsers) {
         if(err) {
-            res.status(400).json({error: 'Cannot find users'});
+            res.status(404).json({error: 'Cannot find users'});
         } else {
             res.json(projectUsers);
         }
     });
+};
+
+exports.restGetByCompanyId = function(req, res) {
+    var companyIdParam = utils.getCompanyId(req, res);
+    var users = dbSettings.userCollection();
+    users.find({companyId: companyIdParam},
+               {workload: 1,
+                displayName: 1})
+        .toArray(function(err, companyUsers) {
+            if(err) {
+                res.status(404).json({error: 'Cannot find users'});
+            } else {
+                res.json(companyUsers);
+            }
+        });
 };
 
 exports.restReplaceAssignments = function(req, res) {

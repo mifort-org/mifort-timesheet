@@ -68,6 +68,17 @@ exports.validateGetUserByProjectId = function(req, res, next) {
     next();
 };
 
+exports.validateGetUserByCompanyId = function(req, res, next) {
+    req.check(companyIdParam, 'Company id param is required and should have valid format')
+            .notEmpty().isMongoId();
+    var errors = req.validationErrors(true);
+    if(errors) {
+        res.status(400).json(errors);
+        return;
+    }
+    next();
+};
+
 exports.validateReplaceAssignment = function(req, res, next) {
     req.checkParams(projectIdParam, 'Project id param is required and should have valid format')
             .notEmpty().isMongoId();

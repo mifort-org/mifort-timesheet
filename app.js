@@ -63,9 +63,12 @@ app.delete('/timelog/:timelogId',
 
 //user
 app.get('/user', user.restGetCurrent);
-app.get('/users', 
+app.get('/user/project/:projectId', 
         validators.validateGetUserByProjectId, 
         user.restGetByProjectId);
+app.get('/user/company/:companyId',
+        validators.validateGetUserByCompanyId,
+        user.restGetByCompanyId);
 app.post('/user/assignment/:projectId',
         validators.validateReplaceAssignment,
         user.restReplaceAssignments);
