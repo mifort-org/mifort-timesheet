@@ -3,8 +3,8 @@
 angular.module('myApp.projects').factory('projectsService',
     ['$http', function ($http) {
         return {
-            getAssignments: function (projects) {
-                return $http.get('project/' + projects);
+            saveAssignment: function (projectId, assignment) {
+                return $http.post('user/assignment/' + projectId, assignment);
             },
             saveOrCreateProject: function (project) {
                 return $http.post('project/', project);
@@ -12,11 +12,11 @@ angular.module('myApp.projects').factory('projectsService',
             getProjects: function(companyId){
                 return $http.get('projects?companyId=' + companyId);
             },
-            getAssignedUsers: function(projectId) {
-                return $http.get('users?projectId=' + projectId);
+            getAssignedEmployers: function(projectId) {
+                return $http.get('/user/project/' + projectId);
             },
             getCompanyEmployers: function(companyId) {
-                return $http.get('users?companyId=' + companyId);
+                return $http.get('/user/company/' + companyId);
             }
         }
     }

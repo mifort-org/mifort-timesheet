@@ -9,7 +9,7 @@
         <a href="" ng-click="project.projectEdit = !project.projectEdit">Edit</a>
     </h2>
 
-    <div collapse="isCollapsed">
+    <div collapse="project.isCollapsed">
         <table class="table table-bordered timelog">
             <thead>
             <th ng-repeat="projectsKey in projectsKeys">
@@ -22,18 +22,20 @@
                     <select id="employee"
                             ng-options="employee.displayName as employee.displayName for employee in project.employees"
                             ng-model="employee.displayName"
-                            class="form-control timesheet-control">
+                            class="form-control timesheet-control"
+                            ng-change="saveAssignment(project, employee)">
                     </select>
                 </td>
                 <td>
                     <select id="role"
-                            ng-options="assignment.role as assignment.role for assignment in employee.assignments"
+                            ng-options="assignment as assignment for assignment in assignments"
                             ng-model="employee.assignments[0].role"
-                            class="form-control timesheet-control">
+                            class="form-control timesheet-control"
+                            ng-change="saveAssignment(project, employee)">
                     </select>
                 </td>
                 <td>
-                    <input type="text" ng-model="employee.workload"/>
+                    <input type="text" ng-model="employee.workload" ng-change="saveAssignment(project, employee)"/>
                 </td>
             </tr>
 
@@ -42,23 +44,25 @@
                     <select id="newEmployee"
                             ng-options="employee.displayName as employee.displayName for employee in companyEmployees"
                             ng-model="employee.displayName"
-                            class="form-control timesheet-control">
+                            class="form-control timesheet-control"
+                            ng-change="saveAssignment(project, employee)">
                     </select>
                 </td>
                 <td>
                     <select id="newRole"
                             ng-options="assignment.role as assignment.role for assignment in employee.assignments"
                             ng-model="employee.assignments[0].role"
-                            class="form-control timesheet-control">
+                            class="form-control timesheet-control"
+                            ng-change="saveAssignment(project, employee)">
                     </select>
                 </td>
                 <td>
-                    <input type="text" ng-model="employee.workload"/>
+                    <input type="text" ng-model="employee.workload" ng-change="saveAssignment(project, employee)"/>
                 </td>
             </tr>
             </tbody>
         </table>
     </div>
 </div>
-<!--{{projects}}-->
+<!--{{projects[0]}}-->
 <a href="" ng-click="addProject()" class="add-project">+</a>

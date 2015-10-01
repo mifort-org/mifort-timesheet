@@ -16,15 +16,31 @@ angular.module('myApp.projects', ['ngRoute'])
             'Assignment',
             'Workload'
         ];
+        $scope.assignments = [
+            'Developer',
+            'QA',
+            'Teamlead',
+            'Manager',
+            'SEO',
+            'CTO',
+            'Junior Developer',
+            'Senior Developer',
+            'Junior QA',
+            'Senior QA',
+            'Designer',
+            'UX'
+        ];
         $scope.currentProjectIndex = 0;
 
          projectsService.getProjects(companyId).success(function(projects) {
              $scope.projects = projects;
 
              $scope.projects.forEach(function(project) {
-                 projectsService.getAssignedUsers(project._id).success(function(projectUsers) {
-                     project.employees = projectUsers;
+                 projectsService.getAssignedEmployers(project._id).success(function(assignedEmployers) {
+                     project.employees = assignedEmployers;
                      project.isCollapsed = false;
+                     //temp
+                     project.projectEdit = false;
                  });
              });
         });
@@ -44,7 +60,13 @@ angular.module('myApp.projects', ['ngRoute'])
             };
             $scope.projects.push(newProject);
             projectsService.saveOrCreateProject(newProject).success(function(project) {
-                newProject = project;
+                $scope.projects[$scope.projects.length-1] = project;
+            });
+        };
+
+        $scope.saveAssignment = function(project, employee) {
+            projectsService.saveAssignment(project._id, employee).success(function(project) {
+                true
             });
         }
     }]);
