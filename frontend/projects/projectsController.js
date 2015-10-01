@@ -2,14 +2,14 @@
 
 angular.module('myApp.projects', ['ngRoute'])
 
-    .config(['$routeProvider', function ($routeProvider) {
+    .config(['$routeProvider', function($routeProvider) {
         $routeProvider.when('/projects', {
             templateUrl: 'projects/projectsView.html',
             controller: 'projectsController'
         });
     }])
 
-    .controller('projectsController', ['$scope', 'projectsService', 'preferences', function ($scope, projectsService, preferences) {
+    .controller('projectsController', ['$scope', 'projectsService', 'preferences', '$timeout', function($scope, projectsService, preferences, $timeout) {
         var companyId = preferences.get('user').companyId;
         $scope.projectsKeys = [
             'Employee',
@@ -32,17 +32,17 @@ angular.module('myApp.projects', ['ngRoute'])
         ];
         $scope.currentProjectIndex = 0;
 
-         projectsService.getProjects(companyId).success(function(projects) {
-             $scope.projects = projects;
+        projectsService.getProjects(companyId).success(function(projects) {
+            $scope.projects = projects;
 
-             $scope.projects.forEach(function(project) {
-                 projectsService.getAssignedEmployers(project._id).success(function(assignedEmployers) {
-                     project.employees = assignedEmployers;
-                     project.isCollapsed = false;
-                     //temp
-                     project.projectEdit = false;
-                 });
-             });
+            $scope.projects.forEach(function(project) {
+                projectsService.getAssignedEmployers(project._id).success(function(assignedEmployers) {
+                    project.employees = assignedEmployers;
+                    project.isCollapsed = false;
+                    //temp
+                    project.projectEdit = false;
+                });
+            });
         });
 
         projectsService.getCompanyEmployers(companyId).success(function(employees) {
@@ -60,13 +60,26 @@ angular.module('myApp.projects', ['ngRoute'])
             };
             $scope.projects.push(newProject);
             projectsService.saveOrCreateProject(newProject).success(function(project) {
-                $scope.projects[$scope.projects.length-1] = project;
+                $scope.projects[$scope.projects.length - 1] = project;
             });
         };
 
         $scope.saveAssignment = function(project, employee) {
+            if(!employee._id){
+                employee = _.find($scope.companyEmployees, {displayName: employee.displayName});
+                employee.assignments = [{
+                    projectId: project._id,
+                    projectName: project.name,
+                    role: '',
+                    userId: employee._id,
+                    workload: ''
+                }];
+            }
+
             projectsService.saveAssignment(project._id, employee).success(function(project) {
-                true
+                $timeout(function() {
+                    $scope.$apply();
+                }, 3000);
             });
         }
     }]);

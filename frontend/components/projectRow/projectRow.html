@@ -1,0 +1,21 @@
+<tr>
+    <td>
+        <select id="newEmployee"
+                ng-options="employee.displayName as employee.displayName for employee in companyEmployees"
+                ng-model="employee.displayName"
+                class="form-control timesheet-control"
+                ng-change="saveAssignment(project, employee, true)">
+        </select>
+    </td>
+    <td>
+        <select id="newRole"
+                ng-options="assignment.role as assignment.role for assignment in employee.assignments"
+                ng-model="employee.assignments[0].role"
+                class="form-control timesheet-control"
+                ng-change="saveAssignment(project, employee)">
+        </select>
+    </td>
+    <td>
+        <input type="text" ng-model="employee.assignments[0].workload" ng-change="saveAssignment(project, employee)"/>
+    </td>
+</tr>
