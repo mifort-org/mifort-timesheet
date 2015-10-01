@@ -7,7 +7,7 @@ var registration = require('./libs/registration');
 
 //Rest API
 exports.restFindById = function(req, res) {
-    var companyId = utils.getCompanyId(req, res);
+    var companyId = utils.getCompanyId(req);
     findById(companyId, function(err, company) {
         if(err) {
             res.status(400).json({error: 'Cannot find company!'});

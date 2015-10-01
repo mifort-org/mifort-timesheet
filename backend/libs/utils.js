@@ -1,37 +1,31 @@
 var ObjectID = require('mongodb').ObjectID;
 var moment = require('moment');
+var reqParams = require('./req_params');
 
 var dateFormat = 'MM/DD/YYYY';
 
-var startDateParam = 'startDate';
-var endDateParam = 'endDate';
-var projectIdParam = 'projectId';
-var userIdParam = 'userId';
-var companyIdParam ='companyId';
-var timelogIdParam = 'timelogId';
-
-exports.getStartDate = function(req, res) {
-    return getDateParam(req, res, startDateParam);
+exports.getStartDate = function(req) {
+    return getDateParam(req, reqParams.startDateParam);
 };
 
-exports.getEndDate = function(req, res) {
-    return getDateParam(req, res, endDateParam);
+exports.getEndDate = function(req) {
+    return getDateParam(req, reqParams.endDateParam);
 }; 
 
-exports.getProjectId = function(req, res) {
-    return getObjectIdParam(req, res, projectIdParam)
+exports.getProjectId = function(req) {
+    return getObjectIdParam(req, reqParams.projectIdParam)
 };
 
-exports.getUserId = function(req, res) {
-    return getObjectIdParam(req, res, userIdParam);
+exports.getUserId = function(req) {
+    return getObjectIdParam(req, reqParams.userIdParam);
 };
 
-exports.getCompanyId = function(req, res) {
-    return getObjectIdParam(req, res, companyIdParam);
+exports.getCompanyId = function(req) {
+    return getObjectIdParam(req, reqParams.companyIdParam);
 };
 
-exports.getTimelogId = function(req, res) {
-    return getObjectIdParam(req, res, timelogIdParam);
+exports.getTimelogId = function(req) {
+    return getObjectIdParam(req, reqParams.timelogIdParam);
 };
 
 //parse json. Date and ObjectId
@@ -65,35 +59,21 @@ exports.jsonStringify = function(key, value) {
 };
 
 //private section
-function getObjectIdParam(req, res, name) {
-    var entityObjectId = getParameter(req, res, name);
+function getObjectIdParam(req, name) {
+    var entityObjectId = getParameter(req, name);
     if(entityObjectId && ObjectID.isValid(entityObjectId)) {
         entityObjectId = new ObjectID(entityObjectId);
     }
     return entityObjectId;
 }
 
-function getDateParam(req, res, name) {
-    var date = getParameter(req, res, name);
+function getDateParam(req, name) {
+    var date = getParameter(req, name);
     if(date) {
         return moment(date, dateFormat).toDate();
     }
 };
 
-function getParameter(req, res, name) {
+function getParameter(req, name) {
     return req.params[name] || req.query[name];
-}
-
-function sendSavedObject(err, res, object, result) {
-    if(err) {
-        res.status(500).json(err);
-    } else { 
-        if(result.result.ok) {
-            if(result.ops) {
-                res.json(result.ops[0]);
-            } else {
-                res.json(object);
-            }
-        }    
-    }
 }

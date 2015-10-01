@@ -4,7 +4,7 @@ var companies = require('./company');
 
 //Rest API
 exports.restGetById = function(req, res) {
-    var projectId = utils.getProjectId(req, res);
+    var projectId = utils.getProjectId(req);
     var projects = dbSettings.projectCollection();
     projects.findOne({_id: projectId}, 
         function(err, doc) {
@@ -52,7 +52,7 @@ exports.restSave = function(req, res) {
 };
 
 exports.restGetByCompanyId = function(req, res) {
-    var companyId = utils.getCompanyId(req, res);
+    var companyId = utils.getCompanyId(req);
     var projects = dbSettings.projectCollection();
     projects.find({companyId: companyId}).toArray(function(err, findedProjects){
         if(err) {

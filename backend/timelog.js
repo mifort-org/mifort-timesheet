@@ -26,7 +26,7 @@ exports.restSave = function(req, res) {
 };
 
 exports.restDelete = function(req, res) {
-    var timelogId = utils.getTimelogId(req, res);
+    var timelogId = utils.getTimelogId(req);
     var timelogCollection = dbSettings.timelogCollection();
     timelogCollection.remove({_id:timelogId}, {single: true},
       function(err, numberOfDeleted){
@@ -39,10 +39,10 @@ exports.restDelete = function(req, res) {
 };
 
 exports.restGetByDates = function(req, res) {
-    var start = utils.getStartDate(req, res);
-    var end = utils.getEndDate(req, res);
-    var userId = utils.getUserId(req, res);
-    var projectId = utils.getProjectId(req, res);
+    var start = utils.getStartDate(req);
+    var end = utils.getEndDate(req);
+    var userId = utils.getUserId(req);
+    var projectId = utils.getProjectId(req);
 
     var timelogCollection = dbSettings.timelogCollection();
     var query = {
@@ -57,10 +57,10 @@ exports.restGetByDates = function(req, res) {
     });
 };
 
-//private part
+//Private part
 function findAllByIds(ids, callback) {
     var timelogCollection = dbSettings.timelogCollection();
-    timelogCollection.find({_id:{ $in: ids}}, {"sort": "date"}).toArray(function(err, timelogs) {
+    timelogCollection.find({_id:{ $in: ids}}, {'sort': 'date'}).toArray(function(err, timelogs) {
         callback(err, timelogs);
     });
 }
