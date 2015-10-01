@@ -1,37 +1,31 @@
 var ObjectID = require('mongodb').ObjectID;
 var moment = require('moment');
+var reqParams = require('./req_params');
 
 var dateFormat = 'MM/DD/YYYY';
 
-var startDateParam = 'startDate';
-var endDateParam = 'endDate';
-var projectIdParam = 'projectId';
-var userIdParam = 'userId';
-var companyIdParam ='companyId';
-var timelogIdParam = 'timelogId';
-
 exports.getStartDate = function(req) {
-    return getDateParam(req, startDateParam);
+    return getDateParam(req, reqParams.startDateParam);
 };
 
 exports.getEndDate = function(req) {
-    return getDateParam(req, endDateParam);
+    return getDateParam(req, reqParams.endDateParam);
 }; 
 
 exports.getProjectId = function(req) {
-    return getObjectIdParam(req, projectIdParam)
+    return getObjectIdParam(req, reqParams.projectIdParam)
 };
 
 exports.getUserId = function(req) {
-    return getObjectIdParam(req, userIdParam);
+    return getObjectIdParam(req, reqParams.userIdParam);
 };
 
 exports.getCompanyId = function(req) {
-    return getObjectIdParam(req, res, companyIdParam);
+    return getObjectIdParam(req, reqParams.companyIdParam);
 };
 
 exports.getTimelogId = function(req) {
-    return getObjectIdParam(req, timelogIdParam);
+    return getObjectIdParam(req, reqParams.timelogIdParam);
 };
 
 //parse json. Date and ObjectId
