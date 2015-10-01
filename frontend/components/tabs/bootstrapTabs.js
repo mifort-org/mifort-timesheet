@@ -6,13 +6,11 @@ angular.module('myApp')
             link: function (scope) {
                 scope.tabs = [
                     {title: 'projects'},
-                    {title: 'projectManagement'},
+                    {title: 'report'},
                     {title: 'timesheetManagement'},
                     {title: 'timelog'},
                     {title: 'companyCreate'},
-                    {title: 'companyEdit'},
-                    {title: 'projectReport'},
-                    {title: 'peopleReport'}
+                    {title: 'companyEdit'}
                 ];
 
                 scope.changeTab = function (tab) {

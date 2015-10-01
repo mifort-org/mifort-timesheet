@@ -3,20 +3,20 @@
 angular.module('myApp.projects').factory('projectsService',
     ['$http', function ($http) {
         return {
-            getAssignments: function (projects) {
-                return $http.get('project/' + projects);
+            saveAssignment: function (projectId, assignment) {
+                return $http.post('user/assignment/' + projectId, assignment);
             },
-            saveProject: function (project) {
+            saveOrCreateProject: function (project) {
                 return $http.post('project/', project);
-            },
-            createProject: function (projectsData) {
-                return $http.post('projects/', projectsData);
             },
             getProjects: function(companyId){
                 return $http.get('projects?companyId=' + companyId);
             },
-            getAssignedUsers: function(projectId) {
-                return $http.get('users?projectId=' + projectId);
+            getAssignedEmployers: function(projectId) {
+                return $http.get('/user/project/' + projectId);
+            },
+            getCompanyEmployers: function(companyId) {
+                return $http.get('/user/company/' + companyId);
             }
         }
     }

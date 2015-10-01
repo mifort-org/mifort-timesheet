@@ -1,16 +1,13 @@
 var validator = require('validator');
-
-var projectIdParam = 'projectId'; //the same as in utils.js. Refactoring is needed
-var companyIdParam ='companyId';
-var userIdParam = 'userId';
-var startDateParam = 'startDate';
-var endDateParam = 'endDate';
-var timelogIdParam = 'timelogId';
+var reqParams = require('./req_params');
+var util = require('util');
 
 var emptyBody = {
     code: 400,
     message: 'Request body cannot be empty!'
 };
+
+var invalidMongoParam = '%s is required and should have valid format';
 
 //Project Rest Api validators
 exports.validateSaveProject = function(req, res, next) {
@@ -18,15 +15,11 @@ exports.validateSaveProject = function(req, res, next) {
     if(project) {
         req.checkBody('name', 'Project name is required').notEmpty();
         if(!project._id) {
-            req.checkBody('companyId', 'Company id is required and should have valid format')
+            req.checkBody('companyId', util.format(invalidMongoParam, 'Company id'))
                 .notEmpty().isMongoId();
         }
-        var errors = req.validationErrors(true);
-        if(errors) {
-            res.status(400).json(errors);
-            return;
-        }
-        next(); // success validation!
+
+        returnErrors(req, res, next);
         
     } else {
         res.status(emptyBody.code).json({msg: emptyBody.message});
@@ -34,42 +27,35 @@ exports.validateSaveProject = function(req, res, next) {
 };
 
 exports.validateGetProjectById = function(req, res, next) {
-    req.checkParams(projectIdParam, 'Project id param is required and should have valid format')
+    req.checkParams(reqParams.projectIdParam, util.format(invalidMongoParam, 'Project id param'))
             .notEmpty().isMongoId();
-    var errors = req.validationErrors(true);
-    if(errors) {
-        res.status(400).json(errors);
-        return;
-    }
-    next();
+    
+    returnErrors(req, res, next);
 };
 
 exports.validateGetProjectByCompanyId = function(req, res, next) {
-    req.check(companyIdParam, 'Company id param is required and should have valid format')
+    req.check(reqParams.companyIdParam, util.format(invalidMongoParam, 'Company id param'))
             .notEmpty().isMongoId();
 
-    var errors = req.validationErrors(true);
-    if(errors) {
-        res.status(400).json(errors);
-        return;
-    }
-    next();
+    returnErrors(req, res, next);
 };
 
 //User Rest API validators
 exports.validateGetUserByProjectId = function(req, res, next) {
-    req.check(projectIdParam, 'Project id param is required and should have valid format')
+    req.check(reqParams.projectIdParam, util.format(invalidMongoParam, 'Project id param'))
             .notEmpty().isMongoId();
-    var errors = req.validationErrors(true);
-    if(errors) {
-        res.status(400).json(errors);
-        return;
-    }
-    next();
+    
+    returnErrors(req, res, next);
+};
+
+exports.validateGetUserByCompanyId = function(req, res, next) {
+    req.check(reqParams.companyIdParam, util.format(invalidMongoParam, 'Company id param'))
+            .notEmpty().isMongoId();
+    returnErrors(req, res, next);
 };
 
 exports.validateReplaceAssignment = function(req, res, next) {
-    req.checkParams(projectIdParam, 'Project id param is required and should have valid format')
+    req.checkParams(reqParams.projectIdParam, util.format(invalidMongoParam, 'Project id param'))
             .notEmpty().isMongoId();
 
     var user = req.body;
@@ -82,12 +68,7 @@ exports.validateReplaceAssignment = function(req, res, next) {
     req.checkBody('assignments', 'Incorrect Assignments (Check: userId, projectId, projectName)')
         .optional().isAssignments();
 
-    var errors = req.validationErrors(true);
-    if(errors) {
-        res.status(400).json(errors);
-        return;
-    }
-    next();
+    returnErrors(req, res, next);
 };
 
 //Company Rest API validation
@@ -101,46 +82,31 @@ exports.validateUpdateCompany = function(req, res, next) {
 };
 
 exports.validateGetCompanyById = function(req, res, next) {
-    req.checkParams(companyIdParam, 'Company id param is required and should have valid format')
+    req.checkParams(reqParams.companyIdParam, util.format(invalidMongoParam, 'Company id param'))
             .notEmpty().isMongoId();
 
-    var errors = req.validationErrors(true);
-    if(errors) {
-        res.status(400).json(errors);
-        return;
-    }
-    next();
+    returnErrors(req, res, next);
 };
 
 //Timelog Rest API validation
 exports.validateGetTimelogByDates = function(req, res, next) {
-    req.checkParams(userIdParam, 'User id param is required and should have valid format')
+    req.checkParams(reqParams.userIdParam, util.format(invalidMongoParam, 'User id param'))
             .notEmpty().isMongoId();
-    req.checkQuery(projectIdParam, 'Project id param is required and should have valid format')
+    req.checkQuery(reqParams.projectIdParam, util.format(invalidMongoParam, 'Project id param'))
             .notEmpty().isMongoId();
-    req.checkQuery(startDateParam, 'Start date param is required and should have valid format')
+    req.checkQuery(reqParams.startDateParam, util.format(invalidMongoParam, 'Start date param'))
             .notEmpty().isDate();
-    req.checkQuery(endDateParam, 'End date param is required and should have valid format')
+    req.checkQuery(reqParams.endDateParam, util.format(invalidMongoParam, 'End date param'))
             .notEmpty().isDate();
 
-    var errors = req.validationErrors(true);
-    if(errors) {
-        res.status(400).json(errors);
-        return;
-    }
-    next();
+    returnErrors(req, res, next);
 };
 
 exports.validateDeleteTimelog = function(req, res, next) {
-    req.checkParams(userIdParam, 'Timelog id param is required and should have valid format')
+    req.checkParams(reqParams.userIdParam, util.format(invalidMongoParam, 'Timelog id param'))
             .notEmpty().isMongoId();
 
-    var errors = req.validationErrors(true);
-    if(errors) {
-        res.status(400).json(errors);
-        return;
-    }
-    next();
+    returnErrors(req, res, next);
 };
 
 exports.validateSaveTimelog = function(req, res, next) {
@@ -152,13 +118,7 @@ exports.validateSaveTimelog = function(req, res, next) {
     req.checkBody('timelog', 'Incorrect timelog (Check: date, userId, projectId, projectName)')
         .isTimelog();
     
-    var errors = req.validationErrors(true);
-    if(errors) {
-        res.status(400).json(errors);
-        return;
-    }
-
-    next();
+    returnErrors(req, res, next);
 };
 
 //Custom validators for express-validator
@@ -198,3 +158,14 @@ exports.assignments = function(values) {
     }
     return false;
 };
+
+//Private part
+function returnErrors(req, res, next) {
+    var errors = req.validationErrors(true);
+    if(errors) {
+        res.status(400).json(errors);
+        return;
+    }
+
+    next();
+}

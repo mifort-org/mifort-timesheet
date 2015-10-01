@@ -9,7 +9,7 @@ exports.restGetCurrent = function(req, res) {
 };
 
 exports.restGetByProjectId = function(req, res) {
-    var projectIdParam = utils.getProjectId(req, res);
+    var projectIdParam = utils.getProjectId(req);
     var users = dbSettings.userCollection();
     users.find({'assignments.projectId': projectIdParam},
                {
@@ -19,15 +19,30 @@ exports.restGetByProjectId = function(req, res) {
                })
       .toArray(function(err, projectUsers) {
         if(err) {
-            res.status(400).json({error: 'Cannot find users'});
+            res.status(404).json({error: 'Cannot find users'});
         } else {
             res.json(projectUsers);
         }
     });
 };
 
+exports.restGetByCompanyId = function(req, res) {
+    var companyIdParam = utils.getCompanyId(req);
+    var users = dbSettings.userCollection();
+    users.find({companyId: companyIdParam},
+               {workload: 1,
+                displayName: 1})
+        .toArray(function(err, companyUsers) {
+            if(err) {
+                res.status(404).json({error: 'Cannot find users'});
+            } else {
+                res.json(companyUsers);
+            }
+        });
+};
+
 exports.restReplaceAssignments = function(req, res) {
-    var projectId = utils.getProjectId(req, res);
+    var projectId = utils.getProjectId(req);
     var user = req.body;
     var userId = user._id;
     var assignments = user.assignments || {};
