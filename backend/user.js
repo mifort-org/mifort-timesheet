@@ -9,7 +9,7 @@ exports.restGetCurrent = function(req, res) {
 };
 
 exports.restGetByProjectId = function(req, res) {
-    var projectIdParam = utils.getProjectId(req, res);
+    var projectIdParam = utils.getProjectId(req);
     var users = dbSettings.userCollection();
     users.find({'assignments.projectId': projectIdParam},
                {
@@ -27,7 +27,7 @@ exports.restGetByProjectId = function(req, res) {
 };
 
 exports.restGetByCompanyId = function(req, res) {
-    var companyIdParam = utils.getCompanyId(req, res);
+    var companyIdParam = utils.getCompanyId(req);
     var users = dbSettings.userCollection();
     users.find({companyId: companyIdParam},
                {workload: 1,
@@ -42,7 +42,7 @@ exports.restGetByCompanyId = function(req, res) {
 };
 
 exports.restReplaceAssignments = function(req, res) {
-    var projectId = utils.getProjectId(req, res);
+    var projectId = utils.getProjectId(req);
     var user = req.body;
     var userId = user._id;
     var assignments = user.assignments || {};
