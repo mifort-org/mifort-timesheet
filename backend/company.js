@@ -84,10 +84,10 @@ exports.generateDefaultCompany = function() {
 
     var company = {
         template : {
-            date: "",
-            role: "",
+            date: '',
+            role: '',
             time: 8,
-            comment: ""
+            comment: ''
         },
         periods: periods
     }

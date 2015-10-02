@@ -23,6 +23,7 @@ var user = {
 var project = {
     "name":"Super puper project",
     "description": "Bla bla bla",
+    "active": true,
     "template": {
         "date": "",
         "role": "",

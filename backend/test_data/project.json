@@ -3,6 +3,7 @@
     "description": "Bla bla bla",
     "createdOn": "01/01/2015",
     "updatedOn": "01/02/2015",
+    "active": true,
     "template": {
         "date": "",
         "role": "",

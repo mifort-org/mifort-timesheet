@@ -121,6 +121,13 @@ exports.validateSaveTimelog = function(req, res, next) {
     returnErrors(req, res, next);
 };
 
+exports.validateDeactivateProject = function(req, res, next) {
+    req.check(reqParams.projectIdParam, util.format(invalidMongoParam, 'Project id param'))
+            .notEmpty().isMongoId();
+
+    returnErrors(req, res, next);
+};
+
 //Custom validators for express-validator
 exports.isArray = function(value) {
     return Array.isArray(value);

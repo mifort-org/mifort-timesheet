@@ -8,11 +8,7 @@ exports.restGetById = function(req, res) {
     var projects = dbSettings.projectCollection();
     projects.findOne({_id: projectId}, 
         function(err, doc) {
-            if(err) {
-                res.status(500).json(err);
-                return;
-            }
-            res.json(doc);
+            returnProjectCallback(res, err, doc);
         }
     );
 };
@@ -27,12 +23,8 @@ exports.restSave = function(req, res) {
                             name: project.name
                         },
                         $currentDate: { updatedOn: true }},
-            function(err, savedProject){
-                if(err) {
-                    res.status(500).json(err);
-                    return;
-                }
-                res.json(savedProject);
+            function(err, savedProject) {
+                returnProjectCallback(res, err, savedProject);
             });
     } else { //create
         companies.findById(project.companyId, function(err, company) {
@@ -43,6 +35,10 @@ exports.restSave = function(req, res) {
             project.defaultValues = company.defaultValues;
             project.template = company.template;
             project.periods = company.periods;
+            var currentDate = new Date();
+            project.createdOn = currentDate;
+            project.updatedOn = currentDate;
+            project.active = true;
             projects.insertOne(project, {safe: true}, 
                 function(err, result) {
                     res.json(result.ops[0]);
@@ -54,13 +50,25 @@ exports.restSave = function(req, res) {
 exports.restGetByCompanyId = function(req, res) {
     var companyId = utils.getCompanyId(req);
     var projects = dbSettings.projectCollection();
-    projects.find({companyId: companyId}).toArray(function(err, findedProjects){
-        if(err) {
-            res.status(404).json({error: 'Cannot find projects!'});
-        } else {
-            res.json(findedProjects);
-        }
-    });
+    projects.find({companyId: companyId,
+                   active: true})
+        .toArray(function(err, findedProjects){
+            if(err) {
+                res.status(404).json({error: 'Cannot find projects!'});
+            } else {
+                res.json(findedProjects);
+            }
+        });
+};
+
+exports.restDeactivateProject = function(req, res) {
+    var projectId = utils.getProjectId(req);
+    var projects = dbSettings.projectCollection();
+    projects.update({ _id: projectId},
+                    {$set: { active: false } },
+        function(err, savedProject) {
+            returnProjectCallback(res, err, savedProject);
+        });
 };
 
 //Public API
@@ -83,3 +91,12 @@ exports.generateDefaultProject = function(company) {
         companyId: company._id
     };
 };
+
+//Private
+function returnProjectCallback(res, err, savedProject) {
+    if(err) {
+        res.status(500).json(err);
+        return;
+    }
+    res.json(savedProject);
+}
