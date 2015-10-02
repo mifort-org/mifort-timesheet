@@ -49,6 +49,9 @@ app.get('/project/:projectId',
 app.get('/projects', 
         validators.validateGetProjectByCompanyId, 
         project.restGetByCompanyId);
+app.get('/project/deactivate/:projectId',
+        validators.validateDeactivateProject,
+        project.restDeactivateProject);
 
 //timelog
 app.post('/timelog',
