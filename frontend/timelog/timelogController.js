@@ -17,22 +17,27 @@ angular.module('myApp.timelog', ['ngRoute'])
 
         $scope.assignments.forEach(function(assignment, index) {
             timesheetManagementService.getProject(assignment.projectId).success(function(project) {
-                project.userTimelogs = [];
-                project.currentTimelogIndex = 0;
-                $scope.projects.push(project);
-            }).then(function() {
-                var currentProject = $scope.projects[index],
-                    startDate = currentProject.periods[0].start,
-                    endDate = currentProject.periods[currentProject.periods.length - 1].end;
-                timelogService.getTimelog(preferences.get('user')._id, currentProject._id, startDate, endDate).success(function(projectTimelog) {
-                    var projectUserTimelogs = $scope.projects[index].userTimelogs;
+                if(project) {
+                    project.userTimelogs = [];
+                    project.currentTimelogIndex = 0;
+                    $scope.projects.push(project);
+                }
+            }).then(function(data) {
+                var currentProject = $scope.projects[index];
 
-                    projectUserTimelogs.push.apply(projectUserTimelogs, projectTimelog.timelog);
+                if(currentProject) {
+                    var startDate = currentProject.periods[0].start,
+                        endDate = currentProject.periods[currentProject.periods.length - 1].end;
+                    timelogService.getTimelog(preferences.get('user')._id, currentProject._id, startDate, endDate).success(function(projectTimelog) {
+                        var projectUserTimelogs = $scope.projects[index].userTimelogs;
 
-                    if($scope.assignments.length == index + 1) {
-                        $scope.init();
-                    }
-                });
+                        projectUserTimelogs.push.apply(projectUserTimelogs, projectTimelog.timelog);
+
+                        if($scope.assignments.length == index + 1) {
+                            $scope.init();
+                        }
+                    });
+                }
             });
         });
 
@@ -99,8 +104,8 @@ angular.module('myApp.timelog', ['ngRoute'])
                         typingTimer = setTimeout(function() {
                             timelogService.updateTimelog(preferences.get('user')._id, newValue.timelog).success(function(data) {
 
-                                _.map(newValue.timelog, function(day, index){
-                                    if(!day._id && data.timelog[index]){
+                                _.map(newValue.timelog, function(day, index) {
+                                    if(!day._id && data.timelog[index]) {
                                         day._id = data.timelog[index]._id
                                     }
                                 });
