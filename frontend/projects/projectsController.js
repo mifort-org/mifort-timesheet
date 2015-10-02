@@ -65,21 +65,14 @@ angular.module('myApp.projects', ['ngRoute'])
         };
 
         $scope.saveAssignment = function(project, employee) {
-            if(!employee._id){
-                employee = _.find($scope.companyEmployees, {displayName: employee.displayName});
-                employee.assignments = [{
-                    projectId: project._id,
-                    projectName: project.name,
-                    role: '',
-                    userId: employee._id,
-                    workload: ''
-                }];
-            }
-
             projectsService.saveAssignment(project._id, employee).success(function(project) {
-                $timeout(function() {
-                    $scope.$apply();
-                }, 3000);
+                //$timeout(function() {
+                //    $scope.$apply();
+                //}, 3000);
             });
+        };
+
+        $scope.deleteProject = function() {
+
         }
     }]);
