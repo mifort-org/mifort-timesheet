@@ -17,6 +17,9 @@ angular.module('myApp.projects').factory('projectsService',
             },
             getCompanyEmployers: function(companyId) {
                 return $http.get('/user/company/' + companyId);
+            },
+            removeProject: function(projectId) {
+                return $http.get('/project/deactivate/' + projectId);
             }
         }
     }

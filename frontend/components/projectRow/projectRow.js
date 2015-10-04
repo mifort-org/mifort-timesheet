@@ -17,10 +17,10 @@ angular.module('myApp')
                             workload: ''
                         }];
 
-                        if(!project.employees){
-                            project.employees = [];
+                        if(!project.projectAssignments){
+                            project.projectAssignments = [];
                         }
-                        project.employees.push(_.clone(newEmployee));
+                        project.projectAssignments.push(_.clone(newEmployee));
                         scope.saveAssignment(project, _.clone(newEmployee));
                     }
 
