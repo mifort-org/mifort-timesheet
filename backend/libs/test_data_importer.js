@@ -140,7 +140,10 @@ exports.import = function() {
                 projects.saveInDb(project, function(err, savedProject){
                     user.assignments[0].projectId = savedProject._id;
                     users.save(user, function(err, savedUser){
-                        console.log('Test data is imported!');
+                        savedUser.assignments[0].userId = savedUser._id;
+                        users.save(savedUser, function(err, userWithAssignment) {
+                            console.log('Test data is imported!');
+                        });
                     });
                 });
             });
