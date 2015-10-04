@@ -1,12 +1,13 @@
 <div class="collapse-wrapper" ng-repeat="project in projects">
     <h2 ng-class="{'timelog-collapsed': project.isCollapsed}">
-        <a href="" ng-if="!project.projectEdit" class="collapse-item" ng-class="{'collapsed': project.isCollapsed}" ng-click="project.isCollapsed = !project.isCollapsed">
+        <a href="" ng-if="!project.projectEdit" class="collapse-item project-name" ng-class="{'collapsed': project.isCollapsed}" ng-click="project.isCollapsed = !project.isCollapsed">
             {{project.name}}
         </a>
 
         <input ng-if="project.projectEdit" type="text" ng-model="project.name" ng-change="changeProjectName(project)"/>
 
-        <a href="" ng-click="project.projectEdit = !project.projectEdit">Edit</a>
+        <a href="" ng-if="project.projectEdit" class="edit-project" ng-click="project.projectEdit = !project.projectEdit">Done</a>
+        <a href="" ng-if="!project.projectEdit" class="edit-project" ng-click="project.projectEdit = !project.projectEdit">Edit</a>
 
         <a href="" class="close-project" ng-click="deleteProject()"></a>
     </h2>
