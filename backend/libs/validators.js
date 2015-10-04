@@ -103,7 +103,7 @@ exports.validateGetTimelogByDates = function(req, res, next) {
 };
 
 exports.validateDeleteTimelog = function(req, res, next) {
-    req.checkParams(reqParams.userIdParam, util.format(invalidMongoParam, 'Timelog id param'))
+    req.checkParams(reqParams.timelogIdParam, util.format(invalidMongoParam, 'Timelog id param'))
             .notEmpty().isMongoId();
 
     returnErrors(req, res, next);
