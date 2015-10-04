@@ -37,9 +37,22 @@ angular.module('myApp.projects', ['ngRoute'])
 
             $scope.projects.forEach(function(project) {
                 projectsService.getAssignedEmployers(project._id).success(function(assignedEmployers) {
-                    project.employees = assignedEmployers;
+                    project.employees = [];
+                    assignedEmployers.forEach(function(employee) {
+                        if(employee.assignments.length > 1){
+                            employee.assignments.forEach(function(assignment) {
+                                var projectAssignment = _.clone(employee);
+
+                                projectAssignment.assignments = [assignment];
+                                project.employees.push(projectAssignment);
+                            });
+                        }
+                        else{
+                            project.employees.push(employee);
+                        }
+                    });
                     project.isCollapsed = false;
-                    //temp
+                    //temp, remove after backend validation
                     project.projectEdit = false;
                 });
             });
@@ -65,13 +78,13 @@ angular.module('myApp.projects', ['ngRoute'])
         };
 
         $scope.saveAssignment = function(project, employee) {
-            //var aggregatedEmployeeAssignments = [];
-            //
-            //_.filter(project.employees, {_id: employee._id}).forEach(function(assignment) {
-            //    aggregatedEmployeeAssignments.push(assignment.assignments[0]);
-            //});
-            //
-            //employee.assignments = aggregatedEmployeeAssignments;
+            var aggregatedEmployeeAssignments = [];
+
+            _.filter(project.employees, {_id: employee._id}).forEach(function(assignment) {
+                aggregatedEmployeeAssignments.push(assignment.assignments[0]);
+            });
+
+            employee.assignments = aggregatedEmployeeAssignments;
 
             projectsService.saveAssignment(project._id, employee).success(function(project) {
                 //$timeout(function() {

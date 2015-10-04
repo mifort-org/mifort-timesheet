@@ -5,8 +5,8 @@ angular.module('myApp')
         return {
             link: function (scope) {
                 scope.tabs = [
-                    {title: 'timelog'},
                     {title: 'projects'},
+                    {title: 'timelog'},
                     {title: 'report'},
                     {title: 'timesheetManagement'},
                     {title: 'companyCreate'},

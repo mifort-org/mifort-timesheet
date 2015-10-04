@@ -5,17 +5,15 @@
                 ng-model="employee.displayName"
                 class="form-control timesheet-control"
                 ng-change="addAssignment(project, employee, true)">
-        </select>{{employee}}
-    </td>
+        </select>
     <td>
         <select id="newRole"
                 ng-options="assignment.role as assignment.role for assignment in employee.assignments"
                 ng-model="employee.assignments[0].role"
                 class="form-control timesheet-control">
-        </select>{{employee}}
+        </select>
     </td>
     <td>
         <input type="text" ng-model="employee.assignments[0].workload"/>
-        {{employee}}
     </td>
 </tr>
