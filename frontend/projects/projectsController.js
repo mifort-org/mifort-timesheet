@@ -78,14 +78,16 @@ angular.module('myApp.projects', ['ngRoute'])
         };
 
         $scope.saveAssignment = function(project, employee) {
-            var aggregatedEmployeeAssignments = [];
+            var aggregatedEmployee,
+                aggregatedEmployeeAssignments = [];
 
             _.filter(project.projectAssignments, {_id: employee._id}).forEach(function(assignment) {
                 aggregatedEmployeeAssignments.push(assignment.assignments[0]);
             });
 
-            employee.assignments = aggregatedEmployeeAssignments;
-            projectsService.saveAssignment(project._id, employee);
+            aggregatedEmployee = _.clone(employee);
+            aggregatedEmployee.assignments = aggregatedEmployeeAssignments;
+            projectsService.saveAssignment(project._id, aggregatedEmployee);
         };
 
         $scope.removeProject = function(project, projectIndex) {
