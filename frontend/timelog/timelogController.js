@@ -14,15 +14,15 @@ angular.module('myApp.timelog', ['ngRoute'])
         $scope.projects = [];
         $scope.timelogKeys = timelogService.getTimelogKeys();
         $scope.assignments = preferences.get('user').assignments;
+        $scope.currentTimelogIndex = 0;
 
         $scope.assignments.forEach(function(assignment, index) {
-            timesheetManagementService.getCompany(preferences.get('user').companyId).success(function(project) {
+            timelogService.getProject(assignment.projectId).success(function(project) {
                 if(project) {
                     project.userTimelogs = [];
-                    project.currentTimelogIndex = 0;
                     $scope.projects.push(project);
                 }
-            }).then(function(data) {
+            }).then(function() {
                 var currentProject = $scope.projects[index];
 
                 if(currentProject) {
@@ -70,7 +70,7 @@ angular.module('myApp.timelog', ['ngRoute'])
                 //timelogs data from timesheet
                 if(project.defaultValues) {
                     project.defaultValues.forEach(function(day) {
-                        var dayExisted = _.findWhere(project.timelog, {date: moment(new Date(day.date)).calendar()});
+                        var dayExisted = _.findWhere(project.timelog, {date: moment(new Date(day.date)).format("MM/DD/YYYY")});
                         if(dayExisted) {
                             angular.extend(dayExisted, day);
                         }
@@ -79,7 +79,7 @@ angular.module('myApp.timelog', ['ngRoute'])
 
                 //user timelogs
                 project.userTimelogs.forEach(function(day, index) {
-                    var timelogDayIndex = _.findIndex(project.timelog, {date: moment(new Date(day.date)).calendar()});
+                    var timelogDayIndex = _.findIndex(project.timelog, {date: moment(new Date(day.date)).format("MM/DD/YYYY")});
                     day.isFirstDayRecord = false;
 
                     //if current iterated log is not the first for this date to push
@@ -120,8 +120,8 @@ angular.module('myApp.timelog', ['ngRoute'])
             project.splittedTimelog = [];
             project.periods.forEach(function(period) {
                 var timelogPeriod,
-                    startIndex = _.findIndex(project.timelog, {date: moment(new Date(period.start)).calendar()}),
-                    endIndex = _.findLastIndex(project.timelog, {date: moment(new Date(period.end)).calendar()});
+                    startIndex = _.findIndex(project.timelog, {date: moment(new Date(period.start)).format("MM/DD/YYYY")}),
+                    endIndex = _.findLastIndex(project.timelog, {date: moment(new Date(period.end)).format("MM/DD/YYYY")});
 
                 timelogPeriod = project.timelog.slice(startIndex, endIndex + 1);
                 project.splittedTimelog.push(timelogPeriod);
@@ -140,7 +140,7 @@ angular.module('myApp.timelog', ['ngRoute'])
         $scope.removeRow = function(log, dayIndex, project) {
             if(log._id) {
                 timelogService.removeTimelog(log).success(function() {
-                        project.splittedTimelog[project.currentTimelogIndex].splice(dayIndex, 1);
+                        project.splittedTimelog[$scope.currentTimelogIndex].splice(dayIndex, 1);
                         //project.timelog.splice(dayIndex, _.findIndex(project.timelog, {$$hashKey: log.$$hashKey}));
                         project.timelog.splice(dayIndex, 1);
                         splitPeriods(project);
@@ -150,14 +150,17 @@ angular.module('myApp.timelog', ['ngRoute'])
         };
 
         $scope.isWeekend = function(date) {
-            return $filter('isWeekendDay')(date);
+            //if(date.getDay() == 0 || date.getDay() == 6){
+            //    day.weekend = true;
+            //}
+            return new Date(date).getDay() == 0 || new Date(date).getDay() == 1;
         };
 
-        $scope.previousPeriod = function(project) {
-            project.currentTimelogIndex--;
+        $scope.showPreviousPeriod = function(project) {
+            $scope.currentTimelogIndex--;
         };
 
-        $scope.nextPeriod = function(project) {
-            project.currentTimelogIndex++;
+        $scope.showNextPeriod = function(project) {
+            $scope.currentTimelogIndex++;
         };
     }]);

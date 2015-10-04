@@ -1,14 +1,15 @@
+<div class="timelog-controls clearfix">
+    <button ng-if="currentTimelogIndex > 0" class="previous-period" ng-click="showPreviousPeriod()"></button>
+    <button class="next-period" ng-click="showNextPeriod()"></button>
+    <!--{{currentTimelogIndex}}-->
+</div>
+
 <div class="collapse-wrapper clearfix" ng-repeat="project in projects">
     <h2 ng-class="{'timelog-collapsed': isCollapsed}">
         <a href="" class="collapse-item" ng-class="{'collapsed': isCollapsed}" ng-click="isCollapsed = !isCollapsed">
             {{project.name}}
         </a>
     </h2>
-
-    <div class="timelog-controls">
-        <button ng-if="project.currentTimelogIndex" class="previous-period" ng-click="previousPeriod(project)"></button>
-        <button ng-if="project.currentTimelogIndex < project.splittedTimelog.length - 1" class="next-period" ng-click="nextPeriod(project)"></button>
-    </div>
 
     <div collapse="isCollapsed">
         <table class="table table-bordered timelog">
@@ -18,7 +19,7 @@
             </th>
             </thead>
             <tbody>
-            <tr ng-if="project.currentTimelogIndex >= 0" ng-repeat="log in project.splittedTimelog[project.currentTimelogIndex]"
+            <tr ng-if="currentTimelogIndex >= 0" ng-repeat="log in project.splittedTimelog[currentTimelogIndex]"
                 ng-class="{'weekend': isWeekend(log.date)}">
                 <td ng-class="log.isFirstDayRecord ? 'is-first-day-log' : 'is-not-first-day-log'">
                     <span class="timelog-data">
@@ -46,9 +47,8 @@
             </tbody>
         </table>
     </div>
+    <!--<small>{{project.splittedTimelog}}</small>-->
 </div>
 
-
-<!--<small>{{project.periods}}</small>-->
 <!--<small>{{splittedTimelog.length}}</small>-->
 <!--<small>{{projects[0].timelog}}</small>-->

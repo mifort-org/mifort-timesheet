@@ -3,6 +3,9 @@
 angular.module('myApp.timelog').factory('timelogService',
     ['$http', function ($http) {
         return {
+            getProject: function (projectId) {
+                return $http.get('project/' + projectId);
+            },
             getTimelog: function (userId, projectId, startDate, endDate) {
                 return $http.get('timelog/' + userId + '?projectId=' + projectId + '&startDate=' + startDate+ '&endDate=' + endDate);
             },
