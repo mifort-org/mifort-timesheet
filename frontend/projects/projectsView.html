@@ -19,7 +19,7 @@
             </th>
             </thead>
             <tbody>
-            <tr ng-if="currentProjectIndex >= 0" ng-repeat="employee in project.employees">
+            <tr ng-if="currentProjectIndex >= 0" ng-repeat="employee in project.employees track by $index">
                 <td>
                     <select id="employee"
                             ng-options="employee.displayName as employee.displayName for employee in project.employees"

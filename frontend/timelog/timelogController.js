@@ -16,7 +16,7 @@ angular.module('myApp.timelog', ['ngRoute'])
         $scope.assignments = preferences.get('user').assignments;
 
         $scope.assignments.forEach(function(assignment, index) {
-            timesheetManagementService.getProject(assignment.projectId).success(function(project) {
+            timesheetManagementService.getCompany(preferences.get('user').companyId).success(function(project) {
                 if(project) {
                     project.userTimelogs = [];
                     project.currentTimelogIndex = 0;

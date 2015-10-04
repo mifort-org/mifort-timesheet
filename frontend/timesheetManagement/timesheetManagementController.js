@@ -20,7 +20,7 @@ angular.module('myApp.timesheetManagement', ['ngRoute'])
         $scope.dayTypes = timesheetManagementService.getDayTypes();
         $scope.weekDays = timesheetManagementService.getWeekDays();
 
-        timesheetManagementService.getProject(preferences.get('user').assignments[0].projectId).success(function (data) {
+        timesheetManagementService.getCompany(preferences.get('user').companyId).success(function (data) {
             $scope.project = data;
         }).then(function () {
             $scope.init();

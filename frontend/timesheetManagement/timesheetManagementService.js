@@ -3,8 +3,8 @@
 angular.module('myApp.timesheetManagement').factory('timesheetManagementService',
     ['$http', function ($http) {
         return {
-            getProject: function (projectId) {
-                return $http.get('project/' + projectId);
+            getCompany: function (companyId) {
+                return $http.get('company/' + companyId);
             },
             saveProject: function (parameters) {
                 $http.post('project', parameters);
