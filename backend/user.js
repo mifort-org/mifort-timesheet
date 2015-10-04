@@ -21,8 +21,8 @@ exports.restGetByProjectId = function(req, res) {
         if(err) {
             res.status(404).json({error: 'Cannot find users'});
         } else {
-            if(projectUsers) {
-                projectUsers.forEach(function(user) {
+            if(projectUsers) { 
+                projectUsers.forEach(function(user) { // not efficient???? Maybe: Client side???
                     user.assignments = user.assignments.filter(function(assignment) {
                        return projectIdParam.equals(assignment.projectId);
                     });

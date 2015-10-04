@@ -33,7 +33,7 @@ exports.restDelete = function(req, res) {
         if(err) {
             res.status(500).json({error: 'Cannot delete timelog'});
         } else {
-            res.json(numberOfDeleted);
+            res.json({ok: true});
         }
     });
 };
