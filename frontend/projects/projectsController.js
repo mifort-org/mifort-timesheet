@@ -37,9 +37,22 @@ angular.module('myApp.projects', ['ngRoute'])
 
             $scope.projects.forEach(function(project) {
                 projectsService.getAssignedEmployers(project._id).success(function(assignedEmployers) {
-                    project.employees = assignedEmployers;
+                    project.projectAssignments = [];
+                    assignedEmployers.forEach(function(employee) {
+                        if(employee.assignments.length > 1){
+                            employee.assignments.forEach(function(assignment) {
+                                var projectAssignment = _.clone(employee);
+
+                                projectAssignment.assignments = [assignment];
+                                project.projectAssignments.push(projectAssignment);
+                            });
+                        }
+                        else{
+                            project.projectAssignments.push(employee);
+                        }
+                    });
                     project.isCollapsed = false;
-                    //temp
+                    //temp, remove after backend validation
                     project.projectEdit = false;
                 });
             });
@@ -65,14 +78,25 @@ angular.module('myApp.projects', ['ngRoute'])
         };
 
         $scope.saveAssignment = function(project, employee) {
-            projectsService.saveAssignment(project._id, employee).success(function(project) {
-                //$timeout(function() {
-                //    $scope.$apply();
-                //}, 3000);
+            var aggregatedEmployee,
+                aggregatedEmployeeAssignments = [];
+
+            _.filter(project.projectAssignments, {_id: employee._id}).forEach(function(assignment) {
+                aggregatedEmployeeAssignments.push(assignment.assignments[0]);
             });
+
+            aggregatedEmployee = _.clone(employee);
+            aggregatedEmployee.assignments = aggregatedEmployeeAssignments;
+            projectsService.saveAssignment(project._id, aggregatedEmployee);
         };
 
-        $scope.deleteProject = function() {
+        $scope.removeProject = function(project, projectIndex) {
+            $scope.projects.splice(projectIndex, 1);
+            projectsService.removeProject(project._id);
+        };
 
-        }
+        $scope.removeAssignment = function(project, assignment, assignmentIndex) {
+            project.projectAssignments.splice(assignmentIndex, 1);
+            $scope.saveAssignment(project, assignment);
+        };
     }]);

@@ -1,12 +1,13 @@
 <div class="collapse-wrapper" ng-repeat="project in projects">
     <h2 ng-class="{'timelog-collapsed': project.isCollapsed}">
-        <a href="" ng-if="!project.projectEdit" class="collapse-item" ng-class="{'collapsed': project.isCollapsed}" ng-click="project.isCollapsed = !project.isCollapsed">
+        <a href="" ng-if="!project.projectEdit" class="collapse-item project-name" ng-class="{'collapsed': project.isCollapsed}" ng-click="project.isCollapsed = !project.isCollapsed">
             {{project.name}}
         </a>
 
         <input ng-if="project.projectEdit" type="text" ng-model="project.name" ng-change="changeProjectName(project)"/>
 
-        <a href="" ng-click="project.projectEdit = !project.projectEdit">Edit</a>
+        <a href="" ng-if="project.projectEdit" class="edit-project" ng-click="project.projectEdit = !project.projectEdit">Done</a>
+        <a href="" ng-if="!project.projectEdit" class="edit-project" ng-click="project.projectEdit = !project.projectEdit">Edit</a>
 
         <a href="" class="close-project" ng-click="deleteProject()"></a>
     </h2>
@@ -14,30 +15,33 @@
     <div collapse="project.isCollapsed">
         <table class="table table-bordered timelog">
             <thead>
-            <th ng-repeat="projectsKey in projectsKeys">
+            <th ng-repeat="projectsKey in projectsKeys track by $index">
                 {{projectsKey}}
+                <a href="" class="remove-assignment" ng-click="removeProject(project, $parent.$index)">x prjct</a>
             </th>
             </thead>
+
             <tbody>
-            <tr ng-if="currentProjectIndex >= 0" ng-repeat="employee in project.employees">
+            <tr ng-if="currentProjectIndex >= 0" ng-repeat="assignment in project.projectAssignments track by $index">
                 <td>
-                    <select id="employee"
-                            ng-options="employee.displayName as employee.displayName for employee in project.employees"
-                            ng-model="employee.displayName"
+                    <select id="employeeName"
+                            ng-options="assignment.displayName as assignment.displayName for assignment in companyEmployees"
+                            ng-model="assignment.displayName"
                             class="form-control timesheet-control"
-                            ng-change="saveAssignment(project, employee)">
+                            ng-change="saveAssignment(project, assignment)">
                     </select>
                 </td>
                 <td>
                     <select id="role"
                             ng-options="assignment as assignment for assignment in assignments"
-                            ng-model="employee.assignments[0].role"
+                            ng-model="assignment.assignments[0].role"
                             class="form-control timesheet-control"
-                            ng-change="saveAssignment(project, employee)">
+                            ng-change="saveAssignment(project, assignment)">
                     </select>
                 </td>
                 <td>
-                    <input type="text" ng-model="employee.assignments[0].workload" ng-change="saveAssignment(project, employee)"/>
+                    <input type="text" ng-model="assignment.assignments[0].workload" ng-change="saveAssignment(project, assignment)"/>
+                    <a href="" class="remove-assignment" ng-click="removeAssignment(project, assignment, $index)">x assgnmt</a>
                 </td>
             </tr>
 

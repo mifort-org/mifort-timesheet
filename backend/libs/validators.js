@@ -81,6 +81,19 @@ exports.validateUpdateCompany = function(req, res, next) {
     next();
 };
 
+exports.validateCreateCompany = function(req, res, next) {
+    var company = req.body;
+    if(!company) {
+        res.status(emptyBody.code).json({msg: emptyBody.message});
+        return;
+    }
+
+    req.checkBody('emails', "Property 'emails' is not an array!" ).optional().isArray();
+    req.checkBody('emails', 'Atleast one email has incorrect format').optional().isEmails();
+
+    returnErrors(req, res, next);
+};
+
 exports.validateGetCompanyById = function(req, res, next) {
     req.checkParams(reqParams.companyIdParam, util.format(invalidMongoParam, 'Company id param'))
             .notEmpty().isMongoId();
@@ -103,7 +116,7 @@ exports.validateGetTimelogByDates = function(req, res, next) {
 };
 
 exports.validateDeleteTimelog = function(req, res, next) {
-    req.checkParams(reqParams.userIdParam, util.format(invalidMongoParam, 'Timelog id param'))
+    req.checkParams(reqParams.timelogIdParam, util.format(invalidMongoParam, 'Timelog id param'))
             .notEmpty().isMongoId();
 
     returnErrors(req, res, next);
@@ -167,6 +180,16 @@ exports.assignments = function(values, projectId, userId) {
                 && (val.userId.equals(userId));
         });
     }
+    return false;
+};
+
+exports.isEmails = function(values) {
+    if(Array.isArray(values)) {
+        return values.every(function(val) {
+            return validator.isEmail(val);
+        });
+    }
+
     return false;
 };
 

@@ -24,7 +24,8 @@ app.use(expressValidator({
     customValidators: {
         isTimelog: validators.timelogs,
         isArray: validators.isArray,
-        isAssignments: validators.assignments
+        isAssignments: validators.assignments,
+        isEmails: validators.isEmails
     }
 }));
 
@@ -81,7 +82,7 @@ app.post('/company',
         validators.validateUpdateCompany,
         company.restUpdateCompany);
 app.put('/company',
-        validators.validateUpdateCompany,
+        validators.validateCreateCompany,
         company.restCreateCompany);
 app.get('/company/:companyId',
         validators.validateGetCompanyById,

@@ -20,7 +20,7 @@ angular.module('myApp.timesheetManagement', ['ngRoute'])
         $scope.dayTypes = timesheetManagementService.getDayTypes();
         $scope.weekDays = timesheetManagementService.getWeekDays();
 
-        timesheetManagementService.getProject(preferences.get('user').assignments[0].projectId).success(function (data) {
+        timesheetManagementService.getCompany(preferences.get('user').companyId).success(function (data) {
             $scope.project = data;
         }).then(function () {
             $scope.init();
@@ -80,7 +80,7 @@ angular.module('myApp.timesheetManagement', ['ngRoute'])
                     currentDayWeek = 0;
                 }
 
-                if(currentDate.getDay() == 0 || currentDate.getDay() == 6){
+                if(currentDate.getDay() == 0 || currentDate.getDay() == 1){
                     day.weekend = true;
                 }
 //in progress
@@ -243,7 +243,6 @@ angular.module('myApp.timesheetManagement', ['ngRoute'])
             }
 
             $scope.timesheet[$scope.timesheet.length - 1].isPeriodEndDate = true;
-            //$scope.timesheet[0].isPeriodStartDate = true;
             $scope.aggregatePeriods($scope.timesheet);
         };
 
