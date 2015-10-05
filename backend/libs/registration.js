@@ -22,7 +22,6 @@ exports.createDefaultProject = function(company, user) {
                 user.assignments = [{
                     userId: user._id,
                     role: 'Employee',
-                    workload: '',
                     projectName: savedProject.name,
                     projectId: savedProject._id
                 }];
