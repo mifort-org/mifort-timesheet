@@ -1,0 +1,553 @@
+/*!
+ * Copyright 2015 mifort.org
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline; }
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+  display: block; }
+
+html {
+  /*font-size: 62.5%;*/ }
+
+body {
+  line-height: 1; }
+
+ol, ul {
+  list-style: none; }
+
+blockquote, q {
+  quotes: none; }
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: '';
+  content: none; }
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0; }
+
+/*Main styles*/
+html {
+  box-sizing: border-box; }
+
+*, *:before, *:after {
+  box-sizing: inherit; }
+
+html,
+body {
+  height: 100%; }
+
+a:focus {
+  text-decoration: none; }
+
+a:focus:hover {
+  text-decoration: underline; }
+
+body {
+  color: #000;
+  font-size: 62.5%;
+  font-family: 'Open Sans', sans-serif; }
+
+h2 {
+  padding-bottom: 32px;
+  font-size: 1.8em;
+  font-weight: 600; }
+  h2.timelog-collapsed {
+    padding-bottom: 0; }
+  h2 a,
+  h2 a:hover,
+  h2 a:focus {
+    color: #000; }
+
+.main-container {
+  position: relative;
+  float: left;
+  width: calc(100% - 251px);
+  height: calc(100% - 101px);
+  min-height: 295px;
+  padding: 70px 55px 70px 50px;
+  background: #f5f7f9;
+  border-top: 1px #f5f7f9 solid;
+  border-left: 1px #f2f4f7 solid;
+  overflow-y: auto; }
+
+.main-controls {
+  height: 100px;
+  padding: 0 25px;
+  line-height: 100px;
+  text-align: right; }
+
+.main-controls a {
+  margin-left: 30px;
+  font-size: 1.8em;
+  color: #000; }
+
+.logo {
+  float: left;
+  margin-left: 0;
+  font-size: 2.4em;
+  color: #000; }
+  .logo:hover {
+    color: #000;
+    text-decoration: none; }
+  .logo .timelog-icon {
+    background-position: -7px -267px;
+    width: 25px; }
+
+.main-controls .info,
+.main-controls .profile,
+.main-controls .logout {
+  padding: 2px 0 2px 36px;
+  background: url("../images/icons.png") -2px -471px no-repeat; }
+.main-controls .logout {
+  background-position: -2px -587px; }
+.main-controls .profile {
+  background-position: -2px -526px; }
+
+/*Login*/
+.login-wrapper {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background: url("../images/login-background.JPG") center center;
+  background-size: cover; }
+
+.form-signin {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateY(-69%) translateX(-50%);
+  width: 480px;
+  font-weight: 600;
+  background: rgba(254, 254, 254, 0.9); }
+
+.form-signin h1 {
+  padding: 20px 85px;
+  font-size: 2.4em;
+  color: #666;
+  font-weight: normal;
+  text-align: center;
+  border-bottom: 1px #706e6d solid; }
+
+.timelog-icon {
+  padding: 11px 15px 11px 11px;
+  background: url("../images/icons.png") -7px -262px no-repeat;
+  opacity: 0.7; }
+
+.form-signin p {
+  margin: 30px 85px;
+  font-size: 2.4em; }
+.form-signin .signin-buttons {
+  padding: 0 85px 45px; }
+.form-signin .btn {
+  height: 40px;
+  margin-bottom: 30px;
+  line-height: 1; }
+
+.login-icon {
+  float: left;
+  padding: 12px;
+  background: url("../images/icons.png") no-repeat; }
+
+.google-login {
+  position: relative;
+  border: 0; }
+
+.google-login {
+  background-color: #dd4b39; }
+  .google-login:after {
+    position: absolute;
+    left: 50px;
+    top: 2px;
+    height: 36px;
+    border-left: 1px #b13c2e solid;
+    content: ''; }
+  .google-login:hover, .google-login:focus, .google-login:active, .google-login:active:focus {
+    background-color: #c34232; }
+  .google-login .login-icon {
+    background-position: -11px 1px; }
+
+/*Tabs*/
+.main-tabs {
+  width: 250px;
+  float: left; }
+
+.tabs-left {
+  padding-bottom: 2px;
+  font-size: 1.6em; }
+  .tabs-left .nav-tabs {
+    border-bottom: 0; }
+    .tabs-left .nav-tabs > li {
+      margin-bottom: 0; }
+  .tabs-left .nav-stacked > li + li {
+    margin: 0; }
+  .tabs-left li {
+    border-bottom: 1px #f2f4f7 solid; }
+    .tabs-left li:first-child {
+      border-top: 1px #f2f4f7 solid; }
+    .tabs-left li.active a, .tabs-left li.active a:hover, .tabs-left li.active a:focus {
+      color: #19b5fe;
+      border-color: transparent; }
+    .tabs-left li a {
+      border-radius: 4px 0 0 4px;
+      margin-right: 0;
+      padding: 17px 25px;
+      color: #000;
+      display: block; }
+      .tabs-left li a:hover {
+        background: #eaeff7;
+        border-bottom-color: #eee; }
+
+/*Timelog*/
+.collapse-wrapper {
+  background: #fff;
+  padding: 15px 25px;
+  margin-bottom: 25px; }
+  .collapse-wrapper h2 {
+    float: left;
+    margin-top: 6px; }
+
+.collapse-item {
+  float: left;
+  padding-left: 20px;
+  font-size: 0.9em;
+  background: url("../images/icons.png") -12px -321px no-repeat; }
+  .collapse-item.collapsed {
+    background-position: -12px -635px; }
+
+.timelog {
+  font-size: 1.8em;
+  border-color: #eaeff7; }
+
+.timelog-controls {
+  float: right;
+  right: 55px;
+  top: 20px; }
+
+.previous-period,
+.next-period {
+  width: 30px;
+  height: 30px;
+  background: url("../images/icons.png") -3px -359px no-repeat;
+  border: 0;
+  outline: 0; }
+
+.next-period {
+  background-position: -3px -407px; }
+
+.table-bordered > tbody > tr > td,
+.table-bordered > thead > tr > th {
+  border-color: #eaeff7;
+  border-bottom-width: 1px;
+  vertical-align: middle; }
+
+.periods > tbody > tr > td:hover {
+  border-color: #bbbfc6; }
+.periods > tbody > tr > td:active {
+  border-color: #3eb5f1; }
+
+.table-bordered > tbody > tr > .is-not-first-day-log {
+  border: 0; }
+
+.table-bordered > tbody > tr > .is-first-day-log {
+  border-bottom: 0; }
+
+.add-timelog,
+.remove-timelog {
+  position: relative;
+  top: 3px;
+  color: #19b5fe;
+  opacity: 0.7;
+  font-size: 1.65em;
+  font-weight: 300;
+  line-height: 1; }
+
+.remove-timelog {
+  color: red;
+  float: right; }
+
+.add-timelog:hover,
+.add-timelog:focus,
+.add-timelog:active,
+.remove-timelog:hover,
+.remove-timelog:focus,
+.remove-timelog:active {
+  text-decoration: none; }
+
+.add-timelog:hover,
+.add-timelog:focus,
+.add-timelog:active {
+  color: #19b5fe; }
+
+.remove-timelog:hover,
+.remove-timelog:focus,
+.remove-timelog:active {
+  color: darkred; }
+
+.timelog-comment {
+  width: 100%; }
+
+.timelog-validation {
+  padding: 10px; }
+
+.timelog-hours,
+.timesheet-hours {
+  float: left;
+  width: 42px;
+  margin-right: 10px;
+  text-align: center; }
+
+.timelog-new {
+  margin-left: 10px; }
+
+.weekend {
+  background: #f3cce1 !important; }
+
+.projects-state-wrapper {
+  float: right; }
+
+/*Timesheet*/
+.timesheet-wrapper {
+  float: left;
+  clear: left;
+  width: 546px;
+  margin-right: 40px;
+  margin-bottom: 40px;
+  padding: 36px 27px;
+  background: #fff; }
+
+.timesheet-controls {
+  float: right;
+  width: calc(40% - 42px);
+  min-width: 325px;
+  max-width: 420px;
+  margin-bottom: 55px;
+  font-size: 1.8em;
+  background: #fff;
+  padding: 25px; }
+  .timesheet-controls label {
+    float: left;
+    line-height: 1.8;
+    margin-bottom: 20px; }
+  .timesheet-controls .timesheet-control {
+    float: right;
+    width: 150px; }
+  .timesheet-controls .timesheet-control .form-control {
+    width: 111px; }
+
+.primary-button {
+  display: block;
+  width: 140px;
+  height: 36px;
+  margin: 0 auto;
+  color: #fff;
+  font-weight: 300;
+  background: #3eb5f1;
+  border: 0;
+  border-bottom: 5px #2574a9 solid;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  outline: 0; }
+  .primary-button:active {
+    height: 32px;
+    margin-top: 4px;
+    border-bottom-width: 1px; }
+  .primary-button.large-button {
+    width: 226px;
+    height: 46px;
+    font-size: 24px;
+    font-weight: 400; }
+    .primary-button.large-button:active {
+      height: 42px;
+      margin-top: 4px;
+      border-bottom-width: 1px; }
+
+.timesheet-header {
+  font-size: 1.6em;
+  padding: 8px 15px;
+  background: #f5f7f9;
+  border-bottom: 1px #fff solid; }
+
+.periods {
+  margin-bottom: 0; }
+  .periods th {
+    font-size: 1.4em; }
+  .periods .popover {
+    min-width: 200px; }
+  .periods > tbody > tr > td {
+    position: relative;
+    height: 71px;
+    width: 71px;
+    /*border-width: 2px;*/
+    vertical-align: middle; }
+  .periods td,
+  .periods th,
+  .periods td input {
+    text-align: center;
+    margin: 0 auto; }
+
+.timesheet-day {
+  position: relative;
+  text-align: right; }
+
+.disabled-day-data {
+  opacity: 0.2; }
+
+.disabled-day {
+  background: #f5f7f9; }
+
+.weekend.disabled-day {
+  background: #f9e3ef !important; }
+
+.timesheet-day-wrapper {
+  position: absolute;
+  top: 0;
+  left: 8px;
+  right: 8px;
+  height: 70px;
+  color: #9c9d9f;
+  font-size: 1.8em;
+  font-weight: 300; }
+
+.timesheet-time,
+.timesheet-hours-label {
+  position: absolute;
+  right: 8px;
+  bottom: 15px; }
+
+.timesheet-hours-label {
+  bottom: 5px; }
+
+.start-splitter,
+.end-splitter {
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 8px;
+  height: 72px; }
+
+.end-splitter {
+  left: auto;
+  right: 0; }
+
+.periods > tbody > tr > td .start-splitter:hover:before,
+.periods > tbody > tr > td .end-splitter:hover:after {
+  position: absolute;
+  top: -1px;
+  left: -8px;
+  height: 72px;
+  width: 15px;
+  background: url("../../common/images/icons.png") 0 -794px no-repeat;
+  cursor: pointer;
+  content: ''; }
+.periods > tbody > tr > .period-start .start-splitter:before,
+.periods > tbody > tr > .period-end .end-splitter:after {
+  position: absolute;
+  top: -1px;
+  left: -8px;
+  height: 72px;
+  width: 15px;
+  background: url("../../common/images/icons.png") 2px -695px no-repeat;
+  content: ''; }
+.periods > tbody > tr > .period-end .end-splitter:after,
+.periods > tbody > tr > td .end-splitter:hover:after {
+  left: auto;
+  right: -8px; }
+.periods > tbody > tr > .period-start .start-splitter:hover:before,
+.periods > tbody > tr > .period-end .end-splitter:hover:before {
+  background: url("../../common/images/icons.png") 0 -894px no-repeat; }
+
+.timesheet-hours-label {
+  color: #999;
+  font-size: 1.2em; }
+
+/*Company*/
+.company-wrapper {
+  padding: 75px 0;
+  text-align: center;
+  background: #fff; }
+  .company-wrapper h1 {
+    font-size: 3em;
+    font-weight: 600;
+    padding-bottom: 40px; }
+  .company-wrapper form {
+    font-size: 1.8em; }
+  .company-wrapper table {
+    width: 100%;
+    text-align: left; }
+    .company-wrapper table td {
+      vertical-align: top; }
+      .company-wrapper table td:first-child {
+        text-align: right; }
+    .company-wrapper table button {
+      margin: 0; }
+  .company-wrapper label {
+    font-weight: 600;
+    vertical-align: top;
+    margin: 6px 20px 0 0; }
+  .company-wrapper input,
+  .company-wrapper textarea {
+    width: 70%;
+    height: 38px;
+    line-height: 38px;
+    margin-bottom: 25px;
+    padding: 10px 15px;
+    border: 1px #eaeff7 solid; }
+  .company-wrapper textarea {
+    min-height: 120px;
+    line-height: 1.2;
+    resize: vertical; }
+
+/*Projects*/
+.add-project {
+  position: fixed;
+  right: 50px;
+  bottom: 50px;
+  padding: 20px;
+  background: deepskyblue; }
+
+.project-name {
+  font-size: 1.5rem; }
+
+.edit-project {
+  padding-left: 20px;
+  color: #8e8e8e;
+  font-size: 0.75em;
+  font-weight: 300; }
+
+/*# sourceMappingURL=styles.css.map */
