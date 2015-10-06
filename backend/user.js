@@ -98,6 +98,19 @@ exports.save = function(user, callback) {
     });
 };
 
+exports.updateExternalInfo = function(user, callback) {
+    var users = dbSettings.userCollection();
+    users.update({_id:user._id},
+                 {$set : {
+                        displayName: user.displayName,
+                        external: user.external
+                    }
+                 },
+        function(err, savedUser) {
+            callback(err, savedUser);
+        });
+};
+
 exports.findByEmail = function(email, callback) {
     findByExample({email: email}, callback);
 };

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
 var passport = require('passport');
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var ObjectID = require('mongodb').ObjectID;
@@ -57,20 +57,21 @@ passport.use(new GoogleStrategy({
                 if(err) {
                   return done(null, false);
                 } else {
-                    console.log(user);
-                    console.log(profile);
                     if(user) {
-                        user.external = profile; //need to update user, because google data can be changed
+                        user.external = profile;
+                        user.displayName = profile.displayName;
+                        users.updateExternalInfo(user, function(err, savedUser) { // asynchronous user update
+                            console.log('Login user: user is updated!');
+                        });
                         return done(null, user); 
                     } else {
                         var user = {
                             email: email,
                             external: profile,
                             displayName: profile.displayName
-                        }
+                        };
                         createUser(user, done);
                     }
-                    
                 }
             });
         });

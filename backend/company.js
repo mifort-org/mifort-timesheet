@@ -126,6 +126,7 @@ function createUsersByEmails(company) {
     if(emails) {
         emails.forEach(function(email) {
             var user = {email: email,
+                        displayName: email,
                         companyId: company._id};
 
             users.findByExample(user, function(err, dbUser) {
