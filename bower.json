@@ -1,9 +1,9 @@
 {
-  "name": "homogen",
+  "name": "mifort-timesheet",
   "description": "homogen description",
   "version": "0.0.0",
-  "homepage": "https://homogen.com/",
-  "license": "MIT",
+  "homepage": "https://mifort.net/",
+  "license": "Apache-2.0",
   "private": true,
   "dependencies": {
     "angular": "~1.4.0",
