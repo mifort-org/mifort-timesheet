@@ -61,7 +61,7 @@ passport.use(new GoogleStrategy({
                         user.external = profile;
                         user.displayName = profile.displayName;
                         users.updateExternalInfo(user, function(err, savedUser) { // asynchronous user update
-                            console.log('Login user: user is updated!');
+                            console.log('Login: user is updated!');
                         });
                         return done(null, user); 
                     } else {
