@@ -42,7 +42,7 @@ footer, header, hgroup, menu, nav, section{
 }
 
 html{
-    /*font-size: 62.5%;*/
+    font-size: 62.5%; // 10px to use "rem"
 }
 
 body{
@@ -86,10 +86,6 @@ a:focus{
     text-decoration: none;
 }
 
-a:focus:hover{
-    text-decoration: underline;
-}
-
 body{
     color: #000;
     font-size: 62.5%;
@@ -102,7 +98,7 @@ h2{
     font-weight: 600;
 
     &.timelog-collapsed{
-        padding-bottom: 0;
+        padding-bottom: 11px;
     }
 
     a,
@@ -317,19 +313,19 @@ h2{
     margin-bottom: 25px;
 
     h2{
-        float: left;
-        margin-top: 6px;
+        //float: left;
+        margin-top: 2px;
     }
 }
 
 .collapse-item{
-    float: left;
+    //float: left;
     padding-left: 20px;
     font-size: 0.9em;
-    background: url("../images/icons.png") -12px -321px no-repeat;
+    background: url("../images/icons.png") -12px -310px no-repeat;
 
     &.collapsed{
-        background-position: -12px -635px;
+        background-position: -12px -626px;
     }
 }
 
@@ -357,6 +353,9 @@ h2{
     background-position: -3px -407px;
 }
 
+.table-bordered{
+    border-color: #eaeff7;
+}
 .table-bordered > tbody > tr > td,
 .table-bordered > thead > tr > th{
     border-color: #eaeff7;
@@ -707,25 +706,110 @@ h2{
 
 
 /*Projects*/
+.project{
+    position: relative;
+    padding-right: 55px;
+    font-size: 1.8rem;
+
+    h2{
+        .project-name{
+            font-size: 2.4rem;
+        }
+
+        .edit-project{
+            padding-left: 15px;
+            color: #8e8e8e;
+            font-size: 1.4rem;
+            font-weight: 300;
+        }
+    }
+
+    .table th{
+        font-weight: 600;
+        padding: 9px 20px;
+    }
+
+    .table td{
+        padding: 0;
+
+        input{
+            width: 100%;
+            padding: 8px 20px;
+            border: 0;
+        }
+
+        select{
+            height: 41px;
+            padding: 0 16px;
+            border: 0;
+            box-shadow: none;
+
+
+
+            option{
+                padding: 5px 0;
+                -webkit-appearance: none;
+                -moz-appearance: none;
+                appearance: none;
+            }
+        }
+    }
+}
+
 .add-project{
     position: fixed;
     right: 50px;
     bottom: 50px;
-    padding: 20px;
-    background: deepskyblue;
+    padding: 47px 0 53px;
+    width: 100px;
+    font-size: 4.2rem;
+    text-align: center;
+    font-weight: 300;
+    color: #fff;
+    line-height: 0;
+    background: url("../images/add-project.png") no-repeat center 5px;
+
+    &:hover,
+    &:active,
+    &:focus{
+        background-position: center -96px;
+        color: #fff;
+        text-decoration: none;
+    }
 }
 
 .project-name{
     font-size: 1.5rem;
 }
 
-.edit-project{
-    padding-left: 20px;
-    color: #8e8e8e;
-    font-size: 0.75em;
-    font-weight: 300;
-}
-
 .remove-assignment{
+    position: absolute;
+    right: 21px;
+    color: #fe6767;
+    font-size: 2.5rem;
+    opacity: 0.5;
 
+    &:hover,
+    &:active,
+    &:focus{
+        opacity: 1;
+        color: #fe6767;
+        text-decoration: none;
+    }
 }
+
+.remove-project{
+    position: absolute;
+    top: 26px;
+    right: 26px;
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    background: url("../images/icons.png") 0 -1002px no-repeat;
+    opacity: 0.5;
+
+    &:hover{
+        opacity: 0.8;
+    }
+}
+

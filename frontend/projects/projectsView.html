@@ -14,7 +14,7 @@
   limitations under the License.
 -->
 
-<div class="collapse-wrapper" ng-repeat="project in projects">
+<div class="collapse-wrapper project" ng-repeat="project in projects">
     <h2 ng-class="{'timelog-collapsed': project.isCollapsed}">
         <a href="" ng-if="!project.projectEdit" class="collapse-item project-name" ng-class="{'collapsed': project.isCollapsed}" ng-click="project.isCollapsed = !project.isCollapsed">
             {{project.name}}
@@ -25,15 +25,14 @@
         <a href="" ng-if="project.projectEdit" class="edit-project" ng-click="project.projectEdit = !project.projectEdit">Done</a>
         <a href="" ng-if="!project.projectEdit" class="edit-project" ng-click="project.projectEdit = !project.projectEdit">Edit</a>
 
-        <a href="" class="close-project" ng-click="deleteProject()"></a>
+        <a href="" class="remove-project" ng-click="removeProject(project, $parent.$index)"></a>
     </h2>
 
     <div collapse="project.isCollapsed">
-        <table class="table table-bordered timelog">
+        <table class="table table-bordered">
             <thead>
             <th ng-repeat="projectsKey in projectsKeys track by $index">
                 {{projectsKey}}
-                <a href="" class="remove-assignment" ng-click="removeProject(project, $parent.$index)">x prjct</a>
             </th>
             </thead>
 
@@ -54,10 +53,22 @@
                             class="form-control timesheet-control"
                             ng-change="saveAssignment(project, assignment)">
                     </select>
+
+                    <!--<div class="btn-group" dropdown keyboard-nav>-->
+                        <!--<button id="simple-btn-keyboard-nav" type="button" class="btn btn-primary" dropdown-toggle>-->
+                            <!--{{assignments[0]}}<span class="caret"></span>-->
+                        <!--</button>-->
+                        <!--<ul class="dropdown-menu" role="menu" aria-labelledby="simple-btn-keyboard-nav">-->
+                            <!--<li role="menuitem" ng-repeat="assignment in assignments">-->
+                                <!--<a href="#" ng-click="saveAssignment(project, assignment)">{{assignment}}</a>-->
+                            <!--</li>-->
+                        <!--</ul>-->
+                    <!--</div>-->
+
                 </td>
                 <td>
                     <input type="text" ng-model="assignment.assignments[0].workload" ng-change="saveAssignment(project, assignment)"/>
-                    <a href="" class="remove-assignment" ng-click="removeAssignment(project, assignment, $index)">x assgnmt</a>
+                    <a href="" class="remove-assignment" ng-click="removeAssignment(project, assignment, $index)">&times;</a>
                 </td>
             </tr>
 
@@ -65,8 +76,7 @@
             </tbody>
         </table>
     </div>
-
-    {{project._id}}
+    <!--{{project._id}}-->
 </div>
 <!--{{projects[0]}}-->
 <a href="" ng-click="addProject()" class="add-project">+</a>
