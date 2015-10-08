@@ -23,7 +23,7 @@ var emptyBody = {
     message: 'Request body cannot be empty!'
 };
 
-var invalidMongoParam = '%s is required and should have valid format';
+var invalidFormatMessageTemplate = '%s is required and should have a valid format';
 
 //Project Rest Api validators
 exports.validateSaveProject = function(req, res, next) {
@@ -31,7 +31,7 @@ exports.validateSaveProject = function(req, res, next) {
     if(project) {
         req.checkBody('name', 'Project name is required').notEmpty();
         if(!project._id) {
-            req.checkBody('companyId', util.format(invalidMongoParam, 'Company id'))
+            req.checkBody('companyId', util.format(invalidFormatMessageTemplate, 'companyId'))
                 .notEmpty().isMongoId();
         }
 
@@ -43,14 +43,16 @@ exports.validateSaveProject = function(req, res, next) {
 };
 
 exports.validateGetProjectById = function(req, res, next) {
-    req.checkParams(reqParams.projectIdParam, util.format(invalidMongoParam, 'Project id param'))
+    req.checkParams(reqParams.projectIdParam, 
+        util.format(invalidFormatMessageTemplate, reqParams.projectIdParam))
             .notEmpty().isMongoId();
     
     returnErrors(req, res, next);
 };
 
 exports.validateGetProjectByCompanyId = function(req, res, next) {
-    req.check(reqParams.companyIdParam, util.format(invalidMongoParam, 'Company id param'))
+    req.check(reqParams.companyIdParam, 
+        util.format(invalidFormatMessageTemplate, reqParams.companyIdParam))
             .notEmpty().isMongoId();
 
     returnErrors(req, res, next);
@@ -58,20 +60,23 @@ exports.validateGetProjectByCompanyId = function(req, res, next) {
 
 //User Rest API validators
 exports.validateGetUserByProjectId = function(req, res, next) {
-    req.check(reqParams.projectIdParam, util.format(invalidMongoParam, 'Project id param'))
+    req.check(reqParams.projectIdParam, 
+        util.format(invalidFormatMessageTemplate, reqParams.projectIdParam))
             .notEmpty().isMongoId();
     
     returnErrors(req, res, next);
 };
 
 exports.validateGetUserByCompanyId = function(req, res, next) {
-    req.check(reqParams.companyIdParam, util.format(invalidMongoParam, 'Company id param'))
+    req.check(reqParams.companyIdParam, 
+        util.format(invalidFormatMessageTemplate, reqParams.companyIdParam))
             .notEmpty().isMongoId();
     returnErrors(req, res, next);
 };
 
 exports.validateReplaceAssignment = function(req, res, next) {
-    req.checkParams(reqParams.projectIdParam, util.format(invalidMongoParam, 'Project id param'))
+    req.checkParams(reqParams.projectIdParam, 
+        util.format(invalidFormatMessageTemplate, reqParams.projectIdParam))
             .notEmpty().isMongoId();
 
     var user = req.body;
@@ -80,7 +85,7 @@ exports.validateReplaceAssignment = function(req, res, next) {
         return;
     }
 
-    req.checkBody('_id', util.format(invalidMongoParam, 'User id')).notEmpty().isMongoId();
+    req.checkBody('_id', util.format(invalidFormatMessageTemplate, 'User id')).notEmpty().isMongoId();
     req.checkBody('assignments', 'Incorrect Assignments (Check: userId, projectId, projectName)')
         .optional().isAssignments(req.params[reqParams.projectIdParam], req.body._id);
 
@@ -111,7 +116,8 @@ exports.validateCreateCompany = function(req, res, next) {
 };
 
 exports.validateGetCompanyById = function(req, res, next) {
-    req.checkParams(reqParams.companyIdParam, util.format(invalidMongoParam, 'Company id param'))
+    req.checkParams(reqParams.companyIdParam, 
+        util.format(invalidFormatMessageTemplate, reqParams.companyIdParam))
             .notEmpty().isMongoId();
 
     returnErrors(req, res, next);
@@ -119,20 +125,27 @@ exports.validateGetCompanyById = function(req, res, next) {
 
 //Timelog Rest API validation
 exports.validateGetTimelogByDates = function(req, res, next) {
-    req.checkParams(reqParams.userIdParam, util.format(invalidMongoParam, 'User id param'))
+    req.checkParams(reqParams.userIdParam, 
+        util.format(invalidFormatMessageTemplate, reqParams.userIdParam))
             .notEmpty().isMongoId();
-    req.checkQuery(reqParams.projectIdParam, util.format(invalidMongoParam, 'Project id param'))
+
+    req.checkQuery(reqParams.projectIdParam, 
+        util.format(invalidFormatMessageTemplate, reqParams.projectIdParam))
             .notEmpty().isMongoId();
-    req.checkQuery(reqParams.startDateParam, util.format(invalidMongoParam, 'Start date param'))
+
+    req.checkQuery(reqParams.startDateParam, 
+        util.format(invalidFormatMessageTemplate, reqParams.startDateParam))
             .notEmpty().isDate();
-    req.checkQuery(reqParams.endDateParam, util.format(invalidMongoParam, 'End date param'))
+
+    req.checkQuery(reqParams.endDateParam, 
+        util.format(invalidFormatMessageTemplate, reqParams.endDateParam))
             .notEmpty().isDate();
 
     returnErrors(req, res, next);
 };
 
 exports.validateDeleteTimelog = function(req, res, next) {
-    req.checkParams(reqParams.timelogIdParam, util.format(invalidMongoParam, 'Timelog id param'))
+    req.checkParams(reqParams.timelogIdParam, util.format(invalidFormatMessageTemplate, reqParams.timelogIdParam))
             .notEmpty().isMongoId();
 
     returnErrors(req, res, next);
@@ -151,7 +164,8 @@ exports.validateSaveTimelog = function(req, res, next) {
 };
 
 exports.validateDeactivateProject = function(req, res, next) {
-    req.check(reqParams.projectIdParam, util.format(invalidMongoParam, 'Project id param'))
+    req.check(reqParams.projectIdParam, 
+        util.format(invalidFormatMessageTemplate, reqParams.projectIdParam))
             .notEmpty().isMongoId();
 
     returnErrors(req, res, next);
