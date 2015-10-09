@@ -111,14 +111,33 @@ exports.updateExternalInfo = function(user, callback) {
         });
 };
 
+//need to refactor. Realy big function
 exports.updateAssignmentProjectName = function(user, project) {
     var users = dbSettings.userCollection();
     users.find({'assignments.projectId': project._id,
                 'assignments.projectName': {$ne: projectName.name}})
         .toArray(function(err, findedUsers) {
             if(findedUsers) {
-                var userIds = findedUsers.map(function(user){
-                    return user._id;
+                findedUsers.forEach(function(user) {
+                    var assignmentsForProject = user.assignments.filter(function(assignment){
+                        return assignment.projectId.equals(project._id);
+                    });
+
+                    var newAssignments = assignmentsForProject.map(function(assignment){
+                        assignment.projectName = project.name;
+                        return assignment;
+                    });
+                    users.update({_id: user._id},
+                                 { $pull: {assignments: {projectId: project._id} } },
+                        function(err, result) {
+                            if(!err) {
+                                users.update({ _id: user._id },
+                                             { $push: { assignments: { $each: newAssignments } }},
+                                    function(err, updatedUser){
+                                        console.log("User assignment project name was updated:" + user._id);
+                                    });
+                            }
+                        });
                 });
             }
         });
