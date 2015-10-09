@@ -68,7 +68,11 @@ table{
     border-spacing: 0;
 }
 
-/*Main styles*/
+/*
+
+Main styles
+
+*/
 html{
     box-sizing: border-box;
 }
@@ -167,7 +171,11 @@ h2{
     }
 }
 
-/*Login*/
+/*
+
+Login
+
+*/
 .login-wrapper{
     position: absolute;
     height: 100%;
@@ -254,7 +262,11 @@ h2{
 
 }
 
-/*Tabs*/
+/*
+
+Tabs
+
+*/
 .main-tabs{
     width: 250px;
     float: left;
@@ -305,20 +317,22 @@ h2{
     }
 }
 
-/*Timelog*/
+/*
+
+Timelog
+
+*/
 .collapse-wrapper{
     background: #fff;
     padding: 15px 25px;
     margin-bottom: 25px;
 
     h2{
-        //float: left;
         margin-top: 2px;
     }
 }
 
 .collapse-item{
-    //float: left;
     padding-left: 20px;
     font-size: 0.9em;
     background: url("../images/icons.png") -12px -310px no-repeat;
@@ -355,6 +369,7 @@ h2{
 .table-bordered{
     border-color: #eaeff7;
 }
+
 .table-bordered > tbody > tr > td,
 .table-bordered > thead > tr > th{
     border-color: #eaeff7;
@@ -444,7 +459,11 @@ h2{
     float: right;
 }
 
-/*Timesheet*/
+/*
+
+Timesheet
+
+*/
 .timesheet-wrapper{
     float: left;
     clear: left;
@@ -647,7 +666,11 @@ h2{
     font-size: 1.2em;
 }
 
-/*Company*/
+/*
+
+Company
+
+*/
 .company-wrapper{
     padding: 75px 0;
     text-align: center;
@@ -703,8 +726,11 @@ h2{
     }
 }
 
+/*
 
-/*Projects*/
+Projects
+
+*/
 .project{
     position: relative;
     padding-right: 55px;
@@ -742,8 +768,6 @@ h2{
             padding: 0 16px;
             border: 0;
             box-shadow: none;
-
-
 
             option{
                 padding: 5px 0;

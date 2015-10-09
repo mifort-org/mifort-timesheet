@@ -59,7 +59,11 @@ table {
   border-collapse: collapse;
   border-spacing: 0; }
 
-/*Main styles*/
+/*
+
+Main styles
+
+*/
 html {
   box-sizing: border-box; }
 
@@ -133,7 +137,11 @@ h2 {
 .main-controls .profile {
   background-position: -2px -526px; }
 
-/*Login*/
+/*
+
+Login
+
+*/
 .login-wrapper {
   position: absolute;
   height: 100%;
@@ -196,7 +204,11 @@ h2 {
   .google-login .login-icon {
     background-position: -11px 1px; }
 
-/*Tabs*/
+/*
+
+Tabs
+
+*/
 .main-tabs {
   width: 250px;
   float: left; }
@@ -227,7 +239,11 @@ h2 {
         background: #eaeff7;
         border-bottom-color: #eee; }
 
-/*Timelog*/
+/*
+
+Timelog
+
+*/
 .collapse-wrapper {
   background: #fff;
   padding: 15px 25px;
@@ -336,7 +352,11 @@ h2 {
 .projects-state-wrapper {
   float: right; }
 
-/*Timesheet*/
+/*
+
+Timesheet
+
+*/
 .timesheet-wrapper {
   float: left;
   clear: left;
@@ -493,7 +513,11 @@ h2 {
   color: #999;
   font-size: 1.2em; }
 
-/*Company*/
+/*
+
+Company
+
+*/
 .company-wrapper {
   padding: 75px 0;
   text-align: center;
@@ -530,7 +554,11 @@ h2 {
     line-height: 1.2;
     resize: vertical; }
 
-/*Projects*/
+/*
+
+Projects
+
+*/
 .project {
   position: relative;
   padding-right: 55px;

@@ -39,7 +39,5 @@ angular.module('myApp.login', ['ngRoute'])
         $scope.login = function () {
             $scope.$parent.isLoggedIn = true;
             $location.path('/timelog');
-            console.log(localStorage);
-            console.log($cookies.getAll());
         };
     }]);

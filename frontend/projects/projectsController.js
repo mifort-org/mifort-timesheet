@@ -27,6 +27,7 @@ angular.module('myApp.projects', ['ngRoute'])
 
     .controller('projectsController', ['$scope', 'projectsService', 'preferences', '$timeout', function($scope, projectsService, preferences, $timeout) {
         var companyId = preferences.get('user').companyId;
+
         $scope.projectsKeys = [
             'Employee',
             'Assignment',
@@ -87,6 +88,7 @@ angular.module('myApp.projects', ['ngRoute'])
                 name: 'New Project',
                 companyId: companyId
             };
+
             $scope.projects.push(newProject);
             projectsService.saveOrCreateProject(newProject).success(function(project) {
                 $scope.projects[$scope.projects.length - 1] = project;

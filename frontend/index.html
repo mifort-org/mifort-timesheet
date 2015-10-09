@@ -26,6 +26,7 @@
 </head>
 <body ng-controller="myAppController" closable-popovers>
 
+<!--change with ul>li-->
 <div ng-if="isLoggedIn" class="main-controls">
     <a class="logo" href="">
         <span class="timelog-icon"></span>
@@ -42,7 +43,7 @@
 <div class="main-container" ng-view ng-class="{'login-wrapper': !isLoggedIn}"></div>
 
 
-<!--Libraries-->
+<!--JS libraries-->
 <script src="bower_components/angular/angular.js"></script>
 <script src="bower_components/angular-route/angular-route.js"></script>
 <script src="bower_components/angular-bootstrap/ui-bootstrap.js"></script>

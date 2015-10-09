@@ -26,26 +26,28 @@ angular.module('myApp.timelog', ['ngRoute'])
     }])
 
     .controller('timelogController', ['$scope', '$filter', 'timelogService', 'timesheetManagementService', 'preferences', function($scope, $filter, timelogService, timesheetManagementService, preferences) {
-        $scope.isCollapsed = false;
         $scope.projects = [];
+        $scope.isCollapsed = false;
         $scope.timelogKeys = timelogService.getTimelogKeys();
         $scope.assignments = preferences.get('user').assignments;
         $scope.currentTimelogIndex = 0;
 
         $scope.assignments.forEach(function(assignment, index) {
             timelogService.getProject(assignment.projectId).success(function(project) {
-                if(project) {
+                if(project && project.active) {
                     project.userTimelogs = [];
-                    $scope.projects.push(project);
+                    //$scope.projects.push(project);
+                    $scope.projects.splice(index, 0, project);
                 }
-            }).then(function() {
-                var currentProject = $scope.projects[index];
+            }).then(function(data) {
+                var currentProject = data.data;
 
-                if(currentProject) {
+                if(currentProject && currentProject.active) {
                     var startDate = currentProject.periods[0].start,
                         endDate = currentProject.periods[currentProject.periods.length - 1].end;
+
                     timelogService.getTimelog(preferences.get('user')._id, currentProject._id, startDate, endDate).success(function(projectTimelog) {
-                        var projectUserTimelogs = $scope.projects[index].userTimelogs;
+                        var projectUserTimelogs = currentProject.userTimelogs;
 
                         projectUserTimelogs.push.apply(projectUserTimelogs, projectTimelog.timelog);
 
@@ -117,6 +119,7 @@ angular.module('myApp.timelog', ['ngRoute'])
                 $scope.$watch('projects[' + projectIndex + ']', function(newValue, oldValue) {
                     if(newValue && newValue.timelog != oldValue.timelog && newValue.timelog.length >= oldValue.timelog.length) {
                         clearTimeout(typingTimer);
+
                         typingTimer = setTimeout(function() {
                             timelogService.updateTimelog(preferences.get('user')._id, newValue.timelog).success(function(data) {
 
@@ -166,9 +169,6 @@ angular.module('myApp.timelog', ['ngRoute'])
         };
 
         $scope.isWeekend = function(date) {
-            //if(date.getDay() == 0 || date.getDay() == 6){
-            //    day.weekend = true;
-            //}
             return new Date(date).getDay() == 0 || new Date(date).getDay() == 1;
         };
 

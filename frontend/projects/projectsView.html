@@ -53,18 +53,6 @@
                             class="form-control timesheet-control"
                             ng-change="saveAssignment(project, assignment)">
                     </select>
-
-                    <!--<div class="btn-group" dropdown keyboard-nav>-->
-                        <!--<button id="simple-btn-keyboard-nav" type="button" class="btn btn-primary" dropdown-toggle>-->
-                            <!--{{assignments[0]}}<span class="caret"></span>-->
-                        <!--</button>-->
-                        <!--<ul class="dropdown-menu" role="menu" aria-labelledby="simple-btn-keyboard-nav">-->
-                            <!--<li role="menuitem" ng-repeat="assignment in assignments">-->
-                                <!--<a href="#" ng-click="saveAssignment(project, assignment)">{{assignment}}</a>-->
-                            <!--</li>-->
-                        <!--</ul>-->
-                    <!--</div>-->
-
                 </td>
                 <td>
                     <input type="text" ng-model="assignment.assignments[0].workload" ng-change="saveAssignment(project, assignment)"/>

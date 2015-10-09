@@ -18,6 +18,7 @@
 <div class="timesheet-controls">
     <div class="clearfix">
         <label for="period">Report Period</label>
+
         <select id="period"
                 ng-options="period as period.periodName for period in periodSettings"
                 ng-model="selectedPeriod"
@@ -62,18 +63,18 @@
         <div class="periods-wrapper">
             <table class="periods table table-bordered">
                 <thead>
-                <th ng-repeat="day in weekDays track by $index">{{day}}</th>
+                    <th ng-repeat="day in weekDays track by $index">{{day}}</th>
                 </thead>
+
                 <tbody>
-                <tr ng-repeat="week in month track by $index">
-                    <td table-cell
-                        ng-repeat="day in week track by $index"
-                        ng-class="{'period-start': day.isPeriodStartDate, 'period-end': day.isPeriodEndDate, 'weekend': day.weekend, 'disabled-day': day.disabled}"></td>
-                </tr>
+                    <tr ng-repeat="week in month track by $index">
+                        <td table-cell
+                            ng-repeat="day in week track by $index"
+                            ng-class="{'period-start': day.isPeriodStartDate, 'period-end': day.isPeriodEndDate, 'weekend': day.weekend, 'disabled-day': day.disabled}"></td>
+                    </tr>
                 </tbody>
             </table>
         </div>
-
         <!--<small>{{splittedTimesheet[$index]}}</small>-->
     </div>
 </div>
@@ -82,12 +83,14 @@
     <div class="form-group">
         <label>Time:</label>
         <input type="text" ng-model="day.time" class="form-control">
+
         <label>Type:</label>
         <select id="type"
                 ng-options="type as type.typeName for type in dayTypes"
                 ng-model="day.type"
                 class="form-control">
         </select>
+
         <label>Comment:</label>
         <textarea type="text" ng-model="day.comment" class="form-control"></textarea>
     </div>

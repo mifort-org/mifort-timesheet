@@ -26,8 +26,6 @@ angular.module('myApp.timesheetManagement', ['ngRoute'])
     }])
 
     .controller('timesheetManagementController', ['$scope', '$filter', 'timesheetManagementService', 'moment', 'preferences', function ($scope, $filter, timesheetManagementService, moment, preferences) {
-        var daysInRow = 7;
-
         $scope.daySettingsPopover = {
             templateUrl: 'daySettimgs.html',
             title: 'Day Settings'
@@ -51,20 +49,17 @@ angular.module('myApp.timesheetManagement', ['ngRoute'])
         };
 
         $scope.init = function () {
-            //if(!$scope.project.periods.length){
-            //    $scope.project.periods.push({start: moment(new Date).calendar()});
-            //}
             generateTimesheet();
             initWatchers();
         };
 
         function generateTimesheet() {
-            $scope.startDate = new Date($scope.project.periods[0].start); //default for perios split date
+            $scope.startDate = new Date($scope.project.periods[0].start); //default for peridos split date
             $scope.timesheet = [];
+
             var startDate = moment(new Date($scope.project.periods[0].start)),
                 endDate = moment(new Date($scope.project.periods[$scope.project.periods.length - 1].end)),
                 daysToGenerate = endDate.diff(startDate, 'days') + 1;
-                //daysToGenerate = 365;
 
             for (var i = 0; i < daysToGenerate; i++) {
                 var dayToPush = _.clone($scope.project.template);
@@ -76,6 +71,7 @@ angular.module('myApp.timesheetManagement', ['ngRoute'])
                 if (period.start) {
                     _.findWhere($scope.timesheet, {date: moment(new Date(period.start)).format('MM/DD/YYYY')}).isPeriodStartDate = true;
                 }
+
                 if (period.end) {
                     _.findWhere($scope.timesheet, {date: moment(new Date(period.end)).format('MM/DD/YYYY')}).isPeriodEndDate = true;
                 }
@@ -169,6 +165,7 @@ angular.module('myApp.timesheetManagement', ['ngRoute'])
                         $scope.splittedTimesheet[currentDayYear][currentDayMonth][currentDayWeek].push(day);
                 }
             });
+//end in progress
 
             if ($scope.project.defaultValues) {
                 $scope.project.defaultValues.forEach(function (day) {
@@ -266,10 +263,12 @@ angular.module('myApp.timesheetManagement', ['ngRoute'])
         $scope.aggregatePeriods = function (timesheet) {
             var periodSplitters = [],
                 periods = [];
+
             timesheet.forEach(function (day) {
                 if (day.isPeriodStartDate) {
                     periodSplitters.push({'start': day.date});
                 }
+
                 if (day.isPeriodEndDate) {
                     periodSplitters.push({'end': day.date});
                 }
@@ -278,6 +277,7 @@ angular.module('myApp.timesheetManagement', ['ngRoute'])
             periods = _.groupBy(periodSplitters, function (element, index) {
                 return Math.floor(index / 2);
             });
+
             periods = _.toArray(periods);
             _.map(periods, function (period, index) {
                 periods[index] = angular.extend(period[0], period[1])

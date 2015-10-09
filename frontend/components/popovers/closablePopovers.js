@@ -23,6 +23,7 @@ angular.module('myApp')
             link: function () {
                 angular.element(document).bind('click', function (e) {
                     var popups = document.querySelectorAll('.popover');
+
                     if(popups) {
                         for(var i=0; i<popups.length; i++) {
                             var popup = popups[i];

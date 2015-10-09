@@ -24,6 +24,7 @@ angular.module('myApp')
             link: function(scope, element, attr, ctrl, transclude) {
                 scope.addAssignment = function(project, employee) {
                     var newEmployee = _.find(scope.companyEmployees, {displayName: employee.displayName});
+
                     if(newEmployee){
                         newEmployee.assignments = [{
                             projectId: project._id,
@@ -36,6 +37,7 @@ angular.module('myApp')
                         if(!project.projectAssignments){
                             project.projectAssignments = [];
                         }
+
                         project.projectAssignments.push(_.clone(newEmployee));
                         scope.saveAssignment(project, _.clone(newEmployee));
                     }
