@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
 var dbSettings = require('./libs/mongodb_settings');
 var utils = require('./libs/utils');
 var companies = require('./company');
@@ -24,42 +24,18 @@ exports.restGetById = function(req, res) {
     var projects = dbSettings.projectCollection();
     projects.findOne({_id: projectId}, 
         function(err, doc) {
-            returnProjectCallback(res, err, doc);
+            returnProjectCallback(err, res, doc);
         }
     );
 };
 
 exports.restSave = function(req, res) {
-    var projects = dbSettings.projectCollection();
     var project = req.body;
     
     if(project._id) { //update
-        projects.update({ _id: project._id },
-                        {$set: {
-                            name: project.name
-                        },
-                        $currentDate: { updatedOn: true }},
-            function(err, savedProject) {
-                returnProjectCallback(res, err, savedProject);
-            });
+        updateProject(project, res);
     } else { //create
-        companies.findById(project.companyId, function(err, company) {
-            if(err) {
-                res.status(500).json(err);
-                return;
-            }
-            project.defaultValues = company.defaultValues;
-            project.template = company.template;
-            project.periods = company.periods;
-            var currentDate = new Date();
-            project.createdOn = currentDate;
-            project.updatedOn = currentDate;
-            project.active = true;
-            projects.insertOne(project, {safe: true}, 
-                function(err, result) {
-                    res.json(result.ops[0]);
-                });
-        });
+        createProject(project, res);
     }
 };
 
@@ -83,7 +59,7 @@ exports.restDeactivateProject = function(req, res) {
     projects.update({ _id: projectId},
                     {$set: { active: false } },
         function(err, savedProject) {
-            returnProjectCallback(res, err, savedProject);
+            returnProjectCallback(err, res, savedProject);
         });
 };
 
@@ -104,15 +80,49 @@ exports.generateDefaultProject = function(company) {
         name: company.name,
         template: company.template,
         periods: company.periods,
-        companyId: company._id
+        companyId: company._id,
+        active: true
     };
 };
 
 //Private
-function returnProjectCallback(res, err, savedProject) {
+function returnProjectCallback(err, res, savedProject) {
     if(err) {
         res.status(500).json(err);
         return;
     }
     res.json(savedProject);
+}
+
+function updateProject(project, res) {
+    var projects = dbSettings.projectCollection();
+    projects.update({ _id: project._id },
+                    {$set: {
+                        name: project.name
+                    },
+                    $currentDate: { updatedOn: true }},
+        function(err, savedProject) {
+            returnProjectCallback(err, res, savedProject);
+        });
+}
+
+function createProject(project, res){
+    var projects = dbSettings.projectCollection();
+    companies.findById(project.companyId, function(err, company) {
+        if(err) {
+            res.status(500).json(err);
+            return;
+        }
+        project.defaultValues = company.defaultValues;
+        project.template = company.template;
+        project.periods = company.periods;
+        var currentDate = new Date();
+        project.createdOn = currentDate;
+        project.updatedOn = currentDate;
+        project.active = true;
+        projects.insertOne(project, {safe: true}, 
+            function(err, result) {
+                res.json(result.ops[0]);
+            });
+    });
 }
