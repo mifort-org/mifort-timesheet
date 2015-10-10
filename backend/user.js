@@ -111,34 +111,13 @@ exports.updateExternalInfo = function(user, callback) {
         });
 };
 
-//need to refactor. Realy big function
-exports.updateAssignmentProjectName = function(user, project) {
+exports.updateAssignmentProjectName = function(project) {
     var users = dbSettings.userCollection();
     users.find({'assignments.projectId': project._id,
                 'assignments.projectName': {$ne: projectName.name}})
         .toArray(function(err, findedUsers) {
             if(findedUsers) {
-                findedUsers.forEach(function(user) {
-                    var assignmentsForProject = user.assignments.filter(function(assignment){
-                        return assignment.projectId.equals(project._id);
-                    });
-
-                    var newAssignments = assignmentsForProject.map(function(assignment){
-                        assignment.projectName = project.name;
-                        return assignment;
-                    });
-                    users.update({_id: user._id},
-                                 { $pull: {assignments: {projectId: project._id} } },
-                        function(err, result) {
-                            if(!err) {
-                                users.update({ _id: user._id },
-                                             { $push: { assignments: { $each: newAssignments } }},
-                                    function(err, updatedUser){
-                                        console.log("User assignment project name was updated:" + user._id);
-                                    });
-                            }
-                        });
-                });
+                updateProjectName(users, findedUsers, project);
             }
         });
 };
@@ -158,5 +137,29 @@ function findByExample(query, callback) {
     var users = dbSettings.userCollection();
     users.findOne(query, function(err, user){
         callback(err, user);
+    });
+}
+
+function updateProjectName(userDbCollection, findedUsers, project) {
+    findedUsers.forEach(function(user) {
+        var assignmentsForProject = user.assignments.filter(function(assignment){
+            return assignment.projectId.equals(project._id);
+        });
+
+        var newAssignments = assignmentsForProject.map(function(assignment){
+            assignment.projectName = project.name;
+            return assignment;
+        });
+        userDbCollection.update({_id: user._id},
+                     { $pull: {assignments: {projectId: project._id} } },
+            function(err, result) {
+                if(!err) {
+                    userDbCollection.update({ _id: user._id },
+                                 { $push: { assignments: { $each: newAssignments } }},
+                        function(err, updatedUser){
+                            console.log('User assignment project name was updated:' + user._id);
+                        });
+                }
+            });
     });
 }
