@@ -17,6 +17,7 @@
 var dbSettings = require('./libs/mongodb_settings');
 var utils = require('./libs/utils');
 var companies = require('./company');
+var users = require('./user');
 
 //Rest API
 exports.restGetById = function(req, res) {
@@ -96,13 +97,25 @@ function returnProjectCallback(err, res, savedProject) {
 
 function updateProject(project, res) {
     var projects = dbSettings.projectCollection();
-    projects.update({ _id: project._id },
-                    {$set: {
-                        name: project.name
-                    },
-                    $currentDate: { updatedOn: true }},
-        function(err, savedProject) {
-            returnProjectCallback(err, res, savedProject);
+    projects.find({_id: project._id,
+                   name: {$ne: project.name}},
+                  {limit: 1})
+        .count(function(err, count) {
+            if(count > 0) {
+                projects.update({ _id: project._id },
+                                {$set: {
+                                    name: project.name
+                                },
+                                $currentDate: { updatedOn: true }},
+                    function(err, savedProject) { //need error handler
+                        projects.findOne({_id: project._id}, 
+                            function(err, doc) {
+                                returnProjectCallback(err, res, doc);
+                            }
+                        );
+                        users.updateAssignmentProjectName(project);
+                    });
+            }
         });
 }
 
