@@ -22,9 +22,9 @@ angular.module('myApp')
             link: function (scope) {
                 scope.tabs = [
                     {title: 'timelog'},
+                    {title: 'timesheetManagement'},
                     {title: 'projects'},
                     {title: 'report'},
-                    {title: 'timesheetManagement'},
                     {title: 'companyCreate'},
                     {title: 'companyEdit'}
                 ];

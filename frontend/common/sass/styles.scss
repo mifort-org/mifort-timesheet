@@ -343,13 +343,17 @@ Timelog
 }
 
 .timelog{
-    font-size: 1.8em;
-    border-color: #eaeff7;
+    position: relative;
+
+    .table{
+        font-size: 1.8em;
+        border-color: #eaeff7;
+    }
 }
 
 .timelog-controls{
-    float: right;
-    right: 55px;
+    position: absolute;
+    right: 20px;
     top: 20px;
 }
 

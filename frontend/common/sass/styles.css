@@ -259,12 +259,14 @@ Timelog
     background-position: -12px -626px; }
 
 .timelog {
-  font-size: 1.8em;
-  border-color: #eaeff7; }
+  position: relative; }
+  .timelog .table {
+    font-size: 1.8em;
+    border-color: #eaeff7; }
 
 .timelog-controls {
-  float: right;
-  right: 55px;
+  position: absolute;
+  right: 20px;
   top: 20px; }
 
 .previous-period,

@@ -30,14 +30,13 @@ angular.module('myApp.timelog', ['ngRoute'])
         $scope.isCollapsed = false;
         $scope.timelogKeys = timelogService.getTimelogKeys();
         $scope.assignments = preferences.get('user').assignments;
-        $scope.currentTimelogIndex = 0;
 
         $scope.assignments.forEach(function(assignment, index) {
             timelogService.getProject(assignment.projectId).success(function(project) {
                 if(project && project.active) {
                     project.userTimelogs = [];
-                    //$scope.projects.push(project);
-                    $scope.projects.splice(index, 0, project);
+                    project.currentTimelogIndex = 0;
+                    $scope.projects.push(project);
                 }
             }).then(function(data) {
                 var currentProject = data.data;
@@ -159,7 +158,7 @@ angular.module('myApp.timelog', ['ngRoute'])
         $scope.removeRow = function(log, dayIndex, project) {
             if(log._id) {
                 timelogService.removeTimelog(log).success(function() {
-                        project.splittedTimelog[$scope.currentTimelogIndex].splice(dayIndex, 1);
+                        project.splittedTimelog[project.currentTimelogIndex].splice(dayIndex, 1);
                         //project.timelog.splice(dayIndex, _.findIndex(project.timelog, {$$hashKey: log.$$hashKey}));
                         project.timelog.splice(dayIndex, 1);
                         splitPeriods(project);
@@ -173,10 +172,10 @@ angular.module('myApp.timelog', ['ngRoute'])
         };
 
         $scope.showPreviousPeriod = function(project) {
-            $scope.currentTimelogIndex--;
+            project.currentTimelogIndex--;
         };
 
         $scope.showNextPeriod = function(project) {
-            $scope.currentTimelogIndex++;
+            project.currentTimelogIndex++;
         };
     }]);

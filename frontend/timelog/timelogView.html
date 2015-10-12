@@ -14,18 +14,17 @@
   limitations under the License.
 -->
 
-<div class="timelog-controls clearfix">
-    <button ng-if="currentTimelogIndex > 0" class="previous-period" ng-click="showPreviousPeriod()"></button>
-    <button class="next-period" ng-click="showNextPeriod()"></button>
-    <!--{{currentTimelogIndex}}-->
-</div>
-
-<div class="collapse-wrapper clearfix" ng-repeat="project in projects">
+<div class="timelog collapse-wrapper clearfix" ng-repeat="project in projects">
     <h2 ng-class="{'timelog-collapsed': isCollapsed}">
         <a href="" class="collapse-item" ng-class="{'collapsed': isCollapsed}" ng-click="isCollapsed = !isCollapsed">
             {{project.name}}
         </a>
     </h2>
+
+    <div class="timelog-controls clearfix">
+        <button ng-if="project.currentTimelogIndex > 0" class="previous-period" ng-click="showPreviousPeriod(project)"></button>
+        <button class="next-period" ng-click="showNextPeriod(project)"></button>
+    </div>
 
     <div collapse="isCollapsed">
         <table class="table table-bordered timelog">
@@ -36,7 +35,7 @@
             </thead>
 
             <tbody>
-                <tr ng-if="currentTimelogIndex >= 0" ng-repeat="log in project.splittedTimelog[currentTimelogIndex]"
+                <tr ng-if="project.currentTimelogIndex >= 0" ng-repeat="log in project.splittedTimelog[project.currentTimelogIndex]"
                     ng-class="{'weekend': isWeekend(log.date)}">
                     <td ng-class="log.isFirstDayRecord ? 'is-first-day-log' : 'is-not-first-day-log'">
                         <span class="timelog-data">
