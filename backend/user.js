@@ -112,14 +112,16 @@ exports.updateExternalInfo = function(user, callback) {
 };
 
 exports.updateAssignmentProjectName = function(project) {
-    var users = dbSettings.userCollection();
-    users.find({'assignments.projectId': project._id,
-                'assignments.projectName': {$ne: projectName.name}})
-        .toArray(function(err, findedUsers) {
-            if(findedUsers) {
-                updateProjectName(users, findedUsers, project);
-            }
-        });
+    if(project) {
+        var users = dbSettings.userCollection();
+        users.find({'assignments.projectId': project._id,
+                    'assignments.projectName': {$ne: project.name}})
+            .toArray(function(err, findedUsers) {
+                if(findedUsers) {
+                    updateProjectName(users, findedUsers, project);
+                }
+            });
+    }
 };
 
 exports.findByEmail = function(email, callback) {
