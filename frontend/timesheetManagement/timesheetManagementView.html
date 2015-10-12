@@ -57,6 +57,14 @@
     </button>
 </div>
 
+<div class="timesheet-controls">
+    <h3>Custom Day</h3>
+
+    <div class="clearfix">
+        <div custom-day></div>
+    </div>
+</div>
+
 <div ng-repeat="year in splittedTimesheet">
     <div class="timesheet-wrapper" ng-if="month" ng-repeat="month in year track by $index">
         <div class="timesheet-header">{{getMonthName(month)}}</div>

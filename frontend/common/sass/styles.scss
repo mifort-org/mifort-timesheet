@@ -480,6 +480,7 @@ Timesheet
 
 .timesheet-controls{
     float: right;
+    clear: right;
     width: calc(40% - 42px);
     min-width: 325px;
     max-width: 420px;
@@ -501,6 +502,44 @@ Timesheet
 
     .timesheet-control .form-control{
         width: 111px;
+    }
+}
+
+.custom-days-wrapper{
+    position: relative;
+
+    dl{
+        position: absolute;
+        width: 100%;
+
+        dt{
+            margin-top: 31px;
+            font-size: 1.8rem;
+        }
+        dd{
+            margin-bottom: 4px;
+            font-size: 1.4rem;
+        }
+        dt,
+        dd{
+            float: right;
+            clear: both;
+            width: 100px;
+            font-weight: 300;
+            text-align: left;
+            color: #7f7f7f;
+        }
+
+        .odd-day{
+            float: left;
+            text-align: right;
+        }
+    }
+    .custom-days{
+        position: relative;
+        z-index: 1;
+        width: 140px;
+        margin: 0 auto;
     }
 }
 

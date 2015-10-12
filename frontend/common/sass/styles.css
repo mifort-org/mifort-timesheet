@@ -370,6 +370,7 @@ Timesheet
 
 .timesheet-controls {
   float: right;
+  clear: right;
   width: calc(40% - 42px);
   min-width: 325px;
   max-width: 420px;
@@ -386,6 +387,34 @@ Timesheet
     width: 150px; }
   .timesheet-controls .timesheet-control .form-control {
     width: 111px; }
+
+.custom-days-wrapper {
+  position: relative; }
+  .custom-days-wrapper dl {
+    position: absolute;
+    width: 100%; }
+    .custom-days-wrapper dl dt {
+      margin-top: 31px;
+      font-size: 1.8rem; }
+    .custom-days-wrapper dl dd {
+      margin-bottom: 4px;
+      font-size: 1.4rem; }
+    .custom-days-wrapper dl dt,
+    .custom-days-wrapper dl dd {
+      float: right;
+      clear: both;
+      width: 100px;
+      font-weight: 300;
+      text-align: left;
+      color: #7f7f7f; }
+    .custom-days-wrapper dl .odd-day {
+      float: left;
+      text-align: right; }
+  .custom-days-wrapper .custom-days {
+    position: relative;
+    z-index: 1;
+    width: 140px;
+    margin: 0 auto; }
 
 .primary-button {
   display: block;
