@@ -40,7 +40,7 @@ app.use(expressValidator({
     customValidators: {
         isTimelog: validators.timelogs,
         isArray: validators.isArray,
-        isAssignments: validators.assignments,
+        isAssignments: validators.isAssignments,
         isEmails: validators.isEmails
     }
 }));

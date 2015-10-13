@@ -194,7 +194,7 @@ exports.timelogs = function(values) {
     return false;
 };
 
-exports.assignments = function(values, projectId, userId) {
+exports.isAssignments = function(values, projectId, userId) {
     if(!values.length) { // if array is empty
         return true;
     }
