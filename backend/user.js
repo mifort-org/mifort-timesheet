@@ -67,15 +67,13 @@ exports.restGetByCompanyId = function(req, res) {
 exports.restReplaceAssignments = function(req, res) {
     var projectId = utils.getProjectId(req);
     var user = req.body;
-    var userId = user._id;
-    var assignments = user.assignments || {};
     var users = dbSettings.userCollection();
-    users.update({ _id: userId },
+    users.update({ _id: user._id },
                  { $pull: {assignments: {projectId: projectId} } },
                  { multi: true },
         function(err, result) {
             if(!err) {
-                users.update({ _id: userId },
+                users.update({ _id: user._id },
                              { $push: { assignments: { $each: assignments } }},
                     function(err, updatedUser){
                         res.json({ok: true}); //saved object???
@@ -106,8 +104,8 @@ exports.updateExternalInfo = function(user, callback) {
                         external: user.external
                     }
                  },
-        function(err, savedUser) {
-            callback(err, savedUser);
+        function(err, result) {
+            callback(err, result);
         });
 };
 
