@@ -394,7 +394,7 @@ Timesheet
     position: absolute;
     width: 100%; }
     .custom-days-wrapper dl dt {
-      margin-top: 31px;
+      margin-top: 33.8px;
       font-size: 1.8rem; }
     .custom-days-wrapper dl dd {
       margin-bottom: 4px;
@@ -407,14 +407,28 @@ Timesheet
       font-weight: 300;
       text-align: left;
       color: #7f7f7f; }
+      .custom-days-wrapper dl dt:last-child:after,
+      .custom-days-wrapper dl dd:last-child:after {
+        position: absolute;
+        left: calc(50% - 33px);
+        bottom: 0;
+        content: '+';
+        color: #737373;
+        font-size: 4.8rem;
+        cursor: pointer; }
     .custom-days-wrapper dl .odd-day {
       float: left;
       text-align: right; }
+      .custom-days-wrapper dl .odd-day:last-child:after {
+        left: calc(50% + 4px); }
   .custom-days-wrapper .custom-days {
     position: relative;
     z-index: 1;
     width: 140px;
     margin: 0 auto; }
+    .custom-days-wrapper .custom-days path {
+      position: relative;
+      cursor: pointer; }
 
 .primary-button {
   display: block;
