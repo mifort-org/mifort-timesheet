@@ -513,7 +513,7 @@ Timesheet
         width: 100%;
 
         dt{
-            margin-top: 31px;
+            margin-top: 33.8px;
             font-size: 1.8rem;
         }
         dd{
@@ -528,11 +528,26 @@ Timesheet
             font-weight: 300;
             text-align: left;
             color: #7f7f7f;
+
+            &:last-child:after{
+                position: absolute;
+                //z-index: 2;
+                left: calc(50% - 33px);
+                bottom: 0;
+                content: '+';
+                color: #737373;
+                font-size: 4.8rem;
+                cursor: pointer;
+            }
         }
 
         .odd-day{
             float: left;
             text-align: right;
+
+            &:last-child:after{
+                left: calc(50% + 4px);
+            }
         }
     }
     .custom-days{
@@ -540,6 +555,11 @@ Timesheet
         z-index: 1;
         width: 140px;
         margin: 0 auto;
+        
+        path{
+            position: relative;
+            cursor: pointer;
+        }
     }
 }
 
