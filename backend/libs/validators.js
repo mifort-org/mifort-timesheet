@@ -86,8 +86,8 @@ exports.validateReplaceAssignment = function(req, res, next) {
     }
 
     req.checkBody('_id', util.format(invalidFormatMessageTemplate, 'User id')).notEmpty().isMongoId();
-    req.checkBody('assignments', 'Incorrect Assignments (Check: userId, projectId, projectName)')
-        .optional().isAssignments(req.params[reqParams.projectIdParam], req.body._id);
+    req.checkBody('assignments', 'Incorrect Assignments (Check: projectId, projectName)')
+        .optional().isAssignments(req.params[reqParams.projectIdParam]);
 
     returnErrors(req, res, next);
 };
@@ -194,7 +194,8 @@ exports.timelogs = function(values) {
     return false;
 };
 
-exports.isAssignments = function(values, projectId, userId) {
+
+exports.isAssignments = function(values, projectId) {
     if(!values.length) { // if array is empty
         return true;
     }
@@ -204,10 +205,7 @@ exports.isAssignments = function(values, projectId, userId) {
             return validator.isMongoId(val.projectId)
                 && validator.isMongoId(projectId)
                 && (val.projectId.equals(projectId))
-                && validator.isLength(val.projectName, 1)
-                && validator.isMongoId(val.userId)
-                && validator.isMongoId(userId)
-                && (val.userId.equals(userId));
+                && validator.isLength(val.projectName, 1);
         });
     }
     return false;
