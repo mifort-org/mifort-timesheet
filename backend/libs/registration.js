@@ -36,7 +36,6 @@ exports.createDefaultProject = function(company, user) {
         } else {
             if(user) {
                 user.assignments = [{
-                    userId: user._id,
                     role: 'Employee',
                     projectName: savedProject.name,
                     projectId: savedProject._id
