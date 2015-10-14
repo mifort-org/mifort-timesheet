@@ -27,6 +27,7 @@ var company = require('./backend/company');
 var auth = require('./backend/libs/auth');
 var util = require('./backend/libs/utils');
 var validators = require('./backend/libs/validators');
+var log = require('./backend/libs/logger');
 
 var app = express();
 app.set('port', process.env.PORT || 1313);
@@ -106,5 +107,5 @@ app.get('/company/:companyId',
 
 //run application
 app.listen(app.get('port'), function() {
-    console.log('MiTimesheet server is started on port: ' + app.get('port'));
+    log.info('MiTimesheet server is started on port: %d', app.get('port'));
 });
