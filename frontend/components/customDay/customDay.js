@@ -21,6 +21,10 @@ angular.module('myApp')
         return {
             scope: true,
             link: function(scope, element) {
+                var customDaysLength = $('.custom-day').length;
+                $('.custom-day').each(function(i) {
+                    $(this).css('z-index', customDaysLength - i);
+                });
                 var svg,
                     color = ["#c5e9fb", "#f3cce1", "#fff9a1", '#d9d9d9', "#c5e9fb", "#f3cce1", "#fff9a1", '#d9d9d9'],
                     lastColor = 'transparent',

@@ -429,6 +429,72 @@ Timesheet
     .custom-days-wrapper .custom-days path {
       position: relative;
       cursor: pointer; }
+  .custom-days-wrapper .custom-day {
+    position: relative;
+    width: 71px;
+    height: 81px;
+    background: url("../images/custom-day.png") no-repeat red; }
+  .custom-days-wrapper .custom-day:nth-child(2n-1) {
+    margin: -20px 0 -20px 35px;
+    background: url("../images/custom-day.png") no-repeat tomato; }
+  .custom-days-wrapper .hexagon {
+    position: relative;
+    width: 65px;
+    height: 37.53px;
+    background-color: #64C7CC;
+    margin: 18.76px 0; }
+  .custom-days-wrapper .hexagon:before,
+  .custom-days-wrapper .hexagon:after {
+    content: "";
+    position: absolute;
+    width: 0;
+    border-left: 32.5px solid transparent;
+    border-right: 32.5px solid transparent; }
+  .custom-days-wrapper .hexagon:before {
+    bottom: 100%;
+    border-bottom: 18.76px solid #64C7CC; }
+  .custom-days-wrapper .hexagon:after {
+    top: 100%;
+    width: 0;
+    border-top: 18.76px solid #64C7CC; }
+  .custom-days-wrapper .hexagon-wrapper {
+    position: absolute;
+    z-index: 2;
+    top: 0; }
+  .custom-days-wrapper .hexagon-underwear-wrapper {
+    position: absolute;
+    top: 0; }
+  .custom-days-wrapper .hexagon-underwear {
+    position: relative;
+    width: 68px;
+    height: 39.26px;
+    background-color: #ffffff;
+    margin: 19px 0;
+    border-left: solid 1px #e2e2e2;
+    border-right: solid 1px #e2e2e2; }
+  .custom-days-wrapper .hexagon-underwear:before,
+  .custom-days-wrapper .hexagon-underwear:after {
+    content: "";
+    position: absolute;
+    z-index: 1;
+    width: 48.08px;
+    height: 48.08px;
+    -webkit-transform: scaleY(0.5774) rotate(-45deg);
+    -ms-transform: scaleY(0.5774) rotate(-45deg);
+    transform: scaleY(0.5774) rotate(-45deg);
+    background-color: inherit;
+    left: 8.9584px; }
+  .custom-days-wrapper .hexagon-underwear:before {
+    top: -24.0416px;
+    border-top: solid 1.4142px #e2e2e2;
+    border-right: solid 1.4142px #e2e2e2; }
+  .custom-days-wrapper .hexagon-underwear:after {
+    bottom: -24.0416px;
+    border-bottom: solid 1.4142px #e2e2e2;
+    border-left: solid 1.4142px #e2e2e2; }
+  .custom-days-wrapper .hexagon:nth-child(2n-1),
+  .custom-days-wrapper .hexagon-underwear:nth-child(2n-1) {
+    margin-left: 34px; }
 
 .primary-button {
   display: block;
