@@ -21,7 +21,7 @@ angular.module('myApp')
         return {
             scope: true,
             //transclude: 'element',
-            link: function(scope, element, attr, ctrl, transclude) {
+            link: function(scope) {
                 scope.addAssignment = function(project, employee) {
                     var newEmployee = _.find(scope.companyEmployees, {displayName: employee.displayName});
 

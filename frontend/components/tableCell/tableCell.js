@@ -17,7 +17,7 @@
 'use strict';
 
 angular.module('myApp')
-    .directive('tableCell', function ($location) {
+    .directive('tableCell', function () {
         return {
             scope: true,
             link: function (scope, element) {
