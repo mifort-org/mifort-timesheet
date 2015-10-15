@@ -15,8 +15,8 @@
  */
 
 var MongoClient = require('mongodb').MongoClient;
-
 var testDataImporter = require('./test_data_importer');
+var log = require('./logger');
 
 var mongodbUrl = process.env.MONGOLAB_URI || 'mongodb://localhost:27017/homogen';
 
@@ -28,12 +28,11 @@ var cachedDb;
 
 MongoClient.connect(mongodbUrl, function(err, db) {
     if(err) {
-        console.log('Mongo DB connection failed');
-        console.log(err);
+        log.error('Mongo DB connection failed', err);
     } else {
         cachedDb = db;
         exports.db = cachedDb;
-        console.log('Mongo DB: connected!');
+        log.info('Mongo DB: connected!', err);
         testDataImporter.import();
     }
 });

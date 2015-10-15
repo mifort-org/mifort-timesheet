@@ -17,6 +17,7 @@
     "mongodb": "^2.0.34",
     "passport": "^0.2.2",
     "passport-google-oauth": "^0.2.0",
-    "validator": "^4.1.0"
+    "validator": "^4.1.0",
+    "winston": "^1.1.0"
   }
 }
