@@ -402,13 +402,22 @@ Timesheet
       width: 100px;
       font-weight: 300;
       text-align: left;
-      color: #7f7f7f; }
+      color: #7f7f7f;
+      cursor: pointer; }
+      .custom-days-wrapper dl dt:hover,
+      .custom-days-wrapper dl dd:hover {
+        color: #000; }
     .custom-days-wrapper dl dt {
       margin-top: 25.5px;
       font-size: 1.8rem; }
+      .custom-days-wrapper dl dt input {
+        width: 100%; }
     .custom-days-wrapper dl dd {
       margin-bottom: 4px;
       font-size: 1.4rem; }
+      .custom-days-wrapper dl dd input {
+        width: 25px;
+        text-align: center; }
     .custom-days-wrapper dl .odd-day {
       float: left;
       text-align: right; }

@@ -512,7 +512,6 @@ Timesheet
         position: absolute;
         width: 100%;
 
-
         dt,
         dd{
             position: relative;
@@ -523,15 +522,29 @@ Timesheet
             font-weight: 300;
             text-align: left;
             color: #7f7f7f;
+            cursor: pointer;
+
+            &:hover{
+                color: #000;
+            }
         }
 
         dt{
             margin-top: 25.5px;
             font-size: 1.8rem;
+
+            input{
+                width: 100%;
+            }
         }
         dd{
             margin-bottom: 4px;
             font-size: 1.4rem;
+
+            input{
+                width: 25px;
+                text-align: center;
+            }
         }
 
         .odd-day{

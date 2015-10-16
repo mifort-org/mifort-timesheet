@@ -29,6 +29,7 @@ angular.module('myApp', [
     'myApp.report',
     'preferences',
     'angularMoment',
+    'angular-click-outside',
     'ui.grid'
 ])
     .config(['$routeProvider', function ($routeProvider) {

@@ -21,6 +21,8 @@ angular.module('myApp')
         return {
             scope: true,
             link: function(scope, element) {
+                scope.editableName = false;
+                scope.editableWorkload = false;
                 scope.customDays = [
                     {
                         name: 'Weekend',
@@ -44,19 +46,44 @@ angular.module('myApp')
                     }
                 ];
 
-                $timeout(function() {
-                    //pseudo elements PAINting
-                    $(element).find('.hexagon').each(function(index) {
-                        var hexagon = $(this),
-                            hexagonColor = hexagon.data('color'),
-                            selector = '.custom-days-wrapper .hexagon-wrapper .hexagon-' + index;
+                function paintHexagons() {
+                    $timeout(function() {
+                        //pseudo elements PAINting
+                        $(element).find('.hexagon').each(function(index) {
+                            var hexagon = $(this),
+                                hexagonColor = hexagon.data('color'),
+                                selector = '.custom-days-wrapper .hexagon-wrapper .hexagon-' + index;
 
-                        hexagon.addClass('hexagon-' + index);
-                        $('head').append("<style>" +
-                            selector + ":after{border-top-color: "+ hexagonColor +";}" +
-                            selector + ":before{border-bottom-color: "+ hexagonColor +";}" +
-                            "</style>");
+                            hexagon.addClass('hexagon-' + index);
+                            $('head').append("<style>" +
+                                selector + ":after{border-top-color: "+ hexagonColor +";}" +
+                                selector + ":before{border-bottom-color: "+ hexagonColor +";}" +
+                                "</style>");
+                        });
                     });
+                }
+                paintHexagons();
+
+                scope.addCustomDay = function() {
+                    scope.customDays.push({
+                        name: 'New Day',
+                        workload: 8,
+                        color: '#123'
+                    });
+                    paintHexagons();
+                };
+
+                //scope.editWorkload = function(editableWorkload) {
+                //    if(!editableWorkload){
+                //        return !editableWorkload;
+                //        //scope.$apply();
+                //
+                //    }
+                //};
+
+                $(document).click(function() {
+                    //scope.editableName = false;
+                    //scope.editableWorkload = false;
                 });
             },
             templateUrl: 'components/customDay/customDay.html'

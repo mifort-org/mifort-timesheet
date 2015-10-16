@@ -16,13 +16,30 @@
 
 <div class="custom-days-wrapper">
     <dl>
-        <dt ng-repeat-start="day in customDays" ng-class="{'odd-day' : $index%2}">{{day.name}}</dt>
-        <dd ng-class="{'odd-day' : $index%2}" ng-repeat-end >{{day.workload}} hours</dd>
+        <dt ng-repeat-start="day in customDays"
+            id="customDay-{{$index}}"
+            ng-class="{'odd-day' : $index%2}"
+            ng-click="editableName = true"
+            click-outside="editableName = false">
+            <span ng-show="!editableName">{{day.name}}</span>
+
+            <input type="text" ng-show="editableName" ng-value="day.name"/>
+        </dt>
+        <dd ng-repeat-end
+            ng-class="{'odd-day' : $index%2}"
+            ng-click="editableWorkload = true"
+            click-outside="editableWorkload = false">
+            <span ng-show="!editableWorkload">{{day.workload}}</span>
+
+            <input type="text" ng-show="editableWorkload" ng-value="day.workload"/>
+
+            hours
+        </dd>
     </dl>
 
     <div class="hexagon-underwear-wrapper">
         <div class="hexagon-underwear" ng-repeat="day in customDays"></div>
-        <div class="hexagon-underwear"></div>
+        <div class="hexagon-underwear" ng-click="addCustomDay()"></div>
     </div>
 
     <div class="hexagon-wrapper">
