@@ -28,6 +28,7 @@ var auth = require('./backend/libs/auth');
 var util = require('./backend/libs/utils');
 var validators = require('./backend/libs/validators');
 var log = require('./backend/libs/logger');
+var errorHandler = require('./backend/libs/error_handler');
 
 var app = express();
 app.set('port', process.env.PORT || 1313);
@@ -104,6 +105,9 @@ app.put('/company',
 app.get('/company/:companyId',
         validators.validateGetCompanyById,
         company.restFindById);
+
+// default error handler
+app.use(errorHandler);
 
 //run application
 app.listen(app.get('port'), function() {

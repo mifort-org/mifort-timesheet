@@ -28,11 +28,11 @@ var cachedDb;
 
 MongoClient.connect(mongodbUrl, function(err, db) {
     if(err) {
-        log.error('Mongo DB connection failed', err);
+        log.error('Mongo DB connection failed', {error: err});
     } else {
         cachedDb = db;
         exports.db = cachedDb;
-        log.info('Mongo DB: connected!', err);
+        log.info('Mongo DB: connected!');
         testDataImporter.import();
     }
 });

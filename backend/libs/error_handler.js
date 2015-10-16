@@ -13,9 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-exports.startDateParam = 'startDate';
-exports.endDateParam = 'endDate';
-exports.projectIdParam = 'projectId';
-exports.userIdParam = 'userId';
-exports.companyIdParam ='companyId';
-exports.timelogIdParam = 'timelogId';
+
+var log = require('./logger');
+
+module.exports = function(err, req, res, next) {
+    var message = 'Oopps... We are working on your problem.';
+    if(err.dbError) {
+        message = 'Something wrong with DB. Please contact your system administrator or Mifort support. ';
+    }
+    log.error(message + 'Stack: ' + err.stack, {error: err});
+
+    res.status(500).json({error: message});
+};

@@ -20,47 +20,48 @@ var companies = require('./company');
 var users = require('./user');
 
 //Rest API
-exports.restGetById = function(req, res) {
+exports.restGetById = function(req, res, next) {
     var projectId = utils.getProjectId(req);
     var projects = dbSettings.projectCollection();
     projects.findOne({_id: projectId}, 
         function(err, doc) {
-            returnProjectCallback(err, res, doc);
+            returnProjectCallback(err, res, next, doc);
         }
     );
 };
 
-exports.restSave = function(req, res) {
+exports.restSave = function(req, res, next) {
     var project = req.body;
     
     if(project._id) { //update
-        updateProject(project, res);
+        updateProject(project, res, next);
     } else { //create
-        createProject(project, res);
+        createProject(project, res, next);
     }
 };
 
-exports.restGetByCompanyId = function(req, res) {
+exports.restGetByCompanyId = function(req, res, next) {
     var companyId = utils.getCompanyId(req);
     var projects = dbSettings.projectCollection();
     projects.find({companyId: companyId,
                    active: true})
         .toArray(function(err, findedProjects){
             if(err) {
-                res.status(404).json({error: 'Cannot find projects!'});
+                err.dbError = true;
+                next(err);
             } else {
                 res.json(findedProjects);
             }
         });
 };
 
-exports.restDeactivateProject = function(req, res) {
+exports.restDeactivateProject = function(req, res, next) {
     var projectId = utils.getProjectId(req);
     var projects = dbSettings.projectCollection();
     projects.update({ _id: projectId},
                     {$set: { active: false } },
         function(err, savedProject) {
-            returnProjectCallback(err, res, savedProject);
+            returnProjectCallback(err, res, next, savedProject);
         });
 };
 
@@ -87,15 +88,16 @@ exports.generateDefaultProject = function(company) {
 };
 
 //Private
-function returnProjectCallback(err, res, savedProject) {
+function returnProjectCallback(err, res, next, savedProject) {
     if(err) {
-        res.status(500).json(err);
+        err.dbError = true;
+        next(err);
         return;
     }
     res.json(savedProject);
 }
 
-function updateProject(project, res) {
+function updateProject(project, res, next) {
     var projects = dbSettings.projectCollection();
     projects.find({_id: project._id,
                    name: {$ne: project.name}},
@@ -110,7 +112,7 @@ function updateProject(project, res) {
                     function(err, savedProject) { //need error handler
                         projects.findOne({_id: project._id}, 
                             function(err, doc) {
-                                returnProjectCallback(err, res, doc);
+                                returnProjectCallback(err, res, next, doc);
                             }
                         );
                         users.updateAssignmentProjectName(project);
@@ -119,11 +121,12 @@ function updateProject(project, res) {
         });
 }
 
-function createProject(project, res){
+function createProject(project, res, next){
     var projects = dbSettings.projectCollection();
     companies.findById(project.companyId, function(err, company) {
         if(err) {
-            res.status(500).json(err);
+            err.dbError = true;
+            next(err);
             return;
         }
         project.defaultValues = company.defaultValues;
@@ -135,7 +138,12 @@ function createProject(project, res){
         project.active = true;
         projects.insertOne(project, {safe: true}, 
             function(err, result) {
-                res.json(result.ops[0]);
+                if(err) {
+                    err.dbError = true;
+                    next(err);
+                } else {
+                    res.json(result.ops[0]);
+                }
             });
     });
 }
