@@ -1,3 +1,6 @@
-Homogen repo
+#MiTimesheet (Mifort timesheet) repo
 
-use "npm start" to start the server(for now).
+###How to start:
+```
+npm start
+``` 

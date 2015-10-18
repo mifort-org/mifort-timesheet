@@ -17,14 +17,14 @@
 var dbSettings = require('./libs/mongodb_settings');
 var utils = require('./libs/utils');
 var companies = require('./company');
+var log = require('./libs/logger');
 
 //Rest API
 exports.restGetCurrent = function(req, res) {
-    var user = req.user;
-    res.json(user);
+    res.json(req.user);
 };
 
-exports.restGetByProjectId = function(req, res) {
+exports.restGetByProjectId = function(req, res, next) {
     var projectIdParam = utils.getProjectId(req);
     var users = dbSettings.userCollection();
     users.find({'assignments.projectId': projectIdParam},
@@ -35,7 +35,8 @@ exports.restGetByProjectId = function(req, res) {
                })
       .toArray(function(err, projectUsers) {
         if(err) {
-            res.status(404).json({error: 'Cannot find users'});
+            err.code = 404;
+            next(err);
         } else {
             if(projectUsers) { 
                 projectUsers.forEach(function(user) { // not efficient???? Maybe: Client side???
@@ -49,7 +50,7 @@ exports.restGetByProjectId = function(req, res) {
     });
 };
 
-exports.restGetByCompanyId = function(req, res) {
+exports.restGetByCompanyId = function(req, res, next) {
     var companyIdParam = utils.getCompanyId(req);
     var users = dbSettings.userCollection();
     users.find({companyId: companyIdParam},
@@ -57,14 +58,15 @@ exports.restGetByCompanyId = function(req, res) {
                 displayName: 1})
         .toArray(function(err, companyUsers) {
             if(err) {
-                res.status(404).json({error: 'Cannot find users'});
+                err.code = 404;
+                next(err);
             } else {
                 res.json(companyUsers);
             }
         });
 };
 
-exports.restReplaceAssignments = function(req, res) {
+exports.restReplaceAssignments = function(req, res, next) {
     var projectId = utils.getProjectId(req);
     var user = req.body;
     var users = dbSettings.userCollection();
@@ -79,7 +81,7 @@ exports.restReplaceAssignments = function(req, res) {
                         res.json({ok: true}); //saved object???
                     });
             } else {
-                res.status(400).json(err);
+                next(err);
             }
         });
 };
@@ -157,7 +159,7 @@ function updateProjectName(userDbCollection, findedUsers, project) {
                     userDbCollection.update({ _id: user._id },
                                  { $push: { assignments: { $each: newAssignments } }},
                         function(err, updatedUser){
-                            console.log('User assignment project name was updated:' + user._id);
+                            log.info('User assignment project name was updated: %s', user._id);
                         });
                 }
             });

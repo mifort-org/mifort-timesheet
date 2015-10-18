@@ -25,7 +25,7 @@ exports.restGetById = function(req, res, next) {
     var projects = dbSettings.projectCollection();
     projects.findOne({_id: projectId}, 
         function(err, doc) {
-            returnProjectCallback(err, res, next, doc);
+            returnProjectCallback(err, res, doc, next);
         }
     );
 };
@@ -47,7 +47,7 @@ exports.restGetByCompanyId = function(req, res, next) {
                    active: true})
         .toArray(function(err, findedProjects){
             if(err) {
-                err.dbError = true;
+                err.code = 404;
                 next(err);
             } else {
                 res.json(findedProjects);
@@ -61,7 +61,7 @@ exports.restDeactivateProject = function(req, res, next) {
     projects.update({ _id: projectId},
                     {$set: { active: false } },
         function(err, savedProject) {
-            returnProjectCallback(err, res, next, savedProject);
+            returnProjectCallback(err, res, savedProject, next);
         });
 };
 
@@ -88,9 +88,8 @@ exports.generateDefaultProject = function(company) {
 };
 
 //Private
-function returnProjectCallback(err, res, next, savedProject) {
+function returnProjectCallback(err, res, savedProject, next) {
     if(err) {
-        err.dbError = true;
         next(err);
         return;
     }
@@ -112,7 +111,7 @@ function updateProject(project, res, next) {
                     function(err, savedProject) { //need error handler
                         projects.findOne({_id: project._id}, 
                             function(err, doc) {
-                                returnProjectCallback(err, res, next, doc);
+                                returnProjectCallback(err, res, doc, next);
                             }
                         );
                         users.updateAssignmentProjectName(project);
@@ -125,7 +124,7 @@ function createProject(project, res, next){
     var projects = dbSettings.projectCollection();
     companies.findById(project.companyId, function(err, company) {
         if(err) {
-            err.dbError = true;
+            err.code = 404;
             next(err);
             return;
         }
@@ -139,7 +138,6 @@ function createProject(project, res, next){
         projects.insertOne(project, {safe: true}, 
             function(err, result) {
                 if(err) {
-                    err.dbError = true;
                     next(err);
                 } else {
                     res.json(result.ops[0]);
