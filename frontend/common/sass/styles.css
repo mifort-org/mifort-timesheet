@@ -228,9 +228,10 @@ Tabs
       border-top: 1px #f2f4f7 solid; }
     .tabs-left li.active a, .tabs-left li.active a:hover, .tabs-left li.active a:focus {
       color: #19b5fe;
-      border-color: transparent; }
+      border-color: transparent;
+      border-left: 3px #19b5fe solid; }
     .tabs-left li a {
-      border-radius: 4px 0 0 4px;
+      border-radius: 0;
       margin-right: 0;
       padding: 17px 25px;
       color: #000;
@@ -249,7 +250,8 @@ Timelog
   padding: 15px 25px;
   margin-bottom: 25px; }
   .collapse-wrapper h2 {
-    margin-top: 2px; }
+    margin-top: 2px;
+    font-size: 2.4rem; }
 
 .collapse-item {
   padding-left: 20px;
@@ -359,6 +361,9 @@ Timelog
 Timesheet
 
 */
+.timesheet-container {
+  float: left; }
+
 .timesheet-wrapper {
   float: left;
   clear: left;
@@ -385,8 +390,9 @@ Timesheet
   .timesheet-controls .timesheet-control {
     float: right;
     width: 150px; }
-  .timesheet-controls .timesheet-control .form-control {
-    width: 111px; }
+  .timesheet-controls .timesheet-control button {
+    border-radius: 0;
+    border-left: 0; }
 
 .custom-days-wrapper {
   position: relative; }
@@ -408,19 +414,27 @@ Timesheet
       .custom-days-wrapper dl dd:hover {
         color: #000; }
     .custom-days-wrapper dl dt {
-      margin-top: 25.5px;
+      margin-top: 22.5px;
+      margin-bottom: 4px;
       font-size: 1.8rem; }
       .custom-days-wrapper dl dt input {
-        width: 100%; }
+        width: 100%;
+        margin: -5px -2px -5px -2px;
+        padding: 0; }
     .custom-days-wrapper dl dd {
-      margin-bottom: 4px;
+      margin-top: 3px;
       font-size: 1.4rem; }
       .custom-days-wrapper dl dd input {
         width: 25px;
+        margin: -5px -8px -5px -8px;
+        padding: 0;
         text-align: center; }
     .custom-days-wrapper dl .odd-day {
       float: left;
       text-align: right; }
+      .custom-days-wrapper dl .odd-day input {
+        text-align: right;
+        margin: -5px -2px -5px -2px; }
   .custom-days-wrapper .hexagon-wrapper {
     position: relative;
     top: 0;
@@ -443,11 +457,11 @@ Timesheet
         border-right: 32.5px solid transparent; }
       .custom-days-wrapper .hexagon-wrapper .hexagon:before {
         bottom: 100%;
-        border-bottom: 19px solid #64C7CC; }
+        border-bottom: 19px solid #fff; }
       .custom-days-wrapper .hexagon-wrapper .hexagon:after {
         top: 100%;
         width: 0;
-        border-top: 19px solid #64C7CC; }
+        border-top: 19px solid #fff; }
       .custom-days-wrapper .hexagon-wrapper .hexagon:nth-child(2n) {
         margin-left: 37px; }
       .custom-days-wrapper .hexagon-wrapper .hexagon.empty-hexagon {

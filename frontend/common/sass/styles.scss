@@ -300,10 +300,11 @@ Tabs
         &.active a:focus{
             color: #19b5fe;
             border-color: transparent;
+            border-left: 3px #19b5fe solid;
         }
 
         a{
-            border-radius: 4px 0 0 4px;
+            border-radius: 0;
             margin-right: 0;
             padding: 17px 25px;
             color: #000;
@@ -329,6 +330,7 @@ Timelog
 
     h2{
         margin-top: 2px;
+        font-size: 2.4rem;
     }
 }
 
@@ -468,6 +470,9 @@ Timelog
 Timesheet
 
 */
+.timesheet-container{
+    float: left;
+}
 .timesheet-wrapper{
     float: left;
     clear: left;
@@ -500,8 +505,9 @@ Timesheet
         width: 150px;
     }
 
-    .timesheet-control .form-control{
-        width: 111px;
+        .timesheet-control button{
+            border-radius: 0;
+            border-left: 0;
     }
 }
 
@@ -530,19 +536,24 @@ Timesheet
         }
 
         dt{
-            margin-top: 25.5px;
+            margin-top: 22.5px;
+            margin-bottom: 4px;
             font-size: 1.8rem;
 
             input{
                 width: 100%;
+                margin: -5px -2px -5px -2px;
+                padding: 0;
             }
         }
         dd{
-            margin-bottom: 4px;
+            margin-top: 3px;
             font-size: 1.4rem;
 
             input{
                 width: 25px;
+                margin: -5px -8px -5px -8px;
+                padding: 0;
                 text-align: center;
             }
         }
@@ -550,6 +561,11 @@ Timesheet
         .odd-day{
             float: left;
             text-align: right;
+
+            input{
+                text-align: right;
+                margin: -5px -2px -5px -2px;
+            }
         }
     }
 
@@ -580,13 +596,13 @@ Timesheet
 
             &:before{
                 bottom: 100%;
-                border-bottom: 19px solid #64C7CC;
+                border-bottom: 19px solid #fff;
             }
 
             &:after{
                 top: 100%;
                 width: 0;
-                border-top: 19px solid #64C7CC;
+                border-top: 19px solid #fff;
             }
 
             &:nth-child(2n){

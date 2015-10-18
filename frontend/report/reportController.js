@@ -19,7 +19,7 @@
 angular.module('myApp.report', ['ngRoute'])
 
     .config(['$routeProvider', function($routeProvider) {
-        $routeProvider.when('/report', {
+        $routeProvider.when('/Report', {
             templateUrl: 'report/reportView.html',
             controller: 'reportController'
         });

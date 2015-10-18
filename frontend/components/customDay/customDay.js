@@ -26,23 +26,18 @@ angular.module('myApp')
                 scope.customDays = [
                     {
                         name: 'Weekend',
-                        workload: 8,
+                        time: 0,
                         color: '#c5e9fb'
                     },
                     {
                         name: 'Corporate',
-                        workload: 4,
+                        time: 0,
                         color: '#f3cce1'
                     },
                     {
                         name: 'Holiday',
-                        workload: 12,
+                        time: 0,
                         color: '#fff9a1'
-                    },
-                    {
-                        name: 'OOO',
-                        workload: 3,
-                        color: '#d9d9d9'
                     }
                 ];
 
@@ -72,19 +67,6 @@ angular.module('myApp')
                     });
                     paintHexagons();
                 };
-
-                //scope.editWorkload = function(editableWorkload) {
-                //    if(!editableWorkload){
-                //        return !editableWorkload;
-                //        //scope.$apply();
-                //
-                //    }
-                //};
-
-                $(document).click(function() {
-                    //scope.editableName = false;
-                    //scope.editableWorkload = false;
-                });
             },
             templateUrl: 'components/customDay/customDay.html'
         };

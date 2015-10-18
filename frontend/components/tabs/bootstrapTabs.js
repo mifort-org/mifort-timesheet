@@ -21,12 +21,12 @@ angular.module('myApp')
         return {
             link: function (scope) {
                 scope.tabs = [
-                    {title: 'timesheetManagement'},
-                    {title: 'timelog'},
-                    {title: 'projects'},
-                    {title: 'report'},
-                    {title: 'companyCreate'},
-                    {title: 'companyEdit'}
+                    {title: 'Timesheet'},
+                    {title: 'Timelog'},
+                    {title: 'Projects'},
+                    {title: 'Report'},
+                    {title: 'Company'},
+                    {title: '*Company-create'}
                 ];
 
                 scope.changeTab = function (tab) {

@@ -19,7 +19,7 @@
 angular.module('myApp.timesheetManagement', ['ngRoute'])
 
     .config(['$routeProvider', function ($routeProvider) {
-        $routeProvider.when('/timesheetManagement', {
+        $routeProvider.when('/Timesheet', {
             templateUrl: 'timesheetManagement/timesheetManagementView.html',
             controller: 'timesheetManagementController'
         });
@@ -60,7 +60,7 @@ angular.module('myApp.timesheetManagement', ['ngRoute'])
             var startDate = moment(new Date($scope.project.periods[0].start)),
                 endDate = moment(new Date($scope.project.periods[$scope.project.periods.length - 1].end)),
                 //daysToGenerate = endDate.diff(startDate, 'days') + 1;
-                daysToGenerate = 0;
+                daysToGenerate = 30;
 
             for (var i = 0; i < daysToGenerate; i++) {
                 var dayToPush = _.clone($scope.project.template);

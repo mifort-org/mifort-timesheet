@@ -26,12 +26,13 @@
             <input type="text" ng-show="editableName" ng-value="day.name"/>
         </dt>
         <dd ng-repeat-end
+            id="customDayWorkload-{{$index}}"
             ng-class="{'odd-day' : $index%2}"
             ng-click="editableWorkload = true"
             click-outside="editableWorkload = false">
-            <span ng-show="!editableWorkload">{{day.workload}}</span>
+            <span ng-show="!editableWorkload">{{day.time}}</span>
 
-            <input type="text" ng-show="editableWorkload" ng-value="day.workload"/>
+            <input type="text" ng-show="editableWorkload" ng-value="day.time"/>
 
             hours
         </dd>

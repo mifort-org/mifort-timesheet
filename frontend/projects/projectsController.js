@@ -19,7 +19,7 @@
 angular.module('myApp.projects', ['ngRoute'])
 
     .config(['$routeProvider', function($routeProvider) {
-        $routeProvider.when('/projects', {
+        $routeProvider.when('/Projects', {
             templateUrl: 'projects/projectsView.html',
             controller: 'projectsController'
         });

@@ -19,12 +19,12 @@
 angular.module('myApp.company', ['ngRoute'])
 
     .config(['$routeProvider', function ($routeProvider) {
-        $routeProvider.when('/companyCreate', {
+        $routeProvider.when('/*Company-create', {
             templateUrl: 'company/companyView.html',
             controller: 'companyController'
         });
 
-        $routeProvider.when('/companyEdit', {
+        $routeProvider.when('/Company', {
             templateUrl: 'company/companyEditView.html',
             controller: 'companyController'
         });
