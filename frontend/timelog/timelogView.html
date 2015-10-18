@@ -39,9 +39,10 @@
                     ng-class="{'weekend': isWeekend(log.date)}">
                     <td ng-class="log.isFirstDayRecord ? 'is-first-day-log' : 'is-not-first-day-log'">
                         <span class="timelog-data">
+                            <a href="" ng-if="log.isFirstDayRecord" class="add-timelog" ng-click="addRow(log, project)">+</a>
+
                             <span ng-if="log.isFirstDayRecord">{{log.date}}</span>
 
-                            <a href="" ng-if="log.isFirstDayRecord" class="add-timelog" ng-click="addRow(log, project)">+</a>
                             <a href="" ng-if="!log.isFirstDayRecord" class="remove-timelog" ng-click="removeRow(log, $index, project)">&#8211;</a>
                         </span>
                     </td>
