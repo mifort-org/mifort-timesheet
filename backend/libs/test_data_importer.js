@@ -18,6 +18,7 @@ var users = require('../user');
 var companies = require('../company');
 var projects = require('../project');
 var dbSettings = require('./mongodb_settings');
+var log = require('./logger');
 
 var company = {
     "name": "Mifort",
@@ -156,7 +157,7 @@ exports.import = function() {
                 projects.saveInDb(project, function(err, savedProject){
                     user.assignments[0].projectId = savedProject._id;
                     users.save(user, function(err, savedUser){
-                        console.log('Test data is imported!');
+                        log.info('Test data is imported! Company ID: %s', savedCompany._id);
                     });
                 });
             });

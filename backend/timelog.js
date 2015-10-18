@@ -13,13 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
 var utils = require('./libs/utils');
 var dbSettings = require('./libs/mongodb_settings');
-var ObjectID = require('mongodb').ObjectID;
 
 //Rest API
-exports.restSave = function(req, res) {
+exports.restSave = function(req, res, next) {
     var timelogCollection = dbSettings.timelogCollection();
     var batch = timelogCollection.initializeUnorderedBulkOp({useLegacyOps: true});
     
@@ -36,25 +35,25 @@ exports.restSave = function(req, res) {
 
     batch.execute(function(err, result) {
         findAllByIds(ids, function(err, timelogs) {
-            returnTimelogArray(err, res, timelogs);
+            returnTimelogArray(err, res, timelogs, next);
         });
     });
 };
 
-exports.restDelete = function(req, res) {
+exports.restDelete = function(req, res, next) {
     var timelogId = utils.getTimelogId(req);
     var timelogCollection = dbSettings.timelogCollection();
     timelogCollection.remove({_id:timelogId}, {single: true},
       function(err, numberOfDeleted){
         if(err) {
-            res.status(500).json({error: 'Cannot delete timelog'});
+            next(err);
         } else {
             res.json({ok: true});
         }
     });
 };
 
-exports.restGetByDates = function(req, res) {
+exports.restGetByDates = function(req, res, next) {
     var start = utils.getStartDate(req);
     var end = utils.getEndDate(req);
     var userId = utils.getUserId(req);
@@ -69,7 +68,7 @@ exports.restGetByDates = function(req, res) {
     };
 
     timelogCollection.find(query, {'sort': 'date'}).toArray(function(err, timelogs){
-        returnTimelogArray(err, res, timelogs);
+        returnTimelogArray(err, res, timelogs, next);
     });
 };
 
@@ -81,9 +80,9 @@ function findAllByIds(ids, callback) {
     });
 }
 
-function returnTimelogArray(err, res, timelogs) {
+function returnTimelogArray(err, res, timelogs, next) {
     if(err) {
-        res.status(500).json(err);
+        next(err);
         return;
     }
     res.json({timelog: timelogs});

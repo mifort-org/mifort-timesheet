@@ -20,20 +20,22 @@ var dbSettings = require('./libs/mongodb_settings');
 var users = require('./user');
 var utils = require('./libs/utils');
 var registration = require('./libs/registration');
+var log = require('./libs/logger');
 
 //Rest API
-exports.restFindById = function(req, res) {
+exports.restFindById = function(req, res, next) {
     var companyId = utils.getCompanyId(req);
-    findById(companyId, function(err, company) {
+    findById(companyId, function(err, company, next) {
         if(err) {
-            res.status(400).json({error: 'Cannot find company!'});
+            err.code = 400;
+            next(err);
         } else {
             res.json(company);
         }
     });
 };
 
-exports.restCreateCompany = function(req, res) {
+exports.restCreateCompany = function(req, res, next) {
     var company = req.body;
     var defaultCompany = exports.generateDefaultCompany();
     company.template = defaultCompany.template;
@@ -41,7 +43,7 @@ exports.restCreateCompany = function(req, res) {
 
     save(company, function(err, savedCompany) {
         if(err) {
-            res.status(500).json(err);        
+            next(err);      
         } else {
             //Warning: asynchronous block!!! 
             registration.createDefaultProject(savedCompany, req.user); //Validation: check user!!!
@@ -51,11 +53,11 @@ exports.restCreateCompany = function(req, res) {
     });
 };
 
-exports.restUpdateCompany = function(req, res) {
+exports.restUpdateCompany = function(req, res, next) {
     var company = req.body;
     save(company, function(err, savedCompany) {
         if(err) {
-            res.status(500).json(err);        
+            next(err);        
         } else {
             //update all projects
             var projects = dbSettings.projectCollection();
@@ -66,7 +68,7 @@ exports.restUpdateCompany = function(req, res) {
                      $set: {defaultValues: savedCompany.defaultValues}},
                     {multi:true}, 
                 function(err, result){
-                    console.log('Company projects are updated!')
+                    log.info('Company projects are updated!')
                 });
             createUsersByEmails(savedCompany);
             res.json(savedCompany);
@@ -131,14 +133,13 @@ function createUsersByEmails(company) {
 
             users.findByExample(user, function(err, dbUser) {
                 if(err) {
-                    console.log(err);
+                    log.error('Cannot find user by email for new company.', {error: err});
                 } else if(!dbUser) {
                     users.save(user, function(err, savedUser) {
                         if(err) {
-                            console.log(err);
+                            log.error('Cannot saved user by email for new company.', {error: err});
                         } else {
-                            console.log('User saved:');
-                            console.log(savedUser.email);
+                            log.info('User saved with e-mail %s', savedUser.email);
                         }
                     });
                 }

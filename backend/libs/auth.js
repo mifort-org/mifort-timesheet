@@ -17,12 +17,13 @@
 var passport = require('passport');
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var ObjectID = require('mongodb').ObjectID;
-
-var GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || "833601973800-a3itkus9nvoo1k92avt0na4evge44fut.apps.googleusercontent.com";
-var GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET || "9LUsqy6tU7PIohpWQyYoIKbH";
+var log = require('./logger');
 
 var users = require('../user');
 var registration = require('./registration');
+ 
+var GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || "833601973800-a3itkus9nvoo1k92avt0na4evge44fut.apps.googleusercontent.com";
+var GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET || "9LUsqy6tU7PIohpWQyYoIKbH";
 
 var loginRedirect = '/';
 
@@ -61,7 +62,7 @@ passport.use(new GoogleStrategy({
                         user.external = profile;
                         user.displayName = profile.displayName;
                         users.updateExternalInfo(user, function(err, savedUser) { // asynchronous user update
-                            console.log('Login: user is updated!');
+                            log.info('Login %s: user is updated!', savedUser.displayName);
                         });
                         return done(null, user); 
                     } else {

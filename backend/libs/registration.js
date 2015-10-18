@@ -16,6 +16,7 @@
 
 var users = require('../user');
 var projects = require('../project');
+var log = require('./logger');
 
 exports.createUser = function(user, callback) {
     users.save(user, function(err, savedUser){
@@ -32,7 +33,7 @@ exports.createDefaultProject = function(company, user) {
     projects.saveInDb(project, function(err, savedProject) {
         console.log('Defaul project is created!');
         if(err) {
-            console.log('Cannot save project!'); 
+            log.error('Cannot save project!', {error: err}); 
         } else {
             if(user) {
                 user.assignments = [{
@@ -41,7 +42,7 @@ exports.createDefaultProject = function(company, user) {
                     projectId: savedProject._id
                 }];
                 users.save(user, function(err, updatedUser) {
-                    console.log('Default assignment is added!');
+                    log.info('Default assignment is added! User ID: %s', updatedUser._id);
                 });
             }
         }
