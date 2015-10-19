@@ -265,22 +265,59 @@ Timelog
   .timelog .table {
     font-size: 1.8em;
     border-color: #eaeff7; }
+    .timelog .table td:first-child,
+    .timelog .table th:first-child {
+      width: 170px;
+      padding: 8px 18px; }
+    .timelog .table th:first-child {
+      padding-left: 50px; }
+    .timelog .table th:nth-child(3) {
+      width: 90px;
+      text-align: center; }
+    .timelog .table td {
+      padding: 2px; }
+      .timelog .table td:nth-child(3) {
+        padding: 2px; }
+    .timelog .table .form-control {
+      font-size: 1.8rem;
+      color: #000; }
 
 .timelog-controls {
   position: absolute;
-  right: 20px;
+  right: 25px;
   top: 20px; }
 
 .previous-period,
 .next-period {
-  width: 30px;
+  width: 20px;
   height: 30px;
-  background: url("../images/icons.png") -3px -359px no-repeat;
+  background: url("../images/icons.png") 2px -1075px no-repeat;
   border: 0;
-  outline: 0; }
+  outline: 0;
+  opacity: 0.4; }
+  .previous-period:hover,
+  .next-period:hover {
+    background-position: 2px -1115px;
+    opacity: 1; }
+  .previous-period.disabled,
+  .next-period.disabled {
+    opacity: 0.2; }
+    .previous-period.disabled:hover,
+    .next-period.disabled:hover {
+      background-position: 2px -1075px;
+      cursor: not-allowed; }
 
 .next-period {
-  background-position: -3px -407px; }
+  background-position: 2px -1035px; }
+  .next-period:hover {
+    background-position: 2px -1155px;
+    opacity: 1; }
+  .next-period.disabled {
+    background-position: 2px -1035px;
+    opacity: 0.2; }
+    .next-period.disabled:hover {
+      background-position: 2px -1035px;
+      cursor: not-allowed; }
 
 .table-bordered {
   border-color: #eaeff7; }
@@ -290,6 +327,10 @@ Timelog
   border-color: #eaeff7;
   border-bottom-width: 1px;
   vertical-align: middle; }
+
+.table-bordered > thead > tr > th {
+  font-weight: 600;
+  padding: 8px 20px; }
 
 .periods > tbody > tr > td:hover {
   border-color: #bbbfc6; }
@@ -334,13 +375,36 @@ Timelog
 .remove-timelog:active {
   color: darkred; }
 
-.timelog-comment {
-  width: 100%; }
+.timelog-role {
+  height: 46px;
+  padding: 6px 15px;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none; }
 
 .timelog-validation {
   padding: 10px; }
 
-.timelog-hours,
+.timelog-hours {
+  width: 100%;
+  height: 46px;
+  margin: 0 auto;
+  text-align: center;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none; }
+
+.timelog-comment {
+  width: 100%;
+  height: 46px;
+  padding: 6px 18px;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none; }
+
 .timesheet-hours {
   float: left;
   width: 42px;
@@ -351,7 +415,7 @@ Timelog
   margin-left: 10px; }
 
 .weekend {
-  background: #f3cce1 !important; }
+  background: #edf8fe !important; }
 
 .projects-state-wrapper {
   float: right; }

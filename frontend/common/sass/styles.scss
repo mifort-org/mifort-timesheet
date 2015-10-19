@@ -14,6 +14,13 @@
  * limitations under the License.
  */
 
+@mixin hide-control-border() {
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+}
+
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -350,26 +357,89 @@ Timelog
     .table{
         font-size: 1.8em;
         border-color: #eaeff7;
+
+        td,
+        th{
+            &:first-child{
+                width: 170px;
+                padding: 8px 18px;
+            }
+        }
+
+        th{
+            &:first-child{
+                padding-left: 50px;
+            }
+
+            &:nth-child(3){
+                width: 90px;
+                text-align: center;
+            }
+        }
+
+        td{
+            padding: 2px;
+
+            &:nth-child(3){
+                padding: 2px;
+            }
+        }
+
+        .form-control{
+            font-size: 1.8rem;
+            color: #000;
+
+        }
     }
 }
 
 .timelog-controls{
     position: absolute;
-    right: 20px;
+    right: 25px;
     top: 20px;
 }
 
 .previous-period,
 .next-period{
-    width: 30px;
+    width: 20px;
     height: 30px;
-    background: url("../images/icons.png") -3px -359px no-repeat;
+    background: url("../images/icons.png") 2px -1075px no-repeat;
     border: 0;
     outline: 0;
+    opacity: 0.4;
+
+    &:hover{
+        background-position: 2px -1115px;
+        opacity: 1;
+    }
+
+    &.disabled{
+        opacity: 0.2;
+
+        &:hover{
+            background-position: 2px -1075px;
+            cursor: not-allowed;
+        }
+    }
 }
 
 .next-period{
-    background-position: -3px -407px;
+    background-position: 2px -1035px;
+
+    &:hover{
+        background-position: 2px -1155px;
+        opacity: 1;
+    }
+
+    &.disabled{
+        background-position: 2px -1035px;
+        opacity: 0.2;
+
+        &:hover{
+            background-position: 2px -1035px;
+            cursor: not-allowed;
+        }
+    }
 }
 
 .table-bordered{
@@ -381,6 +451,11 @@ Timelog
     border-color: #eaeff7;
     border-bottom-width: 1px;
     vertical-align: middle;
+}
+
+.table-bordered > thead > tr > th{
+    font-weight: 600;
+    padding: 8px 20px;
 }
 
 .periods > tbody > tr > td{
@@ -437,15 +512,31 @@ Timelog
     color: darkred;
 }
 
-.timelog-comment{
-    width: 100%;
+.timelog-role{
+    height: 46px;
+    padding: 6px 15px;
+    @include hide-control-border();
 }
 
 .timelog-validation{
     padding: 10px;
 }
 
-.timelog-hours,
+.timelog-hours{
+    width: 100%;
+    height: 46px;
+    margin: 0 auto;
+    text-align: center;
+    @include hide-control-border();
+}
+
+.timelog-comment{
+    width: 100%;
+    height: 46px;
+    padding: 6px 18px;
+    @include hide-control-border();
+}
+
 .timesheet-hours{
     float: left;
     width: 42px;
@@ -458,7 +549,7 @@ Timelog
 }
 
 .weekend{
-    background: #f3cce1 !important;
+    background: #edf8fe !important;
 }
 
 .projects-state-wrapper{
@@ -473,6 +564,7 @@ Timesheet
 .timesheet-container{
     float: left;
 }
+
 .timesheet-wrapper{
     float: left;
     clear: left;
@@ -505,9 +597,9 @@ Timesheet
         width: 150px;
     }
 
-        .timesheet-control button{
-            border-radius: 0;
-            border-left: 0;
+    .timesheet-control button{
+        border-radius: 0;
+        border-left: 0;
     }
 }
 

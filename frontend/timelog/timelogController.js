@@ -172,10 +172,14 @@ angular.module('myApp.timelog', ['ngRoute'])
         };
 
         $scope.showPreviousPeriod = function(project) {
-            project.currentTimelogIndex--;
+            if(project.currentTimelogIndex){
+                project.currentTimelogIndex--;
+            }
         };
 
         $scope.showNextPeriod = function(project) {
-            project.currentTimelogIndex++;
+            if(project.currentTimelogIndex < project.splittedTimelog.length){
+                project.currentTimelogIndex++;
+            }
         };
     }]);

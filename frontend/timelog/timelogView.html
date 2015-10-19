@@ -22,8 +22,8 @@
     </h2>
 
     <div class="timelog-controls clearfix">
-        <button ng-if="project.currentTimelogIndex > 0" class="previous-period" ng-click="showPreviousPeriod(project)"></button>
-        <button class="next-period" ng-click="showNextPeriod(project)"></button>
+        <button class="previous-period" ng-class="{'disabled' : project.currentTimelogIndex <= 0}" ng-click="showPreviousPeriod(project)"></button>
+        <button class="next-period" ng-class="{'disabled' : project.currentTimelogIndex >= project.splittedTimelog.length}" ng-click="showNextPeriod(project)"></button>
     </div>
 
     <div collapse="isCollapsed">
@@ -35,7 +35,8 @@
             </thead>
 
             <tbody>
-                <tr ng-if="project.currentTimelogIndex >= 0" ng-repeat="log in project.splittedTimelog[project.currentTimelogIndex]"
+                <tr ng-if="project.currentTimelogIndex >= 0"
+                    ng-repeat="log in project.splittedTimelog[project.currentTimelogIndex]"
                     ng-class="{'weekend': isWeekend(log.date)}">
                     <td ng-class="log.isFirstDayRecord ? 'is-first-day-log' : 'is-not-first-day-log'">
                         <span class="timelog-data">
@@ -50,13 +51,12 @@
                     <td>
                         <select ng-options="assignment as assignment for assignment in timelogAssigments"
                                 ng-model="log.role"
-                                class="form-control">
+                                class="timelog-role form-control">
                         </select>
                     </td>
 
                     <td>
                         <input class="timelog-hours form-control" type="text" ng-model="log.time"/>
-                        <span>hours</span>
                     </td>
 
                     <td><input class="timelog-comment form-control" type="text" ng-model="log.comment"/></td>
