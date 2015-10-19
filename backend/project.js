@@ -131,6 +131,7 @@ function createProject(project, res, next){
         project.defaultValues = company.defaultValues;
         project.template = company.template;
         project.periods = company.periods;
+        project.dayTypes = company.dayTypes;
         var currentDate = new Date();
         project.createdOn = currentDate;
         project.updatedOn = currentDate;

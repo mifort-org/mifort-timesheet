@@ -65,7 +65,8 @@ exports.restUpdateCompany = function(req, res, next) {
                     {companyId: savedCompany._id},
                     {$set: {template: savedCompany.template},
                      $set: {periods: savedCompany.periods},
-                     $set: {defaultValues: savedCompany.defaultValues}},
+                     $set: {defaultValues: savedCompany.defaultValues},
+                     $set: {dayTypes: savedCompany.dayTypes}},
                     {multi:true}, 
                 function(err, result){
                     log.info('Company projects are updated!')
@@ -107,7 +108,24 @@ exports.generateDefaultCompany = function() {
             time: 8,
             comment: ''
         },
-        periods: periods
+        periods: periods,
+        dayTypes: [
+            {
+                name: 'Weekend',
+                time: 0,
+                color: '#c5e9fb'
+            },
+            {
+                name: 'Corporate',
+                time: 0,
+                color: '#f3cce1'
+            },
+            {
+                name: 'Holiday',
+                time: 0,
+                color: '#fff9a1'
+            }
+        ]
     }
 
     return company;

@@ -74,6 +74,23 @@ var company = {
             "start": new Date("12/01/2015"),
             "end": new Date("01/01/2016")
         }
+    ],
+    dayTypes: [
+        {
+            name: 'Weekend',
+            time: 0,
+            color: '#c5e9fb'
+        },
+        {
+            name: 'Corporate',
+            time: 0,
+            color: '#f3cce1'
+        },
+        {
+            name: 'Holiday',
+            time: 0,
+            color: '#fff9a1'
+        }
     ]
 };
 
@@ -143,6 +160,23 @@ var project = {
         {
             "start": new Date("12/01/2015"),
             "end": new Date("01/01/2016")
+        }
+    ],
+    dayTypes: [
+        {
+            name: 'Weekend',
+            time: 0,
+            color: '#c5e9fb'
+        },
+        {
+            name: 'Corporate',
+            time: 0,
+            color: '#f3cce1'
+        },
+        {
+            name: 'Holiday',
+            time: 0,
+            color: '#fff9a1'
         }
     ]
 };
