@@ -330,29 +330,17 @@ Tabs
 Timelog
 
 */
-.collapse-wrapper{
-    background: #fff;
-    padding: 15px 25px;
-    margin-bottom: 25px;
 
-    h2{
-        margin-top: 2px;
-        font-size: 2.4rem;
-    }
-}
-
-.collapse-item{
-    padding-left: 20px;
-    font-size: 0.9em;
-    background: url("../images/icons.png") -12px -310px no-repeat;
-
-    &.collapsed{
-        background-position: -12px -626px;
-    }
-}
 
 .timelog{
     position: relative;
+
+    h2{
+        padding-bottom: 25px;
+        &.timelog-collapsed{
+            padding-bottom: 11px;
+        }
+    }
 
     .table{
         font-size: 1.8em;
@@ -362,7 +350,7 @@ Timelog
         th{
             &:first-child{
                 width: 170px;
-                padding: 8px 18px;
+                padding: 4px 10px;
             }
         }
 
@@ -390,6 +378,27 @@ Timelog
             color: #000;
 
         }
+    }
+}
+
+.collapse-wrapper{
+    background: #fff;
+    padding: 15px 25px;
+    margin-bottom: 25px;
+
+    h2{
+        margin-top: 4px;
+        font-size: 2.4rem;
+    }
+}
+
+.collapse-item{
+    padding-left: 20px;
+    font-size: 0.9em;
+    background: url("../images/icons.png") -12px -310px no-repeat;
+
+    &.collapsed{
+        background-position: -12px -626px;
     }
 }
 
@@ -479,7 +488,7 @@ Timelog
 .remove-timelog{
     position: relative;
     top: 3px;
-    margin: 0 5px;
+    margin: 0 6px;
     color: #19b5fe;
     opacity: 0.7;
     font-size: 1.65em;
@@ -513,7 +522,7 @@ Timelog
 }
 
 .timelog-role{
-    height: 46px;
+    height: 37px;
     padding: 6px 15px;
     @include hide-control-border();
 }
@@ -524,7 +533,7 @@ Timelog
 
 .timelog-hours{
     width: 100%;
-    height: 46px;
+    height: 37px;
     margin: 0 auto;
     text-align: center;
     @include hide-control-border();
@@ -532,7 +541,7 @@ Timelog
 
 .timelog-comment{
     width: 100%;
-    height: 46px;
+    height: 37px;
     padding: 6px 18px;
     @include hide-control-border();
 }

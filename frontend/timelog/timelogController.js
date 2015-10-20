@@ -115,22 +115,45 @@ angular.module('myApp.timelog', ['ngRoute'])
 
                 splitPeriods(project);
 
-                $scope.$watch('projects[' + projectIndex + ']', function(newValue, oldValue) {
-                    if(newValue && newValue.timelog != oldValue.timelog && newValue.timelog.length >= oldValue.timelog.length) {
-                        clearTimeout(typingTimer);
+                $scope.projects[projectIndex].splittedTimelog.forEach(function(period, index) {
+                    $scope.$watch('projects[' + projectIndex + '].splittedTimelog[' + index +']', function(newValue, oldValue) {
+                        if(newValue != oldValue) {
 
-                        typingTimer = setTimeout(function() {
-                            timelogService.updateTimelog(preferences.get('user')._id, newValue.timelog).success(function(data) {
+                            //var Timelogs difference
+                            //_.omit(JSON.parse(angular.toJson(newValue))[0][0], function(v,k) { return oldValue[0][0][k] === v; })
+                            clearTimeout(typingTimer);
 
-                                _.map(newValue.timelog, function(day, index) {
-                                    if(!day._id && data.timelog[index]) {
-                                        day._id = data.timelog[index]._id
-                                    }
+                            typingTimer = setTimeout(function() {
+                                timelogService.updateTimelog(preferences.get('user')._id, newValue).success(function(data) {
+                                    _.map(newValue.timelog, function(day, index) {
+                                        if(!day._id && data.timelog[index]) {
+                                            day._id = data.timelog[index]._id
+                                        }
+                                    });
                                 });
-                            });
-                        }, 500)
-                    }
-                }, true);
+                            }, 500)
+                        }
+                    }, true);
+                });
+
+                //$scope.$watch('projects[' + projectIndex + '].splittedTimelog', function(newValue, oldValue) {
+                //    if(newValue != oldValue) {
+                //
+                //        //var Timelogs difference
+                //        //_.omit(JSON.parse(angular.toJson(newValue))[0][0], function(v,k) { return oldValue[0][0][k] === v; })
+                //        clearTimeout(typingTimer);
+                //
+                //        typingTimer = setTimeout(function() {
+                //            timelogService.updateTimelog(preferences.get('user')._id, newValue.timelog).success(function(data) {
+                //                _.map(newValue.timelog, function(day, index) {
+                //                    if(!day._id && data.timelog[index]) {
+                //                        day._id = data.timelog[index]._id
+                //                    }
+                //                });
+                //            });
+                //        }, 500)
+                //    }
+                //}, true);
             });
         };
 
