@@ -25,18 +25,24 @@ var log = require('./libs/logger');
 //Rest API
 exports.restFindById = function(req, res, next) {
     var companyId = utils.getCompanyId(req);
+    log.debug('-REST call: Find company by id. Company id: %s', companyId.toHexString());
+
     findById(companyId, function(err, company, next) {
         if(err) {
             err.code = 400;
             next(err);
         } else {
             res.json(company);
+            log.debug('-REST result: Finded company id. Company id: %s', 
+                company._id.toHexString());
         }
     });
 };
 
 exports.restCreateCompany = function(req, res, next) {
     var company = req.body;
+    log.debug('-REST call: Create company. Company name: %s', company.name);
+
     var defaultCompany = exports.generateDefaultCompany();
     company.template = defaultCompany.template;
     company.periods = defaultCompany.periods;
@@ -45,16 +51,19 @@ exports.restCreateCompany = function(req, res, next) {
         if(err) {
             next(err);      
         } else {
-            //Warning: asynchronous block!!! 
+            //Warning: asynchronous operations!!! 
             registration.createDefaultProject(savedCompany, req.user); //Validation: check user!!!
             createUsersByEmails(savedCompany);
             res.json(savedCompany);
+            log.debug('-REST result: Create company. Company id: %s', 
+                savedCompany._id.toHexString());
         }
     });
 };
 
 exports.restUpdateCompany = function(req, res, next) {
     var company = req.body;
+    log.debug('-REST call: Update company. Company id: %s', company._id.toHexString());
     save(company, function(err, savedCompany) {
         if(err) {
             next(err);        
@@ -73,6 +82,8 @@ exports.restUpdateCompany = function(req, res, next) {
                 });
             createUsersByEmails(savedCompany);
             res.json(savedCompany);
+            log.debug('-REST result: Update company. Company id: %s', 
+                savedCompany._id.toHexString());
         }
     });
 };

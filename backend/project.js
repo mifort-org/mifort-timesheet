@@ -18,21 +18,26 @@ var dbSettings = require('./libs/mongodb_settings');
 var utils = require('./libs/utils');
 var companies = require('./company');
 var users = require('./user');
+var log = require('./libs/logger');
 
 //Rest API
 exports.restGetById = function(req, res, next) {
     var projectId = utils.getProjectId(req);
+    log.debug('-REST call: Get project by id. Project id: %s', projectId.toHexString());
+
     var projects = dbSettings.projectCollection();
     projects.findOne({_id: projectId}, 
         function(err, doc) {
             returnProjectCallback(err, res, doc, next);
+            log.debug('-REST result: Get project by id. Project id: %s', doc._id.toHexString());
         }
     );
 };
 
 exports.restSave = function(req, res, next) {
     var project = req.body;
-    
+    log.debug('-REST call: Save(Create/Update) project. Project name: %s', project.name);
+
     if(project._id) { //update
         updateProject(project, res, next);
     } else { //create
@@ -42,6 +47,8 @@ exports.restSave = function(req, res, next) {
 
 exports.restGetByCompanyId = function(req, res, next) {
     var companyId = utils.getCompanyId(req);
+    log.debug('-REST call: Get projects by company id. Company id: %s', companyId.toHexString());
+
     var projects = dbSettings.projectCollection();
     projects.find({companyId: companyId,
                    active: true})
@@ -51,17 +58,23 @@ exports.restGetByCompanyId = function(req, res, next) {
                 next(err);
             } else {
                 res.json(findedProjects);
+                log.debug('-REST result: Get projects by company id. Number of projects: %d', 
+                    findedProjects.length);
             }
         });
 };
 
 exports.restDeactivateProject = function(req, res, next) {
     var projectId = utils.getProjectId(req);
+    log.debug('-REST call: Deactivate project. Project id: %s', projectId.toHexString());
+
     var projects = dbSettings.projectCollection();
     projects.update({ _id: projectId},
                     {$set: { active: false } },
         function(err, savedProject) {
             returnProjectCallback(err, res, savedProject, next);
+            log.debug('-REST result: Deactivate project. Project id: %s', 
+                savedProject._id.toHexString());
         });
 };
 
@@ -112,6 +125,8 @@ function updateProject(project, res, next) {
                         projects.findOne({_id: project._id}, 
                             function(err, doc) {
                                 returnProjectCallback(err, res, doc, next);
+                                log.debug('-REST result: Save(Update) project. Project id: %s',
+                                    doc._id.toHexString());
                             }
                         );
                         users.updateAssignmentProjectName(project);
@@ -142,6 +157,8 @@ function createProject(project, res, next){
                     next(err);
                 } else {
                     res.json(result.ops[0]);
+                    log.debug('-REST result: Save(Create) project. Project id: %s',
+                        result.ops[0]._id.toHexString());
                 }
             });
     });

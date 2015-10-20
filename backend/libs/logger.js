@@ -31,7 +31,10 @@ var logger = new (winston.Logger)({
       level: 'error',
       json: false
     }),
-    new (winston.transports.Console)({colorize: 'all'})
+    new (winston.transports.Console)({
+      colorize: 'all',
+      level: 'debug'
+    })
   ]
 });
 
