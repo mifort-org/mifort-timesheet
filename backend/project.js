@@ -72,9 +72,16 @@ exports.restDeactivateProject = function(req, res, next) {
     projects.update({ _id: projectId},
                     {$set: { active: false } },
         function(err, savedProject) {
-            returnProjectCallback(err, res, savedProject, next);
-            log.debug('-REST result: Deactivate project. Project id: %s', 
-                savedProject._id.toHexString());
+            if(err) {
+                next(err);
+                return;
+            }
+            projects.findOne({_id: projectId}, 
+                function(err, doc) {
+                    returnProjectCallback(err, res, doc, next);
+                    log.debug('-REST result: Deactivate project. Project id: %s', 
+                        doc._id.toHexString());
+                });
         });
 };
 
