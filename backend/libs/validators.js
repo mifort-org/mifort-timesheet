@@ -157,7 +157,7 @@ exports.validateSaveTimelog = function(req, res, next) {
         res.status(emptyBody.code).json({msg: emptyBody.message});
         return;
     }
-    req.checkBody('timelog', 'Incorrect timelog (Check: date, userId, projectId, projectName)')
+    req.checkBody('timelog', 'Required fields: date, userId, projectId, projectName, userName')
         .isTimelog();
     
     returnErrors(req, res, next);
@@ -187,7 +187,8 @@ exports.timelogs = function(values) {
                 && validator.isMongoId(val.userId) //required && format
                 && validator.isMongoId(val.projectId) //required && format
                 && validator.isLength(val.projectName, 1) //required
-                && validator.isDate(val.date); //required && format
+                && validator.isDate(val.date) //required && format
+                && validator.isLength(val.userName, 1); //required
             return isValid;
         });
     }
