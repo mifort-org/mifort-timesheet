@@ -68,8 +68,8 @@ exports.jsonStringify = function(key, value) {
         || keyName === 'start'
         || keyName === 'end'
     if (isDateField
-            && moment(value).isValid()) {
-        return moment(value).format(dateFormat);
+            && moment(value, dateFormat).isValid()) {
+        return moment(value, dateFormat).format(dateFormat);
     }
     return value;
 };
