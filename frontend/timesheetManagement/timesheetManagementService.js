@@ -38,7 +38,7 @@ angular.module('myApp.timesheetManagement').factory('timesheetManagementService'
                 ]
             },
             getWeekDays: function () {
-                return ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+                return ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
             }
         };
     }

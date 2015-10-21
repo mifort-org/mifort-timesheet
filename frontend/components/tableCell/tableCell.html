@@ -15,11 +15,11 @@
 -->
 
 <td class="timesheet-day">
-    <span ng-if="day.date" class="timelog-data" ng-class="{'disabled-day-data': day.disabled}">
+    <div ng-if="day.date" class="timesheet-data" ng-class="{'disabled-day-data': day.disabled}">
         <span class="timesheet-time">{{day.time}}</span>
-        <br/>
+
         <span class="timesheet-hours-label">hours</span>
-    </span>
+    </div>
 
     <div class="start-splitter"></div>
 

@@ -463,7 +463,8 @@ Timesheet
     border-left: 0; }
 
 .custom-days-wrapper {
-  position: relative; }
+  position: relative;
+  margin-top: 20px; }
   .custom-days-wrapper dl {
     position: absolute;
     width: 100%; }
@@ -638,21 +639,30 @@ Timesheet
 
 .periods {
   margin-bottom: 0; }
-  .periods th {
-    font-size: 1.4em; }
+  .periods.table > thead:first-child > tr:first-child > th {
+    padding: 2px 10px;
+    font-size: 1.4em;
+    font-weight: 400;
+    text-align: left;
+    background: #eaeff7;
+    border-color: #fff; }
   .periods .popover {
     min-width: 200px; }
   .periods > tbody > tr > td {
     position: relative;
     height: 71px;
     width: 71px;
-    /*border-width: 2px;*/
     vertical-align: middle; }
   .periods td,
   .periods th,
   .periods td input {
     text-align: center;
     margin: 0 auto; }
+  .periods tr {
+    border-bottom: 1px #eaeff7 solid; }
+  .periods td:hover {
+    border: 0;
+    box-shadow: 0 0 0 1px #3eb5f1 inset; }
 
 .timesheet-day {
   position: relative;
@@ -663,28 +673,25 @@ Timesheet
 
 .disabled-day {
   background: #f5f7f9; }
+  .disabled-day .timesheet-data {
+    display: none; }
 
 .weekend.disabled-day {
   background: #f9e3ef !important; }
 
 .timesheet-day-wrapper {
   position: absolute;
-  top: 0;
-  left: 8px;
-  right: 8px;
+  top: 5px;
+  left: 10px;
   height: 70px;
-  color: #9c9d9f;
+  color: #000;
   font-size: 1.8em;
-  font-weight: 300; }
+  font-weight: 600; }
 
-.timesheet-time,
-.timesheet-hours-label {
+.timesheet-data {
   position: absolute;
-  right: 8px;
-  bottom: 15px; }
-
-.timesheet-hours-label {
-  bottom: 5px; }
+  left: 10px;
+  bottom: 7px; }
 
 .start-splitter,
 .end-splitter {
@@ -698,6 +705,8 @@ Timesheet
 .end-splitter {
   left: auto;
   right: 0; }
+  .end-splitter:hover {
+    right: 1px; }
 
 .periods > tbody > tr > td .start-splitter:hover:before,
 .periods > tbody > tr > td .end-splitter:hover:after {
@@ -726,8 +735,9 @@ Timesheet
 .periods > tbody > tr > .period-end .end-splitter:hover:before {
   background: url("../../common/images/icons.png") 0 -894px no-repeat; }
 
+.timesheet-time,
 .timesheet-hours-label {
-  color: #999;
+  color: #b0b0b0;
   font-size: 1.2em; }
 
 /*
