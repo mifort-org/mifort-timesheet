@@ -1,0 +1,305 @@
+/*!
+ * Copyright 2015 mifort.org
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+.timesheet-container {
+  float: left; }
+
+.timesheet-wrapper {
+  float: left;
+  clear: left;
+  width: 546px;
+  margin-right: 40px;
+  margin-bottom: 40px;
+  padding: 36px 27px;
+  background: #fff; }
+
+.timesheet-controls {
+  float: right;
+  clear: right;
+  width: calc(40% - 42px);
+  min-width: 325px;
+  max-width: 420px;
+  margin-bottom: 55px;
+  font-size: 1.8em;
+  background: #fff;
+  padding: 25px; }
+  .timesheet-controls label {
+    float: left;
+    line-height: 1.8;
+    margin-bottom: 20px; }
+  .timesheet-controls .timesheet-control {
+    float: right;
+    width: 150px; }
+  .timesheet-controls .timesheet-control button {
+    border-radius: 0;
+    border-left: 0; }
+
+.timesheet-hours {
+  float: left;
+  width: 42px;
+  margin-right: 10px;
+  text-align: center; }
+
+.custom-days-wrapper {
+  position: relative;
+  margin-top: 20px; }
+  .custom-days-wrapper dl {
+    position: absolute;
+    width: 100%; }
+    .custom-days-wrapper dl dt,
+    .custom-days-wrapper dl dd {
+      position: relative;
+      z-index: 2;
+      float: right;
+      clear: both;
+      width: 100px;
+      font-weight: 300;
+      text-align: left;
+      color: #7f7f7f;
+      cursor: pointer; }
+      .custom-days-wrapper dl dt:hover,
+      .custom-days-wrapper dl dd:hover {
+        color: #000; }
+    .custom-days-wrapper dl dt {
+      margin-top: 22.5px;
+      margin-bottom: 4px;
+      font-size: 1.8rem; }
+      .custom-days-wrapper dl dt input {
+        width: 100%;
+        margin: -5px -2px -5px -2px;
+        padding: 0; }
+    .custom-days-wrapper dl dd {
+      margin-top: 3px;
+      font-size: 1.4rem; }
+      .custom-days-wrapper dl dd input {
+        width: 25px;
+        margin: -5px -8px -5px -8px;
+        padding: 0;
+        text-align: center; }
+    .custom-days-wrapper dl .odd-day {
+      float: left;
+      text-align: right; }
+      .custom-days-wrapper dl .odd-day input {
+        text-align: right;
+        margin: -5px -2px -5px -2px; }
+  .custom-days-wrapper .hexagon-wrapper {
+    position: relative;
+    top: 0;
+    left: 50%;
+    width: 105px;
+    margin-left: -52px;
+    padding-top: 5px; }
+    .custom-days-wrapper .hexagon-wrapper .hexagon {
+      position: relative;
+      width: 65px;
+      height: 37px;
+      background-color: #fff;
+      margin: 22px 3px 24.5px;
+      cursor: pointer; }
+      .custom-days-wrapper .hexagon-wrapper .hexagon:before, .custom-days-wrapper .hexagon-wrapper .hexagon:after {
+        content: "";
+        position: absolute;
+        width: 0;
+        border-left: 32.5px solid transparent;
+        border-right: 32.5px solid transparent; }
+      .custom-days-wrapper .hexagon-wrapper .hexagon:before {
+        bottom: 100%;
+        border-bottom: 19px solid #fff; }
+      .custom-days-wrapper .hexagon-wrapper .hexagon:after {
+        top: 100%;
+        width: 0;
+        border-top: 19px solid #fff; }
+      .custom-days-wrapper .hexagon-wrapper .hexagon:nth-child(2n) {
+        margin-left: 37px; }
+      .custom-days-wrapper .hexagon-wrapper .hexagon.empty-hexagon {
+        color: #737373;
+        font-size: 4.8rem;
+        text-align: center;
+        line-height: 35px;
+        border-left: solid 1px #e9e9e9;
+        border-right: solid 1px #e9e9e9; }
+        .custom-days-wrapper .hexagon-wrapper .hexagon.empty-hexagon:before, .custom-days-wrapper .hexagon-wrapper .hexagon.empty-hexagon:after {
+          content: "";
+          position: absolute;
+          z-index: 1;
+          width: 45.5px;
+          height: 45.5px;
+          -webkit-transform: scaleY(0.5774) rotate(-45deg);
+          -ms-transform: scaleY(0.5774) rotate(-45deg);
+          transform: scaleY(0.5774) rotate(-45deg);
+          background-color: transparent;
+          left: 9px; }
+        .custom-days-wrapper .hexagon-wrapper .hexagon.empty-hexagon:before {
+          top: -23px;
+          border: 0;
+          border-top: solid 1.4142px #e9e9e9;
+          border-right: solid 1.4142px #e9e9e9; }
+        .custom-days-wrapper .hexagon-wrapper .hexagon.empty-hexagon:after {
+          top: auto;
+          bottom: -23px;
+          border: 0;
+          border-bottom: solid 1.4142px #e9e9e9;
+          border-left: solid 1.4142px #e9e9e9; }
+  .custom-days-wrapper .hexagon-underwear-wrapper {
+    position: absolute;
+    top: 5px;
+    left: 50%;
+    margin-left: -52px; }
+    .custom-days-wrapper .hexagon-underwear-wrapper .hexagon-underwear {
+      position: relative;
+      z-index: 3;
+      width: 71px;
+      height: 41px;
+      background-color: transparent;
+      margin: 20.5px 0;
+      border-left: solid 1px #e9e9e9;
+      border-right: solid 1px #e9e9e9;
+      cursor: pointer; }
+      .custom-days-wrapper .hexagon-underwear-wrapper .hexagon-underwear:before, .custom-days-wrapper .hexagon-underwear-wrapper .hexagon-underwear:after {
+        content: "";
+        position: absolute;
+        z-index: 1;
+        width: 50.20px;
+        height: 50.20px;
+        -webkit-transform: scaleY(0.5774) rotate(-45deg);
+        -ms-transform: scaleY(0.5774) rotate(-45deg);
+        transform: scaleY(0.5774) rotate(-45deg);
+        background-color: inherit;
+        left: 9.3977px; }
+      .custom-days-wrapper .hexagon-underwear-wrapper .hexagon-underwear:before {
+        top: -25.1023px;
+        border-top: solid 1.4142px #e9e9e9;
+        border-right: solid 1.4142px #e9e9e9; }
+      .custom-days-wrapper .hexagon-underwear-wrapper .hexagon-underwear:after {
+        bottom: -25.1023px;
+        border-bottom: solid 1.4142px #e9e9e9;
+        border-left: solid 1.4142px #e9e9e9; }
+      .custom-days-wrapper .hexagon-underwear-wrapper .hexagon-underwear:nth-child(2n-2) {
+        margin-left: 34px; }
+      .custom-days-wrapper .hexagon-underwear-wrapper .hexagon-underwear:hover {
+        border-color: #aeaeae; }
+        .custom-days-wrapper .hexagon-underwear-wrapper .hexagon-underwear:hover:after, .custom-days-wrapper .hexagon-underwear-wrapper .hexagon-underwear:hover:before {
+          border-color: #aeaeae; }
+
+.timesheet-header {
+  font-size: 1.6em;
+  padding: 8px 15px;
+  background: #f5f7f9;
+  border-bottom: 1px #fff solid; }
+
+.periods {
+  margin-bottom: 0; }
+  .periods.table > thead:first-child > tr:first-child > th {
+    padding: 2px 10px;
+    font-size: 1.4em;
+    font-weight: 400;
+    text-align: left;
+    background: #eaeff7;
+    border-color: #fff; }
+  .periods .popover {
+    min-width: 200px; }
+  .periods > tbody > tr > td {
+    position: relative;
+    height: 71px;
+    width: 71px;
+    vertical-align: middle; }
+  .periods td,
+  .periods th,
+  .periods td input {
+    text-align: center;
+    margin: 0 auto; }
+  .periods tr {
+    border-bottom: 1px #eaeff7 solid; }
+  .periods td:hover {
+    border: 0;
+    box-shadow: 0 0 0 1px #3eb5f1 inset; }
+
+.timesheet-day {
+  position: relative;
+  text-align: right; }
+
+.disabled-day-data {
+  opacity: 0.2; }
+
+.disabled-day {
+  background: #f5f7f9; }
+  .disabled-day .timesheet-data {
+    display: none; }
+
+.weekend.disabled-day {
+  background: #f9e3ef !important; }
+
+.timesheet-day-wrapper {
+  position: absolute;
+  top: 5px;
+  left: 10px;
+  height: 70px;
+  color: #000;
+  font-size: 1.8em;
+  font-weight: 600; }
+
+.timesheet-data {
+  position: absolute;
+  left: 10px;
+  bottom: 7px; }
+
+.start-splitter,
+.end-splitter {
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 8px;
+  height: 72px; }
+
+.end-splitter {
+  left: auto;
+  right: 0; }
+  .end-splitter:hover {
+    right: 1px; }
+
+.periods > tbody > tr > td .start-splitter:hover:before,
+.periods > tbody > tr > td .end-splitter:hover:after {
+  position: absolute;
+  top: -1px;
+  left: -8px;
+  height: 72px;
+  width: 15px;
+  background: url("../../common/images/icons.png") 0 -794px no-repeat;
+  cursor: pointer;
+  content: ''; }
+.periods > tbody > tr > .period-start .start-splitter:before,
+.periods > tbody > tr > .period-end .end-splitter:after {
+  position: absolute;
+  top: -1px;
+  left: -8px;
+  height: 72px;
+  width: 15px;
+  background: url("../../common/images/icons.png") 2px -695px no-repeat;
+  content: ''; }
+.periods > tbody > tr > .period-end .end-splitter:after,
+.periods > tbody > tr > td .end-splitter:hover:after {
+  left: auto;
+  right: -8px; }
+.periods > tbody > tr > .period-start .start-splitter:hover:before,
+.periods > tbody > tr > .period-end .end-splitter:hover:before {
+  background: url("../../common/images/icons.png") 0 -894px no-repeat; }
+
+.timesheet-time,
+.timesheet-hours-label {
+  color: #b0b0b0;
+  font-size: 1.2em; }
+
+/*# sourceMappingURL=timesheet.css.map */

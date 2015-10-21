@@ -25,7 +25,7 @@ angular.module('myApp.timelog', ['ngRoute'])
         });
     }])
 
-    .controller('timelogController', ['$scope', '$filter', 'timelogService', 'timesheetManagementService', 'preferences', function($scope, $filter, timelogService, timesheetManagementService, preferences) {
+    .controller('timelogController', ['$scope', '$filter', 'timelogService', 'timesheetService', 'preferences', function($scope, $filter, timelogService, timesheetService, preferences) {
         $scope.projects = [];
         $scope.isCollapsed = false;
         $scope.timelogKeys = timelogService.getTimelogKeys();

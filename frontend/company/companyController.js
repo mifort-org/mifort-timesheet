@@ -45,13 +45,13 @@ angular.module('myApp.company', ['ngRoute'])
 
         $scope.createCompany = function () {
             companyService.createCompany($scope.company).success(function () {
-                $location.path('/timesheetManagement');
+                $location.path('/timesheet');
             });
         };
 
         $scope.saveCompany = function () {
             companyService.saveCompany($scope.company).success(function () {
-                $location.path('/timesheetManagement');
+                $location.path('/timesheet');
             });
         };
 

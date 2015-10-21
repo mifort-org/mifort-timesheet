@@ -16,25 +16,25 @@
 
 'use strict';
 
-angular.module('myApp.timesheetManagement', ['ngRoute'])
+angular.module('myApp.timesheet', ['ngRoute'])
 
     .config(['$routeProvider', function ($routeProvider) {
         $routeProvider.when('/Timesheet', {
-            templateUrl: 'timesheetManagement/timesheetManagementView.html',
-            controller: 'timesheetManagementController'
+            templateUrl: 'timesheet/timesheetView.html',
+            controller: 'timesheetController'
         });
     }])
 
-    .controller('timesheetManagementController', ['$scope', '$filter', 'timesheetManagementService', 'moment', 'preferences', function ($scope, $filter, timesheetManagementService, moment, preferences) {
+    .controller('timesheetController', ['$scope', '$filter', 'timesheetService', 'moment', 'preferences', function ($scope, $filter, timesheetService, moment, preferences) {
         $scope.daySettingsPopover = {
             templateUrl: 'daySettimgs.html',
             title: 'Day Settings'
         };
-        $scope.periodSettings = timesheetManagementService.getPeriodSettings();
-        $scope.dayTypes = timesheetManagementService.getDayTypes();
-        $scope.weekDays = timesheetManagementService.getWeekDays();
+        $scope.periodSettings = timesheetService.getPeriodSettings();
+        $scope.dayTypes = timesheetService.getDayTypes();
+        $scope.weekDays = timesheetService.getWeekDays();
 
-        timesheetManagementService.getCompany(preferences.get('user').companyId).success(function (data) {
+        timesheetService.getCompany(preferences.get('user').companyId).success(function (data) {
             $scope.project = data;
         }).then(function () {
             $scope.init();
@@ -202,7 +202,7 @@ angular.module('myApp.timesheetManagement', ['ngRoute'])
                     }
                 }
 
-                timesheetManagementService.saveProject($scope.project);
+                timesheetService.saveProject($scope.project);
 
             }, true);
         }

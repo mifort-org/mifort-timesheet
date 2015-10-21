@@ -1,0 +1,410 @@
+/*!
+ * Copyright 2015 mifort.org
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+.timesheet-container{
+    float: left;
+}
+
+.timesheet-wrapper{
+    float: left;
+    clear: left;
+    width: 546px;
+    margin-right: 40px;
+    margin-bottom: 40px;
+    padding: 36px 27px;
+    background: #fff;
+}
+
+.timesheet-controls{
+    float: right;
+    clear: right;
+    width: calc(40% - 42px);
+    min-width: 325px;
+    max-width: 420px;
+    margin-bottom: 55px;
+    font-size: 1.8em;
+    background: #fff;
+    padding: 25px;
+
+    label{
+        float: left;
+        line-height: 1.8;
+        margin-bottom: 20px;
+    }
+
+    .timesheet-control{
+        float: right;
+        width: 150px;
+    }
+
+    .timesheet-control button{
+        border-radius: 0;
+        border-left: 0;
+    }
+}
+
+.timesheet-hours{
+    float: left;
+    width: 42px;
+    margin-right: 10px;
+    text-align: center;
+}
+
+.custom-days-wrapper{
+    position: relative;
+    margin-top: 20px;
+
+    dl{
+        position: absolute;
+        width: 100%;
+
+        dt,
+        dd{
+            position: relative;
+            z-index: 2;
+            float: right;
+            clear: both;
+            width: 100px;
+            font-weight: 300;
+            text-align: left;
+            color: #7f7f7f;
+            cursor: pointer;
+
+            &:hover{
+                color: #000;
+            }
+        }
+
+        dt{
+            margin-top: 22.5px;
+            margin-bottom: 4px;
+            font-size: 1.8rem;
+
+            input{
+                width: 100%;
+                margin: -5px -2px -5px -2px;
+                padding: 0;
+            }
+        }
+        dd{
+            margin-top: 3px;
+            font-size: 1.4rem;
+
+            input{
+                width: 25px;
+                margin: -5px -8px -5px -8px;
+                padding: 0;
+                text-align: center;
+            }
+        }
+
+        .odd-day{
+            float: left;
+            text-align: right;
+
+            input{
+                text-align: right;
+                margin: -5px -2px -5px -2px;
+            }
+        }
+    }
+
+    .hexagon-wrapper{
+        position: relative;
+        top: 0;
+        left: 50%;
+        width: 105px;
+        margin-left: -52px;
+        padding-top: 5px;
+
+        .hexagon{
+            position: relative;
+            width: 65px;
+            height: 37px;
+            background-color: #fff;
+            margin: 22px 3px 24.5px;
+            cursor: pointer;
+
+            &:before,
+            &:after{
+                content: "";
+                position: absolute;
+                width: 0;
+                border-left: 32.5px solid transparent;
+                border-right: 32.5px solid transparent;
+            }
+
+            &:before{
+                bottom: 100%;
+                border-bottom: 19px solid #fff;
+            }
+
+            &:after{
+                top: 100%;
+                width: 0;
+                border-top: 19px solid #fff;
+            }
+
+            &:nth-child(2n){
+                margin-left: 37px;
+            }
+
+            &.empty-hexagon{
+                color: #737373;
+                font-size: 4.8rem;
+                text-align: center;
+                line-height: 35px;
+                border-left: solid 1px #e9e9e9;
+                border-right: solid 1px #e9e9e9;
+
+                &:before,
+                &:after{
+                    content: "";
+                    position: absolute;
+                    z-index: 1;
+                    width: 45.5px;
+                    height: 45.5px;
+                    -webkit-transform: scaleY(0.5774) rotate(-45deg);
+                    -ms-transform: scaleY(0.5774) rotate(-45deg);
+                    transform: scaleY(0.5774) rotate(-45deg);
+                    background-color: transparent;
+                    left: 9px;
+                }
+
+                &:before{
+                    top: -23px;
+                    border: 0;
+                    border-top: solid 1.4142px #e9e9e9;
+                    border-right: solid 1.4142px #e9e9e9;
+                }
+
+                &:after{
+                    top: auto;
+                    bottom: -23px;
+                    border: 0;
+                    border-bottom: solid 1.4142px #e9e9e9;
+                    border-left: solid 1.4142px #e9e9e9;
+                }
+            }
+        }
+    }
+
+    .hexagon-underwear-wrapper{
+        position: absolute;
+        top: 5px;
+        left: 50%;
+        margin-left: -52px;
+
+        .hexagon-underwear{
+            position: relative;
+            z-index: 3;
+            width: 71px;
+            height: 41px;
+            background-color: transparent;
+            margin: 20.5px 0;
+            border-left: solid 1px #e9e9e9;
+            border-right: solid 1px #e9e9e9;
+            cursor: pointer;
+
+            &:before,
+            &:after{
+                content: "";
+                position: absolute;
+                z-index: 1;
+                width: 50.20px;
+                height: 50.20px;
+                -webkit-transform: scaleY(0.5774) rotate(-45deg);
+                -ms-transform: scaleY(0.5774) rotate(-45deg);
+                transform: scaleY(0.5774) rotate(-45deg);
+                background-color: inherit;
+                left: 9.3977px;
+            }
+
+            &:before{
+                top: -25.1023px;
+                border-top: solid 1.4142px #e9e9e9;
+                border-right: solid 1.4142px #e9e9e9;
+            }
+
+            &:after{
+                bottom: -25.1023px;
+                border-bottom: solid 1.4142px #e9e9e9;
+                border-left: solid 1.4142px #e9e9e9;
+            }
+
+            &:nth-child(2n-2){
+                margin-left: 34px;
+            }
+
+            &:hover{
+                border-color: #aeaeae;
+
+                &:after,
+                &:before{
+                    border-color: #aeaeae;
+                }
+            }
+        }
+    }
+}
+
+.timesheet-header{
+    font-size: 1.6em;
+    padding: 8px 15px;
+    background: #f5f7f9;
+    border-bottom: 1px #fff solid;
+}
+
+.periods{
+    margin-bottom: 0;
+
+    &.table > thead:first-child > tr:first-child > th{
+        padding: 2px 10px;
+        font-size: 1.4em;
+        font-weight: 400;
+        text-align: left;
+        background: #eaeff7;
+        border-color: #fff;
+    }
+
+    .popover{
+        min-width: 200px;
+    }
+
+    > tbody > tr > td{
+        position: relative;
+        height: 71px;
+        width: 71px;
+        vertical-align: middle;
+    }
+
+    td,
+    th,
+    td input{
+        text-align: center;
+        margin: 0 auto;
+    }
+
+    tr{
+        border-bottom: 1px #eaeff7 solid;
+    }
+
+    td:hover{
+        border: 0;
+        box-shadow: 0 0 0 1px #3eb5f1 inset;
+    }
+}
+
+.timesheet-day{
+    position: relative;
+    text-align: right;
+}
+
+.disabled-day-data{
+    opacity: 0.2;
+}
+
+.disabled-day{
+    background: #f5f7f9;
+
+    .timesheet-data{
+        display: none;
+    }
+}
+
+.weekend.disabled-day{
+    background: #f9e3ef !important;
+}
+
+.timesheet-day-wrapper{
+    position: absolute;
+    top: 5px;
+    left: 10px;
+    height: 70px;
+    color: #000;
+    font-size: 1.8em;
+    font-weight: 600;
+}
+
+.timesheet-data{
+    position: absolute;
+    left: 10px;
+    bottom: 7px;
+}
+
+.start-splitter,
+.end-splitter{
+    position: absolute;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 8px;
+    height: 72px;
+}
+
+.end-splitter{
+    left: auto;
+    right: 0;
+
+    &:hover{
+        right: 1px;
+    }
+}
+
+.periods > tbody > tr{
+    > td{
+        .start-splitter:hover:before,
+        .end-splitter:hover:after{
+            position: absolute;
+            top: -1px;
+            left: -8px;
+            height: 72px;
+            width: 15px;
+            background: url("../../common/images/icons.png") 0 -794px no-repeat;
+            cursor: pointer;
+            content: '';
+        }
+    }
+
+    > .period-start .start-splitter:before,
+    > .period-end .end-splitter:after{
+        position: absolute;
+        top: -1px;
+        left: -8px;
+        height: 72px;
+        width: 15px;
+        background: url("../../common/images/icons.png") 2px -695px no-repeat;
+        content: '';
+    }
+
+    > .period-end .end-splitter:after,
+    > td .end-splitter:hover:after{
+        left: auto;
+        right: -8px;
+    }
+
+    > .period-start .start-splitter:hover:before,
+    > .period-end .end-splitter:hover:before{
+        background: url("../../common/images/icons.png") 0 -894px no-repeat;
+    }
+}
+
+.timesheet-time,
+.timesheet-hours-label{
+    color: #b0b0b0;
+    font-size: 1.2em;
+
+}

@@ -25,7 +25,7 @@ angular.module('myApp', [
     'myApp.company',
     'myApp.projects',
     'myApp.timelog',
-    'myApp.timesheetManagement',
+    'myApp.timesheet',
     'myApp.report',
     'preferences',
     'angularMoment',

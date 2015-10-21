@@ -1,0 +1,47 @@
+/*!
+ * Copyright 2015 mifort.org
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+.main-tabs {
+  width: 250px;
+  float: left; }
+
+.tabs-left {
+  padding-bottom: 2px;
+  font-size: 1.6em; }
+  .tabs-left .nav-tabs {
+    border-bottom: 0; }
+    .tabs-left .nav-tabs > li {
+      margin-bottom: 0; }
+  .tabs-left .nav-stacked > li + li {
+    margin: 0; }
+  .tabs-left li {
+    border-bottom: 1px #f2f4f7 solid; }
+    .tabs-left li:first-child {
+      border-top: 1px #f2f4f7 solid; }
+    .tabs-left li.active a, .tabs-left li.active a:hover, .tabs-left li.active a:focus {
+      color: #19b5fe;
+      border-color: transparent;
+      border-left: 3px #19b5fe solid; }
+    .tabs-left li a {
+      border-radius: 0;
+      margin-right: 0;
+      padding: 17px 25px;
+      color: #000;
+      display: block; }
+      .tabs-left li a:hover {
+        background: #eaeff7;
+        border-bottom-color: #eee; }
+
+/*# sourceMappingURL=tabs.css.map */
