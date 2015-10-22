@@ -27,8 +27,7 @@ angular.module('myApp.timesheet', ['ngRoute'])
 
     .controller('timesheetController', ['$scope', '$filter', 'timesheetService', 'moment', 'preferences', function ($scope, $filter, timesheetService, moment, preferences) {
         $scope.daySettingsPopover = {
-            templateUrl: 'daySettimgs.html',
-            title: 'Day Settings'
+            templateUrl: 'daySettimgs.html'
         };
         $scope.periodSettings = timesheetService.getPeriodSettings();
         $scope.dayTypes = timesheetService.getDayTypes();
@@ -59,8 +58,8 @@ angular.module('myApp.timesheet', ['ngRoute'])
 
             var startDate = moment(new Date($scope.project.periods[0].start)),
                 endDate = moment(new Date($scope.project.periods[$scope.project.periods.length - 1].end)),
-                //daysToGenerate = endDate.diff(startDate, 'days') + 1;
-                daysToGenerate = 30;
+                daysToGenerate = endDate.diff(startDate, 'days') + 1;
+                //daysToGenerate = 30;
 
             for (var i = 0; i < daysToGenerate; i++) {
                 var dayToPush = _.clone($scope.project.template);
@@ -299,6 +298,16 @@ angular.module('myApp.timesheet', ['ngRoute'])
             //get last day of first week
             for(var i in month){
                 return moment(new Date(month[i][month[i].length-1].date)).format('MMMM YYYY');
+            }
+        };
+
+        $scope.chooseCustomDayType = function(customDay) {
+            if(customDay){
+                customDay
+            }
+            else{
+                //reset customDay
+                customDay
             }
         }
     }]);

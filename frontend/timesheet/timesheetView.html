@@ -24,7 +24,7 @@
                 </thead>
 
                 <tbody>
-                <tr ng-repeat="week in month track by $index">
+                <tr ng-repeat="week in month track by $index"  ng-if="week.length">
                     <td table-cell
                         ng-repeat="day in week track by $index"
                         ng-class="{'period-start': day.isPeriodStartDate, 'period-end': day.isPeriodEndDate, 'weekend': day.weekend, 'disabled-day': day.disabled}"></td>
@@ -35,6 +35,7 @@
         <!--<small>{{splittedTimesheet[$index]}}</small>-->
     </div>
 </div>
+<small>{{project}}</small>
 <!--<small>{{splittedTimesheet}}</small>-->
 <div class="timesheet-controls">
     <div class="clearfix">
@@ -87,18 +88,12 @@
 </div>
 
 <script type="text/ng-template" id="daySettimgs.html">
-    <div class="form-group">
-        <label>Time:</label>
-        <input type="text" ng-model="day.time" class="form-control">
+    <a href=""
+       class="custom-day-button"
+       ng-repeat="customDay in customDays"
+       ng-click="chooseCustomDayType(customDay)">
+        {{customDay.name}}
+    </a>
 
-        <label>Type:</label>
-        <select id="type"
-                ng-options="type as type.typeName for type in dayTypes"
-                ng-model="day.type"
-                class="form-control">
-        </select>
-
-        <label>Comment:</label>
-        <textarea type="text" ng-model="day.comment" class="form-control"></textarea>
-    </div>
+    <a href="" class="custom-day-button" ng-click="chooseCustomDayType(false)">None</a>
 </script>

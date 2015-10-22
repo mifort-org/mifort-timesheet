@@ -200,7 +200,8 @@
   border-bottom: 1px #fff solid; }
 
 .periods {
-  margin-bottom: 0; }
+  margin-bottom: 0;
+  border: 0; }
   .periods.table > thead:first-child > tr:first-child > th {
     padding: 2px 10px;
     font-size: 1.4em;
@@ -222,9 +223,13 @@
     margin: 0 auto; }
   .periods tr {
     border-bottom: 1px #eaeff7 solid; }
+    .periods tr:first-child td:hover {
+      border-top: 1px #eaeff7 solid; }
   .periods td:hover {
     border: 0;
     box-shadow: 0 0 0 1px #3eb5f1 inset; }
+  .periods td:first-child:hover {
+    border-left: 1px #eaeff7 solid; }
 
 .timesheet-day {
   position: relative;
@@ -245,10 +250,14 @@
   position: absolute;
   top: 5px;
   left: 10px;
-  height: 70px;
+  height: 60px;
+  width: 48px;
+  text-align: left;
   color: #000;
   font-size: 1.8em;
   font-weight: 600; }
+  .timesheet-day-wrapper:hover {
+    text-decoration: none; }
 
 .timesheet-data {
   position: absolute;
@@ -301,5 +310,19 @@
 .timesheet-hours-label {
   color: #b0b0b0;
   font-size: 1.2em; }
+
+.custom-day-button {
+  display: block;
+  height: 33px;
+  line-height: 28px;
+  text-align: center;
+  color: #000;
+  background: #fff;
+  border: 3px transparent solid;
+  box-shadow: 0 0 0 1px #d9d9d9 inset; }
+  .custom-day-button:hover {
+    border-color: #e8e8e8;
+    text-decoration: none;
+    color: inherit; }
 
 /*# sourceMappingURL=timesheet.css.map */

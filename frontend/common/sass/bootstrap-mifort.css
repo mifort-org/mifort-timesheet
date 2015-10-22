@@ -47,4 +47,7 @@ select.form-control {
   .input-group:hover {
     border-color: #a0a0a0; }
 
+.popover {
+  border-radius: 0; }
+
 /*# sourceMappingURL=bootstrap-mifort.css.map */
