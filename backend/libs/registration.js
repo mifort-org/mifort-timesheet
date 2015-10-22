@@ -31,10 +31,10 @@ exports.createUser = function(user, callback) {
 exports.createDefaultProject = function(company, user) {
     var project = projects.generateDefaultProject(company);
     projects.saveInDb(project, function(err, savedProject) {
-        console.log('Defaul project is created!');
         if(err) {
             log.error('Cannot save project!', {error: err}); 
         } else {
+            log.info('Defaul project is created!');
             if(user) {
                 user.assignments = [{
                     role: 'Employee',

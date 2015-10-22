@@ -46,6 +46,7 @@ exports.restCreateCompany = function(req, res, next) {
     var defaultCompany = exports.generateDefaultCompany();
     company.template = defaultCompany.template;
     company.periods = defaultCompany.periods;
+    company.dayTypes = defaultCompany.dayTypes;
 
     save(company, function(err, savedCompany) {
         if(err) {
