@@ -64,12 +64,11 @@ exports.jsonParse = function(key, value) {
 
 exports.jsonStringify = function(key, value) {
     var keyName = key.toLowerCase();
-    var isDateField = keyName.indexOf('date') > -1
+    var isDateField = /date$/.test(keyName)
         || keyName === 'start'
-        || keyName === 'end'
-    if (isDateField
-            && moment(value, dateFormat).isValid()) {
-        return moment(value, dateFormat).format(dateFormat);
+        || keyName === 'end';
+    if (isDateField && !isNaN(Date.parse(value))) {
+        return moment(Date.parse(value)).format(dateFormat);
     }
     return value;
 };
