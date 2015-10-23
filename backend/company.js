@@ -47,6 +47,9 @@ exports.restCreateCompany = function(req, res, next) {
     company.template = defaultCompany.template;
     company.periods = defaultCompany.periods;
     company.dayTypes = defaultCompany.dayTypes;
+    if(req.user) {
+        company.ownerId = req.user._id;
+    }
 
     save(company, function(err, savedCompany) {
         if(err) {

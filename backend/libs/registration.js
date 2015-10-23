@@ -41,8 +41,10 @@ exports.createDefaultProject = function(company, user) {
                     projectName: savedProject.name,
                     projectId: savedProject._id
                 }];
+                user.companyId = company._id;
                 users.save(user, function(err, updatedUser) {
-                    log.info('Default assignment is added! User ID: %s', updatedUser._id);
+                    log.info('Default assignment is added! User ID: %s', 
+                        updatedUser._id.toHexString());
                 });
             }
         }

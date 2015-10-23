@@ -191,7 +191,8 @@ exports.import = function() {
                 projects.saveInDb(project, function(err, savedProject){
                     user.assignments[0].projectId = savedProject._id;
                     users.save(user, function(err, savedUser){
-                        log.info('Test data is imported! Company ID: %s', savedCompany._id);
+                        log.info('Test data is imported! Company ID: %s',
+                            savedCompany._id.toHexString());
                     });
                 });
             });
