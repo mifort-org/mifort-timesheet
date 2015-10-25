@@ -147,6 +147,9 @@ function updateProject(project, res, next) {
                         );
                         users.updateAssignmentProjectName(project);
                     });
+            } else {
+                res.json({message: "Project doesn't exist or Project name is not changed"});
+                log.debug("-REST result: Save(Update) project. Project doesn't exist or Project name is not changed");
             }
         });
 }
