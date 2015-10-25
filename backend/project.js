@@ -107,6 +107,15 @@ exports.generateDefaultProject = function(company) {
     };
 };
 
+exports.findProjectIdsByCompanyId = function(companyId, callback) {
+    var projects = dbSettings.projectCollection();
+    projects.find({companyId: companyId},
+                  {_id:1})
+        .toArray(function(err, findedProjectIds){
+            callback(err, findedProjectIds);
+        });
+};
+
 //Private
 function returnProjectCallback(err, res, savedProject, next) {
     if(err) {
