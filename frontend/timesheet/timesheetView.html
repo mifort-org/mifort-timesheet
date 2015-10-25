@@ -27,7 +27,8 @@
                 <tr ng-repeat="week in month track by $index"  ng-if="week.length">
                     <td table-cell
                         ng-repeat="day in week track by $index"
-                        ng-class="{'period-start': day.isPeriodStartDate, 'period-end': day.isPeriodEndDate, 'weekend': day.weekend, 'disabled-day': day.disabled}"></td>
+                        ng-class="{'period-start': day.isPeriodStartDate, 'period-end': day.isPeriodEndDate, 'weekend': day.weekend, 'disabled-day': day.disabled}"
+                        style="background: {{day.color}} !important"></td>
                 </tr>
                 </tbody>
             </table>
@@ -96,5 +97,5 @@
         {{dayType.name}}
     </a>
 
-    <a href="" class="custom-day-button" ng-click="chooseDayType(false)">None</a>
+    <a href="" class="custom-day-button" ng-click="chooseDayType(false, day)">None</a>
 </script>

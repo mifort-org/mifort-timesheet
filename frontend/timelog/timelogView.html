@@ -13,7 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-
+{{timelog}}
 <div class="timelog collapse-wrapper clearfix" ng-repeat="project in projects">
     <h2 ng-class="{'timelog-collapsed': isCollapsed}">
         <a href="" class="collapse-item" ng-class="{'collapsed': isCollapsed}" ng-click="isCollapsed = !isCollapsed">
@@ -37,7 +37,8 @@
             <tbody>
                 <tr ng-if="project.currentTimelogIndex >= 0"
                     ng-repeat="log in project.splittedTimelog[project.currentTimelogIndex]"
-                    ng-class="{'weekend': isWeekend(log.date)}">
+                    ng-class="{'weekend': isWeekend(log.date)}"
+                    ng-style="{background: log.color}">
                     <td ng-class="log.isFirstDayRecord ? 'is-first-day-log' : 'is-not-first-day-log'">
                         <span class="timelog-data">
                             <a href="" ng-if="log.isFirstDayRecord" class="add-timelog" ng-click="addRow(log, project)">+</a>

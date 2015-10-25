@@ -22,8 +22,8 @@ angular.module('myApp.timesheet').factory('timesheetService',
             getCompany: function (companyId) {
                 return $http.get('company/' + companyId);
             },
-            saveProject: function (parameters) {
-                $http.post('project', parameters);
+            saveCompany: function (parameters) {
+                $http.post('company', parameters);
             },
             getPeriodSettings: function () {
                 return [

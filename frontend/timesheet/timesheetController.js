@@ -200,7 +200,7 @@ angular.module('myApp.timesheet', ['ngRoute'])
                     }
                 }
 
-                timesheetService.saveProject($scope.company);
+                timesheetService.saveCompany($scope.company);
 
             }, true);
         }
@@ -302,11 +302,14 @@ angular.module('myApp.timesheet', ['ngRoute'])
 
         $scope.chooseDayType = function(dayType, day) {
             if(dayType){
-                customDay
+                day.time = dayType.time;
+                day.comment = dayType.name;
+                day.color = dayType.color;
             }
             else{
                 //reset customDay
-                customDay
+                day.color = false;
+                day.time = 8;
             }
         }
     }]);
