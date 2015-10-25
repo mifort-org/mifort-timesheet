@@ -32,12 +32,12 @@ angular.module('myApp.login', ['ngRoute'])
                 $cookies.put('user', JSON.stringify(data));
                 preferences.set('user', data);
                 $scope.$parent.isLoggedIn = true;
-                $location.path('/timelog');
+                $location.path('/Timelog');
             }
         });
 
         $scope.login = function () {
             $scope.$parent.isLoggedIn = true;
-            $location.path('/timelog');
+            $location.path('/Timelog');
         };
     }]);

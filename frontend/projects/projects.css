@@ -28,14 +28,20 @@
     font-weight: 600;
     padding: 9px 20px; }
   .project .table td {
-    padding: 0; }
+    position: relative;
+    padding: 0;
+    width: 40%; }
+    .project .table td:last-child {
+      width: 20%; }
+      .project .table td:last-child input {
+        text-align: center; }
     .project .table td input {
       width: 100%;
       padding: 8px 20px;
       border: 0; }
     .project .table td select {
       height: 41px;
-      padding: 0 16px;
+      padding: 0 0 0 16px;
       border: 0;
       box-shadow: none; }
       .project .table td select option {
@@ -55,7 +61,7 @@
   font-weight: 300;
   color: #fff;
   line-height: 0;
-  background: url("../images/add-project.png") no-repeat center 5px; }
+  background: url("../common/images/add-project.png") no-repeat center 5px; }
   .add-project:hover, .add-project:active, .add-project:focus {
     background-position: center -96px;
     color: #fff;
@@ -66,7 +72,9 @@
 
 .remove-assignment {
   position: absolute;
-  right: 21px;
+  z-index: 1;
+  top: 3px;
+  right: -35px;
   color: #fe6767;
   font-size: 2.5rem;
   opacity: 0.5; }

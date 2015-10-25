@@ -32,31 +32,42 @@
         }
     }
 
-    .table th{
-        font-weight: 600;
-        padding: 9px 20px;
-    }
-
-    .table td{
-        padding: 0;
-
-        input{
-            width: 100%;
-            padding: 8px 20px;
-            border: 0;
+    .table{
+        th{
+            font-weight: 600;
+            padding: 9px 20px;
         }
 
-        select{
-            height: 41px;
-            padding: 0 16px;
-            border: 0;
-            box-shadow: none;
+        td{
+            position: relative;
+            padding: 0;
+            width: 40%;
 
-            option{
-                padding: 5px 0;
-                -webkit-appearance: none;
-                -moz-appearance: none;
-                appearance: none;
+            &:last-child{
+                width: 20%;
+                input{
+                    text-align: center;
+                }
+            }
+
+            input{
+                width: 100%;
+                padding: 8px 20px;
+                border: 0;
+            }
+
+            select{
+                height: 41px;
+                padding: 0 0 0 16px;
+                border: 0;
+                box-shadow: none;
+
+                option{
+                    padding: 5px 0;
+                    -webkit-appearance: none;
+                    -moz-appearance: none;
+                    appearance: none;
+                }
             }
         }
     }
@@ -73,7 +84,7 @@
     font-weight: 300;
     color: #fff;
     line-height: 0;
-    background: url("../images/add-project.png") no-repeat center 5px;
+    background: url("../common/images/add-project.png") no-repeat center 5px;
 
     &:hover,
     &:active,
@@ -90,7 +101,9 @@
 
 .remove-assignment{
     position: absolute;
-    right: 21px;
+    z-index: 1;
+    top: 3px;
+    right: -35px;
     color: #fe6767;
     font-size: 2.5rem;
     opacity: 0.5;

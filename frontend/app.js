@@ -40,9 +40,9 @@ angular.module('myApp', [
         if($cookies.get('user')){
             $scope.isLoggedIn = true;
         }
-        else{
-            $location.path('/login');
-        }
+        //else{
+            //$location.path('/login');
+        //}
 
         $scope.logout = function () {
             $cookies.remove('user');

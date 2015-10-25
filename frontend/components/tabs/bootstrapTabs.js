@@ -20,14 +20,40 @@ angular.module('myApp')
     .directive('bootstrapTabs', function($location) {
         return {
             link: function (scope) {
+                var currentLocation  = $location.path().substr(1);
+
                 scope.tabs = [
-                    {title: 'Timesheet'},
-                    {title: 'Timelog'},
-                    {title: 'Projects'},
-                    {title: 'Report'},
-                    {title: 'Company'},
-                    {title: '*Company-create'}
+                    {
+                        title: 'Projects',
+                        active: false
+                    },
+                    {
+                        title: 'Timesheet',
+                        active: false
+                    },
+                    {
+                        title: 'Timelog',
+                        active: false
+                    },
+                    {
+                        title: 'Report',
+                        active: false
+                    },
+                    {
+                        title: 'Company',
+                        active: false
+                    },
+                    {
+                        title: '*Company-create',
+                        active: false
+                    }
                 ];
+
+                scope.tabs.map(function(tab) {
+                    if(tab.title == currentLocation){
+                        tab.active = true;
+                    }
+                });
 
                 scope.changeTab = function (tab) {
                     $location.path('/' + tab.title);
