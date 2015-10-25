@@ -31,12 +31,6 @@ angular.module('myApp.timesheet').factory('timesheetService',
                     {periodName: 'Month'}
                 ]
             },
-            getDayTypes: function () {
-                return [
-                    {typeName: 'Weekend'},
-                    {typeName: 'Holiday'}
-                ]
-            },
             getWeekDays: function () {
                 return ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
             }

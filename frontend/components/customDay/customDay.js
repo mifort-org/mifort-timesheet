@@ -23,23 +23,13 @@ angular.module('myApp')
             link: function(scope, element) {
                 scope.editableName = false;
                 scope.editableWorkload = false;
-                scope.customDays = [
-                    {
-                        name: 'Weekend',
-                        time: 0,
-                        color: '#c5e9fb'
-                    },
-                    {
-                        name: 'Corporate',
-                        time: 0,
-                        color: '#f3cce1'
-                    },
-                    {
-                        name: 'Holiday',
-                        time: 0,
-                        color: '#fff9a1'
+
+                scope.$watch('company.dayTypes', function(dayTypes) {
+                    if(dayTypes){
+                        scope.dayTypes = dayTypes;
+                        paintHexagons();
                     }
-                ];
+                });
 
                 function paintHexagons() {
                     $timeout(function() {
@@ -57,10 +47,9 @@ angular.module('myApp')
                         });
                     });
                 }
-                paintHexagons();
 
                 scope.addCustomDay = function() {
-                    scope.customDays.push({
+                    scope.dayTypes.push({
                         name: 'New Day',
                         workload: 8,
                         color: '#123'

@@ -20,7 +20,6 @@ angular.module('myApp')
     .directive('projectRow', function($location) {
         return {
             scope: true,
-            //transclude: 'element',
             link: function(scope) {
                 scope.addAssignment = function(project, employee) {
                     var newEmployee = _.find(scope.companyEmployees, {displayName: employee.displayName});
@@ -44,7 +43,6 @@ angular.module('myApp')
 
                     employee.displayName = null;
                 };
-
             },
             templateUrl: 'components/projectRow/projectRow.html'
         };

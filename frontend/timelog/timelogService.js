@@ -31,7 +31,7 @@ angular.module('myApp.timelog').factory('timelogService',
             getTimelogKeys: function () {
                 return {
                     'date': 'Date',
-                    'dateId': 'Role',
+                    'role': 'Role',
                     'time': 'Time',
                     'comment': 'Comment'
                 }

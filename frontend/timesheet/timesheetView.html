@@ -35,7 +35,7 @@
         <!--<small>{{splittedTimesheet[$index]}}</small>-->
     </div>
 </div>
-<small>{{project}}</small>
+<!--<small>{{project}}</small>-->
 <!--<small>{{splittedTimesheet}}</small>-->
 <div class="timesheet-controls">
     <div class="clearfix">
@@ -90,10 +90,11 @@
 <script type="text/ng-template" id="daySettimgs.html">
     <a href=""
        class="custom-day-button"
-       ng-repeat="customDay in customDays"
-       ng-click="chooseCustomDayType(customDay)">
-        {{customDay.name}}
+       ng-repeat="dayType in company.dayTypes"
+       ng-click="chooseDayType(dayType, day)"
+       ng-style="{background: dayType.color}">
+        {{dayType.name}}
     </a>
 
-    <a href="" class="custom-day-button" ng-click="chooseCustomDayType(false)">None</a>
+    <a href="" class="custom-day-button" ng-click="chooseDayType(false)">None</a>
 </script>

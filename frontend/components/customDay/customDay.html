@@ -14,9 +14,11 @@
   limitations under the License.
 -->
 
+<!--{{dayTypes}}-->
+
 <div class="custom-days-wrapper">
     <dl>
-        <dt ng-repeat-start="day in customDays"
+        <dt ng-repeat-start="day in dayTypes"
             id="customDay-{{$index}}"
             ng-class="{'odd-day' : $index%2}"
             ng-click="editableName = true"
@@ -39,13 +41,13 @@
     </dl>
 
     <div class="hexagon-underwear-wrapper">
-        <div class="hexagon-underwear" ng-repeat="day in customDays"></div>
+        <div class="hexagon-underwear" ng-repeat="day in dayTypes"></div>
         <div class="hexagon-underwear" ng-click="addCustomDay()"></div>
     </div>
 
     <div class="hexagon-wrapper">
         <div class="hexagon"
-             ng-repeat="day in customDays"
+             ng-repeat="day in dayTypes"
              data-color="{{day.color}}"
              style="background: {{day.color}};">
         </div>

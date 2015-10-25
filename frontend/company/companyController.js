@@ -37,7 +37,7 @@ angular.module('myApp.company', ['ngRoute'])
             emails: []
         };
 
-        if($location.path() == '/companyEdit'){
+        if($location.path() == '/Company'){
             companyService.getCompany(preferences.get('user').companyId).success(function(company) {
                 $scope.company = company;
             });
@@ -45,13 +45,13 @@ angular.module('myApp.company', ['ngRoute'])
 
         $scope.createCompany = function () {
             companyService.createCompany($scope.company).success(function () {
-                $location.path('/timesheet');
+                $location.path('/Timesheet');
             });
         };
 
         $scope.saveCompany = function () {
             companyService.saveCompany($scope.company).success(function () {
-                $location.path('/timesheet');
+                $location.path('/Timesheet');
             });
         };
 

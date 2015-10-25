@@ -25,37 +25,43 @@ angular.module('myApp.timelog', ['ngRoute'])
         });
     }])
 
-    .controller('timelogController', ['$scope', '$filter', 'timelogService', 'timesheetService', 'preferences', function($scope, $filter, timelogService, timesheetService, preferences) {
+    .controller('timelogController', ['$scope', '$filter', 'timelogService', 'timesheetService', 'preferences', 'loginService', function($scope, $filter, timelogService, timesheetService, preferences, loginService) {
         $scope.projects = [];
         $scope.isCollapsed = false;
         $scope.timelogKeys = timelogService.getTimelogKeys();
-        $scope.assignments = preferences.get('user').assignments;
+        $scope.userName = preferences.get('user').displayName;
 
-        $scope.assignments.forEach(function(assignment, index) {
-            timelogService.getProject(assignment.projectId).success(function(project) {
-                if(project && project.active) {
-                    project.userTimelogs = [];
-                    project.currentTimelogIndex = 0;
-                    $scope.projects.push(project);
-                }
-            }).then(function(data) {
-                var currentProject = data.data;
+        loginService.getUser().success(function (user) {
+            if(user){
+                $scope.assignments = user.assignments;
 
-                if(currentProject && currentProject.active) {
-                    var startDate = currentProject.periods[0].start,
-                        endDate = currentProject.periods[currentProject.periods.length - 1].end;
+                $scope.assignments.forEach(function(assignment, index) {
+                    timelogService.getProject(assignment.projectId).success(function(project) {
+                        if(project && project.active) {
+                            project.userTimelogs = [];
+                            project.currentTimelogIndex = 0;
+                            $scope.projects.push(project);
+                        }
+                    }).then(function(data) {
+                        var currentProject = data.data;
 
-                    timelogService.getTimelog(preferences.get('user')._id, currentProject._id, startDate, endDate).success(function(projectTimelog) {
-                        var projectUserTimelogs = currentProject.userTimelogs;
+                        if(currentProject && currentProject.active) {
+                            var startDate = currentProject.periods[0].start,
+                                endDate = currentProject.periods[currentProject.periods.length - 1].end;
 
-                        projectUserTimelogs.push.apply(projectUserTimelogs, projectTimelog.timelog);
+                            timelogService.getTimelog(preferences.get('user')._id, currentProject._id, startDate, endDate).success(function(projectTimelog) {
+                                var projectUserTimelogs = currentProject.userTimelogs;
 
-                        if($scope.assignments.length == index + 1) {
-                            $scope.init();
+                                projectUserTimelogs.push.apply(projectUserTimelogs, projectTimelog.timelog);
+
+                                if($scope.assignments.length == index + 1) {
+                                    $scope.init();
+                                }
+                            });
                         }
                     });
-                }
-            });
+                });
+            }
         });
 
         $scope.init = function() {
@@ -80,6 +86,7 @@ angular.module('myApp.timelog', ['ngRoute'])
                     dayToPush = _.clone(project.template);
                     dayToPush.date = angular.copy(startDate).add(i, 'days').format("MM/DD/YYYY");
                     dayToPush.isFirstDayRecord = true;
+                    dayToPush.userName = $scope.userName;
 
                     project.timelog.push(dayToPush);
                 }
@@ -107,10 +114,6 @@ angular.module('myApp.timelog', ['ngRoute'])
                         day.isFirstDayRecord = true;
                         angular.extend(_.findWhere(project.timelog, {date: day.date}), day);
                     }
-                });
-
-                $scope.timelogAssigments = preferences.get('user').assignments.map(function(assignment) {
-                    return assignment.role
                 });
 
                 splitPeriods(project);
@@ -173,6 +176,7 @@ angular.module('myApp.timelog', ['ngRoute'])
             var newRow = angular.copy(project.template),
                 dayIndex = _.findIndex(project.timelog, {_id: log._id});
             newRow.date = log.date;
+            newRow.userName = log.userName;
             newRow.isNotFirstDayRecord = true;
             project.timelog.splice(dayIndex + 1, 0, newRow);
             splitPeriods(project);
