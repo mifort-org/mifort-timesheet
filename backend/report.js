@@ -13,3 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var dbSettings = require('./libs/mongodb_settings');
+var log = require('./libs/logger');
+
+exports.restCommonReport = function(req, res, next) {
+    var filterObj = req.body;
+    log.debug('-REST call: common report. Company id', filterObj.companyId.toHexString());
+
+
+};
+
+function convertFiltersToQuery(filters){
+    var query = {};
+    filters.forEach(function(filter) {
+        if(filter.field === 'date') {
+            query.date = {$gte: filter.start,
+                          $lte: filter.end};
+        }
+    });
+
+    return query;
+}

@@ -69,6 +69,7 @@ exports.restGetByCompanyId = function(req, res, next) {
 exports.restReplaceAssignments = function(req, res, next) {
     var projectId = utils.getProjectId(req);
     var user = req.body;
+    var assignments = user.assignments;
     var users = dbSettings.userCollection();
     users.update({ _id: user._id },
                  { $pull: {assignments: {projectId: projectId} } },
