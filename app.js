@@ -24,6 +24,8 @@ var project = require('./backend/project');
 var timelog = require('./backend/timelog');
 var user = require('./backend/user');
 var company = require('./backend/company');
+var report = require('./backend/report');
+
 var auth = require('./backend/libs/auth');
 var util = require('./backend/libs/utils');
 var validators = require('./backend/libs/validators');
@@ -105,6 +107,10 @@ app.put('/company',
 app.get('/company/:companyId',
         validators.validateGetCompanyById,
         company.restFindById);
+
+//report
+app.get('/report/filters/:companyId',
+        report.restGetFilterValues);
 
 // default error handler
 app.use(errorHandler);
