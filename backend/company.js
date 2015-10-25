@@ -76,10 +76,10 @@ exports.restUpdateCompany = function(req, res, next) {
             var projects = dbSettings.projectCollection();
             projects.update(
                     {companyId: savedCompany._id},
-                    {$set: {template: savedCompany.template},
-                     $set: {periods: savedCompany.periods},
-                     $set: {defaultValues: savedCompany.defaultValues},
-                     $set: {dayTypes: savedCompany.dayTypes}},
+                    {$set: {template: savedCompany.template,
+                            periods: savedCompany.periods,
+                            defaultValues: savedCompany.defaultValues,
+                            dayTypes: savedCompany.dayTypes}},
                     {multi:true}, 
                 function(err, result){
                     log.info('Company projects are updated!')

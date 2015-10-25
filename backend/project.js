@@ -102,6 +102,8 @@ exports.generateDefaultProject = function(company) {
         name: company.name,
         template: company.template,
         periods: company.periods,
+        dayTypes: company.dayTypes,
+        defaultValues: company.defaultValues,
         companyId: company._id,
         active: true
     };
