@@ -161,13 +161,13 @@ function createUsersByEmails(company) {
     if(emails) {
         emails.forEach(function(email) {
             var user = {email: email,
-                        displayName: email,
                         companyId: company._id};
 
             users.findByExample(user, function(err, dbUser) {
                 if(err) {
                     log.error('Cannot find user by email for new company.', {error: err});
                 } else if(!dbUser) {
+                    user.displayName = email;
                     users.save(user, function(err, savedUser) {
                         if(err) {
                             log.error('Cannot saved user by email for new company.', {error: err});

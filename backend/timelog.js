@@ -67,7 +67,7 @@ exports.restGetByDates = function(req, res, next) {
                 $lte: end}
     };
 
-    timelogCollection.find(query, {'sort': 'date'}).toArray(function(err, timelogs){
+    timelogCollection.find(query, {sort: 'date'}).toArray(function(err, timelogs){
         returnTimelogArray(err, res, timelogs, next);
     });
 };

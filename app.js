@@ -111,6 +111,8 @@ app.get('/company/:companyId',
 //report
 app.get('/report/filters/:companyId',
         report.restGetFilterValues);
+app.post('/report/common',
+        report.restCommonReport);
 
 // default error handler
 app.use(errorHandler);

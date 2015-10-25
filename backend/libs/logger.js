@@ -33,7 +33,9 @@ var logger = new (winston.Logger)({
     }),
     new (winston.transports.Console)({
       colorize: 'all',
-      level: 'debug'
+      level: 'debug',
+      handleExceptions: true,
+      humanReadableUnhandledException: true
     })
   ]
 });
