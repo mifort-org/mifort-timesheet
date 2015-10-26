@@ -113,6 +113,8 @@ app.get('/report/filters/:companyId',
         report.restGetFilterValues);
 app.post('/report/common',
         report.restCommonReport);
+app.post('/report/common/download',
+        report.restDowloadCSV);
 
 // default error handler
 app.use(errorHandler);

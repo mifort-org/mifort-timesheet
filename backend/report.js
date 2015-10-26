@@ -13,6 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var csvStringify = require('csv-stringify');
+
 var dbSettings = require('./libs/mongodb_settings');
 var log = require('./libs/logger');
 var utils = require('./libs/utils');
@@ -46,6 +48,41 @@ exports.restCommonReport = function(req, res, next) {
                 log.debug('-REST result: common report. Company id: %s', 
                     filterObj.companyId.toHexString());
             });
+    });
+};
+
+var columns = {
+    date: 'Date',
+    userName: 'User',
+    projectName: 'Project',
+    role: 'Role',
+    time: 'Time'
+};
+//need to extract common parts to separate method!!!!
+exports.restDowloadCSV = function(req, res, next) {
+    var filterObj = req.body;
+    log.debug('-REST call: common report. Company id: %s', filterObj.companyId.toHexString());
+
+    var timelogCollection = dbSettings.timelogCollection();
+    projects.findProjectIdsByCompanyId(filterObj.companyId, function(err, projectIds) {
+        if(err) {
+            next(err);
+            return;
+        }
+        var projectIdArray = projectIds.map(function(object) {
+            return object._id;
+        });
+        var query = convertFiltersToQuery(filterObj.filters);
+        var sortObj = {};
+        sortObj[filterObj.sort.field] = (filterObj.sort.asc ? 1 : -1);
+
+        var cursorStream = timelogCollection.find(query)
+            .sort(sortObj)
+            .skip((filterObj.page-1)*filterObj.pageSize) // not efficient way but It's just for the first implementation
+            .limit(filterObj.pageSize)
+            .stream();
+        var csvStringifier = csvStringify({ header: true, columns: columns });
+        cursorStream.pipe(csvStringifier).pipe(process.stdout);
     });
 };
 
