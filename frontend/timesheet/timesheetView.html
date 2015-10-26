@@ -16,7 +16,7 @@
 
 <div class="timesheet-container" ng-repeat="year in splittedTimesheet">
     <div class="timesheet-wrapper" ng-if="month" ng-repeat="month in year track by $index">
-        <div class="timesheet-header">{{getMonthName(month)}}</div>
+        <div class="timesheet-header">{{::getMonthName(month)}}</div>
         <div class="periods-wrapper">
             <table class="periods table table-bordered">
                 <thead>

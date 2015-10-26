@@ -77,102 +77,112 @@ angular.module('myApp.timesheet', ['ngRoute'])
             });
 
             //Splitting the timesheet
-            $scope.timesheet.forEach(function(day, index) {
-                var currentDate = new Date(day.date),
-                    currentDayYear = moment(currentDate).get('year') - moment(new Date()).get('year'),
-                    currentDayMonth = moment(currentDate).get('month'),
-                    currentDayWeek = moment(currentDate).get('isoWeek'),
-                    daysBeforeTimesheetStart,
-                    daysAfterTimesheetEnd,
-                    generatedDay;
-
-                //last week reset
-                if(currentDayWeek == 53 && $scope.splittedTimesheet[currentDayYear-1]){
-                    currentDayWeek = 0;
-                }
-
-                if(currentDate.getDay() == 0 || currentDate.getDay() == 1){
-                    day.weekend = true;
-                }
-//in progress
-                if($scope.splittedTimesheet[currentDayYear]){
-                    if($scope.splittedTimesheet[currentDayYear][currentDayMonth]){
-                        if($scope.splittedTimesheet[currentDayYear][currentDayMonth][currentDayWeek]){
-                            $scope.splittedTimesheet[currentDayYear][currentDayMonth][currentDayWeek].push(day);
-                        }
-                        else{
-                            $scope.splittedTimesheet[currentDayYear][currentDayMonth][currentDayWeek] = [];
-                            $scope.splittedTimesheet[currentDayYear][currentDayMonth][currentDayWeek].push(day);
-                        }
-                    }
-                    else{
-                        daysBeforeTimesheetStart = moment(currentDate).isoWeekday();
-                        $scope.splittedTimesheet[currentDayYear][currentDayMonth] = [];
-                        $scope.splittedTimesheet[currentDayYear][currentDayMonth][currentDayWeek] = [];
-
-                        //generate days after previous month end
-                        if($scope.splittedTimesheet[currentDayYear][currentDayMonth - 1]){
-                            daysAfterTimesheetEnd = $scope.timesheet[index-1] && 7 - moment(new Date($scope.timesheet[index-1].date)).isoWeekday();
-
-                            for (var i = 0; i < daysAfterTimesheetEnd; i++) {
-                                generatedDay =  _.clone($scope.company.template);
-                                generatedDay.date = moment(currentDate).subtract(i, 'day').calendar();
-                                generatedDay.disabled = true;
-                                $scope.splittedTimesheet[currentDayYear][currentDayMonth - 1][$scope.splittedTimesheet[currentDayYear][currentDayMonth - 1].length-1].push(generatedDay);
-                            }
-                        }
-
-                        //generate days before month start
-                        for (var k = 0; k < daysBeforeTimesheetStart-1; k++) {
-                            generatedDay =  _.clone($scope.company.template);
-                            generatedDay.date = moment(currentDate).subtract(k+1, 'day').format('MM/DD/YYYY');
-                            generatedDay.disabled = true;
-                            $scope.splittedTimesheet[currentDayYear][currentDayMonth][currentDayWeek].unshift(generatedDay);
-                        }
-
-                        $scope.splittedTimesheet[currentDayYear][currentDayMonth][currentDayWeek].push(day);
-                    }
-                }
-                else{
-                    $scope.splittedTimesheet[currentDayYear] = [];
-
-                        daysBeforeTimesheetStart = moment(currentDate).isoWeekday();
-                        $scope.splittedTimesheet[currentDayYear][currentDayMonth] = [];
-                        $scope.splittedTimesheet[currentDayYear][currentDayMonth][currentDayWeek] = [];
-
-                        //generate days after previous year end
-                        if($scope.splittedTimesheet[currentDayYear - 1]){
-                            daysAfterTimesheetEnd = $scope.timesheet[index - 1] && 7 - moment(new Date($scope.timesheet[index-1].date)).isoWeekday();
-
-                            for (var i = 0; i < daysAfterTimesheetEnd; i++) {
-                                generatedDay =  _.clone($scope.company.template);
-                                generatedDay.date = moment(currentDate).subtract(i, 'day').calendar();
-                                generatedDay.disabled = true;
-                                var previousMonth = $scope.splittedTimesheet[currentDayYear-1][$scope.splittedTimesheet[currentDayYear-1].length-1];
-                                previousMonth[previousMonth.length - 1].push(generatedDay);
-                            }
-                        }
-
-                        //generate days before month start
-                        for (var k = 0; k < daysBeforeTimesheetStart-1; k++) {
-                            generatedDay =  _.clone($scope.company.template);
-                            generatedDay.date = moment(currentDate).subtract(k+1, 'day').format('MM/DD/YYYY');
-                            generatedDay.disabled = true;
-                            $scope.splittedTimesheet[currentDayYear][currentDayMonth][currentDayWeek].unshift(generatedDay);
-                        }
-
-                        $scope.splittedTimesheet[currentDayYear][currentDayMonth][currentDayWeek].push(day);
-                }
+            $scope.timesheet.forEach(function(day, index){
+                generateTimesheetTables(day, index);
             });
-//end in progress
 
-            if ($scope.company.defaultValues) {
-                $scope.company.defaultValues.forEach(function (day) {
+            if($scope.company.defaultValues) {
+                $scope.company.defaultValues.forEach(function(day){
                     var dayExisted = _.findWhere($scope.timesheet, {date: moment(new Date(day.date)).format('MM/DD/YYYY')});
-                    if(dayExisted){
+                    if(dayExisted) {
                         angular.extend(dayExisted, day);
                     }
                 });
+            }
+        }
+
+        function generateTimesheetTables(day, index){
+            var currentDate = new Date(day.date),
+                currentDayWeek = moment(currentDate).get('isoWeek'),
+                currentDayMonth = moment(currentDate).get('month'),
+                currentDayYear = moment(currentDate).get('year') - moment(new Date()).get('year'),
+                daysBeforeTimesheetStart = moment(currentDate).isoWeekday(),
+                daysAfterTimesheetEnd = $scope.timesheet[index - 1] && 7 - moment(new Date($scope.timesheet[index - 1].date)).isoWeekday(),
+                generatedDay;
+
+            //last week reset
+            if(currentDayWeek == 53 && $scope.splittedTimesheet[currentDayYear - 1]) {
+                currentDayWeek = 0;
+            }
+
+            if(currentDate.getDay() == 0 || currentDate.getDay() == 1) {
+                day.weekend = true;
+            }
+
+            function generateCurrentMonth(){
+                $scope.splittedTimesheet[currentDayYear][currentDayMonth] = [];
+            }
+
+            function generateCurrentWeek(){
+                $scope.splittedTimesheet[currentDayYear][currentDayMonth][currentDayWeek] = [];
+            }
+
+            function generatePreviousMonthDays(){
+                for(var k = 0; k < daysBeforeTimesheetStart - 1; k++) {
+                    generatedDay = _.clone($scope.company.template);
+                    generatedDay.date = moment(currentDate).subtract(k + 1, 'day').format('MM/DD/YYYY');
+                    generatedDay.disabled = true;
+                    $scope.splittedTimesheet[currentDayYear][currentDayMonth][currentDayWeek].unshift(generatedDay);
+                }
+
+                $scope.splittedTimesheet[currentDayYear][currentDayMonth][currentDayWeek].push(day);
+            }
+
+            function generateNextMonthDays(){
+                var previousMonth;
+
+                if($scope.splittedTimesheet[currentDayYear].length && $scope.splittedTimesheet[currentDayYear][currentDayMonth - 1]) {
+                    //get current year month
+                    previousMonth = $scope.splittedTimesheet[currentDayYear][currentDayMonth - 1];
+                }
+                else {
+                    //get previous year month
+                    previousMonth = $scope.splittedTimesheet[currentDayYear - 1][$scope.splittedTimesheet[currentDayYear - 1].length - 1];
+                }
+
+                for(var i = 0; i < daysAfterTimesheetEnd; i++) {
+                    generatedDay = _.clone($scope.company.template);
+                    generatedDay.date = moment(currentDate).subtract(i, 'day').calendar();
+                    generatedDay.disabled = true;
+                    previousMonth[previousMonth.length - 1].push(generatedDay);
+                }
+            }
+
+
+            if($scope.splittedTimesheet[currentDayYear]) {
+                if($scope.splittedTimesheet[currentDayYear][currentDayMonth]) {
+                    if($scope.splittedTimesheet[currentDayYear][currentDayMonth][currentDayWeek]) {
+                        $scope.splittedTimesheet[currentDayYear][currentDayMonth][currentDayWeek].push(day);
+                    }
+                    else {
+                        $scope.splittedTimesheet[currentDayYear][currentDayMonth][currentDayWeek] = [];
+                        $scope.splittedTimesheet[currentDayYear][currentDayMonth][currentDayWeek].push(day);
+                    }
+                }
+                else {
+                    generateCurrentMonth();
+                    generateCurrentWeek();
+
+                    //generate days after previous month end
+                    if($scope.splittedTimesheet[currentDayYear][currentDayMonth - 1]) {
+                        generateNextMonthDays();
+                    }
+
+                    generatePreviousMonthDays();
+                }
+            }
+            else {
+                $scope.splittedTimesheet[currentDayYear] = [];
+
+                generateCurrentMonth();
+                generateCurrentWeek();
+
+                //generate days after previous year end
+                if($scope.splittedTimesheet[currentDayYear - 1]) {
+                    generateNextMonthDays();
+                }
+
+                generatePreviousMonthDays();
             }
         }
 
@@ -310,6 +320,7 @@ angular.module('myApp.timesheet', ['ngRoute'])
                 //reset customDay
                 day.color = false;
                 day.time = 8;
+                day.comment = '';
             }
         }
     }]);
