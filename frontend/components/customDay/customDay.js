@@ -24,12 +24,11 @@ angular.module('myApp')
                 scope.editableName = false;
                 scope.editableWorkload = false;
 
-                scope.$watch('company.dayTypes', function(dayTypes) {
-                    if(dayTypes){
-                        scope.dayTypes = dayTypes;
-                        paintHexagons();
+                scope.$watch('company.dayTypes', function(newValue, oldValue) {
+                    if(newValue && newValue != oldValue){
+                        scope.saveDayType(oldValue);
                     }
-                });
+                }, true);
 
                 function paintHexagons() {
                     $timeout(function() {
@@ -47,9 +46,10 @@ angular.module('myApp')
                         });
                     });
                 }
+                paintHexagons();
 
                 scope.addCustomDay = function() {
-                    scope.dayTypes.push({
+                    scope.company.dayTypes.push({
                         name: 'New Day',
                         workload: 8,
                         color: '#123'

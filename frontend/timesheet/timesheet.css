@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 .timesheet-container {
-  float: left; }
+  float: left;
+  clear: left; }
 
 .timesheet-wrapper {
   float: left;
@@ -24,6 +25,9 @@
   margin-bottom: 40px;
   padding: 36px 27px;
   background: #fff; }
+
+.timesheet-controls-wrapper {
+  float: right; }
 
 .timesheet-controls {
   float: right;

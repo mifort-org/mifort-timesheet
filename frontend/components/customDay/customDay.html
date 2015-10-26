@@ -14,18 +14,18 @@
   limitations under the License.
 -->
 
-<!--{{dayTypes}}-->
+<!--{{company.dayTypes}}-->
 
 <div class="custom-days-wrapper">
     <dl>
-        <dt ng-repeat-start="day in dayTypes"
+        <dt ng-repeat-start="day in company.dayTypes"
             id="customDay-{{$index}}"
             ng-class="{'odd-day' : $index%2}"
             ng-click="editableName = true"
             click-outside="editableName = false">
             <span ng-show="!editableName">{{day.name}}</span>
 
-            <input type="text" ng-show="editableName" ng-value="day.name"/>
+            <input type="text" ng-show="editableName" ng-model="day.name"/>
         </dt>
         <dd ng-repeat-end
             id="customDayWorkload-{{$index}}"
@@ -34,20 +34,20 @@
             click-outside="editableWorkload = false">
             <span ng-show="!editableWorkload">{{day.time}}</span>
 
-            <input type="text" ng-show="editableWorkload" ng-value="day.time"/>
+            <input type="text" ng-show="editableWorkload" ng-model="day.time"/>
 
             hours
         </dd>
     </dl>
 
     <div class="hexagon-underwear-wrapper">
-        <div class="hexagon-underwear" ng-repeat="day in dayTypes"></div>
+        <div class="hexagon-underwear" ng-repeat="day in company.dayTypes"></div>
         <div class="hexagon-underwear" ng-click="addCustomDay()"></div>
     </div>
 
     <div class="hexagon-wrapper">
         <div class="hexagon"
-             ng-repeat="day in dayTypes"
+             ng-repeat="day in company.dayTypes"
              data-color="{{day.color}}"
              style="background: {{day.color}};">
         </div>

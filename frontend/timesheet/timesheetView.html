@@ -14,6 +14,58 @@
   limitations under the License.
 -->
 
+<div class="timesheet-controls-wrapper">
+    <div class="timesheet-controls">
+        <div class="clearfix">
+            <label for="period">Report Period</label>
+
+            <select id="period"
+                    ng-options="period as period.periodName for period in periodSettings"
+                    ng-model="selectedPeriod"
+                    class="form-control timesheet-control">
+            </select>
+        </div>
+
+        <div class="clearfix">
+            <label for="startDate">Start Date</label>
+
+            <div class="timesheet-control">
+                <p class="input-group ">
+                    <input id="startDate"
+                           class="form-control"
+                           datepicker-popup
+                           ng-model="startDate"
+                           is-open="calendarIsOpened"
+                           min-date="minDate"
+                           max-date="'2020-06-22'"
+                           datepicker-options="dateOptions"
+                           date-disabled="disabled(date, mode)"
+                           ng-required="true"
+                           close-text="Close"/>
+
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-click="openCalendar($event)">
+                        <i class="glyphicon glyphicon-calendar"></i>
+                    </button>
+                </span>
+                </p>
+            </div>
+        </div>
+
+        <button type="button" class="primary-button" ng-click="splitTimesheet(selectedPeriod, startDate)">
+            Split
+        </button>
+    </div>
+
+    <div class="timesheet-controls">
+        <h3>Custom Day</h3>
+
+        <div class="clearfix">
+            <div custom-day></div>
+        </div>
+    </div>
+</div>
+
 <div class="timesheet-container" ng-repeat="year in splittedTimesheet">
     <div class="timesheet-wrapper" ng-if="month" ng-repeat="month in year track by $index">
         <div class="timesheet-header">{{::getMonthName(month)}}</div>
@@ -24,7 +76,7 @@
                 </thead>
 
                 <tbody>
-                <tr ng-repeat="week in month track by $index"  ng-if="week.length">
+                <tr ng-repeat="week in month track by $index" ng-if="week.length">
                     <td table-cell
                         ng-repeat="day in week track by $index"
                         ng-class="{'period-start': day.isPeriodStartDate, 'period-end': day.isPeriodEndDate, 'weekend': day.weekend, 'disabled-day': day.disabled}"
@@ -36,57 +88,8 @@
         <!--<small>{{splittedTimesheet[$index]}}</small>-->
     </div>
 </div>
-<!--<small>{{project}}</small>-->
+<!--<small>{{timesheet}}</small>-->
 <!--<small>{{splittedTimesheet}}</small>-->
-<div class="timesheet-controls">
-    <div class="clearfix">
-        <label for="period">Report Period</label>
-
-        <select id="period"
-                ng-options="period as period.periodName for period in periodSettings"
-                ng-model="selectedPeriod"
-                class="form-control timesheet-control">
-        </select>
-    </div>
-
-    <div class="clearfix">
-        <label for="startDate">Start Date</label>
-
-        <div class="timesheet-control">
-            <p class="input-group ">
-                <input id="startDate"
-                       class="form-control"
-                       datepicker-popup
-                       ng-model="startDate"
-                       is-open="calendarIsOpened"
-                       min-date="minDate"
-                       max-date="'2020-06-22'"
-                       datepicker-options="dateOptions"
-                       date-disabled="disabled(date, mode)"
-                       ng-required="true"
-                       close-text="Close"/>
-
-                <span class="input-group-btn">
-                    <button type="button" class="btn btn-default" ng-click="openCalendar($event)">
-                        <i class="glyphicon glyphicon-calendar"></i>
-                    </button>
-                </span>
-            </p>
-        </div>
-    </div>
-
-    <button type="button" class="primary-button" ng-click="splitTimesheet(selectedPeriod, startDate)">
-        Split
-    </button>
-</div>
-
-<div class="timesheet-controls">
-    <h3>Custom Day</h3>
-
-    <div class="clearfix">
-        <div custom-day></div>
-    </div>
-</div>
 
 <script type="text/ng-template" id="daySettimgs.html">
     <a href=""

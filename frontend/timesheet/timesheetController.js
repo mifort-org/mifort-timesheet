@@ -142,7 +142,7 @@ angular.module('myApp.timesheet', ['ngRoute'])
 
                 for(var i = 0; i < daysAfterTimesheetEnd; i++) {
                     generatedDay = _.clone($scope.company.template);
-                    generatedDay.date = moment(currentDate).subtract(i, 'day').calendar();
+                    generatedDay.date = moment(currentDate).subtract(i, 'day').format('MM/DD/YYYY');
                     generatedDay.disabled = true;
                     previousMonth[previousMonth.length - 1].push(generatedDay);
                 }
@@ -251,7 +251,7 @@ angular.module('myApp.timesheet', ['ngRoute'])
 
                         if (day.date && moment(new Date(day.date)) >= moment(new Date(splitStartDate))) {
                             currentDateDay = new Date(day.date).getDate();
-                            endDateDay = startDateDay - 1 || new Date(moment(new Date(day.date)).endOf('month').calendar()).getDate();
+                            endDateDay = startDateDay - 1 || new Date(moment(new Date(day.date)).endOf('month').format('MMMM YYYY')).getDate();
 
                             if (currentDateDay == startDateDay) {
                                 day.isPeriodStartDate = true;
@@ -322,5 +322,19 @@ angular.module('myApp.timesheet', ['ngRoute'])
                 day.time = 8;
                 day.comment = '';
             }
-        }
+        };
+
+        $scope.saveDayType = function(oldValues){
+            $scope.company.defaultValues.forEach(function(defaultValue){
+                oldValues.forEach(function(oldDayType){
+                    if(oldDayType.time == defaultValue.time &&
+                        oldDayType.color == defaultValue.color &&
+                        oldDayType.comment == defaultValue.comment){
+                        // make a deep diff with angular.parse instead
+                    }
+                });
+            });
+
+            timesheetService.saveCompany($scope.company);
+        };
     }]);
