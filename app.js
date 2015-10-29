@@ -45,7 +45,8 @@ app.use(expressValidator({
         isTimelog: validators.timelogs,
         isArray: validators.isArray,
         isAssignments: validators.isAssignments,
-        isEmails: validators.isEmails
+        isEmails: validators.isEmails,
+        isFilters: validators.isFilters
     }
 }));
 
@@ -112,8 +113,10 @@ app.get('/company/:companyId',
 app.get('/report/filters/:companyId',
         report.restGetFilterValues);
 app.post('/report/common',
+        validators.validateCommonReport,
         report.restCommonReport);
 app.post('/report/common/download',
+        validators.validateCommonReport,
         report.restDowloadCSV);
 
 // default error handler

@@ -61,7 +61,8 @@ var columns = {
 //need to extract common parts to separate method!!!!
 exports.restDowloadCSV = function(req, res, next) {
     var filterObj = req.body;
-    log.debug('-REST call: common report. Company id: %s', filterObj.companyId.toHexString());
+    log.debug('-REST call: Download common report. Company id: %s', 
+        filterObj.companyId.toHexString());
 
     var timelogCollection = dbSettings.timelogCollection();
     projects.findProjectIdsByCompanyId(filterObj.companyId, function(err, projectIds) {
@@ -80,9 +81,22 @@ exports.restDowloadCSV = function(req, res, next) {
             .sort(sortObj)
             .skip((filterObj.page-1)*filterObj.pageSize) // not efficient way but It's just for the first implementation
             .limit(filterObj.pageSize)
-            .stream();
+            .stream({
+                transform: function(doc) {
+                    if(doc.date) {
+                        doc.date = utils.formatDate(doc.date);
+                    }
+                    return doc;
+                }
+            });
         var csvStringifier = csvStringify({ header: true, columns: columns });
-        cursorStream.pipe(csvStringifier).pipe(process.stdout);
+
+        res.attachment('report.csv');
+        res.setHeader('Content-Type', 'application/octet-stream; charset=utf-8');
+        cursorStream.pipe(csvStringifier).pipe(res);
+        
+        log.debug('-REST Result: Download common report. CSV file is generated. Company id: %s', 
+            filterObj.companyId.toHexString());
     });
 };
 

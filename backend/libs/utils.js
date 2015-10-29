@@ -73,6 +73,10 @@ exports.jsonStringify = function(key, value) {
     return value;
 };
 
+exports.formatDate = function(date) {
+    return moment(date).format(dateFormat);
+};
+
 //private section
 function getObjectIdParam(req, name) {
     var entityObjectId = getParameter(req, name);

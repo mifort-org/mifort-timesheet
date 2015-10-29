@@ -171,6 +171,18 @@ exports.validateDeactivateProject = function(req, res, next) {
     returnErrors(req, res, next);
 };
 
+exports.validateCommonReport = function(req, res, next) {
+    var filterObj = req.body;
+    if(filterObj) {
+        req.checkBody('page', 'Page is required').notEmpty();
+        req.checkBody('pageSize', 'Page size is required').notEmpty();
+        req.checkBody('companyId', 'Company id is required').notEmpty();
+        req.checkBody('filters', 'Incorrect filters value').isFilters();
+    }
+
+    returnErrors(req, res, next);
+};
+
 //Custom validators for express-validator
 exports.isArray = function(value) {
     return Array.isArray(value);
@@ -216,6 +228,21 @@ exports.isEmails = function(values) {
     if(Array.isArray(values)) {
         return values.every(function(val) {
             return validator.isEmail(val);
+        });
+    }
+
+    return false;
+};
+
+exports.isFilters = function(filters) {
+    if(Array.isArray(filters)) {
+        return filters.every(function(filter) {
+            if(filter.field === 'date') {
+                return validator.isDate(filter.start)
+                    && validator.isDate(filter.end);
+            } else {
+                return Array.isArray(filter.value);
+            }
         });
     }
 
