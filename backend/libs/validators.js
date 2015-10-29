@@ -178,7 +178,19 @@ exports.validateCommonReport = function(req, res, next) {
         req.checkBody('pageSize', 'Page size is required').notEmpty();
         req.checkBody('companyId', 'Company id is required').notEmpty();
         req.checkBody('filters', 'Incorrect filters value').isFilters();
+        if(filterObj.sort) {
+            req.checkBody('sort.field', 'Field name is required for sort object').notEmpty();
+            req.checkBody('sort.asc', 'Asc attribute is required for sort object').notEmpty().isBoolean();
+        }
     }
+
+    returnErrors(req, res, next);
+};
+
+exports.validateGetFilters = function(req, res, next) {
+    req.checkParams(reqParams.companyIdParam, 
+        util.format(invalidFormatMessageTemplate, reqParams.companyIdParam))
+            .notEmpty().isMongoId();
 
     returnErrors(req, res, next);
 };
@@ -235,6 +247,10 @@ exports.isEmails = function(values) {
 };
 
 exports.isFilters = function(filters) {
+    if(!filters.length) { // if array is empty
+        return true;
+    }
+
     if(Array.isArray(filters)) {
         return filters.every(function(filter) {
             if(filter.field === 'date') {

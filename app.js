@@ -111,6 +111,7 @@ app.get('/company/:companyId',
 
 //report
 app.get('/report/filters/:companyId',
+        validators.validateGetFilters,
         report.restGetFilterValues);
 app.post('/report/common',
         validators.validateCommonReport,
