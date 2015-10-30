@@ -25,8 +25,11 @@ angular.module('myApp')
                 scope.editableWorkload = false;
 
                 scope.$watch('company.dayTypes', function(newValue, oldValue) {
-                    if(newValue && newValue != oldValue){
-                        scope.saveDayType(oldValue);
+                    if(newValue && oldValue && newValue != oldValue){
+                        var pureDayTypesObject = JSON.parse(angular.toJson(newValue)),
+                            changedDayType = _.omit(pureDayTypesObject, function(v,k) { return oldValue[k] === v; });
+
+                        scope.saveDayType(changedDayType);
                     }
                 }, true);
 
