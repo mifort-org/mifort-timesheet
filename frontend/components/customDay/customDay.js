@@ -24,6 +24,10 @@ angular.module('myApp')
                 scope.editableName = false;
                 scope.editableWorkload = false;
 
+                $('#myinputid').hexColorPicker({
+                    size: 3
+                });
+
                 scope.$watch('company.dayTypes', function(newValue, oldValue) {
                     var changedDayTypeOldValue,
                         changedDayType,

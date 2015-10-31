@@ -1,0 +1,38 @@
+.hex-color-picker-wrapper .color-block{
+	display:inline-block;
+}
+.hex-color-picker-wrapper .picker-row{
+	text-align:center;width:100%;
+}
+.hex-color-picker-wrapper .picker-sidebar{
+	float:right;
+	font-size:0;
+}
+.hex-color-picker-wrapper .color-picker-container{
+	float:left;
+	font-size:0;
+}
+.hex-color-picker-wrapper .picker-form{
+	width:100%;
+	position:relative;
+}
+.hex-color-picker-wrapper .picker-form-wrapper{
+	clear:both;
+}
+.hex-color-picker-wrapper .picker-form .selected-color{
+	width:100%;
+	box-sizing:border-box;
+}
+.hex-color-picker-wrapper .picker-form .submit{
+	position:absolute;
+	top:0;
+	right:0;
+}
+.hex-color-picker-wrapper .picker-form input{
+	border: medium;
+   border-radius: 0;
+   font-size: 12px;
+   height: 30px;
+   margin: 0;
+   padding: 3px 5px;
+}

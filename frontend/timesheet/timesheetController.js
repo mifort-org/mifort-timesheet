@@ -321,18 +321,9 @@ angular.module('myApp.timesheet', ['ngRoute'])
                 day.color = dayType.color;
             }
             else{
-                //reset customDay
-                //var defaultValueIndex = _.findIndex($scope.company.defaultValues, function(defaultValue) {
-                //    return defaultValue.date == day.date;
-                //});
-
                 day.color = '';
                 day.time = $scope.company.template.time;
                 day.comment = $scope.company.template.comment;
-
-                //if(defaultValueIndex >= 0){
-                //    $scope.company.defaultValues.splice(defaultValueIndex, 1);
-                //}
             }
         };
 
