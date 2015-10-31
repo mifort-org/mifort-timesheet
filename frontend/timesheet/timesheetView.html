@@ -90,15 +90,15 @@
 </div>
 <!--<small>{{timesheet}}</small>-->
 <!--<small>{{splittedTimesheet}}</small>-->
-
+{{company.defaultValues}}
 <script type="text/ng-template" id="daySettimgs.html">
     <a href=""
        class="custom-day-button"
        ng-repeat="dayType in company.dayTypes"
-       ng-click="chooseDayType(dayType, day)"
+       ng-click="chooseDayType(day, dayType)"
        ng-style="{background: dayType.color}">
         {{dayType.name}}
     </a>
 
-    <a href="" class="custom-day-button" ng-click="chooseDayType(false, day)">None</a>
+    <a href="" class="custom-day-button" ng-click="chooseDayType(day)">None</a>
 </script>
