@@ -25,9 +25,19 @@ angular.module('myApp.report', ['ngRoute'])
         });
     }])
 
-    .controller('reportController', ['$scope', function($scope) {
+    .controller('reportController', ['$scope', 'reportService', 'preferences', function($scope, reportService, preferences) {
+        var companyId = preferences.get('user').companyId;
         $scope.reportColumns = ['Data', 'User', 'Project', 'Assignment', 'Time', 'Action'];
 
+        $scope.reportSettings = {
+            companyId: companyId,
+            sort: {
+                'field': 'time',
+                'asc': true
+            },
+            pageSize: 10,
+            page: 1
+        };
         $scope.gridOptions = {
             enableFiltering: true,
             columnDefs: [
@@ -40,4 +50,20 @@ angular.module('myApp.report', ['ngRoute'])
             ],
             data: 'reportColumns'
         };
+
+        reportService.getFilters(companyId).success(function(data) {
+            $scope.filters = data;
+            $scope.filters.push({
+                    "field": "date",
+                    "start": "01/01/2011",
+                    "end": "02/02/2114"
+                }
+            );
+            $scope.reportSettings.filters = [];
+
+
+            reportService.getReport(companyId, $scope.reportSettings).success(function(data) {
+                $scope.reportData = data;
+            });
+        });
     }]);

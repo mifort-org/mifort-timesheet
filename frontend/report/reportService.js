@@ -13,3 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+'use strict';
+
+angular.module('myApp.report').factory('reportService',
+    ['$http', function ($http) {
+        return {
+            getFilters: function (companyId) {
+                return $http.get('report/filters/' + companyId);
+            },
+            getReport: function (companyId, reportSettings) {
+                return $http.post('report/common/', reportSettings);
+            }
+        }
+    }
+    ]);
