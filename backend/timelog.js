@@ -16,6 +16,7 @@
 
 var utils = require('./libs/utils');
 var dbSettings = require('./libs/mongodb_settings');
+var log = require('./libs/logger');
 
 //Rest API
 exports.restSave = function(req, res, next) {
@@ -24,6 +25,9 @@ exports.restSave = function(req, res, next) {
     
     var ids = [];
     var timelogs = req.body.timelog;
+
+    log.debug('-REST call: Save timelog. Number of timelog items: %d', timelogs.length);
+
     timelogs.forEach(function(log) {
         if(log._id) {
             batch.find({_id: log._id}).upsert().replaceOne(log);
@@ -36,12 +40,15 @@ exports.restSave = function(req, res, next) {
     batch.execute(function(err, result) {
         findAllByIds(ids, function(err, timelogs) {
             returnTimelogArray(err, res, timelogs, next);
+            log.debug('-REST Result: Save timelog. Number of saved items: %d', timelogs.length);
         });
     });
 };
 
 exports.restDelete = function(req, res, next) {
     var timelogId = utils.getTimelogId(req);
+    log.debug('-REST call: Remove timelog. Timelog Id: %s', timelogId.toHexString());
+
     var timelogCollection = dbSettings.timelogCollection();
     timelogCollection.remove({_id:timelogId}, {single: true},
       function(err, numberOfDeleted){
@@ -49,6 +56,8 @@ exports.restDelete = function(req, res, next) {
             next(err);
         } else {
             res.json({ok: true});
+            log.debug('-REST result: Remove timelog. Timelog is removed. Id: %s', 
+                timelogId.toHexString());
         }
     });
 };
@@ -58,6 +67,9 @@ exports.restGetByDates = function(req, res, next) {
     var end = utils.getEndDate(req);
     var userId = utils.getUserId(req);
     var projectId = utils.getProjectId(req);
+
+    log.debug('-REST call: Get timelogs by dates. Start date: %s, End date: %s, User Id: %s, Project Id: %s.', 
+        start, end, userId.toHexString(), projectId.toHexString());
 
     var timelogCollection = dbSettings.timelogCollection();
     var query = {
@@ -69,6 +81,8 @@ exports.restGetByDates = function(req, res, next) {
 
     timelogCollection.find(query, {sort: 'date'}).toArray(function(err, timelogs){
         returnTimelogArray(err, res, timelogs, next);
+        log.debug('-REST result: Get timelogs by dates. User Id: %s, Timelog result size: %d.', 
+            userId.toHexString(), timelogs.length);
     });
 };
 

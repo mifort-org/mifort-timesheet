@@ -37,7 +37,8 @@ var logger = new (winston.Logger)({
       handleExceptions: true,
       humanReadableUnhandledException: true
     })
-  ]
+  ],
+  exitOnError: false
 });
 
 module.exports = logger;

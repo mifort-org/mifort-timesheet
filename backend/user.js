@@ -21,6 +21,7 @@ var log = require('./libs/logger');
 
 //Rest API
 exports.restGetCurrent = function(req, res) {
+    log.debug('-REST call: Get current user. Empty user?: ' + (req.user == true));
     res.json(req.user);
 };
 
@@ -48,12 +49,17 @@ exports.restGetByProjectId = function(req, res, next) {
                 });
             }
             res.json(projectUsers);
+            log.debug('-REST result: Get users by project id. Project id: %s, Number Of users: %d', 
+                projectIdParam.toHexString(), projectUsers.length);
         }
     });
 };
 
 exports.restGetByCompanyId = function(req, res, next) {
     var companyIdParam = utils.getCompanyId(req);
+    log.debug('-REST call: Get users by company id. Company id: %s', 
+        companyIdParam.toHexString());
+
     var users = dbSettings.userCollection();
     users.find({companyId: companyIdParam},
                {workload: 1,
@@ -64,12 +70,18 @@ exports.restGetByCompanyId = function(req, res, next) {
                 next(err);
             } else {
                 res.json(companyUsers);
+                log.debug('-REST result: Get users by company id. Company id: %s. Number of company users: %d', 
+                    companyIdParam.toHexString(), companyUsers.length);
             }
         });
 };
 
 exports.restReplaceAssignments = function(req, res, next) {
     var projectId = utils.getProjectId(req);
+
+    log.debug('-REST call: Replace assignments. Project id: %s', 
+        projectId.toHexString());
+
     var user = req.body;
     var assignments = user.assignments;
     var users = dbSettings.userCollection();
@@ -82,6 +94,8 @@ exports.restReplaceAssignments = function(req, res, next) {
                              { $push: { assignments: { $each: assignments } }},
                     function(err, updatedUser){
                         res.json({ok: true}); //saved object???
+                        log.debug('-REST result: Replace assignments. Project id: %s', 
+                            projectId.toHexString());
                     });
             } else {
                 next(err);
