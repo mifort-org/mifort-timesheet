@@ -36,8 +36,7 @@ exports.restCommonReport = function(req, res, next) {
             return object._id;
         });
         var query = convertFiltersToQuery(filterObj.filters);
-        var sortObj = {};
-        sortObj[filterObj.sort.field] = (filterObj.sort.asc ? 1 : -1);
+        var sortObj = makeSortObject(filterObj.sort);
 
         timelogCollection.find(query)
             .sort(sortObj)
@@ -74,8 +73,7 @@ exports.restDowloadCSV = function(req, res, next) {
             return object._id;
         });
         var query = convertFiltersToQuery(filterObj.filters);
-        var sortObj = {};
-        sortObj[filterObj.sort.field] = (filterObj.sort.asc ? 1 : -1);
+        var sortObj = makeSortObject(filterObj.sort);
 
         var cursorStream = timelogCollection.find(query)
             .sort(sortObj)
@@ -152,17 +150,28 @@ exports.restGetFilterValues = function(req, res, next) {
 //Private
 function convertFiltersToQuery(filters){
     var query = {};
-    filters.forEach(function(filter) {
-        switch(filter.field) {
-            case 'date':
-                query.date = {$gte: filter.start,
-                              $lte: filter.end};
-                break;
-            default:
-                query[filter.field] = {$in: filter.value};
+    if(filters) {
+        filters.forEach(function(filter) {
+            switch(filter.field) {
+                case 'date':
+                    query.date = {$gte: filter.start,
+                                  $lte: filter.end};
+                    break;
+                default:
+                    query[filter.field] = {$in: filter.value};
 
-        }
-    });
+            }
+        });
+    }
 
     return query;
+}
+
+function makeSortObject(sort) {
+    var sortObj = {};
+    if(sort) {
+        sortObj[sort.field] = (sort.asc ? 1 : -1);
+    }
+
+    return sortObj;
 }
