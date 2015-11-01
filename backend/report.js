@@ -103,7 +103,7 @@ exports.restGetFilterValues = function(req, res, next) {
     log.debug('-REST call: Get filter values. Company id: %s', companyId.toHexString());
 
     var timelogCollection = dbSettings.timelogCollection();
-    var filterValues = {};
+    var filterValues = [];
 
     projects.findProjectIdsByCompanyId(companyId, function(err, projectIds) {
         if(err) {
@@ -120,7 +120,7 @@ exports.restGetFilterValues = function(req, res, next) {
                     next(err);
                     return;
                 }
-                filterValues.userNames = userNames;
+                filterValues.push({field:'userName', value: userNames});
                 
                 timelogCollection.distinct('projectName', {projectId : {$in: projectIdArray}},
                     function(err, projectNames){
@@ -128,7 +128,7 @@ exports.restGetFilterValues = function(req, res, next) {
                             next(err);
                             return;
                         }
-                        filterValues.projectNames = projectNames;
+                        filterValues.push({field:'projectName', value: projectNames});
 
                         timelogCollection.distinct('role', {projectId : {$in: projectIdArray}},
                             function(err, roles){
@@ -136,7 +136,7 @@ exports.restGetFilterValues = function(req, res, next) {
                                     next(err);
                                     return;
                                 }
-                                filterValues.roles = roles;
+                                filterValues.push({field:'role', value: roles});
                                 res.json(filterValues);
                                 log.debug('-REST result: Report filters returned. Company id: %s', 
                                     companyId.toHexString());
