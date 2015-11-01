@@ -173,15 +173,13 @@ exports.validateDeactivateProject = function(req, res, next) {
 
 exports.validateCommonReport = function(req, res, next) {
     var filterObj = req.body;
-    if(filterObj) {
-        req.checkBody('page', 'Page is required').notEmpty();
-        req.checkBody('pageSize', 'Page size is required').notEmpty();
-        req.checkBody('companyId', 'Company id is required').notEmpty();
-        req.checkBody('filters', 'Incorrect filters value').isFilters();
-        if(filterObj.sort) {
-            req.checkBody('sort.field', 'Field name is required for sort object').notEmpty();
-            req.checkBody('sort.asc', 'Asc attribute is required for sort object').notEmpty().isBoolean();
-        }
+    req.checkBody('page', 'Page is required').notEmpty();
+    req.checkBody('pageSize', 'Page size is required').notEmpty();
+    req.checkBody('companyId', 'Company id is required').notEmpty();
+    req.checkBody('filters', 'Incorrect filters value').isFilters();
+    if(filterObj.sort) {
+        req.checkBody('sort.field', 'Field name is required for sort object').notEmpty();
+        req.checkBody('sort.asc', 'Asc attribute is required for sort object').notEmpty().isBoolean();
     }
 
     returnErrors(req, res, next);
@@ -189,13 +187,11 @@ exports.validateCommonReport = function(req, res, next) {
 
 exports.validateDowloadCommonReport = function(req, res, next) {
     var filterObj = req.body;
-    if(filterObj) {
-        req.checkBody('companyId', 'Company id is required').notEmpty();
-        req.checkBody('filters', 'Incorrect filters value').isFilters();
-        if(filterObj.sort) {
-            req.checkBody('sort.field', 'Field name is required for sort object').notEmpty();
-            req.checkBody('sort.asc', 'Asc attribute is required for sort object').notEmpty().isBoolean();
-        }
+    req.checkBody('companyId', 'Company id is required').notEmpty();
+    req.checkBody('filters', 'Incorrect filters value').isFilters();
+    if(filterObj.sort) {
+        req.checkBody('sort.field', 'Field name is required for sort object').notEmpty();
+        req.checkBody('sort.asc', 'Asc attribute is required for sort object').notEmpty().isBoolean();
     }
 
     returnErrors(req, res, next);
