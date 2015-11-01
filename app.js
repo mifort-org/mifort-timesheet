@@ -54,7 +54,8 @@ app.use(session(
     { secret: 'homogen cat' ,
     name: 'kaas',
     cookie: { maxAge : 3600000 },
-    resave: true, 
+    resave: false,
+    rolling: true, 
     saveUninitialized: true})
 );
 //last step: init auth
