@@ -117,7 +117,7 @@ app.post('/report/common',
         validators.validateCommonReport,
         report.restCommonReport);
 app.post('/report/common/download',
-        validators.validateCommonReport,
+        validators.validateDowloadCommonReport,
         report.restDowloadCSV);
 
 // default error handler

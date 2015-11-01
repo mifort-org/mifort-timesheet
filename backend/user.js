@@ -26,6 +26,8 @@ exports.restGetCurrent = function(req, res) {
 
 exports.restGetByProjectId = function(req, res, next) {
     var projectIdParam = utils.getProjectId(req);
+    log.debug('-REST call: Get users by project id. Project id: %s', 
+        projectIdParam.toHexString());
     var users = dbSettings.userCollection();
     users.find({'assignments.projectId': projectIdParam},
                {

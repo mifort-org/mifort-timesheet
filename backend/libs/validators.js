@@ -187,6 +187,20 @@ exports.validateCommonReport = function(req, res, next) {
     returnErrors(req, res, next);
 };
 
+exports.validateDowloadCommonReport = function(req, res, next) {
+    var filterObj = req.body;
+    if(filterObj) {
+        req.checkBody('companyId', 'Company id is required').notEmpty();
+        req.checkBody('filters', 'Incorrect filters value').isFilters();
+        if(filterObj.sort) {
+            req.checkBody('sort.field', 'Field name is required for sort object').notEmpty();
+            req.checkBody('sort.asc', 'Asc attribute is required for sort object').notEmpty().isBoolean();
+        }
+    }
+
+    returnErrors(req, res, next);
+};
+
 exports.validateGetFilters = function(req, res, next) {
     req.checkParams(reqParams.companyIdParam, 
         util.format(invalidFormatMessageTemplate, reqParams.companyIdParam))
