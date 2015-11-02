@@ -37,7 +37,7 @@ angular.module('myApp', [
     }])
 
     .controller('myAppController', ['$scope', '$location', '$cookies', '$http', 'preferences', function ($scope, $location, $cookies, $http, preferences) {
-        if($cookies.get('user')){
+        if(preferences.get('user')){
             $scope.isLoggedIn = true;
         }
         //else{
@@ -45,7 +45,7 @@ angular.module('myApp', [
         //}
 
         $scope.logout = function () {
-            $cookies.remove('user');
+            //$cookies.remove('user');
             preferences.remove('user');
 
             $http.get('logout').then(function () {
