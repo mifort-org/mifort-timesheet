@@ -30,7 +30,8 @@ angular.module('myApp', [
     'preferences',
     'angularMoment',
     'angular-click-outside',
-    'ui.grid'
+    'ui.grid',
+    'ui.grid.resizeColumns'
 ])
     .config(['$routeProvider', function ($routeProvider) {
         $routeProvider.otherwise({redirectTo: '/login'});
@@ -40,9 +41,6 @@ angular.module('myApp', [
         if(preferences.get('user')){
             $scope.isLoggedIn = true;
         }
-        //else{
-            //$location.path('/login');
-        //}
 
         $scope.logout = function () {
             //$cookies.remove('user');

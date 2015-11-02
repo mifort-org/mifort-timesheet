@@ -1,0 +1,40 @@
+/*!
+ * Copyright 2015 mifort.org
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+.report-wrapper {
+  background: #fff;
+  padding: 30px 27px;
+  font-size: 1.6rem; }
+
+.ui-grid {
+  font-weight: normal;
+  border-color: #eaeff7; }
+  .ui-grid .ui-grid-header {
+    border-color: #eaeff7; }
+  .ui-grid .ui-grid-header-cell {
+    border-color: #eaeff7; }
+    .ui-grid .ui-grid-header-cell .sortable {
+      background: #fff; }
+  .ui-grid .ui-grid-row .ui-grid-cell {
+    background: #fff;
+    border-color: #eaeff7; }
+
+.ui-grid-cell-contents {
+  padding: 9px 12px 11px; }
+
+.ui-grid-row {
+  border-bottom: 1px #eaeff7 solid; }
+
+/*# sourceMappingURL=report.css.map */

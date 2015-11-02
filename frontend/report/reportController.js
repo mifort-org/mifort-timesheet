@@ -40,15 +40,46 @@ angular.module('myApp.report', ['ngRoute'])
         };
         $scope.gridOptions = {
             enableFiltering: true,
+            enableHorizontalScrollbar: 0,
             columnDefs: [
-                {field: 'Data'},
-                {field: 'User'},
-                {field: 'Project'},
-                {field: 'Assignment'},
-                {field: 'Time'},
-                {field: 'Action'}
+                {
+                    field: 'date',
+                    enableColumnResizing: true,
+                    filters: [
+                        {
+                            placeholder: 'greater than'
+                        },
+                        {
+                            placeholder: 'less than'
+                        }
+                    ]
+                },
+                {
+                    field: 'userName',
+                    enableColumnResizing: true,
+                    menuItems: [
+                        {
+                            title: 'Grid ID',
+                            action: function() {
+                                alert('Grid ID: ' + this.grid.id);
+                            }
+                        }
+                    ]
+                },
+                {
+                    field: 'projectName',
+                    enableColumnResizing: true
+                },
+                {
+                    field: 'role',
+                    enableColumnResizing: true
+                },
+                {
+                    field: 'time',
+                    enableColumnResizing: true
+                }
             ],
-            data: 'reportColumns'
+            data: 'reportData'
         };
 
         reportService.getFilters(companyId).success(function(data) {
