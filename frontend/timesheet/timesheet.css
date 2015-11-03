@@ -329,4 +329,7 @@
     text-decoration: none;
     color: inherit; }
 
+.color-picker-map {
+  cursor: pointer; }
+
 /*# sourceMappingURL=timesheet.css.map */

@@ -38,7 +38,7 @@ angular.module('myApp.report', ['ngRoute'])
             pageSize: 110,
             page: 1
         };
-        
+
         $scope.gridOptions = {
             enableFiltering: true,
             enableHorizontalScrollbar: 0,
