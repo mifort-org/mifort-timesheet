@@ -32,27 +32,20 @@ angular.module('myApp.report', ['ngRoute'])
         $scope.reportSettings = {
             companyId: companyId,
             sort: {
-                'field': 'time',
+                'field': 'date',
                 'asc': true
             },
-            pageSize: 10,
+            pageSize: 110,
             page: 1
         };
+        
         $scope.gridOptions = {
             enableFiltering: true,
             enableHorizontalScrollbar: 0,
             columnDefs: [
                 {
                     field: 'date',
-                    enableColumnResizing: true,
-                    filters: [
-                        {
-                            placeholder: 'greater than'
-                        },
-                        {
-                            placeholder: 'less than'
-                        }
-                    ]
+                    enableColumnResizing: true
                 },
                 {
                     field: 'userName',
