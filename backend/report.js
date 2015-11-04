@@ -26,7 +26,6 @@ exports.restCommonReport = function(req, res, next) {
     var filterObj = req.body;
     log.debug('-REST call: common report. Company id: %s', filterObj.companyId.toHexString());
 
-    var timelogCollection = dbSettings.timelogCollection();
     projects.findProjectIdsByCompanyId(filterObj.companyId, function(err, projectIds) {
         if(err) {
             next(err);
