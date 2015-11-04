@@ -1,3 +1,5 @@
+
+
 <!--
   Copyright 2015 mifort.org
 
@@ -52,9 +54,6 @@
              style="background: {{day.color}};">
         </div>
 
-        <!--<div class="color-picker">-->
-            <!--<a href="" ng-repeat="customColor in customColors" ng-click="chooseColor($index)">{{customColor.color}}</a>-->
-        <!--</div>-->
         <br/>
         <br/>
         <br/>
@@ -67,29 +66,10 @@
              height="79"
              orgWidth="69"
              orgHeight="79"
-             usemap="#color-picker-map"
+             usemap="#image-maps"
              alt=""/>
-        <map name="color-picker-map-maps" id="color-picker-map" class="color-picker-map">
-            <!--<area shape="rect" coords="67,77,69,79" alt="Image Map" style="outline:none;" title="Image Map" href="http://www.image-maps.com/index.php?aff=mapped_users_0"/>-->
-            <area alt="" title="" shape="poly" onclick="alert(1)" coords="27,12,30,18,39,18,43,12,39,5,31,5" style="outline:none;"/>
-            <area alt="" title="" shape="poly" onclick="alert(2)" coords="43,12,39,18,44,26,53,25,56,19,51,11" style="outline:none;"/>
-            <area alt="" title="" shape="poly" onclick="alert(3)" coords="56,18,53,25,57,32,67,32,66,21,62,17" style="outline:none;"/>
-            <area alt="" title="" shape="poly" onclick="alert(4)" coords="67,33,57,33,53,39,56,47,67,47" style="outline:none;"/>
-            <area alt="" title="" shape="poly" onclick="alert(5)" coords="66,47,57,46,52,52,56,60,61,62,67,57" style="outline:none;"/>
-            <area alt="" title="" shape="poly" onclick="alert(6)" coords="52,53,56,60,51,67,43,67,40,60,44,53" style="outline:none;"/>
-            <area alt="" title="" shape="poly" onclick="alert(7)" coords="39,59,44,67,40,73,30,73,26,67,30,59" style="outline:none;"/>
-            <area alt="" title="" shape="poly" onclick="alert(8)" coords="26,67,17,66,12,60,17,54,25,53,30,60" style="outline:none;"/>
-            <area alt="" title="" shape="poly" onclick="alert(9)" coords="4,46,13,46,17,53,13,60,6,60,1,58" style="outline:none;"/>
-            <area alt="" title="" shape="poly" onclick="alert(10)" coords="3,46,13,46,17,39,12,33,4,33,2,38" style="outline:none;"/>
-            <area alt="" title="" shape="poly" onclick="alert(11)" coords="12,33,17,26,12,19,5,18,2,20,3,32" style="outline:none;"/>
-            <area alt="" title="" shape="poly" onclick="alert(12)" coords="26,25,29,19,26,12,18,12,13,18,17,26" style="outline:none;"/>
-            <area alt="" title="" shape="poly" onclick="alert(13)" coords="40,33,43,26,39,18,31,18,26,25,30,33" style="outline:none;"/>
-            <area alt="" title="" shape="poly" onclick="alert(14)" coords="52,26,57,32,52,40,44,39,39,33,43,25" style="outline:none;"/>
-            <area alt="" title="" shape="poly" onclick="alert(15)" coords="53,53,57,47,53,40,43,39,40,45,42,53" style="outline:none;"/>
-            <area alt="" title="" shape="poly" onclick="alert(16)" coords="40,46,43,53,40,60,30,60,26,54,30,46" style="outline:none;"/>
-            <area alt="" title="" shape="poly" onclick="alert(17)" coords="26,39,30,46,26,53,17,53,13,46,16,39" style="outline:none;"/>
-            <area alt="" title="" shape="poly" onclick="alert(18)" coords="16,26,25,25,30,33,25,39,17,39,13,32" style="outline:none;"/>
-            <area alt="" title="" shape="poly" onclick="alert(19)" coords="30,33,39,33,44,40,39,46,29,46,26,39" style="outline:none;"/>
+        <map name="image-maps" id="ImageMapsCom-image-maps-2015-11-03-031026">
+            <area alt="area" title="area" href="#Timesheet" shape="poly" coords="{{area.area}}" ng-repeat="area in customColors"/>
         </map>
     </div>
 </div>
