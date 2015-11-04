@@ -126,17 +126,16 @@ angular.module('myApp')
 
                         scope.saveDayType(changedDayType, changedDayTypeOldValue);
                     }
-                    init();
 
                 }, true);
 
-                function init(){
-                    element.find('area').on('click', function(e) {
-                        e.preventDefault();
-                        console.log(123);
-                        //alert(customColors[$(this).index()].color);
-                    });
-                }
+                scope.chooseColor = function(colorIndex) {
+                    scope.customColors[colorIndex].color
+                };
+
+                scope.showColors = function() {
+
+                };
 
                 function paintHexagons() {
                     $timeout(function() {
