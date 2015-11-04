@@ -55,7 +55,7 @@ exports.restDelete = function(req, res, next) {
         if(err) {
             next(err);
         } else {
-            res.json({ok: true});
+            res.status(204).json({ok: true});
             log.debug('-REST result: Remove timelog. Timelog is removed. Id: %s', 
                 timelogId.toHexString());
         }
