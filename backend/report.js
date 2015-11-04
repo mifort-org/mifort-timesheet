@@ -37,16 +37,27 @@ exports.restCommonReport = function(req, res, next) {
         });
         var query = convertFiltersToQuery(filterObj.filters);
         var sortObj = makeSortObject(filterObj.sort);
+        var page = filterObj.page;
 
-        timelogCollection.find(query)
-            .sort(sortObj)
-            .skip((filterObj.page-1)*filterObj.pageSize) // not efficient way but It's just for the first implementation
-            .limit(filterObj.pageSize)
-            .toArray(function(err, timelogs) {
-                res.json(timelogs);
-                log.debug('-REST result: common report. Company id: %s', 
-                    filterObj.companyId.toHexString());
-            });
+        if(page == 1) {
+            var timelogCollection = dbSettings.timelogCollection();
+            timelogCollection.find(query)
+                .count(function(err, count) {
+                    res.append('X-Total-Count', count);
+                    filterTimelog(query, sortObj, page, filterObj.pageSize, res,
+                        function() {
+                            log.debug('-REST result: common report. Company id: %s', 
+                                filterObj.companyId.toHexString());
+                        });
+                });
+        } else {
+            filterTimelog(query, sortObj, page, filterObj.pageSize, res,
+                function() {
+                    log.debug('-REST result: common report. Company id: %s', 
+                        filterObj.companyId.toHexString());
+                });
+        }
+        
     });
 };
 
@@ -174,4 +185,16 @@ function makeSortObject(sort) {
     }
 
     return sortObj;
+}
+
+function filterTimelog(query, sortObj, page, pageSize, res, callback) {
+    var timelogCollection = dbSettings.timelogCollection();
+    timelogCollection.find(query)
+        .sort(sortObj)
+        .skip((page-1)*pageSize) // not efficient way but It's just for the first implementation
+        .limit(pageSize)
+        .toArray(function(err, timelogs) {
+            res.json(timelogs);
+            callback();
+        });
 }
