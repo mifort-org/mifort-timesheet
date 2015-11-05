@@ -119,7 +119,9 @@ app.post('/report/common',
         report.restCommonReport);
 app.post('/report/common/download',
         validators.validateDowloadCommonReport,
-        report.restDowloadCSV);
+        report.restConstructCSV);
+app.get('/report/download/:fileName',
+        report.restDownloadFile);
 
 // default error handler
 app.use(errorHandler);

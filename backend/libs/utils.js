@@ -44,6 +44,10 @@ exports.getTimelogId = function(req) {
     return getObjectIdParam(req, reqParams.timelogIdParam);
 };
 
+exports.getFileName = function(req) {
+    return getParameter(req, reqParams.fileNameParam);
+};
+
 //parse json. Date and ObjectId
 exports.jsonParse = function(key, value) {
     if (typeof value === 'string') {

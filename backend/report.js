@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 var csvStringify = require('csv-stringify');
+var fs = require('fs');
+var shortid = require('shortid');
 
 var dbSettings = require('./libs/mongodb_settings');
 var log = require('./libs/logger');
@@ -68,7 +70,7 @@ var columns = {
     time: 'Time'
 };
 //need to extract common parts to separate method!!!!
-exports.restDowloadCSV = function(req, res, next) {
+exports.restConstructCSV = function(req, res, next) {
     var filterObj = req.body;
     log.debug('-REST call: Download common report. Company id: %s', 
         filterObj.companyId.toHexString());
@@ -98,14 +100,35 @@ exports.restDowloadCSV = function(req, res, next) {
                 }
             });
         var csvStringifier = csvStringify({ header: true, columns: columns });
+        var fileName = 'report_' + shortid.generate() + '.csv';
+        var writeStream = fs.createWriteStream('./report_files/' + fileName, 
+            {defaultEncoding: 'utf8'});
 
-        res.attachment('report.csv');
-        res.setHeader('Content-Type', 'application/octet-stream; charset=utf-8');
-        cursorStream.pipe(csvStringifier).pipe(res);
+        cursorStream.pipe(csvStringifier).pipe(writeStream);
         
-        log.debug('-REST Result: Download common report. CSV file is generated. Company id: %s', 
-            filterObj.companyId.toHexString());
+        cursorStream.on('end', function() {
+            log.debug('-REST Result: Download common report. CSV file is generated. Company id: %s', 
+                filterObj.companyId.toHexString());
+            res.json({url: '/report/download/' + fileName});
+        });
+
+        writeStream.on('error', function (err) {
+            log.error(err);
+        });
     });
+};
+
+exports.restDownloadFile = function(req, res, next) {
+    var fileName = utils.getFileName(req);
+    log.debug('-REST Call: Download file. File is downloaded. %s', fileName);
+
+    res.download('./report_files/' + fileName, 'report.csv', function(err) {
+        if(err) {
+            next(err);
+            return;
+        }
+        log.debug('-REST Result: Download file. File is downloaded. %s', fileName);
+    })
 };
 
 exports.restGetFilterValues = function(req, res, next) {

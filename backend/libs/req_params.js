@@ -19,3 +19,4 @@ exports.projectIdParam = 'projectId';
 exports.userIdParam = 'userId';
 exports.companyIdParam ='companyId';
 exports.timelogIdParam = 'timelogId';
+exports.fileNameParam = 'fileName';

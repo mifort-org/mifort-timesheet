@@ -1,0 +1,1 @@
+Folder for report temp files. Please clean before restart
