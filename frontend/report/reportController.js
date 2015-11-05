@@ -45,8 +45,7 @@ angular.module('myApp.report', ['ngRoute'])
             columnDefs: [
                 {
                     field: 'date',
-                    enableColumnResizing: true
-                },
+                    enableColumnResizing: true},
                 {
                     field: 'userName',
                     enableColumnResizing: true,
@@ -65,7 +64,8 @@ angular.module('myApp.report', ['ngRoute'])
                 },
                 {
                     field: 'role',
-                    enableColumnResizing: true
+                    enableColumnResizing: true,
+                    cellTemplate: '<div class="ui-grid-cell-contents" title="TOOLTIP">{{row.entity.role.role}}</div>'
                 },
                 {
                     field: 'time',
