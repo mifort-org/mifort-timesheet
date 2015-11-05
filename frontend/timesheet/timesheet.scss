@@ -71,6 +71,7 @@
 .custom-days-wrapper{
     position: relative;
     margin-top: 20px;
+    padding-bottom: 60px;
 
     dl{
         position: absolute;
@@ -262,6 +263,14 @@
                     border-color: #aeaeae;
                 }
             }
+
+            &.hexagon-add-day{
+                color: #666;
+                line-height: 0.8;
+                font-size: 5rem;
+                font-weight: 300;
+                text-align: center;
+            }
         }
     }
 }
@@ -446,6 +455,12 @@
         text-decoration: none;
         color: inherit;
     }
+}
+.color-picker{
+    position: absolute;
+    top: -21px;
+    left: -2px;
+    z-index: 3;
 }
 .color-picker-map{
     cursor: pointer;

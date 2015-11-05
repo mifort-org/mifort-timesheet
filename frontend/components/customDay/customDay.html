@@ -1,5 +1,3 @@
-
-
 <!--
   Copyright 2015 mifort.org
 
@@ -43,28 +41,28 @@
     </dl>
 
     <div class="hexagon-underwear-wrapper">
-        <div class="hexagon-underwear" ng-repeat="day in company.dayTypes" ng-click="showColors()"></div>
-        <div class="hexagon-underwear" ng-click="addCustomDay()"></div>
+        <div class="hexagon-underwear" ng-repeat="day in company.dayTypes" ng-click="showColorPicker($index)"></div>
+        <div class="hexagon-underwear hexagon-add-day" ng-click="addCustomDay()">+</div>
     </div>
 
     <div class="hexagon-wrapper">
         <div class="hexagon"
              ng-repeat="day in company.dayTypes"
-             data-color="{{day.color}}"
              style="background: {{day.color}};">
+            <img class="color-picker"
+                 ng-show="day.pickerVisible"
+                 src="../../common/images/color-picker.png"
+                 border="0"
+                 width="69"
+                 height="79"
+                 orgWidth="69"
+                 orgHeight="79"
+                 usemap="#color-picker-map-{{$index}}}"
+                 alt=""/>
+            <map name="color-picker-map-{{$index}}}" id="color-picker-map-{{$index}}}">
+                <area alt="area" href="#" title="area" shape="poly" coords="{{area.area}}" ng-click="chooseColor($index, $parent.day); $event.preventDefault();" ng-repeat="area in customColors" />
+            </map>
         </div>
     </div>
-
-    <img id="Image-Maps-Com-image-maps-2015-11-03-031026"
-         src="http://www.image-maps.com/m/private/0/m4h7bhi00tqpl3e6p8dm88k5d7_color-picker.png"
-         border="0"
-         width="69"
-         height="79"
-         orgWidth="69"
-         orgHeight="79"
-         usemap="#image-maps"
-         alt=""/>
-    <map name="image-maps" id="ImageMapsCom-image-maps-2015-11-03-031026">
-        <area alt="area" title="area" href="#Timesheet" shape="poly" coords="{{area.area}}" ng-repeat="area in customColors" ng-click="chooseColor($index)"/>
-    </map>
 </div>
+<!--<small>{{company.dayTypes}}</small>-->

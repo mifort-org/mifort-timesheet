@@ -58,7 +58,8 @@
 
 .custom-days-wrapper {
   position: relative;
-  margin-top: 20px; }
+  margin-top: 20px;
+  padding-bottom: 60px; }
   .custom-days-wrapper dl {
     position: absolute;
     width: 100%; }
@@ -196,6 +197,12 @@
         border-color: #aeaeae; }
         .custom-days-wrapper .hexagon-underwear-wrapper .hexagon-underwear:hover:after, .custom-days-wrapper .hexagon-underwear-wrapper .hexagon-underwear:hover:before {
           border-color: #aeaeae; }
+      .custom-days-wrapper .hexagon-underwear-wrapper .hexagon-underwear.hexagon-add-day {
+        color: #666;
+        line-height: 0.8;
+        font-size: 5rem;
+        font-weight: 300;
+        text-align: center; }
 
 .timesheet-header {
   font-size: 1.6em;
@@ -328,6 +335,12 @@
     border-color: #e8e8e8;
     text-decoration: none;
     color: inherit; }
+
+.color-picker {
+  position: absolute;
+  top: -21px;
+  left: -2px;
+  z-index: 3; }
 
 .color-picker-map {
   cursor: pointer; }

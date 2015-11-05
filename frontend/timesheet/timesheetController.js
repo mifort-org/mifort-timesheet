@@ -329,7 +329,7 @@ angular.module('myApp.timesheet', ['ngRoute'])
 
         $scope.saveDayType = function(changedDayType, changedDayTypeOldValue) {
             $scope.company.defaultValues.forEach(function(defaultValue) {
-                if(defaultValue.comment == changedDayTypeOldValue.name){
+                if(changedDayTypeOldValue && defaultValue.comment == changedDayTypeOldValue.name){
                     angular.extend(defaultValue, changedDayType);
                 }
             });
