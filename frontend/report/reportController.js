@@ -25,38 +25,34 @@ angular.module('myApp.report', ['ngRoute'])
         });
     }])
 
-    .controller('reportController', ['$scope', 'reportService', 'preferences', function($scope, reportService, preferences) {
+    .controller('reportController', ['$scope', 'reportService', 'preferences', 'uiGridConstants', function($scope, reportService, preferences, uiGridConstants) {
         var companyId = preferences.get('user').companyId;
         $scope.reportColumns = ['Data', 'User', 'Project', 'Assignment', 'Time', 'Action'];
 
         $scope.reportSettings = {
             companyId: companyId,
             sort: {
-                'field': 'date',
-                'asc': true
+                field: 'date',
+                asc: true
             },
-            pageSize: 110,
+            filters: [],
+            pageSize: 3,
             page: 1
         };
 
         $scope.gridOptions = {
+            paginationPageSizes: [25, 50, 75],
+            paginationPageSize: 25,
             enableFiltering: true,
             enableHorizontalScrollbar: 0,
             columnDefs: [
                 {
                     field: 'date',
-                    enableColumnResizing: true},
+                    enableColumnResizing: true
+                },
                 {
                     field: 'userName',
-                    enableColumnResizing: true,
-                    menuItems: [
-                        {
-                            title: 'Grid ID',
-                            action: function() {
-                                alert('Grid ID: ' + this.grid.id);
-                            }
-                        }
-                    ]
+                    enableColumnResizing: true
                 },
                 {
                     field: 'projectName',
@@ -65,29 +61,53 @@ angular.module('myApp.report', ['ngRoute'])
                 {
                     field: 'role',
                     enableColumnResizing: true,
-                    cellTemplate: '<div class="ui-grid-cell-contents" title="TOOLTIP">{{row.entity.role.role}}</div>'
+                    cellTemplate: '<div class="ui-grid-cell-contents">{{row.entity.role.role}}</div>'
                 },
                 {
                     field: 'time',
                     enableColumnResizing: true
                 }
             ],
-            data: 'reportData'
+            data: 'reportData',
+
+            onRegisterApi: function(gridApi) {
+                $scope.gridApi = gridApi;
+                $scope.gridApi.core.on.sortChanged($scope, $scope.sortChanged);
+                $scope.sortChanged($scope.gridApi.grid, [$scope.gridOptions.columnDefs[1]]);
+            }
+        };
+
+        $scope.sortChanged = function(grid, sortColumns) {
+            if(sortColumns.length === 0 || !sortColumns[0].sort){
+                $scope.getReport($scope.reportSettings);
+            }else{
+                switch(sortColumns[0].sort.direction){
+                    case uiGridConstants.ASC:
+                        $scope.reportSettings.sort = {
+                            field: sortColumns[0].field,
+                            asc: true
+                        };
+                        break;
+
+                    case uiGridConstants.DESC:
+                        $scope.reportSettings.sort = {
+                            field: sortColumns[0].field,
+                            asc: false
+                        };
+                        break;
+                }
+
+                $scope.getReport($scope.reportSettings);
+            }
         };
 
         reportService.getFilters(companyId).success(function(data) {
-            $scope.filters = data;
-            $scope.filters.push({
-                    "field": "date",
-                    "start": "01/01/2011",
-                    "end": "02/02/2114"
-                }
-            );
-            $scope.reportSettings.filters = [];
+            $scope.filtersSettings = data;
+        });
 
-
-            reportService.getReport(companyId, $scope.reportSettings).success(function(data) {
+        $scope.getReport = function(reportSettings) {
+            reportService.getReport(companyId, reportSettings).success(function(data) {
                 $scope.reportData = data;
             });
-        });
+        }
     }]);
