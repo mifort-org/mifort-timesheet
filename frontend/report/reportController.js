@@ -28,6 +28,7 @@ angular.module('myApp.report', ['ngRoute'])
     .controller('reportController', ['$scope', 'reportService', 'preferences', 'uiGridConstants', function($scope, reportService, preferences, uiGridConstants) {
         var companyId = preferences.get('user').companyId;
         $scope.reportColumns = ['Data', 'User', 'Project', 'Assignment', 'Time', 'Action'];
+        $scope.totalCount = 0;
 
         $scope.reportSettings = {
             companyId: companyId,
@@ -48,24 +49,29 @@ angular.module('myApp.report', ['ngRoute'])
             columnDefs: [
                 {
                     field: 'date',
-                    enableColumnResizing: true
+                    enableColumnResizing: true,
+                    enableColumnMenu: false
                 },
                 {
                     field: 'userName',
-                    enableColumnResizing: true
+                    enableColumnResizing: true,
+                    enableColumnMenu: false
                 },
                 {
                     field: 'projectName',
-                    enableColumnResizing: true
+                    enableColumnResizing: true,
+                    enableColumnMenu: false
                 },
                 {
                     field: 'role',
                     enableColumnResizing: true,
+                    enableColumnMenu: false,
                     cellTemplate: '<div class="ui-grid-cell-contents">{{row.entity.role.role}}</div>'
                 },
                 {
                     field: 'time',
-                    enableColumnResizing: true
+                    enableColumnResizing: true,
+                    enableColumnMenu: false
                 }
             ],
             data: 'reportData',
@@ -78,6 +84,8 @@ angular.module('myApp.report', ['ngRoute'])
         };
 
         $scope.sortChanged = function(grid, sortColumns) {
+            $scope.reportSettings.page = 1;
+
             if(sortColumns.length === 0 || !sortColumns[0].sort){
                 $scope.getReport($scope.reportSettings);
             }else{
@@ -106,8 +114,39 @@ angular.module('myApp.report', ['ngRoute'])
         });
 
         $scope.getReport = function(reportSettings) {
-            reportService.getReport(companyId, reportSettings).success(function(data) {
+            reportService.getReport(companyId, reportSettings).success(function(data, status, headers) {
                 $scope.reportData = data;
+
+                if(headers()['x-total-count']){
+                    $scope.totalCount = headers()['x-total-count'];
+                    $scope.totalPages = Math.ceil($scope.totalCount / $scope.reportSettings.pageSize);
+                }
             });
-        }
+        };
+
+        $scope.openPage = function(pageIndex) {
+            $scope.reportSettings.page = pageIndex;
+            $scope.getReport($scope.reportSettings);
+        };
+
+        $scope.nextPage = function() {
+            if($scope.reportSettings.page < $scope.totalPages){
+                $scope.reportSettings.page++;
+            }
+            $scope.getReport($scope.reportSettings);
+        };
+
+        $scope.prevPage = function() {
+            if($scope.reportSettings.page > 1){
+                $scope.reportSettings.page--;
+            }
+
+            if($scope.reportSettings.page > 0){
+                $scope.getReport($scope.reportSettings);
+            }
+        };
+
+        $scope.range = function(n) {
+            return new Array(n);
+        };
     }]);

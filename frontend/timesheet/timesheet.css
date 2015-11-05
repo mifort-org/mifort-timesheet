@@ -345,4 +345,35 @@
 .color-picker-map {
   cursor: pointer; }
 
+.report-controls {
+  background: #fff;
+  padding: 20px 27px;
+  margin-bottom: 30px;
+  font-size: 1.4rem;
+  text-align: right; }
+  .report-controls ul,
+  .report-controls li {
+    display: inline-block; }
+  .report-controls a {
+    display: inline-block;
+    padding: 4px 8px;
+    margin: 0 2px;
+    text-align: center;
+    border-radius: 2px;
+    border: 1px transparent solid;
+    vertical-align: middle;
+    color: #000;
+    text-decoration: none; }
+    .report-controls a.next-page, .report-controls a.prev-page {
+      border-color: #dedede; }
+    .report-controls a:hover {
+      border-color: #666; }
+    .report-controls a.active {
+      border-color: #dedede; }
+    .report-controls a.disabled {
+      color: #dedede;
+      cursor: default; }
+      .report-controls a.disabled:hover {
+        border-color: #dedede; }
+
 /*# sourceMappingURL=timesheet.css.map */

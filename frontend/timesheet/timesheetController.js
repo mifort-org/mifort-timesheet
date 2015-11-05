@@ -42,6 +42,7 @@ angular.module('myApp.timesheet', ['ngRoute'])
         $scope.splittedTimesheet = [];
         $scope.calendarIsOpened = false;
 
+        //check and remove
         $scope.range = function(n) {
             return new Array(n);
         };
