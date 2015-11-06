@@ -13,5 +13,13 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-
-<a href="">f</a>
+<!--{{rowTitle}}-->
+<a href=""
+   class="report-filter"
+   popover-template="dynamicPopover.templateUrl"
+   popover-title="{{dynamicPopover.title}}"
+   popover-placement="bottom"
+   data-toggle="popover"
+   ng-class="{'active': popoverOpened}"
+   ng-click="popoverOpened = !popoverOpened">
+</a>

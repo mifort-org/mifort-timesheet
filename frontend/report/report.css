@@ -32,9 +32,25 @@
     border-color: #eaeff7; }
 
 .ui-grid-cell-contents {
-  padding: 9px 12px 11px; }
+  padding: 9px 32px 11px 12px; }
 
 .ui-grid-row {
   border-bottom: 1px #eaeff7 solid; }
+
+.ui-grid-top-panel,
+.ui-grid-header-viewport {
+  overflow: visible; }
+
+.report-filter {
+  display: inline-block;
+  height: 20px;
+  width: 20px;
+  background: url("../common/images/icons.png") 3px -1237px;
+  opacity: 0.1; }
+  .report-filter:hover {
+    opacity: 0.6; }
+  .report-filter.active {
+    background-position: 3px -1197px;
+    opacity: 1; }
 
 /*# sourceMappingURL=report.css.map */

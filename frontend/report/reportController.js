@@ -51,32 +51,32 @@ angular.module('myApp.report', ['ngRoute'])
                     field: 'date',
                     enableColumnResizing: true,
                     enableColumnMenu: false,
-                    filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter"></span></div>'
+                    filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" row-title="Date"></span></div>'
                 },
                 {
                     field: 'userName',
                     enableColumnResizing: true,
                     enableColumnMenu: false,
-                    filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter"></span></div>'
+                    filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" row-title="UserName"></span></div>'
                 },
                 {
                     field: 'projectName',
                     enableColumnResizing: true,
                     enableColumnMenu: false,
-                    filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter"></span></div>'
+                    filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" row-title="ProjectName"></span></div>'
                 },
                 {
                     field: 'role',
                     enableColumnResizing: true,
                     enableColumnMenu: false,
                     cellTemplate: '<div class="ui-grid-cell-contents">{{row.entity.role.role}}</div>',
-                    filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter"></span></div>'
+                    filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" row-title="Role"></span></div>'
                 },
                 {
                     field: 'time',
                     enableColumnResizing: true,
                     enableColumnMenu: false,
-                    filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter"></span></div>'
+                    filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" row-title="time"></span></div>'
                 }
             ],
             data: 'reportData',
