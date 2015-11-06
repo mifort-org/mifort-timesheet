@@ -50,28 +50,33 @@ angular.module('myApp.report', ['ngRoute'])
                 {
                     field: 'date',
                     enableColumnResizing: true,
-                    enableColumnMenu: false
+                    enableColumnMenu: false,
+                    filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter"></span></div>'
                 },
                 {
                     field: 'userName',
                     enableColumnResizing: true,
-                    enableColumnMenu: false
+                    enableColumnMenu: false,
+                    filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter"></span></div>'
                 },
                 {
                     field: 'projectName',
                     enableColumnResizing: true,
-                    enableColumnMenu: false
+                    enableColumnMenu: false,
+                    filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter"></span></div>'
                 },
                 {
                     field: 'role',
                     enableColumnResizing: true,
                     enableColumnMenu: false,
-                    cellTemplate: '<div class="ui-grid-cell-contents">{{row.entity.role.role}}</div>'
+                    cellTemplate: '<div class="ui-grid-cell-contents">{{row.entity.role.role}}</div>',
+                    filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter"></span></div>'
                 },
                 {
                     field: 'time',
                     enableColumnResizing: true,
-                    enableColumnMenu: false
+                    enableColumnMenu: false,
+                    filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter"></span></div>'
                 }
             ],
             data: 'reportData',
@@ -132,16 +137,13 @@ angular.module('myApp.report', ['ngRoute'])
         $scope.nextPage = function() {
             if($scope.reportSettings.page < $scope.totalPages){
                 $scope.reportSettings.page++;
+                $scope.getReport($scope.reportSettings);
             }
-            $scope.getReport($scope.reportSettings);
         };
 
         $scope.prevPage = function() {
             if($scope.reportSettings.page > 1){
                 $scope.reportSettings.page--;
-            }
-
-            if($scope.reportSettings.page > 0){
                 $scope.getReport($scope.reportSettings);
             }
         };

@@ -449,19 +449,21 @@
     background: #fff;
     border: 3px #fff solid;
     box-shadow: 0 0 0 1px #d9d9d9 inset;
-    
+
     &:hover{
         border-color: #e8e8e8;
         text-decoration: none;
         color: inherit;
     }
 }
+
 .color-picker{
     position: absolute;
     top: -21px;
     left: -2px;
     z-index: 3;
 }
+
 .color-picker-map{
     cursor: pointer;
 }
@@ -510,4 +512,11 @@
             }
         }
     }
+}
+
+.ui-grid-filter-container{
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    padding: 0;
 }
