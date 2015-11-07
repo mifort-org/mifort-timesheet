@@ -171,6 +171,7 @@ exports.validateDeactivateProject = function(req, res, next) {
     returnErrors(req, res, next);
 };
 
+//Report validation
 exports.validateCommonReport = function(req, res, next) {
     var filterObj = req.body;
     req.checkBody('page', 'Page is required').notEmpty();
@@ -201,6 +202,14 @@ exports.validateGetFilters = function(req, res, next) {
     req.checkParams(reqParams.companyIdParam, 
         util.format(invalidFormatMessageTemplate, reqParams.companyIdParam))
             .notEmpty().isMongoId();
+
+    returnErrors(req, res, next);
+};
+
+exports.validateGetDownloadReport = function(req, res, next) {
+    req.checkParams(reqParams.fileNameParam, 
+        util.format(invalidFormatMessageTemplate, reqParams.fileNameParam))
+            .notEmpty().contains('.csv');
 
     returnErrors(req, res, next);
 };

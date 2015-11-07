@@ -121,6 +121,7 @@ app.post('/report/common/download',
         validators.validateDowloadCommonReport,
         report.restConstructCSV);
 app.get('/report/download/:fileName',
+        validators.validateGetDownloadReport,
         report.restDownloadFile);
 
 // default error handler
