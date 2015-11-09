@@ -21,6 +21,7 @@ var testDataImporter = require('./test_data_importer');
 var log = require('./logger');
 
 var mongodbUrl = process.env.MONGOLAB_URI || 'mongodb://localhost:27017/homogen';
+var mongoDbSessionStorageUrl = process.env.MONGOLAB_URI || 'mongodb://localhost:27017/homogen-sessions';
 
 var timelogCollectionName = 'timelogs';
 var projectCollectionName = 'projects';
@@ -54,3 +55,5 @@ exports.userCollection = function() {
 exports.companyCollection = function() {
     return cachedDb.collection(companyCollectionName);
 };
+
+exports.sessionMongoUrl = mongoDbSessionStorageUrl;

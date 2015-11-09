@@ -20,6 +20,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
+var MongoStore = require('connect-mongo')(session);
 var expressValidator = require('express-validator');
 
 var project = require('./backend/project');
@@ -33,6 +34,7 @@ var util = require('./backend/libs/utils');
 var validators = require('./backend/libs/validators');
 var log = require('./backend/libs/logger');
 var errorHandler = require('./backend/libs/error_handler');
+var dbSettings = require('./backend/libs/mongodb_settings');
 
 var app = express();
 app.set('port', process.env.PORT || 1313);
@@ -58,7 +60,8 @@ app.use(session(
     cookie: { maxAge : 3600000 },
     resave: false,
     rolling: true, 
-    saveUninitialized: true})
+    saveUninitialized: true,
+    store: new MongoStore({url: dbSettings.sessionMongoUrl})})
 );
 //last step: init auth
 auth.init(app);
