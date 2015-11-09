@@ -22,8 +22,11 @@ angular.module('myApp.report').factory('reportService',
             getFilters: function (companyId) {
                 return $http.get('report/filters/' + companyId);
             },
-            getReport: function (companyId, reportSettings) {
+            getReport: function (reportSettings) {
                 return $http.post('report/common/', reportSettings);
+            },
+            downloadCsv: function(reportSettings) {
+                return $http.post('report/common/download/', reportSettings);
             }
         }
     }

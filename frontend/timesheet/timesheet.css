@@ -376,10 +376,4 @@
       .report-controls a.disabled:hover {
         border-color: #dedede; }
 
-.ui-grid-filter-container {
-  position: absolute;
-  right: 10px;
-  top: 10px;
-  padding: 0; }
-
 /*# sourceMappingURL=timesheet.css.map */

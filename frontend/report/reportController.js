@@ -119,7 +119,7 @@ angular.module('myApp.report', ['ngRoute'])
         });
 
         $scope.getReport = function(reportSettings) {
-            reportService.getReport(companyId, reportSettings).success(function(data, status, headers) {
+            reportService.getReport(reportSettings).success(function(data, status, headers) {
                 $scope.reportData = data;
 
                 if(headers()['x-total-count']){
@@ -151,4 +151,10 @@ angular.module('myApp.report', ['ngRoute'])
         $scope.range = function(n) {
             return new Array(n);
         };
+
+        $scope.downloadCsv = function() {
+            reportService.downloadCsv($scope.reportSettings).success(function(data) {
+                window.location=data.url;
+            });
+        }
     }]);

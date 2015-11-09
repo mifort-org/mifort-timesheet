@@ -54,6 +54,13 @@
     overflow: visible;
 }
 
+.ui-grid-filter-container{
+    position: absolute;
+    right: 2px;
+    top: 10px;
+    padding: 0;
+}
+
 .report-filter{
     display: inline-block;
     height: 20px;
@@ -68,5 +75,9 @@
     &.active{
         background-position: 3px -1197px;
         opacity: 1;
+    }
+
+    .popover.bottom > .arrow{
+        display: none;
     }
 }
