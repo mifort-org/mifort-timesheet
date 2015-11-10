@@ -228,6 +228,9 @@ exports.timelogs = function(values) {
             if(val._id){
                 isValid = validator.isMongoId(val._id);
             }
+            if(val.time){
+                isValid = isValid && val.time <= 24;
+            }
             isValid = isValid
                 && validator.isMongoId(val.userId) //required && format
                 && validator.isMongoId(val.projectId) //required && format
