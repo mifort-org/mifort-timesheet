@@ -61,4 +61,15 @@
   .report-filter .popover.bottom > .arrow {
     display: none; }
 
+.per-page-label {
+  display: inline-block; }
+
+.per-page {
+  display: inline-block;
+  width: 80px;
+  margin: 0 5px; }
+
+.per-page-after {
+  margin-right: 30px; }
+
 /*# sourceMappingURL=report.css.map */

@@ -31,7 +31,8 @@ angular.module('myApp', [
     'angularMoment',
     'angular-click-outside',
     'ui.grid',
-    'ui.grid.resizeColumns'
+    'ui.grid.resizeColumns',
+    'ui.grid.autoResize'
 ])
     .config(['$routeProvider', function ($routeProvider) {
         $routeProvider.otherwise({redirectTo: '/login'});

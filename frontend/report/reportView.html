@@ -15,6 +15,15 @@
 -->
 
 <div class="report-controls">
+    <label for="perPage" class="per-page-label">Show</label>
+    <select id="perPage"
+            ng-options="pageSize as pageSize for pageSize in perPage"
+            ng-model="reportSettings.pageSize"
+            class="form-control per-page"
+            ng-change="getReport(reportSettings)">
+    </select>
+    <span class="per-page-after">on page</span>
+
     <span>{{reportSettings.pageSize * (reportSettings.page - 1) + 1}} - {{reportSettings.pageSize * reportSettings.page}} of {{totalCount}}</span>
 
     <a href="" class="next-page" ng-class="{'disabled': reportSettings.page == 1}" ng-click="prevPage()">Prev</a>
@@ -29,7 +38,7 @@
 </div>
 
 <div class="report-wrapper">
-    <div class="gridStyle" ui-grid="gridOptions" ui-grid-resize-columns ui-grid-move-columns></div>
+    <div class="gridStyle" ui-grid="gridOptions" ui-grid-auto-resize ng-style="gridHeight" ui-grid-resize-columns></div>
 </div>
 
 <a href="" ng-click="downloadCsv()">Download CSV</a>

@@ -27,7 +27,10 @@ angular.module('myApp.report', ['ngRoute'])
 
     .controller('reportController', ['$scope', 'reportService', 'preferences', 'uiGridConstants', function($scope, reportService, preferences, uiGridConstants) {
         var companyId = preferences.get('user').companyId;
+        var headerHeight = 38;
+
         $scope.reportColumns = ['Data', 'User', 'Project', 'Assignment', 'Time', 'Action'];
+        $scope.perPage = [5, 10, 20, 50, 100];
         $scope.totalCount = 0;
 
         $scope.reportSettings = {
@@ -37,7 +40,7 @@ angular.module('myApp.report', ['ngRoute'])
                 asc: true
             },
             filters: [],
-            pageSize: 3,
+            pageSize: 5,
             page: 1
         };
 
@@ -46,6 +49,7 @@ angular.module('myApp.report', ['ngRoute'])
             paginationPageSize: 25,
             enableFiltering: true,
             enableHorizontalScrollbar: 0,
+            rowHeight: 30,
             columnDefs: [
                 {
                     field: 'date',
@@ -122,6 +126,10 @@ angular.module('myApp.report', ['ngRoute'])
             reportService.getReport(reportSettings).success(function(data, status, headers) {
                 $scope.reportData = data;
 
+                $scope.gridHeight = {
+                    height: ((data.length) * ($scope.gridOptions.rowHeight + 1)) + headerHeight + "px"
+                };
+
                 if(headers()['x-total-count']){
                     $scope.totalCount = headers()['x-total-count'];
                     $scope.totalPages = Math.ceil($scope.totalCount / $scope.reportSettings.pageSize);
@@ -154,7 +162,7 @@ angular.module('myApp.report', ['ngRoute'])
 
         $scope.downloadCsv = function() {
             reportService.downloadCsv($scope.reportSettings).success(function(data) {
-                window.location=data.url;
+                window.location = data.url;
             });
         }
     }]);
