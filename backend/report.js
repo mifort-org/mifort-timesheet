@@ -91,8 +91,6 @@ exports.restConstructCSV = function(req, res, next) {
 
         var cursorStream = timelogCollection.find(query)
             .sort(sortObj)
-            .skip((filterObj.page-1)*filterObj.pageSize) // not efficient way but It's just for the first implementation
-            .limit(filterObj.pageSize)
             .stream({
                 transform: function(doc) {
                     if(doc.date) {
