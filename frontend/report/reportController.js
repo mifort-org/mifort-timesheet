@@ -164,5 +164,10 @@ angular.module('myApp.report', ['ngRoute'])
             reportService.downloadCsv($scope.reportSettings).success(function(data) {
                 window.location = data.url;
             });
+        };
+
+        $scope.perPageChanged = function() {
+            $scope.reportSettings.page = 1;
+            $scope.getReport($scope.reportSettings);
         }
     }]);

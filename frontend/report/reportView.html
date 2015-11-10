@@ -20,7 +20,7 @@
             ng-options="pageSize as pageSize for pageSize in perPage"
             ng-model="reportSettings.pageSize"
             class="form-control per-page"
-            ng-change="getReport(reportSettings)">
+            ng-change="perPageChanged()">
     </select>
     <span class="per-page-after">on page</span>
 
