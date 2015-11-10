@@ -49,6 +49,7 @@ angular.module('myApp.report', ['ngRoute'])
             paginationPageSize: 25,
             enableFiltering: true,
             enableHorizontalScrollbar: 0,
+            enableVerticalScrollbar: uiGridConstants.scrollbars.NEVER,
             rowHeight: 30,
             columnDefs: [
                 {

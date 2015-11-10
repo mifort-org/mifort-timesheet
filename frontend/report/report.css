@@ -18,6 +18,32 @@
   padding: 30px 27px;
   font-size: 1.6rem; }
 
+.report-filter {
+  display: inline-block;
+  height: 20px;
+  width: 20px;
+  background: url("../common/images/icons.png") 3px -1237px;
+  opacity: 0.1; }
+  .report-filter:hover {
+    opacity: 0.6; }
+  .report-filter.active {
+    background-position: 3px -1197px;
+    opacity: 1; }
+  .report-filter .popover.bottom > .arrow {
+    display: none; }
+
+.per-page-label {
+  display: inline-block; }
+
+.per-page {
+  display: inline-block;
+  width: 80px;
+  margin: 0 5px; }
+
+.per-page-after {
+  margin-right: 30px; }
+
+/* UI Grid styles replacement*/
 .ui-grid {
   font-weight: normal;
   border-color: #eaeff7; }
@@ -47,29 +73,10 @@
   top: 10px;
   padding: 0; }
 
-.report-filter {
-  display: inline-block;
-  height: 20px;
-  width: 20px;
-  background: url("../common/images/icons.png") 3px -1237px;
-  opacity: 0.1; }
-  .report-filter:hover {
-    opacity: 0.6; }
-  .report-filter.active {
-    background-position: 3px -1197px;
-    opacity: 1; }
-  .report-filter .popover.bottom > .arrow {
-    display: none; }
+.ui-grid-header-cell:last-child .ui-grid-column-resizer.right {
+  border: 0; }
 
-.per-page-label {
-  display: inline-block; }
-
-.per-page {
-  display: inline-block;
-  width: 80px;
-  margin: 0 5px; }
-
-.per-page-after {
-  margin-right: 30px; }
+.ui-grid-canvas > div:last-child {
+  border-bottom: 0; }
 
 /*# sourceMappingURL=report.css.map */

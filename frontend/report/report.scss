@@ -20,47 +20,6 @@
     font-size: 1.6rem;
 }
 
-.ui-grid{
-    font-weight: normal;
-    border-color: #eaeff7;
-
-    .ui-grid-header{
-        border-color: #eaeff7;
-    }
-
-    .ui-grid-header-cell{
-        border-color: #eaeff7;
-
-        .sortable{
-            background: #fff;
-        }
-    }
-    .ui-grid-row .ui-grid-cell{
-        background: #fff;
-        border-color: #eaeff7;
-    }
-}
-
-.ui-grid-cell-contents{
-    padding: 9px 32px 11px 12px;
-}
-
-.ui-grid-row{
-    border-bottom: 1px #eaeff7 solid;
-}
-
-.ui-grid-top-panel,
-.ui-grid-header-viewport{
-    overflow: visible;
-}
-
-.ui-grid-filter-container{
-    position: absolute;
-    right: 2px;
-    top: 10px;
-    padding: 0;
-}
-
 .report-filter{
     display: inline-block;
     height: 20px;
@@ -94,4 +53,54 @@
 
 .per-page-after{
     margin-right: 30px;
+}
+
+
+/* UI Grid styles replacement*/
+.ui-grid{
+    font-weight: normal;
+    border-color: #eaeff7;
+
+    .ui-grid-header{
+        border-color: #eaeff7;
+    }
+
+    .ui-grid-header-cell{
+        border-color: #eaeff7;
+
+        .sortable{
+            background: #fff;
+        }
+    }
+    .ui-grid-row .ui-grid-cell{
+        background: #fff;
+        border-color: #eaeff7;
+    }
+}
+
+.ui-grid-cell-contents{
+    padding: 9px 32px 11px 12px;
+}
+
+.ui-grid-row{
+    border-bottom: 1px #eaeff7 solid;
+}
+
+.ui-grid-top-panel,
+.ui-grid-header-viewport{
+    overflow: visible;
+}
+.ui-grid-filter-container{
+    position: absolute;
+    right: 2px;
+    top: 10px;
+    padding: 0;
+}
+
+.ui-grid-header-cell:last-child .ui-grid-column-resizer.right{
+    border: 0;
+}
+
+.ui-grid-canvas > div:last-child{
+    border-bottom: 0;
 }
