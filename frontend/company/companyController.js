@@ -19,12 +19,12 @@
 angular.module('myApp.company', ['ngRoute'])
 
     .config(['$routeProvider', function ($routeProvider) {
-        $routeProvider.when('/*Company-create', {
+        $routeProvider.when('/company-create', {
             templateUrl: 'company/companyView.html',
             controller: 'companyController'
         });
 
-        $routeProvider.when('/Company', {
+        $routeProvider.when('/company', {
             templateUrl: 'company/companyEditView.html',
             controller: 'companyController'
         });
@@ -37,7 +37,7 @@ angular.module('myApp.company', ['ngRoute'])
             emails: []
         };
 
-        if($location.path() == '/Company'){
+        if($location.path() == '/company'){
             companyService.getCompany(preferences.get('user').companyId).success(function(company) {
                 $scope.company = company;
             });
@@ -45,13 +45,13 @@ angular.module('myApp.company', ['ngRoute'])
 
         $scope.createCompany = function () {
             companyService.createCompany($scope.company).success(function () {
-                $location.path('/Timesheet');
+                $location.path('/timesheet');
             });
         };
 
         $scope.saveCompany = function () {
             companyService.saveCompany($scope.company).success(function () {
-                $location.path('/Timesheet');
+                $location.path('/timesheet');
             });
         };
 

@@ -26,26 +26,32 @@ angular.module('myApp')
                 scope.tabs = [
                     {
                         title: 'Projects',
+                        url: 'projects',
                         active: false
                     },
                     {
                         title: scope.companyName,
+                        url: 'company',
                         active: false
                     },
                     {
                         title: 'Timesheet',
+                        url: 'timesheet',
                         active: false
                     },
                     {
                         title: 'Timelog',
+                        url: 'timelog',
                         active: false
                     },
                     {
                         title: 'Report',
+                        url: 'report',
                         active: false
                     },
                     {
-                        title: '*Company-create',
+                        title: 'Company create',
+                        url: 'company-create',
                         active: false
                     }
                 ];
@@ -64,7 +70,7 @@ angular.module('myApp')
                 });
 
                 scope.changeTab = function (tab) {
-                    $location.path('/' + tab.title);
+                    $location.path('/' + tab.url);
                 };
             },
             templateUrl: 'components/tabs/bootstrapTabs.html'

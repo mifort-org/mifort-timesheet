@@ -19,7 +19,7 @@
 angular.module('myApp.timelog', ['ngRoute'])
 
     .config(['$routeProvider', function($routeProvider) {
-        $routeProvider.when('/Timelog', {
+        $routeProvider.when('/timelog', {
             templateUrl: 'timelog/timelogView.html',
             controller: 'timelogController'
         });

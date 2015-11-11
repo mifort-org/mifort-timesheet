@@ -19,7 +19,7 @@
 angular.module('myApp.timesheet', ['ngRoute'])
 
     .config(['$routeProvider', function($routeProvider) {
-        $routeProvider.when('/Timesheet', {
+        $routeProvider.when('/timesheet', {
             templateUrl: 'timesheet/timesheetView.html',
             controller: 'timesheetController'
         });
