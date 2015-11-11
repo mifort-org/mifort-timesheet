@@ -38,13 +38,18 @@ angular.module('myApp', [
         $routeProvider.otherwise({redirectTo: '/login'});
     }])
 
-    .controller('myAppController', ['$scope', '$location', '$cookies', '$http', 'preferences', function ($scope, $location, $cookies, $http, preferences) {
-        if(preferences.get('user')){
+    .controller('myAppController', ['$scope', '$location', '$cookies', '$http', 'preferences', 'companyService', function ($scope, $location, $cookies, $http, preferences, companyService) {
+        var userPreferences = preferences.get('user');
+
+        if(userPreferences){
+            companyService.getCompany(userPreferences.companyId).success(function(data) {
+                $scope.companyName = data.name;
+            });
+            
             $scope.isLoggedIn = true;
         }
 
         $scope.logout = function () {
-            //$cookies.remove('user');
             preferences.remove('user');
 
             $http.get('logout').then(function () {

@@ -17,14 +17,19 @@
 'use strict';
 
 angular.module('myApp')
-    .directive('bootstrapTabs', function($location) {
+    .directive('bootstrapTabs', function($location, $timeout) {
         return {
-            link: function (scope) {
+            scope: true,
+            link: function (scope, element, attributes) {
                 var currentLocation  = $location.path().substr(1);
 
                 scope.tabs = [
                     {
                         title: 'Projects',
+                        active: false
+                    },
+                    {
+                        title: scope.companyName,
                         active: false
                     },
                     {
@@ -40,14 +45,17 @@ angular.module('myApp')
                         active: false
                     },
                     {
-                        title: 'Company',
-                        active: false
-                    },
-                    {
                         title: '*Company-create',
                         active: false
                     }
                 ];
+
+                attributes.$observe('companyName', function(value){
+                    if(value){
+                        scope.tabs[1].title = value;
+                        console.log(value);
+                    }
+                });
 
                 scope.tabs.map(function(tab) {
                     if(tab.title == currentLocation){

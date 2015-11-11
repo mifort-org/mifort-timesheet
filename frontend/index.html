@@ -51,7 +51,7 @@
     <a href="" class="logout" ng-click="logout()">Logout</a>
 </div>
 
-<div ng-if="isLoggedIn" bootstrap-tabs class="main-tabs"></div>
+<div ng-if="isLoggedIn" bootstrap-tabs company-name="{{companyName}}" class="main-tabs"></div>
 <div class="main-container" ng-view ng-class="{'login-wrapper': !isLoggedIn}"></div>
 
 
