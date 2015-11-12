@@ -24,6 +24,7 @@
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,600,400italic,600italic,700,700italic&subset=cyrillic-ext,latin">
     <link rel="stylesheet" href="common/sass/styles.css">
+    <link rel="stylesheet" href="common/sass/print.css" media="print" />
     <link rel="stylesheet" href="common/sass/bootstrap-mifort.css">
 
     <link rel="stylesheet" href="components\tabs\tabs.css">
@@ -45,9 +46,12 @@
         Timelog
     </a>
 
-    <a href="" class="info">Add Project</a>
-    <a href="" class="info">Info</a>
-    <a href="" class="profile">Profile</a>
+    <a href="javascript:window.print()" ng-show="isVisible('print')" class="info">Print</a>
+    <a href="" ng-show="isVisible('pdf')" class="info">PDF</a>
+    <a href="" ng-show="isVisible('csv')" class="info">CSV</a>
+    <a href="" ng-show="isVisible('project')" class="info">Add Project</a>
+    <a href="" ng-show="isVisible('info')" class="info">Info</a>
+    <a href="" ng-show="isVisible('profile')" class="profile">Profile</a>
     <a href="" class="logout" ng-click="logout()">Logout</a>
 </div>
 

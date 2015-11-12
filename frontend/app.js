@@ -34,26 +34,55 @@ angular.module('myApp', [
     'ui.grid.resizeColumns',
     'ui.grid.autoResize'
 ])
-    .config(['$routeProvider', function ($routeProvider) {
+    .config(['$routeProvider', function($routeProvider) {
         $routeProvider.otherwise({redirectTo: '/login'});
     }])
 
-    .controller('myAppController', ['$scope', '$location', '$cookies', '$http', 'preferences', 'companyService', function ($scope, $location, $cookies, $http, preferences, companyService) {
-        var userPreferences = preferences.get('user');
+    .controller('myAppController', ['$scope', '$location', '$cookies', '$http', 'preferences', 'companyService', 'topPanelService',
+        function($scope, $location, $cookies, $http, preferences, companyService, topPanelService) {
+            var userPreferences = preferences.get('user');
 
-        if(userPreferences){
-            companyService.getCompany(userPreferences.companyId).success(function(data) {
-                $scope.companyName = data.name;
-            });
-            
-            $scope.isLoggedIn = true;
-        }
+            if(userPreferences){
+                companyService.getCompany(userPreferences.companyId).success(function(data) {
+                    $scope.companyName = data.name;
+                });
 
-        $scope.logout = function () {
-            preferences.remove('user');
+                $scope.isLoggedIn = true;
+            }
 
-            $http.get('logout').then(function () {
-                $location.path('login');
-            });
+            $scope.isVisible = function(linkName) {
+                return topPanelService.isVisibleLink(linkName);
+            };
+
+            $scope.logout = function() {
+                preferences.remove('user');
+
+                $http.get('logout').then(function() {
+                    $location.path('login');
+                });
+            }
+        }])
+
+    .service('topPanelService', ['$location', function($location) {
+        return {
+            isVisibleLink: function(linkName) {
+                var location = $location.path();
+
+                switch(location){
+                    case '/projects':
+                        if(linkName == 'project'){
+                            return true;
+                        }
+                        break;
+                    case '/report':
+                        if(linkName == 'csv' ||
+                           linkName == 'print'){
+                            return true
+                        }
+                        break;
+                    default:
+                        return false
+                }
+            }
         }
     }]);

@@ -59,7 +59,6 @@ angular.module('myApp')
                 attributes.$observe('companyName', function(value){
                     if(value){
                         scope.tabs[1].title = value;
-                        console.log(value);
                     }
                 });
 
