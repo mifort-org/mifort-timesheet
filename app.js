@@ -72,8 +72,16 @@ app.use(session(
 auth.init(app);
 
 //add auth.ensureAuthenticated for each Rest API
+app.use('/', function(req, res, next){
+    if(req.originalUrl !== '/user') {
+        auth.ensureAuthenticated(req, res, next);
+    } else {
+        next();
+    }
+});
+
 //project
-app.post('/project', 
+app.post('/project',
         validators.validateSaveProject, 
         project.restSave);
 app.get('/project/:projectId', 
