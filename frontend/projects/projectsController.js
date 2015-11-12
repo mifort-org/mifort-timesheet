@@ -25,7 +25,7 @@ angular.module('myApp.projects', ['ngRoute'])
         });
     }])
 
-    .controller('projectsController', ['$scope', 'projectsService', 'preferences', '$timeout', function($scope, projectsService, preferences, $timeout) {
+    .controller('projectsController', ['$scope', 'projectsService', 'preferences', 'topPanelService', function($scope, projectsService, preferences, topPanelService) {
         var companyId = preferences.get('user').companyId;
 
         $scope.projectsKeys = [
@@ -117,4 +117,10 @@ angular.module('myApp.projects', ['ngRoute'])
             project.projectAssignments.splice(assignmentIndex, 1);
             $scope.saveAssignment(project, assignment);
         };
+
+        $scope.$on('handleBroadcast', function() {
+            if(topPanelService.linkName = 'project'){
+                $scope.addProject();
+            }
+        });
     }]);

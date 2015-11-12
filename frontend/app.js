@@ -60,29 +60,41 @@ angular.module('myApp', [
                 $http.get('logout').then(function() {
                     $location.path('login');
                 });
-            }
+            };
+
+            $scope.openLink = function(linkName) {
+                topPanelService.prepForBroadcast(linkName);
+            };
         }])
 
-    .service('topPanelService', ['$location', function($location) {
-        return {
-            isVisibleLink: function(linkName) {
-                var location = $location.path();
+    .factory('topPanelService', ['$location', '$rootScope', function($location, $rootScope) {
+        var topPanelService = {};
+        topPanelService.linkName = '';
 
-                switch(location){
-                    case '/projects':
-                        if(linkName == 'project'){
-                            return true;
-                        }
-                        break;
-                    case '/report':
-                        if(linkName == 'csv' ||
-                           linkName == 'print'){
-                            return true
-                        }
-                        break;
-                    default:
-                        return false
-                }
+        topPanelService.isVisibleLink = function(linkName) {
+            var location = $location.path();
+
+            switch(location){
+                case '/projects':
+                    if(linkName == 'project'){
+                        return true;
+                    }
+                    break;
+                case '/report':
+                    if(linkName == 'csv' ||
+                        linkName == 'print'){
+                        return true
+                    }
+                    break;
+                default:
+                    return false
             }
-        }
+        };
+
+        topPanelService.prepForBroadcast = function(linkName) {
+            topPanelService.linkName = linkName;
+            $rootScope.$broadcast('handleBroadcast');
+        };
+
+        return topPanelService;
     }]);

@@ -46,12 +46,13 @@
         Timelog
     </a>
 
+    <!--TODO: to orray of objects-->
     <a href="javascript:window.print()" ng-show="isVisible('print')" class="info">Print</a>
-    <a href="" ng-show="isVisible('pdf')" class="info">PDF</a>
-    <a href="" ng-show="isVisible('csv')" class="info">CSV</a>
-    <a href="" ng-show="isVisible('project')" class="info">Add Project</a>
-    <a href="" ng-show="isVisible('info')" class="info">Info</a>
-    <a href="" ng-show="isVisible('profile')" class="profile">Profile</a>
+    <a href="" ng-click="openLink('pdf')" ng-show="isVisible('pdf')" class="info">PDF</a>
+    <a href="" ng-click="openLink('csv')" ng-show="isVisible('csv')" class="info">CSV</a>
+    <a href="" ng-click="openLink('project')" ng-show="isVisible('project')" class="info">Add Project</a>
+    <a href="" ng-click="openLink('info')" ng-show="isVisible('info')" class="info">Info</a>
+    <a href="" ng-click="openLink('profile')" ng-show="isVisible('profile')" class="profile">Profile</a>
     <a href="" class="logout" ng-click="logout()">Logout</a>
 </div>
 

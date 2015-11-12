@@ -25,7 +25,7 @@ angular.module('myApp.report', ['ngRoute'])
         });
     }])
 
-    .controller('reportController', ['$scope', 'reportService', 'preferences', 'uiGridConstants', function($scope, reportService, preferences, uiGridConstants) {
+    .controller('reportController', ['$scope', 'reportService', 'preferences', 'uiGridConstants', 'topPanelService', function($scope, reportService, preferences, uiGridConstants, topPanelService) {
         var companyId = preferences.get('user').companyId;
         var headerHeight = 38;
 
@@ -170,5 +170,11 @@ angular.module('myApp.report', ['ngRoute'])
         $scope.perPageChanged = function() {
             $scope.reportSettings.page = 1;
             $scope.getReport($scope.reportSettings);
-        }
+        };
+
+        $scope.$on('handleBroadcast', function() {
+            if(topPanelService.linkName = 'report'){
+                $scope.downloadCsv();
+            }
+        });
     }]);
