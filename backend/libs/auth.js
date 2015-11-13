@@ -64,7 +64,9 @@ passport.use(new GoogleStrategy({
                         user.external = profile;
                         user.displayName = profile.displayName;
                         users.updateExternalInfo(user, function(err, savedUser) { // asynchronous user update
-                            log.info('Login %s: user is updated!', savedUser.displayName);
+                            if(!err) {
+                                log.info('Login %s: user is updated!', user.displayName);
+                            }
                         });
                         return done(null, user); 
                     } else {
@@ -85,7 +87,7 @@ exports.ensureAuthenticated = function (req, res, next) {
     if (req.isAuthenticated()) { 
         return next(); 
     }
-    res.redirect(loginRedirect);
+    res.status(401).json({msg: 'You aren’t authenticated!'});
 };
 
 exports.init = function(app) {
