@@ -15,7 +15,8 @@
  * 
  * @author Andrew Voitov
  */
-var dbSettings = require('./mongodb_settings');
+var db = require('./mongodb_settings');
+var utils = require('./utils');
 
 //Public
 //Project
@@ -33,14 +34,22 @@ exports.authorizedSaveProject = function(req, res, next) {
 
 exports.authorizedGetProject = function(req, res, next) {
     var user = req.user;
-    var project = req.body;
-    if(user) {
-        if(canReadProject(user, project)) {
-            next();
-            return;
+    var projectId = utils.getProjectId(req);
+    
+    var projects = db.projectCollection();
+    projects.findOne({_id: projectId}, function(err, project) {
+        if(err) {
+            res.status(403).json({msg: 'REST call is not permitted!'}); //error. Not a permission function
+        } else {
+            if(canReadProject(user, project)) {
+                next();
+            } else {
+                res.status(403).json({msg: 'REST call is not permitted!'});
+            }
         }
-    }
-    res.status(403).json({msg: 'REST call is not permitted!'});
+    });
+    
+    
 };
 
 //Timelog
@@ -138,7 +147,7 @@ function isManagerForUser(manager, userIds, errorCallback, successCallback) {
         return;
     }
 
-    var users = dbSettings.userCollection();
+    var users = db.userCollection();
     users.find({_id: {$in: userIds}}).toArray(function(err, selectedUsers) {
         if(err) {
             errorCallback(err);
