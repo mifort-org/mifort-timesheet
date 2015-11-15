@@ -29,7 +29,7 @@ var user = require('./backend/user');
 var company = require('./backend/company');
 var report = require('./backend/report');
 
-var auth = require('./backend/libs/auth');
+var authentication = require('./backend/libs/authentication');
 var util = require('./backend/libs/utils');
 var validators = require('./backend/libs/validators');
 var log = require('./backend/libs/logger');
@@ -69,12 +69,12 @@ app.use(session(
     store: new MongoStore({url: dbSettings.sessionMongoUrl})})
 );
 //last step: init auth
-auth.init(app);
+authentication.init(app);
 
 //add auth.ensureAuthenticated for each Rest API
 app.use('/', function(req, res, next){
     if(req.originalUrl !== '/user') {
-        auth.ensureAuthenticated(req, res, next);
+        authentication.ensureAuthenticated(req, res, next);
     } else {
         next();
     }
