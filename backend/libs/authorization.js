@@ -15,6 +15,7 @@
  * 
  * @author Andrew Voitov
  */
+var dbSettings = require('./mongodb_settings');
 
 //Public
 exports.authorizedSaveProject = function(req, res, next) {
@@ -29,7 +30,7 @@ exports.authorizedSaveProject = function(req, res, next) {
     res.status(403).json({msg: 'REST call is not permitted!'});
 };
 
-exports.authorizedReadProject = function(req, res, next) {
+exports.authorizedGetProject = function(req, res, next) {
     var user = req.user;
     var project = req.body;
     if(user) {
@@ -41,7 +42,32 @@ exports.authorizedReadProject = function(req, res, next) {
     res.status(403).json({msg: 'REST call is not permitted!'});
 };
 
+exports.authorizedSaveTimelog = function(req, res, next) {
+    var timelogs = req.body.timelog;
+    var user = req.user;
+    if(timelogs) {
+        var isYourTimelog = timelogs.every(function(log) {
+            return user._id.equals(log.userId);
+        }); 
+        if(isYourTimelog){
+            next();
+            return;
+        }
 
+        var userIds = timelogs.map(function(log){
+            return log.userId;
+        });
+        isManagerForUser(user, userIds,
+            function() { // fail callback
+                res.status(403).json({msg: 'REST call is not permitted!'});
+            },
+            function() { //success callback
+                next();
+            });
+    } else {
+        next();
+    }
+};
 
 //Private 
 function canWriteProject(user, project) {
@@ -82,4 +108,27 @@ function canReadProject(user, project) {
     }
 
     return false;
+}
+
+function isManagerForUser(manager, userIds, errorCallback, successCallback) {
+    if(manager.role !== 'Manager' || manager.role !== 'Owner') {
+        errorCallback();
+        return;
+    }
+
+    var users = dbSettings.userCollection();
+    users.find({_id: {$in: userIds}}).toArray(function(err, selectedUsers) {
+        if(err) {
+            errorCallback(err);
+        } else {
+            var managerForEveryUser = selectedUsers.every(function(user){
+                return manager.companyId.equals(user.companyId);
+            });
+            if(managerForEveryUser) {
+                successCallback();
+            } else {
+                errorCallback(); 
+            }
+        }
+    });
 }
