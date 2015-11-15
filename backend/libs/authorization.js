@@ -18,6 +18,7 @@
 var dbSettings = require('./mongodb_settings');
 
 //Public
+//Project
 exports.authorizedSaveProject = function(req, res, next) {
     var user = req.user;
     var project = req.body;
@@ -42,6 +43,7 @@ exports.authorizedGetProject = function(req, res, next) {
     res.status(403).json({msg: 'REST call is not permitted!'});
 };
 
+//Timelog
 exports.authorizedSaveTimelog = function(req, res, next) {
     var timelogs = req.body.timelog;
     var user = req.user;
@@ -64,6 +66,26 @@ exports.authorizedSaveTimelog = function(req, res, next) {
             function() { //success callback
                 next();
             });
+    } else {
+        next();
+    }
+};
+
+//Company
+exports.authorizedUpdateCompany = function(req, res, next) {
+    var user = req.user;
+    var company = req.body;
+    if(company.ownerId.equals(user._id) && user.role === 'Owner') {
+        next();
+    } else {
+        res.status(403).json({msg: 'REST call is not permitted!'});
+    }
+};
+
+exports.authorizedCreateCompany = function(req, res, next) {
+    var user = req.user;
+    if(user.companyId) {
+        res.status(403).json({msg: 'You already has company/assign on it'});
     } else {
         next();
     }
