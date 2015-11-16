@@ -182,6 +182,27 @@ exports.authorizedFindCompanyById = function(req, res, next) {
     }
 };
 
+//Reports
+exports.authorizedGetFilters = function(req, res, next) {
+    var user = req.user;
+    var companyId = utils.getCompanyId(req);
+    if(companyId.equals(user.companyId) && (user.role === 'Manager' || user.role === 'Owner')) {
+        next();
+    } else {
+        send403(res);
+    }
+};
+
+exports.authorizedCommonReport = function(req, res, next) {
+    var user = req.user;
+    var filters = req.body;
+    if(filters.companyId.equals(user.companyId) && (user.role === 'Manager' || user.role === 'Owner')) {
+        next();
+    } else {
+        send403(res);
+    }
+};
+
 //Private 
 function canWriteProject(user, project) {
     if(!user.companyId.equals(project.companyId)) {
