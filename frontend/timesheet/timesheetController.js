@@ -55,6 +55,7 @@ angular.module('myApp.timesheet', ['ngRoute'])
         function generateTimesheet() {
             $scope.startDate = new Date($scope.company.periods[0].start); //default for peridos split date
             $scope.timesheet = [];
+            $scope.splittedTimesheet = [];
 
             var startDate = moment(new Date($scope.company.periods[0].start)),
                 endDate = moment(new Date($scope.company.periods[$scope.company.periods.length - 1].end)),
@@ -338,5 +339,24 @@ angular.module('myApp.timesheet', ['ngRoute'])
             applyDefaultValues();
 
             timesheetService.saveCompany($scope.company);
+        };
+
+        $scope.GenerateMoreDays = function() {
+            var lastPeriodEnd = $scope.company.periods[$scope.company.periods.length - 1].end,
+                newPeriodStart = moment(new Date(lastPeriodEnd)).add(i + 1, 'days'),
+                nextPeriodStart,
+                weeksToGenerate = 52, //weeks in year
+                i;
+
+            for(i = 0; i < weeksToGenerate; i++){
+                nextPeriodStart = moment(new Date(newPeriodStart)).add(i*7, 'days');
+
+                $scope.company.periods.push({
+                    end: nextPeriodStart.add(7, 'days').format('MM/DD/YYYY'),
+                    start: nextPeriodStart.format('MM/DD/YYYY')
+                });
+            }
+
+            generateTimesheet();
         };
     }]);

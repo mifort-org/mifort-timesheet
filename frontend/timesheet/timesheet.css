@@ -376,4 +376,9 @@
       .report-controls a.disabled:hover {
         border-color: #dedede; }
 
+.show-more {
+  float: left;
+  clear: left;
+  width: 546px; }
+
 /*# sourceMappingURL=timesheet.css.map */

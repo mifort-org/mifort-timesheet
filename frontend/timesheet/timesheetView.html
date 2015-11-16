@@ -72,7 +72,7 @@
         <div class="periods-wrapper">
             <table class="periods table table-bordered">
                 <thead>
-                <th ng-repeat="day in weekDays track by $index">{{day}}</th>
+                <th ng-repeat="day in weekDays track by $index">{{::day}}</th>
                 </thead>
 
                 <tbody>
@@ -85,12 +85,16 @@
                 </tbody>
             </table>
         </div>
-        <!--<small>{{splittedTimesheet[$index]}}</small>-->
     </div>
+    <br/>
 </div>
-<!--<small>{{timesheet}}</small>-->
-<!--<small>{{splittedTimesheet}}</small>-->
-<!--{{company.defaultValues}}-->
+
+<div class="show-more">
+    <button type="button" class="primary-button" ng-click="GenerateMoreDays()">
+        Show more
+    </button>
+</div>
+
 <script type="text/ng-template" id="daySettimgs.html">
     <a href=""
        class="custom-day-button"

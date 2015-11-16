@@ -27,11 +27,8 @@
        href=""
        class="timesheet-day-wrapper"
        ng-class="{'disabled-day-data': day.disabled}"
-       popover-template="daySettingsPopover.templateUrl"
-       popover-title="{{daySettingsPopover.title}}"
-       popover-placement="bottom"
        data-toggle="popover">
-        {{day.date.slice(3, 5)}}
+        {{::day.date.slice(3, 5)}}
     </a>
 
     <div class="end-splitter"></div>
