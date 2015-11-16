@@ -166,9 +166,19 @@ exports.authorizedUpdateCompany = function(req, res, next) {
 exports.authorizedCreateCompany = function(req, res, next) {
     var user = req.user;
     if(user.companyId) {
-        send403(res, 'You already has company/assign on it');
+        send403(res, 'You already have company/assign on a company');
     } else {
         next();
+    }
+};
+
+exports.authorizedFindCompanyById = function(req, res, next) {
+    var user = req.user;
+    var companyId = utils.getCompanyId(req);
+    if(companyId.equals(user.companyId)) {
+        next();
+    } else {
+        send403(res);
     }
 };
 
