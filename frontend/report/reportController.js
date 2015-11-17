@@ -32,6 +32,7 @@ angular.module('myApp.report', ['ngRoute'])
         $scope.reportColumns = ['Data', 'User', 'Project', 'Assignment', 'Time', 'Action'];
         $scope.perPage = [5, 10, 20, 50, 100];
         $scope.totalCount = 0;
+        $scope.projects = [];
 
         $scope.reportSettings = {
             companyId: companyId,
@@ -56,7 +57,7 @@ angular.module('myApp.report', ['ngRoute'])
                     field: 'date',
                     enableColumnResizing: true,
                     enableColumnMenu: false,
-                    filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" row-title="Date"></span></div>'
+                    filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" fff="{{totalCount}}" row-title="Date"></span></div>'
                 },
                 {
                     field: 'userName',
@@ -121,6 +122,10 @@ angular.module('myApp.report', ['ngRoute'])
 
         reportService.getFilters(companyId).success(function(data) {
             $scope.filtersSettings = data;
+
+            $scope.gridOptions.projectFilers = _.find(data, function(filter){
+                return filter.field = "projectName";
+            });
         });
 
         $scope.getReport = function(reportSettings) {

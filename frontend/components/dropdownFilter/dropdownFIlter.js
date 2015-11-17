@@ -19,15 +19,14 @@
 angular.module('myApp')
     .directive('dropdownFilter', function () {
         return {
-            scope: {
-                rowTitle: '='
-            },
+            scope: true,
             link: function (scope, element, attrs) {
                 scope.popoverOpened = false;
 
                 scope.dynamicPopover = {
                     content: attrs.rowTitle,
-                    templateUrl: 'myPopoverTemplate.html'
+                    templateUrl: 'myPopoverTemplate.html',
+                    projectFilter: scope.grid.options.projectFilers
                 };
             },
             templateUrl: 'components/dropdownFilter/dropdownFilter.html'

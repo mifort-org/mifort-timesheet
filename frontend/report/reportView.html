@@ -40,10 +40,14 @@
 <div class="report-wrapper">
     <div class="gridStyle" ui-grid="gridOptions" ui-grid-auto-resize ng-style="gridHeight" ui-grid-resize-columns></div>
 </div>
-
-<a href="" ng-click="downloadCsv()">Download CSV</a>
+{{projectFilter}}
 <!--{{reportData}}-->
 
 <script type="text/ng-template" id="myPopoverTemplate.html">
     <div>{{dynamicPopover.content}}</div>
+
+    <input type="text" ng-model="filterSearch"/>
+    <div ng-repeat="filterVaue in dynamicPopover.projectFilter.value">
+        *{{filterVaue}}*
+    </div>
 </script>
