@@ -23,7 +23,7 @@ var utils = require('./utils');
 
 //Public
 //Project
-exports.authorizedSaveProject = function(req, res, next) {
+exports.authorizeSaveProject = function(req, res, next) {
     var user = req.user;
     var project = req.body;
     if(user) {
@@ -35,7 +35,7 @@ exports.authorizedSaveProject = function(req, res, next) {
     send403(res);
 };
 
-exports.authorizedGetProject = function(req, res, next) {
+exports.authorizeGetProject = function(req, res, next) {
     var user = req.user;
     var projectId = utils.getProjectId(req);
     
@@ -53,7 +53,7 @@ exports.authorizedGetProject = function(req, res, next) {
     });
 };
 
-exports.authorizedGetProjects = function(req, res, next) {
+exports.authorizeGetProjects = function(req, res, next) {
     var user = req.user;
     var companyId = utils.getCompanyId(req);
 
@@ -64,7 +64,7 @@ exports.authorizedGetProjects = function(req, res, next) {
     }
 };
 
-exports.authorizedDeactivateProject = function(req, res, next) {
+exports.authorizeDeactivateProject = function(req, res, next) {
     var user = req.user;
     var projectId = utils.getProjectId(req);
     
@@ -83,7 +83,7 @@ exports.authorizedDeactivateProject = function(req, res, next) {
 };
 
 //Timelog
-exports.authorizedSaveTimelog = function(req, res, next) {
+exports.authorizeSaveTimelog = function(req, res, next) {
     var timelogs = req.body.timelog;
     var user = req.user;
     if(timelogs) {
@@ -110,7 +110,7 @@ exports.authorizedSaveTimelog = function(req, res, next) {
     }
 };
 
-exports.authorizedGetTimelog = function(req, res, next) {
+exports.authorizeGetTimelog = function(req, res, next) {
     var user = req.user;
     var userId = utils.getUserId(req);
 
@@ -128,7 +128,7 @@ exports.authorizedGetTimelog = function(req, res, next) {
         });
 };
 
-exports.authorizedDeleteTimelog = function(req, res, next) {
+exports.authorizeDeleteTimelog = function(req, res, next) {
     var user = req.user;
     var timelogId = utils.getTimelogId(req);
 
@@ -152,8 +152,41 @@ exports.authorizedDeleteTimelog = function(req, res, next) {
     });
 };
 
+//User
+exports.authorizeGetUsersByProjectId = function(req, res, next){
+    var user = req.user;
+    var projectId = utils.getProjectId(req);
+
+    var projects = db.projectCollection();
+    projects.findOne({_id: projectId}, function(err, project) {
+        if(err) {
+            send403(res);
+        } else {
+            if(canWriteProject(user, project)) {
+                next();
+            } else {
+                send403(res);
+            }
+        }
+    });
+};
+
+exports.authorizeGetUsersByCompanyId = function(req, res, next) {
+    var user = req.user;
+    var companyId = utils.getCompanyId(req);
+
+    if(companyId.equals(user.companyId) && 
+            (user.role === 'Owner' || user.role === 'Manager')) {
+        next();
+    } else {
+        send403(res);
+    }
+};
+
+exports.authorizeAddAssignment = exports.authorizeGetUsersByProjectId;
+
 //Company
-exports.authorizedUpdateCompany = function(req, res, next) {
+exports.authorizeUpdateCompany = function(req, res, next) {
     var user = req.user;
     var company = req.body;
     if(company.ownerId.equals(user._id) && user.role === 'Owner') {
@@ -163,16 +196,16 @@ exports.authorizedUpdateCompany = function(req, res, next) {
     }
 };
 
-exports.authorizedCreateCompany = function(req, res, next) {
+exports.authorizeCreateCompany = function(req, res, next) {
     var user = req.user;
     if(user.companyId) {
-        send403(res, 'You already have company/assign on a company');
+        send403(res, 'You already have company/assignment on a company');
     } else {
         next();
     }
 };
 
-exports.authorizedFindCompanyById = function(req, res, next) {
+exports.authorizeFindCompanyById = function(req, res, next) {
     var user = req.user;
     var companyId = utils.getCompanyId(req);
     if(companyId.equals(user.companyId)) {
@@ -183,7 +216,7 @@ exports.authorizedFindCompanyById = function(req, res, next) {
 };
 
 //Reports
-exports.authorizedGetFilters = function(req, res, next) {
+exports.authorizeGetFilters = function(req, res, next) {
     var user = req.user;
     var companyId = utils.getCompanyId(req);
     if(companyId.equals(user.companyId) && (user.role === 'Manager' || user.role === 'Owner')) {
@@ -193,7 +226,7 @@ exports.authorizedGetFilters = function(req, res, next) {
     }
 };
 
-exports.authorizedCommonReport = function(req, res, next) {
+exports.authorizeCommonReport = function(req, res, next) {
     var user = req.user;
     var filters = req.body;
     if(filters.companyId.equals(user.companyId) && (user.role === 'Manager' || user.role === 'Owner')) {
