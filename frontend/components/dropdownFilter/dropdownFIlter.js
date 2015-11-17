@@ -24,9 +24,20 @@ angular.module('myApp')
                 scope.popoverOpened = false;
 
                 scope.dynamicPopover = {
-                    content: attrs.rowTitle,
+                    content: attrs.colTitle,
                     templateUrl: 'myPopoverTemplate.html',
-                    projectFilter: scope.grid.options.projectFilers
+                    projectFilter: _.find(scope.grid.options.projectFilers, function(filter) {
+                        if(filter.field == attrs.colName){
+                            filter.value = filter.value.map(function(filterValue) {
+                                return {
+                                    name: filterValue,
+                                    isChecked: false
+                                }
+                            });
+
+                            return true;
+                        }
+                    })
                 };
             },
             templateUrl: 'components/dropdownFilter/dropdownFilter.html'

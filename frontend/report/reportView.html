@@ -40,14 +40,28 @@
 <div class="report-wrapper">
     <div class="gridStyle" ui-grid="gridOptions" ui-grid-auto-resize ng-style="gridHeight" ui-grid-resize-columns></div>
 </div>
-{{projectFilter}}
+<!--{{projectFilter}}-->
 <!--{{reportData}}-->
 
 <script type="text/ng-template" id="myPopoverTemplate.html">
     <div>{{dynamicPopover.content}}</div>
 
-    <input type="text" ng-model="filterSearch"/>
-    <div ng-repeat="filterVaue in dynamicPopover.projectFilter.value">
-        *{{filterVaue}}*
+    <input type="text" ng-model="filtersFilter"/>
+
+    <hr/>
+
+    <div ng-repeat="filterVaue in dynamicPopover.projectFilter.value"  ng-show="filterVaue.isChecked">
+        <input type="checkbox" ng-model="dynamicPopover.projectFilter.value[$index].isChecked" />
+
+        {{filterVaue.name.role || filterVaue.name}}
     </div>
+
+    <hr/>
+
+    <div ng-repeat="filterVaue in dynamicPopover.projectFilter.value | filter:filtersFilter" ng-show="!filterVaue.isChecked">
+        <input type="checkbox" ng-model="dynamicPopover.projectFilter.value[$index].isChecked" />
+    
+        {{filterVaue.name.role || filterVaue.name}}
+    </div>
+    {{dynamicPopover.projectFilter}}
 </script>
