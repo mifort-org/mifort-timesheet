@@ -15,12 +15,15 @@
  * 
  * @author Andrew Voitov
  */
+
+//TODO: move common parts to functions
+
 var db = require('./mongodb_settings');
 var utils = require('./utils');
 
 //Public
 //Project
-exports.authorizedSaveProject = function(req, res, next) {
+exports.authorizeSaveProject = function(req, res, next) {
     var user = req.user;
     var project = req.body;
     if(user) {
@@ -29,31 +32,58 @@ exports.authorizedSaveProject = function(req, res, next) {
             return;
         }
     }
-    res.status(403).json({msg: 'REST call is not permitted!'});
+    send403(res);
 };
 
-exports.authorizedGetProject = function(req, res, next) {
+exports.authorizeGetProject = function(req, res, next) {
     var user = req.user;
     var projectId = utils.getProjectId(req);
     
     var projects = db.projectCollection();
     projects.findOne({_id: projectId}, function(err, project) {
         if(err) {
-            res.status(403).json({msg: 'REST call is not permitted!'}); //error. Not a permission function
+            send403(res); //error. Not a permission function
         } else {
             if(canReadProject(user, project)) {
                 next();
             } else {
-                res.status(403).json({msg: 'REST call is not permitted!'});
+                send403(res);
             }
         }
     });
+};
+
+exports.authorizeGetProjects = function(req, res, next) {
+    var user = req.user;
+    var companyId = utils.getCompanyId(req);
+
+    if(user.companyId.equals(companyId)) {
+        next();
+    } else {
+        send403(res);
+    }
+};
+
+exports.authorizeDeactivateProject = function(req, res, next) {
+    var user = req.user;
+    var projectId = utils.getProjectId(req);
     
-    
+    var projects = db.projectCollection();
+    projects.findOne({_id: projectId}, function(err, project) {
+        if(err) {
+            send403(res);
+        } else {
+            if(canWriteProject(user, project)) {
+                next();
+            } else {
+                send403(res);
+            }
+        }
+    });
 };
 
 //Timelog
-exports.authorizedSaveTimelog = function(req, res, next) {
+exports.authorizeSaveTimelog = function(req, res, next) {
     var timelogs = req.body.timelog;
     var user = req.user;
     if(timelogs) {
@@ -70,7 +100,7 @@ exports.authorizedSaveTimelog = function(req, res, next) {
         });
         isManagerForUser(user, userIds,
             function() { // fail callback
-                res.status(403).json({msg: 'REST call is not permitted!'});
+                send403(res);
             },
             function() { //success callback
                 next();
@@ -80,23 +110,129 @@ exports.authorizedSaveTimelog = function(req, res, next) {
     }
 };
 
+exports.authorizeGetTimelog = function(req, res, next) {
+    var user = req.user;
+    var userId = utils.getUserId(req);
+
+    if(userId.equals(user._id)){
+        next();
+        return;
+    }
+
+    isManagerForUser(user, [userId],
+        function() { // fail callback
+            send403(res);
+        },
+        function() { //success callback
+            next();
+        });
+};
+
+exports.authorizeDeleteTimelog = function(req, res, next) {
+    var user = req.user;
+    var timelogId = utils.getTimelogId(req);
+
+    var timelogs = db.timelogCollection();
+    timelogs.findOne({_id: timelogId}, function(err, timelog) {
+        if(err) {
+            send403(res);
+        } else {
+            if(timelog.userId.equals(user._id)) {
+                next();
+            } else {
+                isManagerForUser(user, [timelog.userId],
+                    function() { // fail callback
+                        send403(res);
+                    },
+                    function() { //success callback
+                        next();
+                    });
+            }
+        }
+    });
+};
+
+//User
+exports.authorizeGetUsersByProjectId = function(req, res, next){
+    var user = req.user;
+    var projectId = utils.getProjectId(req);
+
+    var projects = db.projectCollection();
+    projects.findOne({_id: projectId}, function(err, project) {
+        if(err) {
+            send403(res);
+        } else {
+            if(canWriteProject(user, project)) {
+                next();
+            } else {
+                send403(res);
+            }
+        }
+    });
+};
+
+exports.authorizeGetUsersByCompanyId = function(req, res, next) {
+    var user = req.user;
+    var companyId = utils.getCompanyId(req);
+
+    if(companyId.equals(user.companyId) && 
+            (user.role === 'Owner' || user.role === 'Manager')) {
+        next();
+    } else {
+        send403(res);
+    }
+};
+
+exports.authorizeAddAssignment = exports.authorizeGetUsersByProjectId;
+
 //Company
-exports.authorizedUpdateCompany = function(req, res, next) {
+exports.authorizeUpdateCompany = function(req, res, next) {
     var user = req.user;
     var company = req.body;
     if(company.ownerId.equals(user._id) && user.role === 'Owner') {
         next();
     } else {
-        res.status(403).json({msg: 'REST call is not permitted!'});
+        send403(res);
     }
 };
 
-exports.authorizedCreateCompany = function(req, res, next) {
+exports.authorizeCreateCompany = function(req, res, next) {
     var user = req.user;
     if(user.companyId) {
-        res.status(403).json({msg: 'You already has company/assign on it'});
+        send403(res, 'You already have company/assignment on a company');
     } else {
         next();
+    }
+};
+
+exports.authorizeFindCompanyById = function(req, res, next) {
+    var user = req.user;
+    var companyId = utils.getCompanyId(req);
+    if(companyId.equals(user.companyId)) {
+        next();
+    } else {
+        send403(res);
+    }
+};
+
+//Reports
+exports.authorizeGetFilters = function(req, res, next) {
+    var user = req.user;
+    var companyId = utils.getCompanyId(req);
+    if(companyId.equals(user.companyId) && (user.role === 'Manager' || user.role === 'Owner')) {
+        next();
+    } else {
+        send403(res);
+    }
+};
+
+exports.authorizeCommonReport = function(req, res, next) {
+    var user = req.user;
+    var filters = req.body;
+    if(filters.companyId.equals(user.companyId) && (user.role === 'Manager' || user.role === 'Owner')) {
+        next();
+    } else {
+        send403(res);
     }
 };
 
@@ -162,4 +298,13 @@ function isManagerForUser(manager, userIds, errorCallback, successCallback) {
             }
         }
     });
+}
+
+function send403(res, message) {
+    var msg = 'REST call is not permitted!';
+    if(message) {
+        msg = message;
+    }
+
+    res.status(403).json({msg: msg});
 }
