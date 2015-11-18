@@ -105,6 +105,28 @@ exports.restReplaceAssignments = function(req, res, next) {
         });
 };
 
+exports.restUpdateUserRole = function(req, res, next) {
+    var user = req.body;
+    log.debug('-REST call: Update user role. User id: %s, role: %s', 
+        user._id.toHexString(), user.role);
+
+    var users = dbSettings.userCollection();
+    users.update({_id:user._id},
+                 {$set : {
+                        role: user.role
+                    }
+                 },
+        function(err, result) {
+            if(err) {
+                next(err);
+            } else {
+                log.debug('-REST result: Update user role. User id: %s, role: %s', 
+                    user._id.toHexString(), user.role);
+                res.json({ok: 'true'});
+            }
+        });
+};
+
 //Public API
 exports.save = function(user, callback) {
     var users = dbSettings.userCollection();

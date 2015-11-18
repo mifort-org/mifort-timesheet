@@ -94,6 +94,18 @@ exports.validateReplaceAssignment = function(req, res, next) {
     returnErrors(req, res, next);
 };
 
+exports.validateUpdateRole = function(req, res, next) {
+    var user = req.body;
+    if(!user) {
+        res.status(emptyBody.code).json({msg: emptyBody.message});
+        return;
+    }
+
+    req.checkBody('_id', util.format(invalidFormatMessageTemplate, 'User id')).notEmpty().isMongoId();
+    req.checkBody('role', util.format(invalidFormatMessageTemplate, 'Role')).notEmpty();
+    returnErrors(req, res, next);
+};
+
 //Company Rest API validation
 exports.validateUpdateCompany = function(req, res, next) {
     var company = req.body;
@@ -229,7 +241,9 @@ exports.timelogs = function(values) {
                 isValid = validator.isMongoId(val._id);
             }
             if(val.time){
-                isValid = isValid && val.time <= 24;
+                isValid = isValid 
+                    && (validator.isInt(val.time) || validator.isFloat(val.time)) 
+                    && val.time <= 24;
             }
             isValid = isValid
                 && validator.isMongoId(val.userId) //required && format

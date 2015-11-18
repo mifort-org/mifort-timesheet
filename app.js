@@ -116,6 +116,9 @@ app.get('/user/company/:companyId',
 app.post('/user/assignment/:projectId',
         validators.validateReplaceAssignment,
         user.restReplaceAssignments);
+app.post('/user/update-role', 
+        validators.validateUpdateRole,
+        user.restUpdateUserRole);
 
 //company
 app.post('/company', 

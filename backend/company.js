@@ -170,6 +170,7 @@ function createUsersByEmails(company) {
                     log.error('Cannot find user by email for new company.', {error: err});
                 } else if(!dbUser) {
                     user.displayName = email;
+                    user.role = 'Employee';
                     users.save(user, function(err, savedUser) {
                         if(err) {
                             log.error('Cannot saved user by email for new company.', {error: err});

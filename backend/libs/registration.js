@@ -38,8 +38,9 @@ exports.createDefaultProject = function(company, user) {
         } else {
             log.info('Defaul project is created!');
             if(user) {
+                user.role = 'Owner';
                 user.assignments = [{
-                    role: 'Employee',
+                    role: 'Owner',
                     projectName: savedProject.name,
                     projectId: savedProject._id
                 }];
