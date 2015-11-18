@@ -244,19 +244,7 @@ function canWriteProject(user, project) {
         return false;
     }
 
-    if(user.role === 'Owner') {
-        return true;
-    }
-
-    if(user.assignments) {
-        var hasAssignment = user.assignments.some(function(assignment) {
-            return assignment.projectId.equals(project._id);
-        });
-
-        return hasAssignment && user.role === 'Manager';
-    }
-
-    return false;
+    return user.role === 'Owner' || user.role === 'Manager';
 }
 
 function canReadProject(user, project) {

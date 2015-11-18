@@ -30,6 +30,7 @@ var company = require('./backend/company');
 var report = require('./backend/report');
 
 var authentication = require('./backend/libs/authentication');
+var authorization = require('./backend/libs/authorization');
 var util = require('./backend/libs/utils');
 var validators = require('./backend/libs/validators');
 var log = require('./backend/libs/logger');
@@ -108,7 +109,8 @@ app.delete('/timelog/:timelogId',
 //user
 app.get('/user', user.restGetCurrent);
 app.get('/user/project/:projectId', 
-        validators.validateGetUserByProjectId, 
+        validators.validateGetUserByProjectId,
+        authorization.authorizeGetUsersByProjectId,
         user.restGetByProjectId);
 app.get('/user/company/:companyId',
         validators.validateGetUserByCompanyId,
