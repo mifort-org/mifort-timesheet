@@ -83,7 +83,8 @@ app.use('/', function(req, res, next){
 
 //project
 app.post('/project',
-        validators.validateSaveProject, 
+        validators.validateSaveProject,
+        authorization.authorizeSaveProject, 
         project.restSave);
 app.get('/project/:projectId', 
         validators.validateGetProjectById,
