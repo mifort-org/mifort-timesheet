@@ -35,7 +35,7 @@ exports.authorizeSaveProject = function(req, res, next) {
     send403(res);
 };
 
-exports.authorizeGetProject = function(req, res, next) {
+exports.authorizeGetProjectById = function(req, res, next) {
     var user = req.user;
     var projectId = utils.getProjectId(req);
     
@@ -158,25 +158,26 @@ exports.authorizeGetUsersByProjectId = function(req, res, next){
     var projectId = utils.getProjectId(req);
 
     var projects = db.projectCollection();
-    projects.findOne({_id: projectId}, function(err, project) {
-        if(err) {
-            send403(res);
-        } else {
-            if(isManagerForCompany(user, project.companyId)) {
-                next();
-            } else {
+    projects.findOne({_id: projectId},
+                     {companyId: 1},
+        function(err, project) {
+            if(err) {
                 send403(res);
+            } else {
+                if(isManagerForCompany(user, project.companyId)) {
+                    next();
+                } else {
+                    send403(res);
+                }
             }
-        }
-    });
+        });
 };
 
 exports.authorizeGetUsersByCompanyId = function(req, res, next) {
     var user = req.user;
     var companyId = utils.getCompanyId(req);
 
-    if(companyId.equals(user.companyId) && 
-            (user.role === 'Owner' || user.role === 'Manager')) {
+    if(isManagerForCompany(user, companyId)) {
         next();
     } else {
         send403(res);
@@ -185,6 +186,29 @@ exports.authorizeGetUsersByCompanyId = function(req, res, next) {
 
 exports.authorizeAddAssignment = exports.authorizeGetUsersByProjectId;
 
+exports.authorizaUpdateRole = function(req, res, next) {
+    var user = req.user;
+    if(user.role !== 'Owner') {
+        send403(res);
+        return;
+    }
+
+    var updatedUser = req.body;
+    var users = db.userCollection();
+    users.findOne({_id: updatedUser._id}, 
+                  {companyId: 1}, 
+        function(err, findedUser) {
+            if(err) {
+                send403(res);
+            } else {
+                if(user.companyId.equals(findedUser.companyId)) {
+                    next();
+                } else {
+                    send403(res);
+                }
+            }
+        });
+};
 //Company
 exports.authorizeUpdateCompany = function(req, res, next) {
     var user = req.user;
@@ -252,7 +276,7 @@ function canReadProject(user, project) {
         return false;
     }
 
-    if(user.role === 'Owner') {
+    if(user.role === 'Owner' || user.role === 'Manager') {
         return true;
     }
 

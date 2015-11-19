@@ -86,7 +86,8 @@ app.post('/project',
         validators.validateSaveProject, 
         project.restSave);
 app.get('/project/:projectId', 
-        validators.validateGetProjectById, 
+        validators.validateGetProjectById,
+        authorization.authorizeGetProjectById, 
         project.restGetById);
 app.get('/projects', 
         validators.validateGetProjectByCompanyId, 
@@ -122,6 +123,7 @@ app.post('/user/assignment/:projectId',
         user.restReplaceAssignments);
 app.post('/user/update-role', 
         validators.validateUpdateRole,
+        authorization.authorizaUpdateRole,
         user.restUpdateUserRole);
 
 //company
