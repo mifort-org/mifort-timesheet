@@ -90,10 +90,12 @@ app.get('/project/:projectId',
         authorization.authorizeGetProjectById, 
         project.restGetById);
 app.get('/projects', 
-        validators.validateGetProjectByCompanyId, 
+        validators.validateGetProjectByCompanyId,
+        authorization.authorizeGetProjectsByCompanyId, 
         project.restGetByCompanyId);
 app.get('/project/deactivate/:projectId',
         validators.validateDeactivateProject,
+        authorization.authorizeDeactivateProject,
         project.restDeactivateProject);
 
 //timelog

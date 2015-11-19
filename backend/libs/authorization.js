@@ -53,11 +53,11 @@ exports.authorizeGetProjectById = function(req, res, next) {
     });
 };
 
-exports.authorizeGetProjects = function(req, res, next) {
+exports.authorizeGetProjectsByCompanyId = function(req, res, next) {
     var user = req.user;
     var companyId = utils.getCompanyId(req);
 
-    if(user.companyId.equals(companyId)) {
+    if(isManagerForCompany(user, companyId)) {
         next();
     } else {
         send403(res);
