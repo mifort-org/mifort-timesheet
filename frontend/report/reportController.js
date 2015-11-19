@@ -26,8 +26,16 @@ angular.module('myApp.report', ['ngRoute'])
     }])
 
     .controller('reportController', ['$scope', 'reportService', 'preferences', 'uiGridConstants', 'topPanelService', function($scope, reportService, preferences, uiGridConstants, topPanelService) {
-        var companyId = preferences.get('user').companyId;
-        var headerHeight = 38;
+        var companyId = preferences.get('user').companyId,
+            headerHeight = 38;
+
+        $scope.ranges = {
+            'Today': [moment(), moment()],
+            'Yesterday': [moment().subtract('days', 1), moment().subtract('days', 1)],
+            'Last 7 days': [moment().subtract('days', 7), moment()],
+            'Last 30 days': [moment().subtract('days', 30), moment()],
+            'This month': [moment().startOf('month'), moment().endOf('month')]
+        };
 
         $scope.reportColumns = ['Data', 'User', 'Project', 'Assignment', 'Time', 'Action'];
         $scope.perPage = [5, 10, 20, 50, 100];
@@ -46,6 +54,7 @@ angular.module('myApp.report', ['ngRoute'])
         };
 
         $scope.gridOptions = {
+            ranges: $scope.ranges,
             paginationPageSizes: [25, 50, 75],
             paginationPageSize: 25,
             enableFiltering: true,
@@ -57,7 +66,7 @@ angular.module('myApp.report', ['ngRoute'])
                     field: 'date',
                     enableColumnResizing: true,
                     enableColumnMenu: false,
-                    filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" col-name="date" col-title="Date"></span></div>'
+                    filterHeaderTemplate: '<div class="ui-grid-filter-container"><span report-date-picker class="report-filter"></span></div>'
                 },
                 {
                     field: 'userName',
@@ -123,15 +132,17 @@ angular.module('myApp.report', ['ngRoute'])
         reportService.getFilters(companyId).success(function(data) {
             $scope.filtersSettings = data;
 
-            $scope.gridOptions.projectFilers = data;
+            $scope.gridOptions.projectFilters = data;
         });
 
-        $scope.$watch('gridOptions.projectFilers', function(newValue, oldValue) {
+        $scope.$watch('gridOptions.projectFilters', function(newValue, oldValue) {
             if(newValue && newValue != oldValue){
+                $scope.reportSettings.filters = [];
+
                 newValue.forEach(function(filter) {
                     var filterToPush = {
-                        field: filter.field
-                    },
+                            field: filter.field
+                        },
                         checkedFilters = _.where(filter.value, {isChecked: true});
 
                     filterToPush.value = checkedFilters.map(function(checkedFilter) {
@@ -145,7 +156,7 @@ angular.module('myApp.report', ['ngRoute'])
 
                 $scope.getReport();
             }
-        },true);
+        }, true);
 
         $scope.getReport = function() {
             reportService.getReport($scope.reportSettings).success(function(data, status, headers) {

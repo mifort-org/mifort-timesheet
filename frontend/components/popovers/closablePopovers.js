@@ -17,7 +17,7 @@
 'use strict';
 
 angular.module('myApp')
-    .directive('tableCell', function () {
+    .directive('closablePopovers', function () {
         return {
             scope: true,
             link: function () {

@@ -21,6 +21,7 @@
 }
 
 .report-filter{
+    position: relative;
     display: inline-block;
     height: 20px;
     width: 20px;
@@ -103,4 +104,13 @@
 
 .ui-grid-canvas > div:last-child{
     border-bottom: 0;
+}
+
+.date-range-picker{
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    width: 30px;
+    opacity: 0;
+    cursor: pointer;
 }

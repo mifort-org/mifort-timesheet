@@ -26,7 +26,7 @@ angular.module('myApp')
                 scope.dynamicPopover = {
                     content: attrs.colTitle,
                     templateUrl: 'myPopoverTemplate.html',
-                    projectFilter: _.find(scope.grid.options.projectFilers, function(filter) {
+                    projectFilter: _.find(scope.grid.options.projectFilters, function(filter) {
                         if(filter.field == attrs.colName){
                             filter.value = filter.value.map(function(filterValue) {
                                 return {

@@ -32,7 +32,8 @@ angular.module('myApp', [
     'angular-click-outside',
     'ui.grid',
     'ui.grid.resizeColumns',
-    'ui.grid.autoResize'
+    'ui.grid.autoResize',
+    'ngBootstrap'
 ])
     .config(['$routeProvider', function($routeProvider) {
         $routeProvider.otherwise({redirectTo: '/login'});
