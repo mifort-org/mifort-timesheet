@@ -114,6 +114,7 @@ app.get('/user/project/:projectId',
         user.restGetByProjectId);
 app.get('/user/company/:companyId',
         validators.validateGetUserByCompanyId,
+        authorization.authorizeGetUsersByCompanyId,
         user.restGetByCompanyId);
 app.post('/user/assignment/:projectId',
         validators.validateReplaceAssignment,

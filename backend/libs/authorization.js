@@ -27,7 +27,7 @@ exports.authorizeSaveProject = function(req, res, next) {
     var user = req.user;
     var project = req.body;
     if(user) {
-        if(canWriteProject(user, project)) {
+        if(isManagerForCompany(user, project.companyId)) {
             next();
             return;
         }
@@ -73,7 +73,7 @@ exports.authorizeDeactivateProject = function(req, res, next) {
         if(err) {
             send403(res);
         } else {
-            if(canWriteProject(user, project)) {
+            if(isManagerForCompany(user, project.companyId)) {
                 next();
             } else {
                 send403(res);
@@ -162,7 +162,7 @@ exports.authorizeGetUsersByProjectId = function(req, res, next){
         if(err) {
             send403(res);
         } else {
-            if(canWriteProject(user, project)) {
+            if(isManagerForCompany(user, project.companyId)) {
                 next();
             } else {
                 send403(res);
@@ -239,8 +239,8 @@ exports.authorizeCommonReport = function(req, res, next) {
 };
 
 //Private 
-function canWriteProject(user, project) {
-    if(!user.companyId.equals(project.companyId)) {
+function isManagerForCompany(user, companyId) {
+    if(!user.companyId.equals(companyId)) {
         return false;
     }
 
