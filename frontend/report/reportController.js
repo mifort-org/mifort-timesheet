@@ -98,7 +98,7 @@ angular.module('myApp.report', ['ngRoute'])
             $scope.reportSettings.page = 1;
 
             if(sortColumns.length === 0 || !sortColumns[0].sort){
-                $scope.getReport($scope.reportSettings);
+                $scope.getReport();
             }else{
                 switch(sortColumns[0].sort.direction){
                     case uiGridConstants.ASC:
@@ -116,7 +116,7 @@ angular.module('myApp.report', ['ngRoute'])
                         break;
                 }
 
-                $scope.getReport($scope.reportSettings);
+                $scope.getReport();
             }
         };
 
@@ -126,8 +126,29 @@ angular.module('myApp.report', ['ngRoute'])
             $scope.gridOptions.projectFilers = data;
         });
 
-        $scope.getReport = function(reportSettings) {
-            reportService.getReport(reportSettings).success(function(data, status, headers) {
+        $scope.$watch('gridOptions.projectFilers', function(newValue, oldValue) {
+            if(newValue && newValue != oldValue){
+                newValue.forEach(function(filter) {
+                    var filterToPush = {
+                        field: filter.field
+                    },
+                        checkedFilters = _.where(filter.value, {isChecked: true});
+
+                    filterToPush.value = checkedFilters.map(function(checkedFilter) {
+                        return checkedFilter.name
+                    });
+
+                    if(filterToPush.value.length){
+                        $scope.reportSettings.filters.push(filterToPush);
+                    }
+                });
+
+                $scope.getReport();
+            }
+        },true);
+
+        $scope.getReport = function() {
+            reportService.getReport($scope.reportSettings).success(function(data, status, headers) {
                 $scope.reportData = data;
 
                 $scope.gridHeight = {
@@ -143,20 +164,20 @@ angular.module('myApp.report', ['ngRoute'])
 
         $scope.openPage = function(pageIndex) {
             $scope.reportSettings.page = pageIndex;
-            $scope.getReport($scope.reportSettings);
+            $scope.getReport();
         };
 
         $scope.nextPage = function() {
             if($scope.reportSettings.page < $scope.totalPages){
                 $scope.reportSettings.page++;
-                $scope.getReport($scope.reportSettings);
+                $scope.getReport();
             }
         };
 
         $scope.prevPage = function() {
             if($scope.reportSettings.page > 1){
                 $scope.reportSettings.page--;
-                $scope.getReport($scope.reportSettings);
+                $scope.getReport();
             }
         };
 
@@ -172,7 +193,7 @@ angular.module('myApp.report', ['ngRoute'])
 
         $scope.perPageChanged = function() {
             $scope.reportSettings.page = 1;
-            $scope.getReport($scope.reportSettings);
+            $scope.getReport();
         };
 
         $scope.$on('handleBroadcast', function() {
