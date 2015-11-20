@@ -235,7 +235,7 @@ exports.authorizeCreateCompany = function(req, res, next) {
     }
 };
 
-exports.authorizeFindCompanyById = function(req, res, next) {
+exports.authorizeGetCompanyById = function(req, res, next) {
     var user = req.user;
     var companyId = utils.getCompanyId(req);
     if(companyId.equals(user.companyId)) {

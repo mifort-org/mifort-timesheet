@@ -140,6 +140,7 @@ app.put('/company',
         company.restCreateCompany);
 app.get('/company/:companyId',
         validators.validateGetCompanyById,
+        authorization.authorizeGetCompanyById,
         company.restFindById);
 
 //report
