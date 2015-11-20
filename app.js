@@ -136,6 +136,7 @@ app.post('/company',
         company.restUpdateCompany);
 app.put('/company',
         validators.validateCreateCompany,
+        authorization.authorizeCreateCompany,
         company.restCreateCompany);
 app.get('/company/:companyId',
         validators.validateGetCompanyById,
