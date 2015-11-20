@@ -44,11 +44,14 @@ app.set('json replacer', util.jsonStringify);
 if (app.get('env') === 'production') {
     app.set('trust proxy', true);
     log.info('Production Mode!!!');
+} else {
+    log.info('Development Mode!!!');
 }
 
 app.use(cookieParser());
 app.use(express.static('frontend'));
 app.use(bodyParser.json({reviver:util.jsonParse}));
+log.info('Static resources are initialized!');
 
 app.use(expressValidator({
     customValidators: {
@@ -156,9 +159,11 @@ app.post('/report/common/download',
 app.get('/report/download/:fileName',
         validators.validateGetDownloadReport,
         report.restDownloadFile);
+log.info('REST API is ready!');
 
 // default error handler
 app.use(errorHandler);
+log.info('Error handler is initialized!');
 
 //run application
 app.listen(app.get('port'), function() {
