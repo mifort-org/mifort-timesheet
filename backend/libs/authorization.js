@@ -249,8 +249,7 @@ exports.authorizeGetCompanyById = function(req, res, next) {
 exports.authorizeGetFilters = function(req, res, next) {
     var user = req.user;
     var companyId = utils.getCompanyId(req);
-    if(companyId.equals(user.companyId) 
-            && (user.role === 'Manager' || user.role === 'Owner')) {
+    if(isManagerForCompany(user, companyId)) {
         next();
     } else {
         send403(res);
@@ -260,8 +259,7 @@ exports.authorizeGetFilters = function(req, res, next) {
 exports.authorizeCommonReport = function(req, res, next) {
     var user = req.user;
     var filters = req.body;
-    if(filters.companyId.equals(user.companyId) 
-            && (user.role === 'Manager' || user.role === 'Owner')) {
+    if(isManagerForCompany(user, filter.companyId)) {
         next();
     } else {
         send403(res);

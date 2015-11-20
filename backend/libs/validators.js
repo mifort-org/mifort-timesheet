@@ -116,7 +116,7 @@ exports.validateUpdateCompany = function(req, res, next) {
     req.checkBody('_id', util.format(invalidFormatMessageTemplate, 'Company id')).notEmpty().isMongoId();
     req.checkBody('emails', "Property 'emails' is not an array!" ).optional().isArray();
     req.checkBody('emails', 'At least one email has incorrect format').optional().isEmails();
-    
+
     returnErrors(req, res, next);
 };
 
@@ -192,9 +192,9 @@ exports.validateDeactivateProject = function(req, res, next) {
 //Report validation
 exports.validateCommonReport = function(req, res, next) {
     var filterObj = req.body;
-    req.checkBody('page', 'Page is required').notEmpty();
-    req.checkBody('pageSize', 'Page size is required').notEmpty();
-    req.checkBody('companyId', 'Company id is required').notEmpty();
+    req.checkBody('page', 'Page is required').notEmpty().isInt();
+    req.checkBody('pageSize', 'Page size is required').notEmpty().isInt();
+    req.checkBody('companyId', 'Company id is required').notEmpty().isMongoId();
     req.checkBody('filters', 'Incorrect filters value').isFilters();
     if(filterObj.sort) {
         req.checkBody('sort.field', 'Field name is required for sort object').notEmpty();
@@ -206,7 +206,7 @@ exports.validateCommonReport = function(req, res, next) {
 
 exports.validateDowloadCommonReport = function(req, res, next) {
     var filterObj = req.body;
-    req.checkBody('companyId', 'Company id is required').notEmpty();
+    req.checkBody('companyId', 'Company id is required').notEmpty().isMongoId();
     req.checkBody('filters', 'Incorrect filters value').isFilters();
     if(filterObj.sort) {
         req.checkBody('sort.field', 'Field name is required for sort object').notEmpty();

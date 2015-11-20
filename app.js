@@ -149,12 +149,15 @@ app.get('/company/:companyId',
 //report
 app.get('/report/filters/:companyId',
         validators.validateGetFilters,
+        authorization.authorizeGetFilters,
         report.restGetFilterValues);
 app.post('/report/common',
         validators.validateCommonReport,
+        authorization.authorizeCommonReport,
         report.restCommonReport);
 app.post('/report/common/download',
         validators.validateDowloadCommonReport,
+        authorization.authorizeCommonReport,
         report.restConstructCSV);
 app.get('/report/download/:fileName',
         validators.validateGetDownloadReport,
