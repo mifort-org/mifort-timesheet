@@ -259,7 +259,7 @@ exports.authorizeGetFilters = function(req, res, next) {
 exports.authorizeCommonReport = function(req, res, next) {
     var user = req.user;
     var filters = req.body;
-    if(isManagerForCompany(user, filter.companyId)) {
+    if(isManagerForCompany(user, filters.companyId)) {
         next();
     } else {
         send403(res);
