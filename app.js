@@ -132,6 +132,7 @@ app.post('/user/update-role',
 //company
 app.post('/company', 
         validators.validateUpdateCompany,
+        authorization.authorizeUpdateCompany,
         company.restUpdateCompany);
 app.put('/company',
         validators.validateCreateCompany,

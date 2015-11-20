@@ -113,7 +113,11 @@ exports.validateUpdateCompany = function(req, res, next) {
         res.status(emptyBody.code).json({msg: emptyBody.message});
         return;
     }
-    next();
+    req.checkBody('_id', util.format(invalidFormatMessageTemplate, 'Company id')).notEmpty().isMongoId();
+    req.checkBody('emails', "Property 'emails' is not an array!" ).optional().isArray();
+    req.checkBody('emails', 'At least one email has incorrect format').optional().isEmails();
+    
+    returnErrors(req, res, next);
 };
 
 exports.validateCreateCompany = function(req, res, next) {

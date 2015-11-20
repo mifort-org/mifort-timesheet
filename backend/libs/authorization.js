@@ -219,7 +219,7 @@ exports.authorizaUpdateRole = function(req, res, next) {
 exports.authorizeUpdateCompany = function(req, res, next) {
     var user = req.user;
     var company = req.body;
-    if(company.ownerId.equals(user._id) && user.role === 'Owner') {
+    if(company._id.equals(user.companyId) && user.role === 'Owner') {
         next();
     } else {
         send403(res);
