@@ -108,6 +108,7 @@ app.post('/timelog',
         timelog.restSave);
 app.get('/timelog/:userId',
         validators.validateGetTimelogByDates, 
+        authorization.authorizeGetTimelog,
         timelog.restGetByDates);
 app.delete('/timelog/:timelogId',
         validators.validateDeleteTimelog,
