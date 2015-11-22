@@ -53,7 +53,10 @@ exports.getFileName = function(req) {
 //parse json. Date and ObjectId
 exports.jsonParse = function(key, value) {
     if (typeof value === 'string') {
-        if (key.toLowerCase().indexOf('date') > -1
+        var isDateField = key.toLowerCase().indexOf('date') > -1
+                          || key === 'start'
+                          || key === 'end';
+        if (isDateField
                 && moment(value, dateFormat).isValid()) {
             return moment(value, dateFormat).toDate();
         }
