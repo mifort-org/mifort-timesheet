@@ -105,6 +105,7 @@ app.get('/project/deactivate/:projectId',
 //timelog
 app.post('/timelog',
         validators.validateSaveTimelog,
+        authorization.authorizeSaveTimelog,
         timelog.restSave);
 app.get('/timelog/:userId',
         validators.validateGetTimelogByDates, 
