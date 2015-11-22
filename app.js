@@ -112,6 +112,7 @@ app.get('/timelog/:userId',
         timelog.restGetByDates);
 app.delete('/timelog/:timelogId',
         validators.validateDeleteTimelog,
+        authorization.authorizeDeleteTimelog,
         timelog.restDelete);
 
 //user
