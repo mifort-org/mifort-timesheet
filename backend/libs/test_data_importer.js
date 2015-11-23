@@ -99,6 +99,7 @@ var company = {
 var user = {
     "email": "a.d.trofimov@gmail.com",
     "displayName": "a.d.trofimov@gmail.com",
+    "role": "Owner",
     "workload": 8,
     "assignments" : [ 
         {

@@ -25,17 +25,23 @@ var utils = require('./utils');
 //Project
 exports.authorizeSaveProject = function(req, res, next) {
     var user = req.user;
-    var project = req.body;
-    if(user) {
-        if(canWriteProject(user, project)) {
-            next();
-            return;
+    var project = req.body; //not full object need to find by Id
+    
+    var projects = db.projectCollection();
+    projects.findOne({_id: project._id}, function(err, findedProject) {
+        if(err) {
+            send403(res);
+        } else {
+            if(isManagerForCompany(user, findedProject.companyId)) {
+                next();
+            } else {
+                send403(res);
+            }
         }
-    }
-    send403(res);
+    });
 };
 
-exports.authorizeGetProject = function(req, res, next) {
+exports.authorizeGetProjectById = function(req, res, next) {
     var user = req.user;
     var projectId = utils.getProjectId(req);
     
@@ -53,11 +59,11 @@ exports.authorizeGetProject = function(req, res, next) {
     });
 };
 
-exports.authorizeGetProjects = function(req, res, next) {
+exports.authorizeGetProjectsByCompanyId = function(req, res, next) {
     var user = req.user;
     var companyId = utils.getCompanyId(req);
 
-    if(user.companyId.equals(companyId)) {
+    if(isManagerForCompany(user, companyId)) {
         next();
     } else {
         send403(res);
@@ -73,7 +79,7 @@ exports.authorizeDeactivateProject = function(req, res, next) {
         if(err) {
             send403(res);
         } else {
-            if(canWriteProject(user, project)) {
+            if(isManagerForCompany(user, project.companyId)) {
                 next();
             } else {
                 send403(res);
@@ -158,25 +164,26 @@ exports.authorizeGetUsersByProjectId = function(req, res, next){
     var projectId = utils.getProjectId(req);
 
     var projects = db.projectCollection();
-    projects.findOne({_id: projectId}, function(err, project) {
-        if(err) {
-            send403(res);
-        } else {
-            if(canWriteProject(user, project)) {
-                next();
-            } else {
+    projects.findOne({_id: projectId},
+                     {companyId: 1},
+        function(err, project) {
+            if(err) {
                 send403(res);
+            } else {
+                if(isManagerForCompany(user, project.companyId)) {
+                    next();
+                } else {
+                    send403(res);
+                }
             }
-        }
-    });
+        });
 };
 
 exports.authorizeGetUsersByCompanyId = function(req, res, next) {
     var user = req.user;
     var companyId = utils.getCompanyId(req);
 
-    if(companyId.equals(user.companyId) && 
-            (user.role === 'Owner' || user.role === 'Manager')) {
+    if(isManagerForCompany(user, companyId)) {
         next();
     } else {
         send403(res);
@@ -185,11 +192,34 @@ exports.authorizeGetUsersByCompanyId = function(req, res, next) {
 
 exports.authorizeAddAssignment = exports.authorizeGetUsersByProjectId;
 
+exports.authorizaUpdateRole = function(req, res, next) {
+    var user = req.user;
+    if(user.role !== 'Owner') {
+        send403(res);
+        return;
+    }
+
+    var updatedUser = req.body;
+    var users = db.userCollection();
+    users.findOne({_id: updatedUser._id}, 
+                  {companyId: 1}, 
+        function(err, findedUser) {
+            if(err) {
+                send403(res);
+            } else {
+                if(user.companyId.equals(findedUser.companyId)) {
+                    next();
+                } else {
+                    send403(res);
+                }
+            }
+        });
+};
 //Company
 exports.authorizeUpdateCompany = function(req, res, next) {
     var user = req.user;
     var company = req.body;
-    if(company.ownerId.equals(user._id) && user.role === 'Owner') {
+    if(company._id.equals(user.companyId) && user.role === 'Owner') {
         next();
     } else {
         send403(res);
@@ -205,7 +235,7 @@ exports.authorizeCreateCompany = function(req, res, next) {
     }
 };
 
-exports.authorizeFindCompanyById = function(req, res, next) {
+exports.authorizeGetCompanyById = function(req, res, next) {
     var user = req.user;
     var companyId = utils.getCompanyId(req);
     if(companyId.equals(user.companyId)) {
@@ -219,7 +249,7 @@ exports.authorizeFindCompanyById = function(req, res, next) {
 exports.authorizeGetFilters = function(req, res, next) {
     var user = req.user;
     var companyId = utils.getCompanyId(req);
-    if(companyId.equals(user.companyId) && (user.role === 'Manager' || user.role === 'Owner')) {
+    if(isManagerForCompany(user, companyId)) {
         next();
     } else {
         send403(res);
@@ -229,7 +259,7 @@ exports.authorizeGetFilters = function(req, res, next) {
 exports.authorizeCommonReport = function(req, res, next) {
     var user = req.user;
     var filters = req.body;
-    if(filters.companyId.equals(user.companyId) && (user.role === 'Manager' || user.role === 'Owner')) {
+    if(isManagerForCompany(user, filters.companyId)) {
         next();
     } else {
         send403(res);
@@ -237,24 +267,12 @@ exports.authorizeCommonReport = function(req, res, next) {
 };
 
 //Private 
-function canWriteProject(user, project) {
-    if(!user.companyId.equals(project.companyId)) {
+function isManagerForCompany(user, companyId) {
+    if(!user.companyId.equals(companyId)) {
         return false;
     }
 
-    if(user.role === 'Owner') {
-        return true;
-    }
-
-    if(user.assignments) {
-        var hasAssignment = user.assignments.some(function(assignment) {
-            return assignment.projectId.equals(project._id);
-        });
-
-        return hasAssignment && user.role === 'Manager';
-    }
-
-    return false;
+    return user.role === 'Owner' || user.role === 'Manager';
 }
 
 function canReadProject(user, project) {
@@ -262,7 +280,7 @@ function canReadProject(user, project) {
         return false;
     }
 
-    if(user.role === 'Owner') {
+    if(user.role === 'Owner' || user.role === 'Manager') {
         return true;
     }
 

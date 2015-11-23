@@ -110,6 +110,8 @@ exports.init = function(app) {
     );
 
     app.get('/logout', logout);
+
+    log.info('Authentication module is initialized!');
 };
 
 //private part

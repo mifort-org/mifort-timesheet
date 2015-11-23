@@ -94,6 +94,18 @@ exports.validateReplaceAssignment = function(req, res, next) {
     returnErrors(req, res, next);
 };
 
+exports.validateUpdateRole = function(req, res, next) {
+    var user = req.body;
+    if(!user) {
+        res.status(emptyBody.code).json({msg: emptyBody.message});
+        return;
+    }
+
+    req.checkBody('_id', util.format(invalidFormatMessageTemplate, 'User id')).notEmpty().isMongoId();
+    req.checkBody('role', util.format(invalidFormatMessageTemplate, 'Role')).notEmpty();
+    returnErrors(req, res, next);
+};
+
 //Company Rest API validation
 exports.validateUpdateCompany = function(req, res, next) {
     var company = req.body;
@@ -101,7 +113,11 @@ exports.validateUpdateCompany = function(req, res, next) {
         res.status(emptyBody.code).json({msg: emptyBody.message});
         return;
     }
-    next();
+    req.checkBody('_id', util.format(invalidFormatMessageTemplate, 'Company id')).notEmpty().isMongoId();
+    req.checkBody('emails', "Property 'emails' is not an array!" ).optional().isArray();
+    req.checkBody('emails', 'At least one email has incorrect format').optional().isEmails();
+
+    returnErrors(req, res, next);
 };
 
 exports.validateCreateCompany = function(req, res, next) {
@@ -176,9 +192,9 @@ exports.validateDeactivateProject = function(req, res, next) {
 //Report validation
 exports.validateCommonReport = function(req, res, next) {
     var filterObj = req.body;
-    req.checkBody('page', 'Page is required').notEmpty();
-    req.checkBody('pageSize', 'Page size is required').notEmpty();
-    req.checkBody('companyId', 'Company id is required').notEmpty();
+    req.checkBody('page', 'Page is required').notEmpty().isInt();
+    req.checkBody('pageSize', 'Page size is required').notEmpty().isInt();
+    req.checkBody('companyId', 'Company id is required').notEmpty().isMongoId();
     req.checkBody('filters', 'Incorrect filters value').isFilters();
     if(filterObj.sort) {
         req.checkBody('sort.field', 'Field name is required for sort object').notEmpty();
@@ -190,7 +206,7 @@ exports.validateCommonReport = function(req, res, next) {
 
 exports.validateDowloadCommonReport = function(req, res, next) {
     var filterObj = req.body;
-    req.checkBody('companyId', 'Company id is required').notEmpty();
+    req.checkBody('companyId', 'Company id is required').notEmpty().isMongoId();
     req.checkBody('filters', 'Incorrect filters value').isFilters();
     if(filterObj.sort) {
         req.checkBody('sort.field', 'Field name is required for sort object').notEmpty();
@@ -229,7 +245,9 @@ exports.timelogs = function(values) {
                 isValid = validator.isMongoId(val._id);
             }
             if(val.time){
-                isValid = isValid && val.time <= 24;
+                isValid = isValid 
+                    && (validator.isInt(val.time) || validator.isFloat(val.time)) 
+                    && val.time <= 24;
             }
             isValid = isValid
                 && validator.isMongoId(val.userId) //required && format

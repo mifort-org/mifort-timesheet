@@ -30,6 +30,7 @@ var company = require('./backend/company');
 var report = require('./backend/report');
 
 var authentication = require('./backend/libs/authentication');
+var authorization = require('./backend/libs/authorization');
 var util = require('./backend/libs/utils');
 var validators = require('./backend/libs/validators');
 var log = require('./backend/libs/logger');
@@ -43,11 +44,14 @@ app.set('json replacer', util.jsonStringify);
 if (app.get('env') === 'production') {
     app.set('trust proxy', true);
     log.info('Production Mode!!!');
+} else {
+    log.info('Development Mode!!!');
 }
 
 app.use(cookieParser());
 app.use(express.static('frontend'));
 app.use(bodyParser.json({reviver:util.jsonParse}));
+log.info('Static resources are initialized!');
 
 app.use(expressValidator({
     customValidators: {
@@ -82,68 +86,90 @@ app.use('/', function(req, res, next){
 
 //project
 app.post('/project',
-        validators.validateSaveProject, 
+        validators.validateSaveProject,
+        authorization.authorizeSaveProject, 
         project.restSave);
 app.get('/project/:projectId', 
-        validators.validateGetProjectById, 
+        validators.validateGetProjectById,
+        authorization.authorizeGetProjectById, 
         project.restGetById);
 app.get('/projects', 
-        validators.validateGetProjectByCompanyId, 
+        validators.validateGetProjectByCompanyId,
+        authorization.authorizeGetProjectsByCompanyId, 
         project.restGetByCompanyId);
 app.get('/project/deactivate/:projectId',
         validators.validateDeactivateProject,
+        authorization.authorizeDeactivateProject,
         project.restDeactivateProject);
 
 //timelog
 app.post('/timelog',
         validators.validateSaveTimelog,
+        authorization.authorizeSaveTimelog,
         timelog.restSave);
 app.get('/timelog/:userId',
         validators.validateGetTimelogByDates, 
+        authorization.authorizeGetTimelog,
         timelog.restGetByDates);
 app.delete('/timelog/:timelogId',
         validators.validateDeleteTimelog,
+        authorization.authorizeDeleteTimelog,
         timelog.restDelete);
 
 //user
 app.get('/user', user.restGetCurrent);
 app.get('/user/project/:projectId', 
-        validators.validateGetUserByProjectId, 
+        validators.validateGetUserByProjectId,
+        authorization.authorizeGetUsersByProjectId,
         user.restGetByProjectId);
 app.get('/user/company/:companyId',
         validators.validateGetUserByCompanyId,
+        authorization.authorizeGetUsersByCompanyId,
         user.restGetByCompanyId);
 app.post('/user/assignment/:projectId',
         validators.validateReplaceAssignment,
+        authorization.authorizeAddAssignment,
         user.restReplaceAssignments);
+app.post('/user/update-role', 
+        validators.validateUpdateRole,
+        authorization.authorizaUpdateRole,
+        user.restUpdateUserRole);
 
 //company
 app.post('/company', 
         validators.validateUpdateCompany,
+        authorization.authorizeUpdateCompany,
         company.restUpdateCompany);
 app.put('/company',
         validators.validateCreateCompany,
+        authorization.authorizeCreateCompany,
         company.restCreateCompany);
 app.get('/company/:companyId',
         validators.validateGetCompanyById,
+        authorization.authorizeGetCompanyById,
         company.restFindById);
 
 //report
 app.get('/report/filters/:companyId',
         validators.validateGetFilters,
+        authorization.authorizeGetFilters,
         report.restGetFilterValues);
 app.post('/report/common',
         validators.validateCommonReport,
+        authorization.authorizeCommonReport,
         report.restCommonReport);
 app.post('/report/common/download',
         validators.validateDowloadCommonReport,
+        authorization.authorizeCommonReport,
         report.restConstructCSV);
 app.get('/report/download/:fileName',
         validators.validateGetDownloadReport,
         report.restDownloadFile);
+log.info('REST API is ready!');
 
 // default error handler
 app.use(errorHandler);
+log.info('Error handler is initialized!');
 
 //run application
 app.listen(app.get('port'), function() {
