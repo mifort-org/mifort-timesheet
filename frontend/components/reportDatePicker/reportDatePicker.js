@@ -21,10 +21,26 @@ angular.module('myApp')
         return {
             scope: true,
             link: function (scope, element) {
-                element.on('click', function (e) {
-                    console.log('clicked');
-                });
-            },
+                scope.$watch('dates', function(newValue, oldValue) {
+                    if(newValue && newValue != oldValue){
+                        var dateFilter,
+                            dateFilterIndex = _.findIndex(scope.grid.options.reportFilters, function(reportFilter) {
+                            return reportFilter.field == 'date';
+                        });
+
+                        if(dateFilterIndex < 0){
+                            dateFilterIndex = scope.grid.options.reportFilters.length;
+                            dateFilter = {
+                                "field": "date"
+                            };
+
+                            scope.grid.options.reportFilters.push(dateFilter);
+                        }
+
+                        scope.grid.options.reportFilters[dateFilterIndex].start = moment(new Date(newValue.startDate)).format('MM/DD/YYYY');
+                        scope.grid.options.reportFilters[dateFilterIndex].end = moment(new Date(newValue.endDate)).format('MM/DD/YYYY');
+                    }
+                })},
             templateUrl: 'components/reportDatePicker/reportDatePicker.html'
         };
     });

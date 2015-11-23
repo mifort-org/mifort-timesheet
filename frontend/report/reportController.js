@@ -132,12 +132,18 @@ angular.module('myApp.report', ['ngRoute'])
         reportService.getFilters(companyId).success(function(data) {
             $scope.filtersSettings = data;
 
-            $scope.gridOptions.projectFilters = data;
+            $scope.gridOptions.reportFilters = data;
         });
 
-        $scope.$watch('gridOptions.projectFilters', function(newValue, oldValue) {
+        $scope.$watch('gridOptions.reportFilters', function(newValue, oldValue) {
             if(newValue && newValue != oldValue){
                 $scope.reportSettings.filters = [];
+
+                var dateFilter = _.where(newValue, {field: 'date'})[0];
+
+                if(dateFilter){
+                    $scope.reportSettings.filters.push(dateFilter)
+                }
 
                 newValue.forEach(function(filter) {
                     var filterToPush = {
@@ -212,4 +218,15 @@ angular.module('myApp.report', ['ngRoute'])
                 $scope.downloadCsv();
             }
         });
+        //
+        //$scope.dateFilterChanged = function(dates) {
+        //    var dateFilter = {
+        //        "field": "date",
+        //        "start": moment(new Date(dates.startDate)).format('MM/DD/YYYY'),
+        //        "end": moment(new Date(dates.endDate)).format('MM/DD/YYYY')
+        //    };
+        //
+        //    $scope.reportSettings.filters.push(dateFilter);
+        //    $scope.getReport();
+        //}
     }]);
