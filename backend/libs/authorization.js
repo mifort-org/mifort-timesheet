@@ -21,6 +21,14 @@
 var db = require('./mongodb_settings');
 var utils = require('./utils');
 
+var OWNER_ROLE = 'Owner';
+var MANAGER_ROLE = 'Manager';
+var EMPLOYEE_ROLE = 'Employee';
+
+exports.OWNER_ROLE = OWNER_ROLE;
+exports.MANAGER_ROLE = MANAGER_ROLE;
+exports.EMPLOYEE_ROLE = EMPLOYEE_ROLE;
+
 //Public
 //Project
 exports.authorizeSaveProject = function(req, res, next) {
@@ -194,7 +202,7 @@ exports.authorizeAddAssignment = exports.authorizeGetUsersByProjectId;
 
 exports.authorizaUpdateRole = function(req, res, next) {
     var user = req.user;
-    if(user.role !== 'Owner') {
+    if(user.role !== OWNER_ROLE) {
         send403(res);
         return;
     }
@@ -219,7 +227,7 @@ exports.authorizaUpdateRole = function(req, res, next) {
 exports.authorizeUpdateCompany = function(req, res, next) {
     var user = req.user;
     var company = req.body;
-    if(company._id.equals(user.companyId) && user.role === 'Owner') {
+    if(company._id.equals(user.companyId) && user.role === OWNER_ROLE) {
         next();
     } else {
         send403(res);
@@ -272,7 +280,7 @@ function isManagerForCompany(user, companyId) {
         return false;
     }
 
-    return user.role === 'Owner' || user.role === 'Manager';
+    return user.role === OWNER_ROLE || user.role === MANAGER_ROLE;
 }
 
 function canReadProject(user, project) {
@@ -280,7 +288,7 @@ function canReadProject(user, project) {
         return false;
     }
 
-    if(user.role === 'Owner' || user.role === 'Manager') {
+    if(user.role === OWNER_ROLE || user.role === MANAGER_ROLE) {
         return true;
     }
 
@@ -296,7 +304,7 @@ function canReadProject(user, project) {
 }
 
 function isManagerForUser(manager, userIds, errorCallback, successCallback) {
-    if(manager.role !== 'Manager' || manager.role !== 'Owner') {
+    if(manager.role !== MANAGER_ROLE || manager.role !== OWNER_ROLE) {
         errorCallback();
         return;
     }

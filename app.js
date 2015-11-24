@@ -77,11 +77,7 @@ authentication.init(app);
 
 //add auth.ensureAuthenticated for each Rest API
 app.use('/', function(req, res, next){
-    if(req.originalUrl !== '/user') {
-        authentication.ensureAuthenticated(req, res, next);
-    } else {
-        next();
-    }
+    authentication.ensureAuthenticated(req, res, next);
 });
 
 //project

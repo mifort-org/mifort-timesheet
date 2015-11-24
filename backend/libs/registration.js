@@ -19,6 +19,7 @@
 var users = require('../user');
 var projects = require('../project');
 var log = require('./logger');
+var authorization = require('./authorization');
 
 exports.createUser = function(user, callback) {
     users.save(user, function(err, savedUser){
@@ -38,7 +39,7 @@ exports.createDefaultProject = function(company, user) {
         } else {
             log.info('Defaul project is created!');
             if(user) {
-                user.role = 'Owner';
+                user.role = authorization.OWNER_ROLE;
                 user.assignments = [{
                     role: 'Owner',
                     projectName: savedProject.name,

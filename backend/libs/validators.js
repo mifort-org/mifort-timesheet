@@ -19,6 +19,7 @@
 var validator = require('validator');
 var reqParams = require('./req_params');
 var util = require('util');
+var authorization = require('./authorization');
 
 var emptyBody = {
     code: 400,
@@ -102,7 +103,8 @@ exports.validateUpdateRole = function(req, res, next) {
     }
 
     req.checkBody('_id', util.format(invalidFormatMessageTemplate, 'User id')).notEmpty().isMongoId();
-    req.checkBody('role', util.format(invalidFormatMessageTemplate, 'Role')).notEmpty();
+    req.checkBody('role', util.format(invalidFormatMessageTemplate, 'Role'))
+        .notEmpty().isIn([authorization.OWNER_ROLE, authorization.EMPLOYEE_ROLE, authorization.MANAGER_ROLE]);
     returnErrors(req, res, next);
 };
 

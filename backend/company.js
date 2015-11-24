@@ -23,6 +23,7 @@ var users = require('./user');
 var utils = require('./libs/utils');
 var registration = require('./libs/registration');
 var log = require('./libs/logger');
+var authorization = require('./libs/authorization');
 
 //Rest API
 exports.restFindById = function(req, res, next) {
@@ -170,7 +171,7 @@ function createUsersByEmails(company) {
                     log.error('Cannot find user by email for new company.', {error: err});
                 } else if(!dbUser) {
                     user.displayName = email;
-                    user.role = 'Employee';
+                    user.role = authorization.EMPLOYEE_ROLE;
                     users.save(user, function(err, savedUser) {
                         if(err) {
                             log.error('Cannot saved user by email for new company.', {error: err});
