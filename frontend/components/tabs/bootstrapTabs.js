@@ -17,42 +17,49 @@
 'use strict';
 
 angular.module('myApp')
-    .directive('bootstrapTabs', function($location, $timeout) {
+    .directive('bootstrapTabs', function($location, preferences) {
         return {
             scope: true,
             link: function (scope, element, attributes) {
-                var currentLocation  = $location.path().substr(1);
+                var currentLocation  = $location.path().substr(1),
+                    userRole = preferences.get('user').role.toLowerCase();
 
                 scope.tabs = [
                     {
                         title: 'Projects',
                         url: 'projects',
-                        active: false
+                        active: false,
+                        available: userRole == 'owner' || userRole == 'manager'
                     },
                     {
                         title: scope.companyName,
                         url: 'company',
-                        active: false
+                        active: false,
+                        available: userRole == 'owner'
                     },
                     {
                         title: 'Timesheet',
                         url: 'timesheet',
-                        active: false
+                        active: false,
+                        available: userRole == 'owner' || userRole == 'manager'
                     },
                     {
                         title: 'Timelog',
                         url: 'timelog',
-                        active: false
+                        active: false,
+                        available: true
                     },
                     {
                         title: 'Report',
                         url: 'report',
-                        active: false
+                        active: false,
+                        available: userRole == 'owner' || userRole == 'manager'
                     },
                     {
                         title: 'Company create',
                         url: 'company-create',
-                        active: false
+                        active: false,
+                        available: false
                     }
                 ];
 

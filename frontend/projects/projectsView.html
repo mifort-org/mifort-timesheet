@@ -25,7 +25,7 @@
         <a href="" ng-if="project.projectEdit" class="edit-project" ng-click="project.projectEdit = !project.projectEdit">Done</a>
         <a href="" ng-if="!project.projectEdit" class="edit-project" ng-click="project.projectEdit = !project.projectEdit">Edit</a>
 
-        <a href="" class="remove-project" ng-click="removeProject(project, $parent.$index)"></a>
+        <a href="" class="remove-project" ng-click="removeProject(project, $index)"></a>
     </h2>
 
     <div collapse="project.isCollapsed">

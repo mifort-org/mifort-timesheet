@@ -18,6 +18,14 @@
     background: #fff;
     padding: 30px 27px;
     font-size: 1.6rem;
+
+    .popover{
+        border-color: #a0a0a0;
+        box-shadow: none;
+        &.bottom > .arrow{
+            border-bottom-color: #555;
+        }
+    }
 }
 
 .report-filter{
@@ -56,7 +64,6 @@
     margin-right: 30px;
 }
 
-
 /* UI Grid styles replacement*/
 .ui-grid{
     font-weight: normal;
@@ -91,6 +98,7 @@
 .ui-grid-header-viewport{
     overflow: visible;
 }
+
 .ui-grid-filter-container{
     position: absolute;
     right: 2px;
@@ -113,4 +121,109 @@
     width: 30px;
     opacity: 0;
     cursor: pointer;
+}
+
+.daterangepicker{
+    padding: 0;
+    border-radius: 0;
+    border: 1px solid #a0a0a0;
+    box-shadow: none;
+
+    &.opensright:before{
+        border-bottom-color: #666;
+    }
+
+    &.opensright .ranges{
+        margin: 0;
+        padding: 8px;
+    }
+
+    &.show-calendar .ranges{
+        border-right: 1px #a0a0a0 solid;
+    }
+    .ranges{
+        width: 276px;
+
+        li{
+            max-width: 125px;
+            margin: 7px 7px 8px;
+            padding: 5px;
+            font-size: 1.4rem;
+            text-align: center;
+            color: #000;
+            background: #e8e8e8;
+            border: 1px #e8e8e8 solid;
+            border-radius: 2px;
+
+            &:hover,
+            &.active{
+                background: #19b5fe;
+                border-color: #e8e8e8;
+            }
+        }
+    }
+
+    .range_inputs{
+        padding-left: 8px;
+
+        label,
+        .input-mini{
+            display: inline;
+            padding-right: 7px;
+            vertical-align: baseline;
+        }
+        .input-mini{
+            width: 88px;
+            color: #000;
+            font-size: 1.4rem;
+            border-color: #e8e8e8;
+            border-radius: 0;
+        }
+    }
+
+    .applyBtn,
+    .cancelBtn{
+        display: none;
+        float: right;
+        margin: 0 4px 5px 5px;
+    }
+
+    &.opensright .calendar{
+        margin: -1px;
+    }
+    .calendar-date{
+        border-color: #a0a0a0;
+        border-radius: 0;
+
+    }
+
+    .calendar-date{
+        padding: 10px;
+        font-weight: 100;
+
+        thead tr:last-child{
+            border-bottom: 1px #e8e8e8 solid;
+        }
+        
+        td{
+            padding: 6px 4px 6px 8px;
+            text-align: right;
+            border: 1px #fff solid;
+
+            &.available{
+                background: #f2f2f2;
+                border-radius: 0;
+
+                &.in-range,
+                &.active{
+                    background: #b6e2ff;
+                }
+
+                &.active{
+                    color: #000;
+                    box-shadow: inset 0 0 0 1px #44c3fe;
+                }
+            }
+        }
+    }
 }

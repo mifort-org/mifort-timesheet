@@ -26,7 +26,7 @@ angular.module('myApp.company').factory('companyService',
                 return $http.get('company/' + companyId);
             },
             saveCompany: function(company) {
-                return $http.put('company', company);
+                return $http.post('company', company);
             }
         }
     }

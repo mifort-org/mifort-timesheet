@@ -14,22 +14,23 @@
   limitations under the License.
 -->
 
-<tr>
-    <td>
-        <select id="newEmployee"
-                ng-options="employee.displayName as employee.displayName for employee in companyEmployees"
-                ng-model="employee.displayName"
-                class="form-control timesheet-control"
-                ng-change="addAssignment(project, employee, true)">
-        </select>
-    <td>
-        <select id="newRole"
-                ng-options="assignment.role as assignment.role for assignment in employee.assignments"
-                ng-model="employee.assignments[0].role"
-                class="form-control timesheet-control">
-        </select>
-    </td>
-    <td>
-        <input type="text" ng-model="employee.assignments[0].workload"/>
-    </td>
-</tr>
+<td>
+    <select id="newEmployee"
+            ng-options="employee.displayName as employee.displayName for employee in companyEmployees"
+            ng-model="employee.displayName"
+            class="form-control timesheet-control"
+            ng-change="addAssignment(project, employee, true)">
+    </select>
+</td>
+
+<td>
+    <select id="newRole"
+            ng-options="assignment.role as assignment.role for assignment in employee.assignments"
+            ng-model="employee.assignments[0].role"
+            class="form-control timesheet-control">
+    </select>
+</td>
+
+<td>
+    <input type="text" ng-model="employee.assignments[0].workload"/>
+</td>

@@ -14,25 +14,23 @@
   limitations under the License.
 -->
 
-<td class="timesheet-day">
-    <div ng-if="day.date" class="timesheet-data" ng-class="{'disabled-day-data': day.disabled}">
-        <span class="timesheet-time">{{day.time}}</span>
+<div ng-if="day.date" class="timesheet-data" ng-class="{'disabled-day-data': day.disabled}">
+    <span class="timesheet-time">{{day.time}}</span>
 
-        <span class="timesheet-hours-label">hours</span>
-    </div>
+    <span class="timesheet-hours-label">hours</span>
+</div>
 
-    <div class="start-splitter"></div>
+<div class="start-splitter"></div>
 
-    <a ng-if="day.date"
-       href=""
-       class="timesheet-day-wrapper"
-       ng-class="{'disabled-day-data': day.disabled}"
-       popover-template="daySettingsPopover.templateUrl"
-       popover-title="{{daySettingsPopover.title}}"
-       popover-placement="bottom"
-       data-toggle="popover">
-        {{::day.date.slice(3, 5)}}
-    </a>
+<a ng-if="day.date"
+   href=""
+   class="timesheet-day-wrapper"
+   ng-class="{'disabled-day-data': day.disabled}"
+   popover-template="daySettingsPopover.templateUrl"
+   popover-title="{{daySettingsPopover.title}}"
+   popover-placement="bottom"
+   data-toggle="popover">
+    {{::day.date.slice(3, 5)}}
+</a>
 
-    <div class="end-splitter"></div>
-</td>
+<div class="end-splitter"></div>

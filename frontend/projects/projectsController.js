@@ -110,7 +110,9 @@ angular.module('myApp.projects', ['ngRoute'])
 
         $scope.removeProject = function(project, projectIndex) {
             $scope.projects.splice(projectIndex, 1);
-            projectsService.removeProject(project._id);
+            if(project._id){
+                projectsService.removeProject(project._id);
+            }
         };
 
         $scope.removeAssignment = function(project, assignment, assignmentIndex) {

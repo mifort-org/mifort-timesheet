@@ -17,6 +17,11 @@
   background: #fff;
   padding: 30px 27px;
   font-size: 1.6rem; }
+  .report-wrapper .popover {
+    border-color: #a0a0a0;
+    box-shadow: none; }
+    .report-wrapper .popover.bottom > .arrow {
+      border-bottom-color: #555; }
 
 .report-filter {
   position: relative;
@@ -87,5 +92,73 @@
   width: 30px;
   opacity: 0;
   cursor: pointer; }
+
+.daterangepicker {
+  padding: 0;
+  border-radius: 0;
+  border: 1px solid #a0a0a0;
+  box-shadow: none; }
+  .daterangepicker.opensright:before {
+    border-bottom-color: #666; }
+  .daterangepicker.opensright .ranges {
+    margin: 0;
+    padding: 8px; }
+  .daterangepicker.show-calendar .ranges {
+    border-right: 1px #a0a0a0 solid; }
+  .daterangepicker .ranges {
+    width: 276px; }
+    .daterangepicker .ranges li {
+      max-width: 125px;
+      margin: 7px 7px 8px;
+      padding: 5px;
+      font-size: 1.4rem;
+      text-align: center;
+      color: #000;
+      background: #e8e8e8;
+      border: 1px #e8e8e8 solid;
+      border-radius: 2px; }
+      .daterangepicker .ranges li:hover, .daterangepicker .ranges li.active {
+        background: #19b5fe;
+        border-color: #e8e8e8; }
+  .daterangepicker .range_inputs {
+    padding-left: 8px; }
+    .daterangepicker .range_inputs label,
+    .daterangepicker .range_inputs .input-mini {
+      display: inline;
+      padding-right: 7px;
+      vertical-align: baseline; }
+    .daterangepicker .range_inputs .input-mini {
+      width: 88px;
+      color: #000;
+      font-size: 1.4rem;
+      border-color: #e8e8e8;
+      border-radius: 0; }
+  .daterangepicker .applyBtn,
+  .daterangepicker .cancelBtn {
+    display: none;
+    float: right;
+    margin: 0 4px 5px 5px; }
+  .daterangepicker.opensright .calendar {
+    margin: -1px; }
+  .daterangepicker .calendar-date {
+    border-color: #a0a0a0;
+    border-radius: 0; }
+  .daterangepicker .calendar-date {
+    padding: 10px;
+    font-weight: 100; }
+    .daterangepicker .calendar-date thead tr:last-child {
+      border-bottom: 1px #e8e8e8 solid; }
+    .daterangepicker .calendar-date td {
+      padding: 6px 4px 6px 8px;
+      text-align: right;
+      border: 1px #fff solid; }
+      .daterangepicker .calendar-date td.available {
+        background: #f2f2f2;
+        border-radius: 0; }
+        .daterangepicker .calendar-date td.available.in-range, .daterangepicker .calendar-date td.available.active {
+          background: #b6e2ff; }
+        .daterangepicker .calendar-date td.available.active {
+          color: #000;
+          box-shadow: inset 0 0 0 1px #44c3fe; }
 
 /*# sourceMappingURL=report.css.map */
