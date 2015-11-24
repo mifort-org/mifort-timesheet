@@ -223,6 +223,20 @@ exports.authorizaUpdateRole = function(req, res, next) {
             }
         });
 };
+
+exports.authorizeDeleteUser = function(req, res, next) {
+    var user = req.user;
+    var userId = utils.getUserId(req);
+    
+    isOwnerForUser(user, [userId],
+                function() { // fail callback
+                    send403(res);
+                },
+                function() { //success callback
+                    next();
+                });
+};
+
 //Company
 exports.authorizeUpdateCompany = function(req, res, next) {
     var user = req.user;
@@ -304,7 +318,15 @@ function canReadProject(user, project) {
 }
 
 function isManagerForUser(manager, userIds, errorCallback, successCallback) {
-    if(manager.role !== MANAGER_ROLE || manager.role !== OWNER_ROLE) {
+    isSomebodyForUser([MANAGER_ROLE, OWNER_ROLE], manager, userIds, errorCallback, successCallback);
+}
+
+function isOwnerForUser(owner, userIds, errorCallback, successCallback) {
+    isSomebodyForUser([OWNER_ROLE], owner, userIds, errorCallback, successCallback);
+}
+
+function isSomebodyForUser(roles, parentUser, userIds, errorCallback, successCallback) {
+    if(roles.indexOf(manager.role) < 0 ) {
         errorCallback();
         return;
     }

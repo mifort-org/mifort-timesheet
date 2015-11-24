@@ -16,7 +16,7 @@
  * @author Andrew Voitov
  */
 
-var dbSettings = require('./libs/mongodb_settings');
+var db = require('./libs/mongodb_settings');
 var utils = require('./libs/utils');
 var companies = require('./company');
 var log = require('./libs/logger');
@@ -31,7 +31,7 @@ exports.restGetByProjectId = function(req, res, next) {
     var projectIdParam = utils.getProjectId(req);
     log.debug('-REST call: Get users by project id. Project id: %s', 
         projectIdParam.toHexString());
-    var users = dbSettings.userCollection();
+    var users = db.userCollection();
     users.find({'assignments.projectId': projectIdParam},
                {
                 workload: 1,
@@ -62,7 +62,7 @@ exports.restGetByCompanyId = function(req, res, next) {
     log.debug('-REST call: Get users by company id. Company id: %s', 
         companyIdParam.toHexString());
 
-    var users = dbSettings.userCollection();
+    var users = db.userCollection();
     users.find({companyId: companyIdParam},
                {workload: 1,
                 displayName: 1})
@@ -86,7 +86,7 @@ exports.restReplaceAssignments = function(req, res, next) {
 
     var user = req.body;
     var assignments = user.assignments;
-    var users = dbSettings.userCollection();
+    var users = db.userCollection();
     users.update({ _id: user._id },
                  { $pull: {assignments: {projectId: projectId} } },
                  { multi: true },
@@ -110,7 +110,7 @@ exports.restUpdateUserRole = function(req, res, next) {
     log.debug('-REST call: Update user role. User id: %s, role: %s', 
         user._id.toHexString(), user.role);
 
-    var users = dbSettings.userCollection();
+    var users = db.userCollection();
     users.update({_id:user._id},
                  {$set : {
                         role: user.role
@@ -127,9 +127,25 @@ exports.restUpdateUserRole = function(req, res, next) {
         });
 };
 
+exports.restDeleteUser = function(req, res, next) {
+    var userId = utils.getUserId(req);
+    log.debug('-REST call: Delete user. User id: %s', userId.toHexString());
+
+    var users = db.userCollection();
+    users.remove({_id: userId}, {single: true},
+      function(err, numberOfDeleted){
+        if(err) {
+            next(err);
+        } else {
+            res.status(204).json({ok: true}); //204 No content???
+            log.debug('-REST result: Delete user. User id: %s', userId.toHexString());
+        }
+    });
+};
+
 //Public API
 exports.save = function(user, callback) {
-    var users = dbSettings.userCollection();
+    var users = db.userCollection();
     users.save(user, {safe:true}, function (err, result) {
         if(result.ops) {
             callback(err, result.ops[0]);
@@ -140,7 +156,7 @@ exports.save = function(user, callback) {
 };
 
 exports.updateExternalInfo = function(user, callback) {
-    var users = dbSettings.userCollection();
+    var users = db.userCollection();
     users.update({_id:user._id},
                  {$set : {
                         displayName: user.displayName,
@@ -154,7 +170,7 @@ exports.updateExternalInfo = function(user, callback) {
 
 exports.updateAssignmentProjectName = function(project) {
     if(project) {
-        var users = dbSettings.userCollection();
+        var users = db.userCollection();
         users.find({'assignments.projectId': project._id,
                     'assignments.projectName': {$ne: project.name}})
             .toArray(function(err, findedUsers) {
@@ -177,7 +193,7 @@ exports.findByExample = findByExample;
 
 //private 
 function findByExample(query, callback) {
-    var users = dbSettings.userCollection();
+    var users = db.userCollection();
     users.findOne(query, function(err, user){
         callback(err, user);
     });

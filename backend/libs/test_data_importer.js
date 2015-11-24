@@ -19,7 +19,7 @@
 var users = require('../user');
 var companies = require('../company');
 var projects = require('../project');
-var dbSettings = require('./mongodb_settings');
+var db = require('./mongodb_settings');
 var log = require('./logger');
 
 var company = {
@@ -186,7 +186,7 @@ var project = {
 };
 
 exports.import = function() {
-    var companyCollection = dbSettings.companyCollection();
+    var companyCollection = db.companyCollection();
     companyCollection.count(function (err, count) {
         if (!err && count === 0) {
             companies.save(company, function(err, savedCompany){

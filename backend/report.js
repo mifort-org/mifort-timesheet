@@ -19,7 +19,7 @@ var csvStringify = require('csv-stringify');
 var fs = require('fs');
 var shortid = require('shortid');
 
-var dbSettings = require('./libs/mongodb_settings');
+var db = require('./libs/mongodb_settings');
 var log = require('./libs/logger');
 var utils = require('./libs/utils');
 
@@ -43,7 +43,7 @@ exports.restCommonReport = function(req, res, next) {
         var page = filterObj.page;
 
         if(page == 1) {
-            var timelogCollection = dbSettings.timelogCollection();
+            var timelogCollection = db.timelogCollection();
             timelogCollection.find(query)
                 .count(function(err, count) {
                     res.append('X-Total-Count', count);
@@ -77,7 +77,7 @@ exports.restConstructCSV = function(req, res, next) {
     log.debug('-REST call: Download common report. Company id: %s', 
         filterObj.companyId.toHexString());
 
-    var timelogCollection = dbSettings.timelogCollection();
+    var timelogCollection = db.timelogCollection();
     projects.findProjectIdsByCompanyId(filterObj.companyId, function(err, projectIds) {
         if(err) {
             next(err);
@@ -135,7 +135,7 @@ exports.restGetFilterValues = function(req, res, next) {
     var companyId = utils.getCompanyId(req);
     log.debug('-REST call: Get filter values. Company id: %s', companyId.toHexString());
 
-    var timelogCollection = dbSettings.timelogCollection();
+    var timelogCollection = db.timelogCollection();
     var filterValues = [];
 
     projects.findProjectIdsByCompanyId(companyId, function(err, projectIds) {
@@ -210,7 +210,7 @@ function makeSortObject(sort) {
 }
 
 function filterTimelog(query, sortObj, page, pageSize, res, callback) {
-    var timelogCollection = dbSettings.timelogCollection();
+    var timelogCollection = db.timelogCollection();
     timelogCollection.find(query)
         .sort(sortObj)
         .skip((page-1)*pageSize) // not efficient way but It's just for the first implementation

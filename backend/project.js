@@ -16,7 +16,7 @@
  * @author Andrew Voitov
  */
 
-var dbSettings = require('./libs/mongodb_settings');
+var db = require('./libs/mongodb_settings');
 var utils = require('./libs/utils');
 var companies = require('./company');
 var users = require('./user');
@@ -27,7 +27,7 @@ exports.restGetById = function(req, res, next) {
     var projectId = utils.getProjectId(req);
     log.debug('-REST call: Get project by id. Project id: %s', projectId.toHexString());
 
-    var projects = dbSettings.projectCollection();
+    var projects = db.projectCollection();
     projects.findOne({_id: projectId}, 
         function(err, doc) {
             returnProjectCallback(err, res, doc, next);
@@ -51,7 +51,7 @@ exports.restGetByCompanyId = function(req, res, next) {
     var companyId = utils.getCompanyId(req);
     log.debug('-REST call: Get projects by company id. Company id: %s', companyId.toHexString());
 
-    var projects = dbSettings.projectCollection();
+    var projects = db.projectCollection();
     projects.find({companyId: companyId,
                    active: true})
         .toArray(function(err, findedProjects){
@@ -70,7 +70,7 @@ exports.restDeactivateProject = function(req, res, next) {
     var projectId = utils.getProjectId(req);
     log.debug('-REST call: Deactivate project. Project id: %s', projectId.toHexString());
 
-    var projects = dbSettings.projectCollection();
+    var projects = db.projectCollection();
     projects.update({ _id: projectId},
                     {$set: { active: false } },
         function(err, savedProject) {
@@ -89,7 +89,7 @@ exports.restDeactivateProject = function(req, res, next) {
 
 //Public API
 exports.saveInDb = function(project, callback) {
-    var projects = dbSettings.projectCollection();
+    var projects = db.projectCollection();
     projects.save(project, {safe:true}, function (err, result) {
         if(result.ops) {
             callback(err, result.ops[0]);
@@ -112,7 +112,7 @@ exports.generateDefaultProject = function(company) {
 };
 
 exports.findProjectIdsByCompanyId = function(companyId, callback) {
-    var projects = dbSettings.projectCollection();
+    var projects = db.projectCollection();
     projects.find({companyId: companyId},
                   {_id:1})
         .toArray(function(err, findedProjectIds){
@@ -130,7 +130,7 @@ function returnProjectCallback(err, res, savedProject, next) {
 }
 
 function updateProject(project, res, next) {
-    var projects = dbSettings.projectCollection();
+    var projects = db.projectCollection();
     projects.find({_id: project._id,
                    name: {$ne: project.name}},
                   {limit: 1})
@@ -159,7 +159,7 @@ function updateProject(project, res, next) {
 }
 
 function createProject(project, res, next){
-    var projects = dbSettings.projectCollection();
+    var projects = db.projectCollection();
     companies.findById(project.companyId, function(err, company) {
         if(err) {
             err.code = 404;
