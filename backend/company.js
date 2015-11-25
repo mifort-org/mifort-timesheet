@@ -18,7 +18,7 @@
 
 var moment = require('moment');
 
-var dbSettings = require('./libs/mongodb_settings');
+var db = require('./libs/mongodb_settings');
 var users = require('./user');
 var utils = require('./libs/utils');
 var registration = require('./libs/registration');
@@ -76,7 +76,7 @@ exports.restUpdateCompany = function(req, res, next) {
             next(err);        
         } else {
             //update all projects
-            var projects = dbSettings.projectCollection();
+            var projects = db.projectCollection();
             projects.update(
                     {companyId: savedCompany._id},
                     {$set: {template: savedCompany.template,
@@ -153,7 +153,7 @@ exports.findById = findById;
 
 //private part
 function findById(id, callback) {
-    var companies = dbSettings.companyCollection();
+    var companies = db.companyCollection();
     companies.findOne({_id: id}, function(err, company){
         callback(err, company);
     });
@@ -187,7 +187,7 @@ function createUsersByEmails(company) {
 }
 
 function save(company, callback) {
-    var companies = dbSettings.companyCollection();
+    var companies = db.companyCollection();
     companies.save(company, {safe:true}, function (err, result) {
         if(result.ops) {
             callback(err, result.ops[0]);

@@ -130,6 +130,10 @@ app.post('/user/update-role',
         validators.validateUpdateRole,
         authorization.authorizaUpdateRole,
         user.restUpdateUserRole);
+app.delete('/user/:userId',
+        validators.validateDeleteUser,
+        authorization.authorizeDeleteUser,
+        user.restDeleteUser);
 
 //company
 app.post('/company', 

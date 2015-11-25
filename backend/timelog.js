@@ -17,12 +17,12 @@
  */
 
 var utils = require('./libs/utils');
-var dbSettings = require('./libs/mongodb_settings');
+var db = require('./libs/mongodb_settings');
 var log = require('./libs/logger');
 
 //Rest API
 exports.restSave = function(req, res, next) {
-    var timelogCollection = dbSettings.timelogCollection();
+    var timelogCollection = db.timelogCollection();
     var batch = timelogCollection.initializeUnorderedBulkOp({useLegacyOps: true});
     
     var ids = [];
@@ -51,7 +51,7 @@ exports.restDelete = function(req, res, next) {
     var timelogId = utils.getTimelogId(req);
     log.debug('-REST call: Remove timelog. Timelog Id: %s', timelogId.toHexString());
 
-    var timelogCollection = dbSettings.timelogCollection();
+    var timelogCollection = db.timelogCollection();
     timelogCollection.remove({_id:timelogId}, {single: true},
       function(err, numberOfDeleted){
         if(err) {
@@ -73,7 +73,7 @@ exports.restGetByDates = function(req, res, next) {
     log.debug('-REST call: Get timelogs by dates. Start date: %s, End date: %s, User Id: %s, Project Id: %s.', 
         start, end, userId.toHexString(), projectId.toHexString());
 
-    var timelogCollection = dbSettings.timelogCollection();
+    var timelogCollection = db.timelogCollection();
     var query = {
         userId : userId,
         projectId: projectId,
@@ -90,7 +90,7 @@ exports.restGetByDates = function(req, res, next) {
 
 //Private part
 function findAllByIds(ids, callback) {
-    var timelogCollection = dbSettings.timelogCollection();
+    var timelogCollection = db.timelogCollection();
     timelogCollection.find({_id:{ $in: ids}}, {'sort': 'date'}).toArray(function(err, timelogs) {
         callback(err, timelogs);
     });
