@@ -138,6 +138,7 @@ exports.validateUpdateCompany = function(req, res, next) {
     req.checkBody('_id', util.format(invalidFormatMessageTemplate, 'Company id')).notEmpty().isMongoId();
     req.checkBody('emails', "Property 'emails' is not an array!" ).optional().isArray();
     req.checkBody('emails', 'At least one email has incorrect format').optional().isEmails();
+    req.checkBody('description', 'Field is not a string').optional.isString();
 
     returnErrors(req, res, next);
 };
@@ -151,6 +152,7 @@ exports.validateCreateCompany = function(req, res, next) {
 
     req.checkBody('emails', "Property 'emails' is not an array!" ).optional().isArray();
     req.checkBody('emails', 'At least one email has incorrect format').optional().isEmails();
+    req.checkBody('description', 'Field is not a string').optional.isString();
 
     returnErrors(req, res, next);
 };
@@ -271,6 +273,10 @@ exports.timelogs = function(values) {
                     && (validator.isInt(val.time) || validator.isFloat(val.time)) 
                     && val.time <= 24;
             }
+            if(val.role){
+                isValid = isValid 
+                    && (typeof val.role === 'string');
+            }
             isValid = isValid
                 && validator.isMongoId(val.userId) //required && format
                 && validator.isMongoId(val.projectId) //required && format
@@ -327,6 +333,10 @@ exports.isFilters = function(filters) {
     }
 
     return false;
+};
+
+exports.isString = function(obj) {
+    return typeof obj === 'string';
 };
 
 //Private part

@@ -59,7 +59,8 @@ app.use(expressValidator({
         isArray: validators.isArray,
         isAssignments: validators.isAssignments,
         isEmails: validators.isEmails,
-        isFilters: validators.isFilters
+        isFilters: validators.isFilters,
+        isString: validators.isString
     }
 }));
 
