@@ -38,9 +38,8 @@
 </div>
 
 <div class="report-wrapper">
-    <div class="gridStyle" ui-grid="gridOptions" ui-grid-auto-resize ng-style="gridHeight" ui-grid-resize-columns>
-        <!--<div class="watermark" ng-show="!gridOptions.data.length">No data available</div>-->
-    </div>
+    <div class="gridStyle" ui-grid="gridOptions" ui-grid-auto-resize ng-style="gridHeight" ui-grid-resize-columns></div>
+    <div class="no-data" ng-show="!reportData.length">No timelogs to show</div>
 </div>
 <!--{{projectFilter}}-->
 <!--{{reportData}}-->

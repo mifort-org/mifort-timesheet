@@ -102,7 +102,7 @@
     border-bottom-color: #666; }
   .daterangepicker.opensright .ranges {
     margin: 0;
-    padding: 8px; }
+    padding: 6px 8px; }
   .daterangepicker.show-calendar .ranges {
     border-right: 1px #a0a0a0 solid; }
   .daterangepicker .ranges {
@@ -146,7 +146,8 @@
   .daterangepicker .calendar-date {
     padding: 10px;
     font-weight: 100; }
-    .daterangepicker .calendar-date thead tr:last-child {
+    .daterangepicker .calendar-date thead tr:last-child th {
+      font-size: 1.2rem;
       border-bottom: 1px #e8e8e8 solid; }
     .daterangepicker .calendar-date td {
       padding: 6px 4px 6px 8px;
@@ -160,5 +161,8 @@
         .daterangepicker .calendar-date td.available.active {
           color: #000;
           box-shadow: inset 0 0 0 1px #44c3fe; }
+
+.no-data {
+  text-align: center; }
 
 /*# sourceMappingURL=report.css.map */

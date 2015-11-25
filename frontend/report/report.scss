@@ -135,7 +135,7 @@
 
     &.opensright .ranges{
         margin: 0;
-        padding: 8px;
+        padding: 6px 8px;
     }
 
     &.show-calendar .ranges{
@@ -201,7 +201,8 @@
         padding: 10px;
         font-weight: 100;
 
-        thead tr:last-child{
+        thead tr:last-child th{
+            font-size: 1.2rem;
             border-bottom: 1px #e8e8e8 solid;
         }
         
@@ -226,4 +227,8 @@
             }
         }
     }
+}
+
+.no-data{
+    text-align: center;
 }
