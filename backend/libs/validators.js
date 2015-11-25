@@ -104,7 +104,7 @@ exports.validateUpdateRole = function(req, res, next) {
 
     req.checkBody('_id', util.format(invalidFormatMessageTemplate, 'User id')).notEmpty().isMongoId();
     req.checkBody('role', util.format(invalidFormatMessageTemplate, 'Role'))
-        .notEmpty().isIn([authorization.OWNER_ROLE, authorization.EMPLOYEE_ROLE, authorization.MANAGER_ROLE]);
+        .notEmpty().isIn([authorization.EMPLOYEE_ROLE, authorization.MANAGER_ROLE]);
     returnErrors(req, res, next);
 };
 
@@ -123,8 +123,9 @@ exports.validateAddNewUser = function(req, res, next) {
     }
 
     req.checkBody('email', 'E-mail is not valid').notEmpty().isEmail();
-    req.checkBody('role', 'Role should be Manager, Owner or Employee')
-        .optional().isIn([authorization.OWNER_ROLE, authorization.EMPLOYEE_ROLE, authorization.MANAGER_ROLE]);
+    req.checkBody('companyId', 'Company is not valid').notEmpty().isMongoId();
+    req.checkBody('role', 'Role should be Manager or Employee')
+        .optional().isIn([authorization.EMPLOYEE_ROLE, authorization.MANAGER_ROLE]);
 
     returnErrors(req, res, next);
 };
