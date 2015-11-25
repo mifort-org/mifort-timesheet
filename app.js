@@ -134,6 +134,10 @@ app.delete('/user/:userId',
         validators.validateDeleteUser,
         authorization.authorizeDeleteUser,
         user.restDeleteUser);
+app.put('/user', 
+        validators.validateAddNewUser,
+        authorization.authorizeAddNewUser,
+        user.restAddNewUser);
 
 //company
 app.post('/company', 

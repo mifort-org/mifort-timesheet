@@ -237,6 +237,16 @@ exports.authorizeDeleteUser = function(req, res, next) {
                 });
 };
 
+exports.authorizeAddNewUser = function(req, res, next) {
+    var currentUser = req.user;
+    var newUser = req.body;
+    if(currentUser.companyId.equals(newUser.companyId) && currentUser.role === OWNER_ROLE) {
+        next();
+    } else {
+        send403(res);
+    }
+};
+
 //Company
 exports.authorizeUpdateCompany = function(req, res, next) {
     var user = req.user;

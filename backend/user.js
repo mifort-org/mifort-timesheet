@@ -143,6 +143,21 @@ exports.restDeleteUser = function(req, res, next) {
     });
 };
 
+exports.restAddNewUser = function(req, res, next) {
+    var user = req.body;
+
+    if(!user.displayName) {
+        user.displayName = user.email;
+    }
+    exports.save(user, function(err, savedUser) {
+        if(err) {
+            next(err);
+        } else {
+            res.json(savedUser);
+        }
+    }); 
+};
+
 //Public API
 exports.save = function(user, callback) {
     var users = db.userCollection();

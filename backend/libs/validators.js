@@ -115,6 +115,19 @@ exports.validateDeleteUser = function(req, res, next) {
     returnErrors(req, res, next);
 };
 
+exports.validateAddNewUser = function(req, res, next) {
+    var user = req.body;
+    if(!user) {
+        res.status(emptyBody.code).json({msg: emptyBody.message});
+        return;
+    }
+
+    req.checkBody('email', 'E-mail is not valid').notEmpty().isEmail();
+    req.checkBody('role', 'Role should be Manager, Owner or Employee')
+        .optional().isIn([authorization.OWNER_ROLE, authorization.EMPLOYEE_ROLE, authorization.MANAGER_ROLE]);
+
+    returnErrors(req, res, next);
+};
 //Company Rest API validation
 exports.validateUpdateCompany = function(req, res, next) {
     var company = req.body;
