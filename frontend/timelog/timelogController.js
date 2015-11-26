@@ -127,7 +127,7 @@ angular.module('myApp.timelog', ['ngRoute'])
 
                             typingTimer = setTimeout(function() {
                                 timelogService.updateTimelog(preferences.get('user')._id, newValue).success(function(data) {
-                                    _.map(newValue.timelog, function(day, index) {
+                                    _.map(project.timelog, function(day, index) {
                                         if(!day._id && data.timelog[index]) {
                                             day._id = data.timelog[index]._id
                                         }
@@ -173,7 +173,7 @@ angular.module('myApp.timelog', ['ngRoute'])
                 );
             }
         };
-
+        //date, userId, projectId, projectName, userName
         $scope.isWeekend = function(date) {
             return new Date(date).getDay() == 0 || new Date(date).getDay() == 1;
         };
@@ -185,7 +185,7 @@ angular.module('myApp.timelog', ['ngRoute'])
         };
 
         $scope.showNextPeriod = function(project) {
-            if(project.currentTimelogIndex < project.splittedTimelog.length){
+            if(project.currentTimelogIndex < project.splittedTimelog.length - 1){
                 project.currentTimelogIndex++;
             }
         };

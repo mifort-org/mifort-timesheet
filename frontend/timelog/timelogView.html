@@ -23,9 +23,9 @@
 
     <div class="timelog-controls clearfix">
         <button class="previous-period" ng-class="{'disabled' : project.currentTimelogIndex <= 0}" ng-click="showPreviousPeriod(project)"></button>
-        <button class="next-period" ng-class="{'disabled' : project.currentTimelogIndex >= project.splittedTimelog.length}" ng-click="showNextPeriod(project)"></button>
+        <button class="next-period" ng-class="{'disabled' : project.currentTimelogIndex >= project.splittedTimelog.length - 1}" ng-click="showNextPeriod(project)"></button>
     </div>
-
+<!--{{project.currentTimelogIndex}}||{{project.splittedTimelog.length}}-->
     <div collapse="isCollapsed">
         <table class="table table-bordered timelog">
             <thead>

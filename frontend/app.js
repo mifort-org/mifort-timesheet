@@ -41,15 +41,21 @@ angular.module('myApp', [
 
     .controller('myAppController', ['$scope', '$location', '$cookies', '$http', 'preferences', 'companyService', 'topPanelService',
         function($scope, $location, $cookies, $http, preferences, companyService, topPanelService) {
-            var userPreferences = preferences.get('user');
+            var user = preferences.get('user');
 
-            if(userPreferences){
-                companyService.getCompany(userPreferences.companyId).success(function(data) {
-                    $scope.companyName = data.name;
-                });
-
-                $scope.isLoggedIn = true;
+            if(user){
+                $scope.companyId = user.companyId
             }
+
+            $scope.$watch('companyId', function(newValue, oldValue) {
+                if(newValue){
+                    $scope.$parent.isLoggedIn = true;
+
+                    companyService.getCompany(newValue).success(function(data) {
+                        $scope.companyName = data.name;
+                    });
+                }
+            });
 
             $scope.isVisible = function(linkName) {
                 return topPanelService.isVisibleLink(linkName);
