@@ -77,97 +77,119 @@ app.use(session(
 authentication.init(app);
 
 //add auth.ensureAuthenticated for each Rest API
-app.use('/', function(req, res, next){
-    authentication.ensureAuthenticated(req, res, next);
-});
+//app.use('/', function(req, res, next){
+//    authentication.ensureAuthenticated(req, res, next);
+//});
 
 //project
 app.post('/project',
+        authentication.ensureAuthenticated,
         validators.validateSaveProject,
         authorization.authorizeSaveProject, 
         project.restSave);
 app.get('/project/:projectId', 
+        authentication.ensureAuthenticated,
         validators.validateGetProjectById,
         authorization.authorizeGetProjectById, 
         project.restGetById);
 app.get('/projects', 
+        authentication.ensureAuthenticated,
         validators.validateGetProjectByCompanyId,
         authorization.authorizeGetProjectsByCompanyId, 
         project.restGetByCompanyId);
 app.get('/project/deactivate/:projectId',
+        authentication.ensureAuthenticated,
         validators.validateDeactivateProject,
         authorization.authorizeDeactivateProject,
         project.restDeactivateProject);
 
 //timelog
 app.post('/timelog',
+        authentication.ensureAuthenticated,
         validators.validateSaveTimelog,
         authorization.authorizeSaveTimelog,
         timelog.restSave);
 app.get('/timelog/:userId',
+        authentication.ensureAuthenticated,
         validators.validateGetTimelogByDates, 
         authorization.authorizeGetTimelog,
         timelog.restGetByDates);
 app.delete('/timelog/:timelogId',
+        authentication.ensureAuthenticated,
         validators.validateDeleteTimelog,
         authorization.authorizeDeleteTimelog,
         timelog.restDelete);
 
 //user
-app.get('/user', user.restGetCurrent);
+app.get('/user', 
+        authentication.ensureAuthenticated,
+        user.restGetCurrent);
 app.get('/user/project/:projectId', 
+        authentication.ensureAuthenticated,
         validators.validateGetUserByProjectId,
         authorization.authorizeGetUsersByProjectId,
         user.restGetByProjectId);
 app.get('/user/company/:companyId',
+        authentication.ensureAuthenticated,
         validators.validateGetUserByCompanyId,
         authorization.authorizeGetUsersByCompanyId,
         user.restGetByCompanyId);
 app.post('/user/assignment/:projectId',
+        authentication.ensureAuthenticated,
         validators.validateReplaceAssignment,
         authorization.authorizeAddAssignment,
         user.restReplaceAssignments);
 app.post('/user/update-role', 
+        authentication.ensureAuthenticated,
         validators.validateUpdateRole,
         authorization.authorizaUpdateRole,
         user.restUpdateUserRole);
 app.delete('/user/:userId',
+        authentication.ensureAuthenticated,
         validators.validateDeleteUser,
         authorization.authorizeDeleteUser,
         user.restDeleteUser);
 app.put('/user', 
+        authentication.ensureAuthenticated,
         validators.validateAddNewUser,
         authorization.authorizeAddNewUser,
         user.restAddNewUser);
 
 //company
 app.post('/company', 
+        authentication.ensureAuthenticated,
         validators.validateUpdateCompany,
         authorization.authorizeUpdateCompany,
         company.restUpdateCompany);
 app.put('/company',
+        authentication.ensureAuthenticated,
         validators.validateCreateCompany,
         authorization.authorizeCreateCompany,
         company.restCreateCompany);
 app.get('/company/:companyId',
+        authentication.ensureAuthenticated,
         validators.validateGetCompanyById,
         authorization.authorizeGetCompanyById,
         company.restFindById);
 
 //report
 app.get('/report/filters/:companyId',
+        authentication.ensureAuthenticated,
         validators.validateGetFilters,
         authorization.authorizeGetFilters,
         report.restGetFilterValues);
 app.post('/report/common',
+        authentication.ensureAuthenticated,
         validators.validateCommonReport,
         authorization.authorizeCommonReport,
         report.restCommonReport);
 app.post('/report/common/download',
+        authentication.ensureAuthenticated,
         validators.validateDowloadCommonReport,
         authorization.authorizeCommonReport,
         report.restConstructCSV);
 app.get('/report/download/:fileName',
+        authentication.ensureAuthenticated,
         validators.validateGetDownloadReport,
         report.restDownloadFile);
 log.info('REST API is ready!');
