@@ -23,6 +23,7 @@ var log = require('./logger');
 
 var users = require('../user');
 var registration = require('./registration');
+var authorization = require('./authorization');
  
 var GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || "833601973800-a3itkus9nvoo1k92avt0na4evge44fut.apps.googleusercontent.com";
 var GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET || "9LUsqy6tU7PIohpWQyYoIKbH";
@@ -73,7 +74,8 @@ passport.use(new GoogleStrategy({
                         var user = {
                             email: email,
                             external: profile,
-                            displayName: profile.displayName
+                            displayName: profile.displayName,
+                            role: authorization.OWNER_ROLE
                         };
                         createUser(user, done);
                     }
