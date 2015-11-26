@@ -21,7 +21,9 @@ var testDataImporter = require('./test_data_importer');
 var log = require('./logger');
 
 var mongodbUrl = process.env.MONGOLAB_URI || 'mongodb://localhost:27017/homogen';
-var mongoDbSessionStorageUrl = process.env.MONGOLAB_URI || 'mongodb://localhost:27017/homogen-sessions';
+var mongoDbSessionStorageUrl = process.env.MONGOLAB_URI
+                                 || process.env.MONGO_SESSION_STORAGE_URL
+                                 || 'mongodb://localhost:27017/homogen-sessions';
 
 var timelogCollectionName = 'timelogs';
 var projectCollectionName = 'projects';
@@ -36,7 +38,9 @@ MongoClient.connect(mongodbUrl, function(err, db) {
         cachedDb = db;
         exports.db = cachedDb;
         log.info('Mongo DB: connected!');
-        testDataImporter.import();
+        if(process.env.NODE_ENV !== 'production') {
+            testDataImporter.import();
+        }
     }
 });
 

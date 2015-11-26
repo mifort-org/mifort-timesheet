@@ -153,7 +153,7 @@ exports.validateCreateCompany = function(req, res, next) {
 
     req.checkBody('emails', "Property 'emails' is not an array!" ).optional().isArray();
     req.checkBody('emails', 'At least one email has incorrect format').optional().isEmails();
-    req.checkBody('description', 'Field is not a string').optional.isString();
+    req.checkBody('description', 'Field is not a string').optional().isString();
 
     returnErrors(req, res, next);
 };

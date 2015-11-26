@@ -91,7 +91,7 @@ exports.restGetByDates = function(req, res, next) {
 //Private part
 function findAllByIds(ids, callback) {
     var timelogCollection = db.timelogCollection();
-    timelogCollection.find({_id:{ $in: ids}}, {'sort': 'date'}).toArray(function(err, timelogs) {
+    timelogCollection.find({_id:{ $in: ids}}, {sort: 'date'}).toArray(function(err, timelogs) {
         callback(err, timelogs);
     });
 }
