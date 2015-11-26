@@ -150,6 +150,17 @@ angular.module('myApp.timelog', ['ngRoute'])
                         }
                     }, true);
                 });
+
+               //scroll pages to current day
+                var today = moment().format("MM/DD/YYYY"),
+                    todayIndex;
+                $scope.projects[projectIndex].splittedTimelog.forEach(function(period, periodIndex) {
+                    if(_.findIndex(period, {date: today}) >= 0){
+                        todayIndex = periodIndex;
+                    }
+                });
+
+                project.currentTimelogIndex = todayIndex;
             });
         };
 
@@ -179,13 +190,13 @@ angular.module('myApp.timelog', ['ngRoute'])
             if(log._id) {
                 timelogService.removeTimelog(log).success(function() {
                         project.splittedTimelog[project.currentTimelogIndex].splice(dayIndex, 1);
-                        //project.timelog.splice(dayIndex, _.findIndex(project.timelog, {$$hashKey: log.$$hashKey}));
                         project.timelog.splice(dayIndex, 1);
                         splitPeriods(project);
                     }
                 );
             }
         };
+
         //date, userId, projectId, projectName, userName
         $scope.isWeekend = function(date) {
             return new Date(date).getDay() == 0 || new Date(date).getDay() == 1;

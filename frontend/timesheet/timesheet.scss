@@ -44,6 +44,10 @@
     background: #fff;
     padding: 25px;
 
+    &:last-child{
+        margin-bottom: 0;
+    }
+
     label{
         float: left;
         line-height: 1.8;
