@@ -99,6 +99,10 @@ angular.module('myApp.timelog', ['ngRoute'])
                         var dayExisted = _.findWhere(project.timelog, {date: moment(new Date(day.date)).format("MM/DD/YYYY")});
                         if(dayExisted) {
                             angular.extend(dayExisted, day);
+
+                            if(!dayExisted.comment){
+                                dayExisted.comment = day.comment;
+                            }
                         }
                     });
                 }
@@ -114,7 +118,10 @@ angular.module('myApp.timelog', ['ngRoute'])
                     }
                     else {
                         day.isFirstDayRecord = true;
-                        angular.extend(_.findWhere(project.timelog, {date: day.date}), day);
+                        if(!_.findWhere(project.timelog, {date: day.date}).comment){
+                            _.findWhere(project.timelog, {date: day.date}).comment = project.timelog[timelogDayIndex].comment;
+                        }
+                        angular.extend(day, _.findWhere(project.timelog, {date: day.date}));
                     }
                 });
 
@@ -124,6 +131,12 @@ angular.module('myApp.timelog', ['ngRoute'])
                     $scope.$watch('projects[' + projectIndex + '].splittedTimelog[' + index +']', function(newValue, oldValue) {
                         if(newValue != oldValue) {
                             clearTimeout(typingTimer);
+
+                            newValue.map(function(timelogDay) {
+                                delete timelogDay.color;
+
+                                return timelogDay;
+                            });
 
                             typingTimer = setTimeout(function() {
                                 timelogService.updateTimelog(preferences.get('user')._id, newValue).success(function(data) {
