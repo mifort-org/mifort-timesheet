@@ -145,17 +145,21 @@ exports.restDeleteUser = function(req, res, next) {
 
 exports.restAddNewUser = function(req, res, next) {
     var user = req.body;
+    log.debug('-REST call: Add user. User email: %s', user.email);
 
     if(!user.displayName) {
         user.displayName = user.email;
     }
-    exports.save(user, function(err, savedUser) {
-        if(err) {
-            next(err);
-        } else {
-            res.json(savedUser);
-        }
-    }); 
+    var users = db.userCollection();
+    users.insertOne(user, {safe: true}, 
+        function(err, result) {
+            if(err) {
+                next(err);
+            } else {
+                res.json(result.ops[0]);
+                log.debug('-REST result: User is added. User email: %s', user.email);
+            }
+        }); 
 };
 
 //Public API
