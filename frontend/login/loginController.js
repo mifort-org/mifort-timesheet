@@ -32,8 +32,14 @@ angular.module('myApp.login', ['ngRoute'])
                 //$cookies.put('user', JSON.stringify(data));
                 preferences.set('user', data);
                 $scope.$parent.isLoggedIn = true;
-                $scope.$parent.companyId = data.companyId;
-                $location.path('/Timelog');
+
+                if(data.companyId){
+                    $scope.$parent.companyId = data.companyId;
+                    $location.path('/timelog');
+                }
+                else{
+                    $location.path('/company-create');
+                }
             }
         });
 

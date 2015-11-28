@@ -44,7 +44,12 @@ angular.module('myApp.company', ['ngRoute'])
         }
 
         $scope.createCompany = function () {
-            companyService.createCompany($scope.company).success(function () {
+            companyService.createCompany($scope.company).success(function (data) {
+                var user = preferences.get('user');
+
+                user.companyId = data._id;
+                preferences.set('user', user);
+                $scope.$parent.companyId = data._id;
                 $location.path('/timesheet');
             });
         };

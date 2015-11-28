@@ -40,25 +40,25 @@
 
 <body ng-controller="myAppController" closable-popovers>
 
-<!--change with ul>li-->
-<div ng-if="isLoggedIn" class="main-controls">
+<!--TODO: change with ul>li-->
+<div class="main-controls" ng-if="isLoggedIn">
     <a class="logo" href="">
         <span class="timelog-icon"></span>
         Timelog
     </a>
 
-    <!--TODO: to orray of objects-->
-    <a href="javascript:window.print()" ng-show="isVisible('print')" class="info">Print</a>
-    <a href="" ng-click="openLink('pdf')" ng-show="isVisible('pdf')" class="info">PDF</a>
-    <a href="" ng-click="openLink('csv')" ng-show="isVisible('csv')" class="info">CSV</a>
-    <a href="" ng-click="openLink('project')" ng-show="isVisible('project')" class="info">Add Project</a>
-    <a href="" ng-click="openLink('info')" ng-show="isVisible('info')" class="info">Info</a>
-    <a href="" ng-click="openLink('profile')" ng-show="isVisible('profile')" class="profile">Profile</a>
+    <!--TODO: to array of objects-->
+    <a href="javascript:window.print()" ng-if="isVisible('print') && isLoggedIn" class="info">Print</a>
+    <a href="" ng-click="openLink('pdf')" ng-if="isVisible('pdf') && isLoggedIn" class="info">PDF</a>
+    <a href="" ng-click="openLink('csv')" ng-if="isVisible('csv') && isLoggedIn" class="info">CSV</a>
+    <a href="" ng-click="openLink('project')" ng-if="isVisible('project') && isLoggedIn" class="info">Add Project</a>
+    <a href="" ng-click="openLink('info')" ng-if="isVisible('info') && isLoggedIn" class="info">Info</a>
+    <a href="" ng-click="openLink('profile')" ng-if="isVisible('profile')" class="profile">Profile</a>
     <a href="" class="logout" ng-click="logout()">Logout</a>
 </div>
 
-<div ng-if="isLoggedIn" bootstrap-tabs company-name="{{companyName}}" class="main-tabs"></div>
-<div class="main-container" ng-view ng-class="{'login-wrapper': !isLoggedIn}"></div>
+<div ng-if="isLoggedIn && companyId" bootstrap-tabs company-name="{{companyName}}" class="main-tabs"></div>
+<div class="main-container" ng-view ng-class="{'login-wrapper': !isLoggedIn || !companyId}"></div>
 
 
 <!--JS libraries-->

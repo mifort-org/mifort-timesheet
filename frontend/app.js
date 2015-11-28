@@ -44,12 +44,15 @@ angular.module('myApp', [
             var user = preferences.get('user');
 
             if(user){
-                $scope.companyId = user.companyId
+                $scope.$parent.isLoggedIn = true;
+
+                if(user.companyId){
+                    $scope.$parent.companyId = user.companyId;
+                }
             }
 
             $scope.$watch('companyId', function(newValue, oldValue) {
                 if(newValue){
-                    $scope.$parent.isLoggedIn = true;
 
                     companyService.getCompany(newValue).success(function(data) {
                         $scope.companyName = data.name;
