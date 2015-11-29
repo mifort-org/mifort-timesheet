@@ -151,16 +151,20 @@ exports.authorizeDeleteTimelog = function(req, res, next) {
         if(err) {
             send403(res);
         } else {
-            if(timelog.userId.equals(user._id)) {
-                next();
+            if(timelog) {
+                if(timelog.userId.equals(user._id)) {
+                    next();
+                } else {
+                    isManagerForUser(user, [timelog.userId],
+                        function() { // fail callback
+                            send403(res);
+                        },
+                        function() { //success callback
+                            next();
+                        });
+                }
             } else {
-                isManagerForUser(user, [timelog.userId],
-                    function() { // fail callback
-                        send403(res);
-                    },
-                    function() { //success callback
-                        next();
-                    });
+                res.status(404).json({msg: "Timelog doesn't exist"});
             }
         }
     });
