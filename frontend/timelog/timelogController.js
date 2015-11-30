@@ -68,92 +68,22 @@ angular.module('myApp.timelog', ['ngRoute'])
 
         $scope.init = function() {
             $scope.projects.forEach(function(project, projectIndex) {
-                var typingTimer = null,
-                    startDate = moment(new Date(project.periods[0].start)),
+                var startDate = moment(new Date(project.periods[0].start)),
                     endDate = moment(new Date(project.periods[project.periods.length - 1].end)),
-                    daysToGenerate = endDate.diff(startDate, 'days');
+                    daysToGenerate = endDate.diff(startDate, 'days'),
+                    today = moment().format("MM/DD/YYYY"),
+                    todayIndex = 0;
 
                 project.timelog = [];
                 project.splittedTimelog = [];
 
-                //template timelogs
-                for (var i = 0; i < daysToGenerate + 1; i++) {
-                    var dayToPush;
-
-                    project.template.workload = preferences.get('user').workload;
-                    project.template.userId = preferences.get('user')._id;
-                    project.template.projectId = project._id;
-                    project.template.projectName = project.name;
-
-                    dayToPush = _.clone(project.template);
-                    dayToPush.date = angular.copy(startDate).add(i, 'days').format("MM/DD/YYYY");
-                    dayToPush.isFirstDayRecord = true;
-                    dayToPush.userName = $scope.userName;
-
-                    project.timelog.push(dayToPush);
-                }
-
-                //timelogs data from timesheet
-                if(project.defaultValues) {
-                    project.defaultValues.forEach(function(day) {
-                        var dayExisted = _.findWhere(project.timelog, {date: moment(new Date(day.date)).format("MM/DD/YYYY")});
-                        if(dayExisted) {
-                            angular.extend(dayExisted, day);
-
-                            if(!dayExisted.comment){
-                                dayExisted.comment = day.comment;
-                            }
-                        }
-                    });
-                }
-
-                //user timelogs
-                project.userTimelogs.forEach(function(day, index) {
-                    var timelogDayIndex = _.findIndex(project.timelog, {date: moment(new Date(day.date)).format("MM/DD/YYYY")});
-                    day.isFirstDayRecord = false;
-
-                    //if current iterated log is not the first for this date to push
-                    if(project.userTimelogs[index - 1] && project.userTimelogs[index - 1].date == day.date) {
-                        project.timelog.splice(timelogDayIndex + 1, 0, day);
-                    }
-                    else {
-                        day.isFirstDayRecord = true;
-                        if(!_.findWhere(project.timelog, {date: day.date}).comment){
-                            _.findWhere(project.timelog, {date: day.date}).comment = project.timelog[timelogDayIndex].comment;
-                        }
-                        angular.extend(day, _.findWhere(project.timelog, {date: day.date}));
-                    }
-                });
-
+                generateDaysTemplates(project, daysToGenerate, startDate);
+                applyProjectDefaultValues(project, startDate);
+                applyUserTimelogs(project);
                 splitPeriods(project);
-
-                $scope.projects[projectIndex].splittedTimelog.forEach(function(period, index) {
-                    $scope.$watch('projects[' + projectIndex + '].splittedTimelog[' + index +']', function(newValue, oldValue) {
-                        if(newValue != oldValue) {
-                            clearTimeout(typingTimer);
-
-                            newValue.map(function(timelogDay) {
-                                delete timelogDay.color;
-
-                                return timelogDay;
-                            });
-
-                            typingTimer = setTimeout(function() {
-                                timelogService.updateTimelog(preferences.get('user')._id, newValue).success(function(data) {
-                                    _.map(project.timelog, function(day, index) {
-                                        if(!day._id && data.timelog[index]) {
-                                            day._id = data.timelog[index]._id
-                                        }
-                                    });
-                                });
-                            }, 500)
-                        }
-                    }, true);
-                });
+                initWatchers(project, projectIndex);
 
                //scroll pages to current day
-                var today = moment().format("MM/DD/YYYY"),
-                    todayIndex;
                 $scope.projects[projectIndex].splittedTimelog.forEach(function(period, periodIndex) {
                     if(_.findIndex(period, {date: today}) >= 0){
                         todayIndex = periodIndex;
@@ -176,12 +106,98 @@ angular.module('myApp.timelog', ['ngRoute'])
             });
         }
 
+        function applyUserTimelogs(project){
+            project.userTimelogs.forEach(function(day, index) {
+                var timelogDayIndex = _.findIndex(project.timelog, {date: moment(new Date(day.date)).format("MM/DD/YYYY")});
+
+                //if current iterated log is not the first for this date to push
+                if(project.userTimelogs[index - 1] && project.userTimelogs[index - 1].date == day.date) {
+                    if(!project.timelog[timelogDayIndex]._id){
+                        day.isFirstDayRecord = true;
+                        project.timelog[timelogDayIndex] = day
+                    }
+                    else{
+                        day.isFirstDayRecord = false;
+                        project.timelog.splice(timelogDayIndex + 1, 0, day);
+                    }
+                }
+                else {
+                    day.isFirstDayRecord = true;
+                    if(!_.findWhere(project.timelog, {date: day.date}).comment){
+                        _.findWhere(project.timelog, {date: day.date}).comment = project.timelog[timelogDayIndex].comment;
+                    }
+                    angular.extend(project.timelog[timelogDayIndex], day);
+                }
+            });
+        }
+
+        function applyProjectDefaultValues(project){
+            if(project.defaultValues) {
+                project.defaultValues.forEach(function(day) {
+                    var dayExisted = _.findWhere(project.timelog, {date: moment(new Date(day.date)).format("MM/DD/YYYY")});
+                    if(dayExisted) {
+                        angular.extend(dayExisted, day);
+
+                        if(!dayExisted.comment){
+                            dayExisted.comment = day.comment;
+                        }
+                    }
+                });
+            }
+        }
+
+        function generateDaysTemplates(project, daysToGenerate, startDate){
+            for (var i = 0; i < daysToGenerate + 1; i++) {
+                var dayToPush;
+
+                project.template.workload = preferences.get('user').workload;
+                project.template.userId = preferences.get('user')._id;
+                project.template.projectId = project._id;
+                project.template.projectName = project.name;
+
+                dayToPush = _.clone(project.template);
+                dayToPush.date = angular.copy(startDate).add(i, 'days').format("MM/DD/YYYY");
+                dayToPush.isFirstDayRecord = true;
+                dayToPush.userName = $scope.userName;
+
+                project.timelog.push(dayToPush);
+            }
+        }
+
+        function initWatchers(project, projectIndex){
+            project.splittedTimelog.forEach(function(period, index) {
+                var typingTimer = null;
+
+                $scope.$watch('projects[' + projectIndex + '].splittedTimelog[' + index +']', function(newValue, oldValue) {
+                    if(newValue != oldValue && newValue.length >= oldValue.length) {
+                        clearTimeout(typingTimer);
+
+                        newValue.map(function(timelogDay) {
+                            delete timelogDay.color;
+
+                            return timelogDay;
+                        });
+
+                        typingTimer = setTimeout(function() {
+                            timelogService.updateTimelog(preferences.get('user')._id, newValue).success(function(data) {
+                                _.map(project.timelog, function(day, index) {
+                                    if(!day._id && data.timelog[index]) {
+                                        day._id = data.timelog[index]._id
+                                    }
+                                });
+                            });
+                        }, 500)
+                    }
+                }, true);
+            });
+        }
+
         $scope.addRow = function(log, project) {
             var newRow = angular.copy(project.template),
                 dayIndex = _.findIndex(project.timelog, {_id: log._id});
             newRow.date = log.date;
             newRow.userName = log.userName;
-            newRow.isNotFirstDayRecord = true;
+            newRow.isFirstDayRecord = false;
             project.timelog.splice(dayIndex + 1, 0, newRow);
             splitPeriods(project);
         };

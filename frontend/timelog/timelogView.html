@@ -39,7 +39,8 @@
                     ng-repeat="log in project.splittedTimelog[project.currentTimelogIndex]"
                     ng-class="{'weekend': isWeekend(log.date)}"
                     ng-style="{background: log.color}">
-                    <td ng-class="log.isFirstDayRecord ? 'is-first-day-log' : 'is-not-first-day-log'">
+                    <td ng-class="log.isFirstDayRecord ? 'is-first-day-log' : 'is-not-first-day-log'">{{isFirstDayRecord}}
+                        {{isFirstDayRecord}}
                         <span class="timelog-data">
                             <a href="" ng-if="log.isFirstDayRecord" class="add-timelog" ng-click="addRow(log, project)">+</a>
 
@@ -60,13 +61,17 @@
                         <input class="timelog-hours form-control" type="text" ng-model="log.time"/>
                     </td>
 
-                    <td><input class="timelog-comment form-control" type="text" ng-model="log.comment"/></td>
+                    <td>
+                        <input class="timelog-comment form-control" type="text" ng-model="log.comment"/>
+                        {{log._id}}
+                    </td>
                 </tr>
             </tbody>
         </table>
     </div>
+    <small>{{project.timelog}}</small>
     <!--<small>{{project.splittedTimelog}}</small>-->
 </div>
 
 <!--<small>{{splittedTimelog.length}}</small>-->
-<!--<small>{{projects[0].timelog}}</small>-->
+<!--<small>{{splittedTimelog}}</small>-->
