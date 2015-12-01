@@ -180,13 +180,21 @@ angular.module('myApp.timelog', ['ngRoute'])
 
                         typingTimer = setTimeout(function() {
                             timelogService.updateTimelog(preferences.get('user')._id, newValue).success(function(data) {
-                                _.map(project.timelog, function(day, index) {
-                                    if(!day._id && data.timelog[index]) {
-                                        day._id = data.timelog[index]._id
+                                var noIdLog = _.find(project.timelog, function(log) {
+                                    return !log._id;
+                                });
+
+                                data.timelog.forEach(function(log, logIndex) {
+                                    var timelogHasSuchRecord = _.filter(project.timelog, function(timelogDay) {
+                                        return timelogDay._id == log._id;
+                                    });
+
+                                    if(!timelogHasSuchRecord.length){
+                                        noIdLog._id = log._id;
                                     }
                                 });
                             });
-                        }, 500)
+                        }, 250)
                     }
                 }, true);
             });
@@ -204,12 +212,11 @@ angular.module('myApp.timelog', ['ngRoute'])
 
         $scope.removeRow = function(log, dayIndex, project) {
             if(log._id) {
-                timelogService.removeTimelog(log).success(function() {
-                        project.splittedTimelog[project.currentTimelogIndex].splice(dayIndex, 1);
-                        project.timelog.splice(dayIndex, 1);
-                        splitPeriods(project);
-                    }
-                );
+                timelogService.removeTimelog(log);
+
+                project.splittedTimelog[project.currentTimelogIndex].splice(dayIndex, 1);
+                project.timelog.splice(dayIndex, 1);
+                splitPeriods(project);
             }
         };
 
