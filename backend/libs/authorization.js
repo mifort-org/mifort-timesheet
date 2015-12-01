@@ -34,19 +34,26 @@ exports.EMPLOYEE_ROLE = EMPLOYEE_ROLE;
 exports.authorizeSaveProject = function(req, res, next) {
     var user = req.user;
     var project = req.body; //not full object need to find by Id
-    
-    var projects = db.projectCollection();
-    projects.findOne({_id: project._id}, function(err, findedProject) {
-        if(err) {
-            send403(res);
+    if(!project._id) {
+        if(user.role === OWNER_ROLE) {
+            next();
         } else {
-            if(isManagerForCompany(user, findedProject.companyId)) {
-                next();
-            } else {
-                send403(res);
-            }
+            send403(res);
         }
-    });
+    } else {
+        var projects = db.projectCollection();
+        projects.findOne({_id: project._id}, function(err, findedProject) {
+            if(err) {
+                send403(res);
+            } else {
+                if(isManagerForCompany(user, findedProject.companyId)) {
+                    next();
+                } else {
+                    send403(res);
+                }
+            }
+        });
+    }
 };
 
 exports.authorizeGetProjectById = function(req, res, next) {
