@@ -12,7 +12,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  * @author Andrew Voitov
  */
 
@@ -36,7 +36,7 @@ exports.restFindById = function(req, res, next) {
             next(err);
         } else {
             res.json(company);
-            log.debug('-REST result: Finded company id. Company id: %s', 
+            log.debug('-REST result: Finded company id. Company id: %s',
                 company._id.toHexString());
         }
     });
@@ -56,13 +56,13 @@ exports.restCreateCompany = function(req, res, next) {
 
     save(company, function(err, savedCompany) {
         if(err) {
-            next(err);      
+            next(err);
         } else {
-            //Warning: asynchronous operations!!! 
+            //Warning: asynchronous operations!!!
             registration.createDefaultProject(savedCompany, req.user); //Validation: check user!!!
             createUsersByEmails(savedCompany);
             res.json(savedCompany);
-            log.debug('-REST result: Create company. Company id: %s', 
+            log.debug('-REST result: Create company. Company id: %s',
                 savedCompany._id.toHexString());
         }
     });
@@ -73,7 +73,7 @@ exports.restUpdateCompany = function(req, res, next) {
     log.debug('-REST call: Update company. Company id: %s', company._id.toHexString());
     save(company, function(err, savedCompany) {
         if(err) {
-            next(err);        
+            next(err);
         } else {
             //update all projects
             var projects = db.projectCollection();
@@ -83,13 +83,13 @@ exports.restUpdateCompany = function(req, res, next) {
                             periods: savedCompany.periods,
                             defaultValues: savedCompany.defaultValues,
                             dayTypes: savedCompany.dayTypes}},
-                    {multi:true}, 
+                    {multi:true},
                 function(err, result){
                     log.info('Company projects are updated!')
                 });
             createUsersByEmails(savedCompany);
             res.json(savedCompany);
-            log.debug('-REST result: Update company. Company id: %s', 
+            log.debug('-REST result: Update company. Company id: %s',
                 savedCompany._id.toHexString());
         }
     });
@@ -100,13 +100,13 @@ exports.save = save;
 
 exports.generateDefaultCompany = function() {
     var periods = [];
-    
+
     var firstPeriod = {
         start: moment.utc().toDate(),
         end: moment.utc().endOf('week').toDate()
     };
     periods.push(firstPeriod);
-    
+
     //generate 53 weeks (1 year)
     var startDate = moment.utc(firstPeriod.end).add(1,'day').toDate();
     var endDate = moment.utc(startDate).endOf('week').toDate();
@@ -181,7 +181,7 @@ function createUsersByEmails(company) {
                     });
                 }
             });
-            
+
         })
     }
 }
