@@ -194,7 +194,7 @@ angular.module('myApp.timelog', ['ngRoute'])
 
         $scope.addRow = function(log, project) {
             var newRow = angular.copy(project.template),
-                dayIndex = _.findIndex(project.timelog, {_id: log._id});
+                dayIndex = _.findIndex(project.timelog, {date: log.date});
             newRow.date = log.date;
             newRow.userName = log.userName;
             newRow.isFirstDayRecord = false;
