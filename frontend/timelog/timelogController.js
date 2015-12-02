@@ -55,10 +55,7 @@ angular.module('myApp.timelog', ['ngRoute'])
                                     var projectUserTimelogs = currentProject.userTimelogs;
 
                                     projectUserTimelogs.push.apply(projectUserTimelogs, projectTimelog.timelog);
-
-                                    //if($scope.assignments.length == index + 1) {
-                                        $scope.init();
-                                    //}
+                                    $scope.init();
                                 });
                             }
                         });
