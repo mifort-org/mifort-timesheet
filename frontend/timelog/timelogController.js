@@ -208,11 +208,11 @@ angular.module('myApp.timelog', ['ngRoute'])
             splitPeriods(project);
         };
 
-        $scope.removeRow = function(log, dayIndex, project) {
+        $scope.removeRow = function(log, project) {
             if(log._id) {
+                var dayIndex = _.findIndex(project.timelog, {_id: log._id});
                 timelogService.removeTimelog(log);
 
-                project.splittedTimelog[project.currentTimelogIndex].splice(dayIndex, 1);
                 project.timelog.splice(dayIndex, 1);
                 splitPeriods(project);
             }
