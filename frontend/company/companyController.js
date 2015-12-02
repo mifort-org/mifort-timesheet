@@ -31,6 +31,8 @@ angular.module('myApp.company', ['ngRoute'])
     }])
 
     .controller('companyController', ['$scope', '$location', 'companyService', 'preferences', function ($scope, $location, companyService, preferences) {
+        var user = preferences.get('user');
+
         $scope.company = {
             name: null,
             position: null,
@@ -38,7 +40,7 @@ angular.module('myApp.company', ['ngRoute'])
         };
 
         if($location.path() == '/company'){
-            companyService.getCompany(preferences.get('user').companyId).success(function(company) {
+            companyService.getCompany(user.companyId).success(function(company) {
                 $scope.company = company;
             });
         }

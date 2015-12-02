@@ -26,10 +26,11 @@ angular.module('myApp.timelog', ['ngRoute'])
     }])
 
     .controller('timelogController', ['$scope', '$filter', 'timelogService', 'timesheetService', 'preferences', 'loginService', function($scope, $filter, timelogService, timesheetService, preferences, loginService) {
+        var user = preferences.get('user');
         $scope.projects = [];
         $scope.isCollapsed = false;
         $scope.timelogKeys = timelogService.getTimelogKeys();
-        $scope.userName = preferences.get('user').displayName;
+        $scope.userName = user.displayName;
 
         loginService.getUser().success(function (user) {
             if(user){
@@ -50,7 +51,7 @@ angular.module('myApp.timelog', ['ngRoute'])
                                 var startDate = currentProject.periods[0].start,
                                     endDate = currentProject.periods[currentProject.periods.length - 1].end;
 
-                                timelogService.getTimelog(preferences.get('user')._id, currentProject._id, startDate, endDate).success(function(projectTimelog) {
+                                timelogService.getTimelog(user._id, currentProject._id, startDate, endDate).success(function(projectTimelog) {
                                     var projectUserTimelogs = currentProject.userTimelogs;
 
                                     projectUserTimelogs.push.apply(projectUserTimelogs, projectTimelog.timelog);
@@ -150,8 +151,8 @@ angular.module('myApp.timelog', ['ngRoute'])
             for (var i = 0; i < daysToGenerate + 1; i++) {
                 var dayToPush;
 
-                project.template.workload = preferences.get('user').workload;
-                project.template.userId = preferences.get('user')._id;
+                project.template.workload = user.workload;
+                project.template.userId = user._id;
                 project.template.projectId = project._id;
                 project.template.projectName = project.name;
 
@@ -179,7 +180,7 @@ angular.module('myApp.timelog', ['ngRoute'])
                         });
 
                         typingTimer = setTimeout(function() {
-                            timelogService.updateTimelog(preferences.get('user')._id, newValue).success(function(data) {
+                            timelogService.updateTimelog(user._id, newValue).success(function(data) {
                                 var noIdLog = _.find(project.timelog, function(log) {
                                     return !log._id;
                                 });

@@ -16,7 +16,7 @@
 
 'use strict';
 
-angular.module('preferences').factory('preferences', ['$q', function ($q) {
+angular.module('preferences').factory('preferences', ['$q', '$location', function ($q, $location) {
 
     return {
         set: function (key, value) {
@@ -25,10 +25,15 @@ angular.module('preferences').factory('preferences', ['$q', function ($q) {
 
         get: function (key) {
             var data = localStorage.getItem(key);
+
             if (data && typeof data === 'string' && (data[0] === '[' || data[0] === '{')) {
                 data = JSON.parse(data, function(k, v) {
                     return (typeof v === "object" || isNaN(v)) ? v : parseInt(v, 10);
                 });
+            }
+
+            if(key === 'user' && !data){
+                $location.path('login');
             }
 
             return data === 'true' || (data === 'false' ? false : data);

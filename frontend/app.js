@@ -16,7 +16,6 @@
 
 'use strict';
 
-// Declare app level module which depends on views, and components
 angular.module('myApp', [
     'ngRoute',
     'ngCookies',
@@ -35,8 +34,25 @@ angular.module('myApp', [
     'ui.grid.autoResize',
     'ngBootstrap'
 ])
-    .config(['$routeProvider', function($routeProvider) {
+    .config(['$routeProvider', '$httpProvider', function($routeProvider, $httpProvider) {
         $routeProvider.otherwise({redirectTo: '/login'});
+
+        $httpProvider.interceptors.push(function($q, $location) {
+            return {
+                'responseError': function(rejection){
+                    var defer = $q.defer();
+
+                    if(rejection.status == 401){
+                        console.dir(rejection);
+                        $location.path('login');
+                    }
+
+                    defer.reject(rejection);
+
+                    return defer.promise;
+                }
+            };
+        });
     }])
 
     .controller('myAppController', ['$scope', '$location', '$cookies', '$http', 'preferences', 'companyService', 'topPanelService',
@@ -49,6 +65,9 @@ angular.module('myApp', [
                 if(user.companyId){
                     $scope.$parent.companyId = user.companyId;
                 }
+            }
+            else{
+                $location.path('login');
             }
 
             $scope.$watch('companyId', function(newValue, oldValue) {
