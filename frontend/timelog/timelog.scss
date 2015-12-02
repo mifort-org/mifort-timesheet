@@ -47,6 +47,7 @@
         th{
             &:first-child{
                 padding-left: 50px;
+                min-width: 155px;
             }
 
             &:nth-child(3){
@@ -136,6 +137,8 @@
 .remove-timelog{
     color: red;
     float: right;
+
+    margin-top: -10px;
 }
 
 .add-timelog:hover,

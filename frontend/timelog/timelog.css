@@ -27,7 +27,8 @@
       width: 170px;
       padding: 4px 10px; }
     .timelog .table th:first-child {
-      padding-left: 50px; }
+      padding-left: 50px;
+      min-width: 155px; }
     .timelog .table th:nth-child(3) {
       width: 90px;
       text-align: center; }
@@ -88,7 +89,8 @@
 
 .remove-timelog {
   color: red;
-  float: right; }
+  float: right;
+  margin-top: -10px; }
 
 .add-timelog:hover,
 .add-timelog:focus,
