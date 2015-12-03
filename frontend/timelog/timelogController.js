@@ -25,7 +25,8 @@ angular.module('mifortTimelog.timelog', ['ngRoute'])
         });
     }])
 
-    .controller('timelogController', ['$scope', '$filter', 'timelogService', 'timesheetService', 'preferences', 'loginService', function($scope, $filter, timelogService, timesheetService, preferences, loginService) {
+    .controller('timelogController', ['$scope', '$filter', 'timelogService', 'timesheetService', 'preferences', 'loginService', '$timeout',
+        function($scope, $filter, timelogService, timesheetService, preferences, loginService, $timeout) {
         var user = preferences.get('user');
         $scope.projects = [];
         $scope.isCollapsed = false;
@@ -164,11 +165,13 @@ angular.module('mifortTimelog.timelog', ['ngRoute'])
 
         function initWatchers(project, projectIndex){
             project.splittedTimelog.forEach(function(period, index) {
-                var typingTimer = null;
+                var timer = null;
 
                 $scope.$watch('projects[' + projectIndex + '].splittedTimelog[' + index +']', function(newValue, oldValue) {
                     if(newValue != oldValue && newValue.length >= oldValue.length) {
-                        clearTimeout(typingTimer);
+                        if(timer){
+                            $timeout.cancel(timer);
+                        }
 
                         newValue.map(function(timelogDay) {
                             delete timelogDay.color;
@@ -176,21 +179,9 @@ angular.module('mifortTimelog.timelog', ['ngRoute'])
                             return timelogDay;
                         });
 
-                        typingTimer = setTimeout(function() {
+                        timer = $timeout(function() {
                             timelogService.updateTimelog(user._id, newValue).success(function(data) {
-                                var noIdLog = _.find(project.timelog, function(log) {
-                                    return !log._id;
-                                });
-
-                                data.timelog.forEach(function(log) {
-                                    var timelogHasSuchRecord = _.filter(project.timelog, function(timelogDay) {
-                                        return timelogDay._id == log._id;
-                                    });
-
-                                    if(!timelogHasSuchRecord.length){
-                                        noIdLog._id = log._id;
-                                    }
-                                });
+                                $scope.projects[projectIndex].splittedTimelog[index] = data.timelog;
                             });
                         }, 250)
                     }
@@ -198,14 +189,15 @@ angular.module('mifortTimelog.timelog', ['ngRoute'])
             });
         }
 
-        $scope.addRow = function(log, project) {
+        $scope.addRow = function(log, project, currentTimelogIndex) {
             var newRow = angular.copy(project.template),
-                dayIndex = _.findIndex(project.timelog, {date: log.date});
+                dayIndex = _.findIndex(project.splittedTimelog[currentTimelogIndex], {date: log.date});
             newRow.date = log.date;
             newRow.userName = log.userName;
             newRow.isFirstDayRecord = false;
+            
             project.timelog.splice(dayIndex + 1, 0, newRow);
-            splitPeriods(project);
+            project.splittedTimelog[currentTimelogIndex].splice(dayIndex + 1, 0, newRow);
         };
 
         $scope.removeRow = function(log, project) {
