@@ -16,8 +16,8 @@
 
 'use strict';
 
-angular.module('myApp')
-    .directive('projectRow', function($location) {
+angular.module('mifortTimesheet')
+    .directive('projectRow', function() {
         return {
             scope: true,
             link: function(scope) {

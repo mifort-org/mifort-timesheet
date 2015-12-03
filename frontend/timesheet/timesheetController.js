@@ -16,7 +16,7 @@
 
 'use strict';
 
-angular.module('myApp.timesheet', ['ngRoute'])
+angular.module('mifortTimesheet.timesheet', ['ngRoute'])
 
     .config(['$routeProvider', function($routeProvider) {
         $routeProvider.when('/timesheet', {
@@ -301,7 +301,7 @@ angular.module('myApp.timesheet', ['ngRoute'])
             $scope.company.periods = periods;
         };
 
-        $scope.openCalendar = function($event) {
+        $scope.openCalendar = function() {
             $scope.calendarIsOpened = true;
         };
 

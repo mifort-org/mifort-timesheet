@@ -16,11 +16,11 @@
 
 'use strict';
 
-angular.module('myApp')
+angular.module('mifortTimesheet')
     .directive('reportDatePicker', function () {
         return {
             scope: true,
-            link: function (scope, element) {
+            link: function (scope) {
                 scope.$watch('dates', function(newValue, oldValue) {
                     if(newValue && newValue != oldValue){
                         var dateFilter,

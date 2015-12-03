@@ -72,7 +72,9 @@
         <div class="periods-wrapper">
             <table class="periods table table-bordered">
                 <thead>
-                <th ng-repeat="day in weekDays track by $index">{{::day}}</th>
+                    <tr>
+                        <th ng-repeat="day in weekDays track by $index">{{::day}}</th>
+                    </tr>
                 </thead>
 
                 <tbody>

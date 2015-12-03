@@ -16,7 +16,7 @@
 
 'use strict';
 
-angular.module('myApp.timelog', ['ngRoute'])
+angular.module('mifortTimesheet.timelog', ['ngRoute'])
 
     .config(['$routeProvider', function($routeProvider) {
         $routeProvider.when('/timelog', {
@@ -182,7 +182,7 @@ angular.module('myApp.timelog', ['ngRoute'])
                                     return !log._id;
                                 });
 
-                                data.timelog.forEach(function(log, logIndex) {
+                                data.timelog.forEach(function(log) {
                                     var timelogHasSuchRecord = _.filter(project.timelog, function(timelogDay) {
                                         return timelogDay._id == log._id;
                                     });

@@ -16,7 +16,7 @@
 
 'use strict';
 
-angular.module('myApp.timesheet').factory('timesheetService',
+angular.module('mifortTimesheet.timesheet').factory('timesheetService',
     ['$http', function ($http) {
         return {
             getCompany: function (companyId) {

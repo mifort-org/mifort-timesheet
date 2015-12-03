@@ -31,9 +31,11 @@
     <div collapse="project.isCollapsed">
         <table class="table table-bordered">
             <thead>
-            <th ng-repeat="projectsKey in projectsKeys track by $index">
-                {{projectsKey}}
-            </th>
+                <tr>
+                    <th ng-repeat="projectsKey in projectsKeys track by $index">
+                        {{projectsKey}}
+                    </th>
+                </tr>
             </thead>
 
             <tbody>

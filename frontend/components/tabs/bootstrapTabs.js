@@ -16,7 +16,7 @@
 
 'use strict';
 
-angular.module('myApp')
+angular.module('mifortTimesheet')
     .directive('bootstrapTabs', function($location, preferences) {
         return {
             scope: true,

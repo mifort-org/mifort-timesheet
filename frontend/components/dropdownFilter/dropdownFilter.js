@@ -16,7 +16,7 @@
 
 'use strict';
 
-angular.module('myApp')
+angular.module('mifortTimesheet')
     .directive('dropdownFilter', function () {
         return {
             scope: true,

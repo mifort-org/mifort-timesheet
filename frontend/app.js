@@ -16,23 +16,23 @@
 
 'use strict';
 
-angular.module('myApp', [
+angular.module('mifortTimesheet', [
     'ngRoute',
     'ngCookies',
     'ui.bootstrap',
-    'myApp.login',
-    'myApp.company',
-    'myApp.projects',
-    'myApp.timelog',
-    'myApp.timesheet',
-    'myApp.report',
     'preferences',
     'angularMoment',
     'angular-click-outside',
     'ui.grid',
     'ui.grid.resizeColumns',
     'ui.grid.autoResize',
-    'ngBootstrap'
+    'ngBootstrap',
+    'mifortTimesheet.login',
+    'mifortTimesheet.company',
+    'mifortTimesheet.projects',
+    'mifortTimesheet.timelog',
+    'mifortTimesheet.timesheet',
+    'mifortTimesheet.report'
 ])
     .config(['$routeProvider', '$httpProvider', function($routeProvider, $httpProvider) {
         $routeProvider.otherwise({redirectTo: '/login'});
@@ -43,7 +43,7 @@ angular.module('myApp', [
                     var defer = $q.defer();
 
                     if(rejection.status == 401){
-                        console.dir(rejection);
+                        //console.dir(rejection);
                         $location.path('login');
                     }
 
@@ -55,7 +55,7 @@ angular.module('myApp', [
         });
     }])
 
-    .controller('myAppController', ['$scope', '$location', '$cookies', '$http', 'preferences', 'companyService', 'topPanelService',
+    .controller('mifortTimesheetController', ['$scope', '$location', '$cookies', '$http', 'preferences', 'companyService', 'topPanelService',
         function($scope, $location, $cookies, $http, preferences, companyService, topPanelService) {
             var user = preferences.get('user');
 
@@ -70,7 +70,7 @@ angular.module('myApp', [
                 $location.path('login');
             }
 
-            $scope.$watch('companyId', function(newValue, oldValue) {
+            $scope.$watch('companyId', function(newValue) {
                 if(newValue){
 
                     companyService.getCompany(newValue).success(function(data) {

@@ -15,10 +15,10 @@
 -->
 
 <!DOCTYPE html>
-<html lang="en" ng-app="myApp">
+<html lang="en" ng-app="mifortTimesheet">
 <head>
     <meta charset="utf-8">
-    <title>Homogen</title>
+    <title>Mifort Timesheet</title>
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
     <link rel="stylesheet" href="bower_components/angular-ui-grid/ui-grid.css" />
     <link rel="stylesheet" href="bower_components/bootstrap-daterangepicker/daterangepicker-bs3.css">
@@ -38,7 +38,7 @@
     <link rel="stylesheet" href="report\report.css">
 </head>
 
-<body ng-controller="myAppController" closable-popovers>
+<body ng-controller="mifortTimesheetController" closable-popovers>
 
 <!--TODO: change with ul>li-->
 <div class="main-controls" ng-if="isLoggedIn">
@@ -76,7 +76,6 @@
 <script src="bower_components/angular-click-outside/clickoutside.directive.js"></script>
 <script src="bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
 <script src="bower_components/ng-bs-daterangepicker/src/ng-bs-daterangepicker.js"></script>
-<script src="http://d3js.org/d3.hexbin.v0.min.js"></script>
 <script src="app.js"></script>
 
 <!--Custom components-->
