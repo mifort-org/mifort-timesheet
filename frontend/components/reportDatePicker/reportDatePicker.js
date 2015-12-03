@@ -16,7 +16,7 @@
 
 'use strict';
 
-angular.module('mifortTimesheet')
+angular.module('mifortTimelog')
     .directive('reportDatePicker', function () {
         return {
             scope: true,

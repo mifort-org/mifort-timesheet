@@ -16,7 +16,7 @@
 
 'use strict';
 
-angular.module('mifortTimesheet.company', ['ngRoute'])
+angular.module('mifortTimelog.company', ['ngRoute'])
 
     .config(['$routeProvider', function ($routeProvider) {
         $routeProvider.when('/company-create', {

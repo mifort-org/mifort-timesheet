@@ -16,7 +16,7 @@
 
 'use strict';
 
-angular.module('mifortTimesheet.report').factory('reportService',
+angular.module('mifortTimelog.report').factory('reportService',
     ['$http', function ($http) {
         return {
             getFilters: function (companyId) {

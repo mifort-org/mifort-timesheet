@@ -16,7 +16,7 @@
 
 'use strict';
 
-angular.module('mifortTimesheet')
+angular.module('mifortTimelog')
     .directive('tableCell', function () {
         return {
             scope: true,

@@ -16,7 +16,7 @@
 
 'use strict';
 
-angular.module('mifortTimesheet.projects').factory('projectsService',
+angular.module('mifortTimelog.projects').factory('projectsService',
     ['$http', function($http) {
         return {
             saveAssignment: function(projectId, user) {

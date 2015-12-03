@@ -16,7 +16,7 @@
 
 'use strict';
 
-angular.module('mifortTimesheet.login').factory('loginService',
+angular.module('mifortTimelog.login').factory('loginService',
     ['$http', function ($http) {
         return {
             getUser: function () {

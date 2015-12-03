@@ -16,7 +16,7 @@
 
 'use strict';
 
-angular.module('mifortTimesheet.projects', ['ngRoute'])
+angular.module('mifortTimelog.projects', ['ngRoute'])
 
     .config(['$routeProvider', function($routeProvider) {
         $routeProvider.when('/projects', {

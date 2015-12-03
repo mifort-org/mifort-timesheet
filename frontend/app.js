@@ -16,7 +16,7 @@
 
 'use strict';
 
-angular.module('mifortTimesheet', [
+angular.module('mifortTimelog', [
     'ngRoute',
     'ngCookies',
     'ui.bootstrap',
@@ -27,12 +27,12 @@ angular.module('mifortTimesheet', [
     'ui.grid.resizeColumns',
     'ui.grid.autoResize',
     'ngBootstrap',
-    'mifortTimesheet.login',
-    'mifortTimesheet.company',
-    'mifortTimesheet.projects',
-    'mifortTimesheet.timelog',
-    'mifortTimesheet.timesheet',
-    'mifortTimesheet.report'
+    'mifortTimelog.login',
+    'mifortTimelog.company',
+    'mifortTimelog.projects',
+    'mifortTimelog.timelog',
+    'mifortTimelog.timesheet',
+    'mifortTimelog.report'
 ])
     .config(['$routeProvider', '$httpProvider', function($routeProvider, $httpProvider) {
         $routeProvider.otherwise({redirectTo: '/login'});
@@ -55,7 +55,7 @@ angular.module('mifortTimesheet', [
         });
     }])
 
-    .controller('mifortTimesheetController', ['$scope', '$location', '$cookies', '$http', 'preferences', 'companyService', 'topPanelService',
+    .controller('mifortTimelogController', ['$scope', '$location', '$cookies', '$http', 'preferences', 'companyService', 'topPanelService',
         function($scope, $location, $cookies, $http, preferences, companyService, topPanelService) {
             var user = preferences.get('user');
 

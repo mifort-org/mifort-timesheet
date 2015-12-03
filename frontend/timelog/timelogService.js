@@ -16,7 +16,7 @@
 
 'use strict';
 
-angular.module('mifortTimesheet.timelog').factory('timelogService',
+angular.module('mifortTimelog.timelog').factory('timelogService',
     ['$http', function ($http) {
         return {
             getProject: function (projectId) {
