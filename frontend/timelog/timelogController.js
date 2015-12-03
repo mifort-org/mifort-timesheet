@@ -195,7 +195,7 @@ angular.module('mifortTimelog.timelog', ['ngRoute'])
             newRow.date = log.date;
             newRow.userName = log.userName;
             newRow.isFirstDayRecord = false;
-            
+
             project.timelog.splice(dayIndex + 1, 0, newRow);
             project.splittedTimelog[currentTimelogIndex].splice(dayIndex + 1, 0, newRow);
         };
