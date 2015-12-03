@@ -107,14 +107,9 @@ angular.module('mifortTimelog')
                         changedDayType,
                         pureNewValues;
 
-                    //if(newValue){
-                    //    scope.company.dayTypes.map(function(customDay){customDay.pickerVisible = false;});
-                    //}
-
                     if(newValue && oldValue && newValue != oldValue){
                         if(oldValue.length == newValue.length){
                             pureNewValues = JSON.parse(angular.toJson(newValue));
-                            //changedDayType = _.omit(pureNewValue, function(v,k) { return oldValue[k] === v; });
 
                             pureNewValues.forEach(function(newDayType, index) {
                                 if(!_.isEqual(newDayType, oldValue[index])){
@@ -133,10 +128,10 @@ angular.module('mifortTimelog')
                 }, true);
 
                 scope.chooseColor = function(colorIndex, day) {
-                    var choosedColor = scope.customColors[colorIndex].color;
+                    var chosenColor = scope.customColors[colorIndex].color;
 
                     day.pickerVisible = false;
-                    day.color = choosedColor;
+                    day.color = chosenColor;
                     paintHexagons();
                 };
 
@@ -146,7 +141,7 @@ angular.module('mifortTimelog')
 
                 function paintHexagons() {
                     $timeout(function() {
-                        //pseudo elements PAINting
+                        //pseudo elements PAINtning
                         $(element).find('.hexagon').each(function(index) {
                             var hexagon = $(this),
                                 hexagonColor = scope.company.dayTypes[$(this).index()].color,
