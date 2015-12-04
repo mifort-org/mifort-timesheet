@@ -181,9 +181,17 @@ angular.module('mifortTimelog.timelog', ['ngRoute'])
 
                         timer = $timeout(function() {
                             timelogService.updateTimelog(user._id, newValue).success(function(data) {
-                                $scope.projects[projectIndex].splittedTimelog[index] = data.timelog;
+                                var noIdLog = _.find(project.splittedTimelog[index], function(log) {
+                                    return !log._id;
+                                });
+
+                                if(noIdLog){
+                                    angular.extend(project.splittedTimelog[index], data.timelog);
+                                }
+
+                                angular.extend(project.timelog, data.timelog);
                             });
-                        }, 250)
+                        }, 500)
                     }
                 }, true);
             });
@@ -200,13 +208,14 @@ angular.module('mifortTimelog.timelog', ['ngRoute'])
             project.splittedTimelog[currentTimelogIndex].splice(dayIndex + 1, 0, newRow);
         };
 
-        $scope.removeRow = function(log, project) {
+        $scope.removeRow = function(log, project, period) {
             if(log._id) {
                 var dayIndex = _.findIndex(project.timelog, {_id: log._id});
                 timelogService.removeTimelog(log);
 
+                project.splittedTimelog[period].splice(dayIndex, 1);
                 project.timelog.splice(dayIndex, 1);
-                splitPeriods(project);
+                //splitPeriods(project);
             }
         };
 

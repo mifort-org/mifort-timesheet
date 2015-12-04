@@ -48,7 +48,7 @@
 
                             <span ng-if="log.isFirstDayRecord">{{log.date}}</span>
 
-                            <a href="" ng-if="!log.isFirstDayRecord" class="remove-timelog" ng-click="removeRow(log, project)">&#8211;</a>
+                            <a href="" ng-if="!log.isFirstDayRecord" class="remove-timelog" ng-click="removeRow(log, project, project.currentTimelogIndex)">&#8211;</a>
                         </span>
                     </td>
 
