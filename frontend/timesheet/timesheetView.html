@@ -101,7 +101,7 @@
 <script type="text/ng-template" id="daySettimgs.html">
     <a href=""
        class="custom-day-button"
-       ng-repeat="dayType in company.dayTypes"
+       ng-repeat="dayType in company.dayTypes track by $index"
        ng-click="chooseDayType(day, dayType)"
        ng-style="{background: dayType.color}">
         {{dayType.name}}

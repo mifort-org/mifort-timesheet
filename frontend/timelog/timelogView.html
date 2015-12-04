@@ -38,11 +38,10 @@
 
             <tbody>
                 <tr ng-if="project.currentTimelogIndex >= 0"
-                    ng-repeat="log in project.splittedTimelog[project.currentTimelogIndex]"
+                    ng-repeat="log in project.splittedTimelog[project.currentTimelogIndex] track by $index"
                     ng-class="{'weekend': isWeekend(log.date)}"
                     ng-style="{background: log.color}">
-                    <td ng-class="log.isFirstDayRecord ? 'is-first-day-log' : 'is-not-first-day-log'">{{isFirstDayRecord}}
-                        {{isFirstDayRecord}}
+                    <td ng-class="log.isFirstDayRecord ? 'is-first-day-log' : 'is-not-first-day-log'">
                         <span class="timelog-data">
                             <a href="" ng-if="log.isFirstDayRecord" class="add-timelog" ng-click="addRow(log, project, project.currentTimelogIndex)">+</a>
 
@@ -65,7 +64,6 @@
 
                     <td>
                         <input class="timelog-comment form-control" type="text" ng-model="log.comment"/>
-                        {{log._id}}
                     </td>
                 </tr>
             </tbody>

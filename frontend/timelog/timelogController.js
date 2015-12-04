@@ -215,7 +215,6 @@ angular.module('mifortTimelog.timelog', ['ngRoute'])
 
                 project.splittedTimelog[period].splice(dayIndex, 1);
                 project.timelog.splice(dayIndex, 1);
-                //splitPeriods(project);
             }
         };
 
