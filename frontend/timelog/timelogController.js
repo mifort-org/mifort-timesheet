@@ -56,7 +56,9 @@ angular.module('mifortTimelog.timelog', ['ngRoute'])
                                     var projectUserTimelogs = currentProject.userTimelogs;
 
                                     projectUserTimelogs.push.apply(projectUserTimelogs, projectTimelog.timelog);
-                                    $scope.init();
+                                    if(index == $scope.assignments.length - 1){
+                                        $scope.init();
+                                    }
                                 });
                             }
                         });
