@@ -12,7 +12,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  * @author Andrew Voitov
  */
 
@@ -35,7 +35,7 @@ exports.authorizeSaveProject = function(req, res, next) {
     var user = req.user;
     var project = req.body; //not full object need to find by Id
     if(!project._id) {
-        if(user.role === OWNER_ROLE) {
+        if(user.role === OWNER_ROLE || user.role === MANAGER_ROLE) {
             next();
         } else {
             send403(res);
@@ -59,7 +59,7 @@ exports.authorizeSaveProject = function(req, res, next) {
 exports.authorizeGetProjectById = function(req, res, next) {
     var user = req.user;
     var projectId = utils.getProjectId(req);
-    
+
     var projects = db.projectCollection();
     projects.findOne({_id: projectId}, function(err, project) {
         if(err) {
@@ -88,7 +88,7 @@ exports.authorizeGetProjectsByCompanyId = function(req, res, next) {
 exports.authorizeDeactivateProject = function(req, res, next) {
     var user = req.user;
     var projectId = utils.getProjectId(req);
-    
+
     var projects = db.projectCollection();
     projects.findOne({_id: projectId}, function(err, project) {
         if(err) {
@@ -110,7 +110,7 @@ exports.authorizeSaveTimelog = function(req, res, next) {
     if(timelogs) {
         var isYourTimelog = timelogs.every(function(log) {
             return user._id.equals(log.userId);
-        }); 
+        });
         if(isYourTimelog){
             next();
             return;
@@ -220,8 +220,8 @@ exports.authorizaUpdateRole = function(req, res, next) {
 
     var updatedUser = req.body;
     var users = db.userCollection();
-    users.findOne({_id: updatedUser._id}, 
-                  {companyId: 1}, 
+    users.findOne({_id: updatedUser._id},
+                  {companyId: 1},
         function(err, findedUser) {
             if(err) {
                 send403(res);
@@ -238,7 +238,7 @@ exports.authorizaUpdateRole = function(req, res, next) {
 exports.authorizeDeleteUser = function(req, res, next) {
     var user = req.user;
     var userId = utils.getUserId(req);
-    
+
     isOwnerForUser(user, [userId],
                 function() { // fail callback
                     send403(res);
@@ -309,7 +309,7 @@ exports.authorizeCommonReport = function(req, res, next) {
     }
 };
 
-//Private 
+//Private
 function isManagerForCompany(user, companyId) {
     if(!user.companyId.equals(companyId)) {
         return false;
@@ -363,7 +363,7 @@ function isSomebodyForUser(roles, parentUser, userIds, errorCallback, successCal
             if(managerForEveryUser) {
                 successCallback();
             } else {
-                errorCallback(); 
+                errorCallback();
             }
         }
     });
