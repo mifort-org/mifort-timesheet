@@ -84,7 +84,7 @@ angular.module('mifortTimelog.report', ['ngRoute'])
                     field: 'role',
                     enableColumnResizing: true,
                     enableColumnMenu: false,
-                    cellTemplate: '<div class="ui-grid-cell-contents">{{row.entity.role.role}}</div>',
+                    cellTemplate: '<div class="ui-grid-cell-contents">{{row.entity.role}}</div>',
                     filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" col-name="role" col-title="Role"></span></div>'
                 },
                 {
