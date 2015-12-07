@@ -236,4 +236,5 @@ angular.module('mifortTimelog.timelog', ['ngRoute'])
                 project.currentTimelogIndex++;
             }
         };
+
     }]);

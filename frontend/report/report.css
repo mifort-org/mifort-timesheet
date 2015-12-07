@@ -56,9 +56,8 @@
   .ui-grid .ui-grid-header {
     border-color: #eaeff7; }
   .ui-grid .ui-grid-header-cell {
-    border-color: #eaeff7; }
-    .ui-grid .ui-grid-header-cell .sortable {
-      background: #fff; }
+    border-color: #eaeff7;
+    background: #fff; }
   .ui-grid .ui-grid-row .ui-grid-cell {
     background: #fff;
     border-color: #eaeff7; }
