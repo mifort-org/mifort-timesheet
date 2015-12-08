@@ -70,7 +70,7 @@ angular.module('mifortTimelog')
                 });
 
                 scope.tabs.map(function(tab) {
-                    if(tab.title == currentLocation){
+                    if(tab.url == currentLocation){
                         tab.active = true;
                     }
                 });
