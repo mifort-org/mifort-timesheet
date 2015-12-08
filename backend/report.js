@@ -12,7 +12,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  * @author Andrew Voitov
  */
 var csvStringify = require('csv-stringify');
@@ -49,18 +49,18 @@ exports.restCommonReport = function(req, res, next) {
                     res.append('X-Total-Count', count);
                     filterTimelog(query, sortObj, page, filterObj.pageSize, res,
                         function() {
-                            log.debug('-REST result: common report. Company id: %s', 
+                            log.debug('-REST result: common report. Company id: %s',
                                 filterObj.companyId.toHexString());
                         });
                 });
         } else {
             filterTimelog(query, sortObj, page, filterObj.pageSize, res,
                 function() {
-                    log.debug('-REST result: common report. Company id: %s', 
+                    log.debug('-REST result: common report. Company id: %s',
                         filterObj.companyId.toHexString());
                 });
         }
-        
+
     });
 };
 
@@ -74,7 +74,7 @@ var columns = {
 //need to extract common parts to separate method!!!!
 exports.restConstructCSV = function(req, res, next) {
     var filterObj = req.body;
-    log.debug('-REST call: Download common report. Company id: %s', 
+    log.debug('-REST call: Download common report. Company id: %s',
         filterObj.companyId.toHexString());
 
     var timelogCollection = db.timelogCollection();
@@ -101,13 +101,13 @@ exports.restConstructCSV = function(req, res, next) {
             });
         var csvStringifier = csvStringify({ header: true, columns: columns });
         var fileName = 'report_' + shortid.generate() + '.csv';
-        var writeStream = fs.createWriteStream('./report_files/' + fileName, 
+        var writeStream = fs.createWriteStream('./report_files/' + fileName,
             {defaultEncoding: 'utf8'});
 
         cursorStream.pipe(csvStringifier).pipe(writeStream);
-        
+
         cursorStream.on('end', function() {
-            log.debug('-REST Result: Download common report. CSV file is generated. Company id: %s', 
+            log.debug('-REST Result: Download common report. CSV file is generated. Company id: %s',
                 filterObj.companyId.toHexString());
             res.json({url: '/report/download/' + fileName});
         });
@@ -126,6 +126,16 @@ exports.restDownloadFile = function(req, res, next) {
         if(err) {
             next(err);
             return;
+        } else {
+            if(res.headersSent) {
+                fs.unlink('./report_files/' + fileName, function(err) {
+                    if (err) {
+                        log.warn('Cannot delete %s', fileName);
+                    } else {
+                        log.info('Successfully deleted %s', fileName);
+                    }
+                });
+            }
         }
         log.debug('-REST Result: Download file. File is downloaded. %s', fileName);
     })
@@ -147,14 +157,14 @@ exports.restGetFilterValues = function(req, res, next) {
         var projectIdArray = projectIds.map(function(object) {
             return object._id;
         });
-        timelogCollection.distinct('userName', {projectId : {$in: projectIdArray}}, 
+        timelogCollection.distinct('userName', {projectId : {$in: projectIdArray}},
             function(err, userNames){
                 if(err) {
                     next(err);
                     return;
                 }
                 filterValues.push({field:'userName', value: userNames});
-                
+
                 timelogCollection.distinct('projectName', {projectId : {$in: projectIdArray}},
                     function(err, projectNames){
                         if(err) {
@@ -171,13 +181,13 @@ exports.restGetFilterValues = function(req, res, next) {
                                 }
                                 filterValues.push({field:'role', value: roles});
                                 res.json(filterValues);
-                                log.debug('-REST result: Report filters returned. Company id: %s', 
+                                log.debug('-REST result: Report filters returned. Company id: %s',
                                     companyId.toHexString());
                             });
                     });
             });
     });
-    
+
 };
 
 //Private
