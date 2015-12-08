@@ -212,11 +212,12 @@ angular.module('mifortTimelog.timelog', ['ngRoute'])
 
         $scope.removeRow = function(log, project, period) {
             if(log._id) {
-                var dayIndex = _.findIndex(project.timelog, {_id: log._id});
+                var dayProjectIndex = _.findIndex(project.timelog, {_id: log._id}),
+                    dayPeriodIndex = _.findIndex(project.splittedTimelog[period], {_id: log._id});
                 timelogService.removeTimelog(log);
 
-                project.splittedTimelog[period].splice(dayIndex, 1);
-                project.timelog.splice(dayIndex, 1);
+                project.splittedTimelog[period].splice(dayPeriodIndex, 1);
+                project.timelog.splice(dayProjectIndex, 1);
             }
         };
 
