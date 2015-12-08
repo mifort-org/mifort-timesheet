@@ -201,13 +201,14 @@ angular.module('mifortTimelog.timelog', ['ngRoute'])
 
         $scope.addRow = function(log, project, currentTimelogIndex) {
             var newRow = angular.copy(project.template),
-                dayIndex = _.findIndex(project.splittedTimelog[currentTimelogIndex], {date: log.date});
+                dayProjectIndex = _.findIndex(project.timelog, {date: log.date}),
+                dayPeriodIndex = _.findIndex(project.splittedTimelog[currentTimelogIndex], {date: log.date});
             newRow.date = log.date;
             newRow.userName = log.userName;
             newRow.isFirstDayRecord = false;
 
-            project.timelog.splice(dayIndex + 1, 0, newRow);
-            project.splittedTimelog[currentTimelogIndex].splice(dayIndex + 1, 0, newRow);
+            project.timelog.splice(dayProjectIndex + 1, 0, newRow);
+            project.splittedTimelog[currentTimelogIndex].splice(dayPeriodIndex + 1, 0, newRow);
         };
 
         $scope.removeRow = function(log, project, period) {
