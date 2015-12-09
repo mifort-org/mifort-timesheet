@@ -21,7 +21,7 @@
         <table>
             <tr>
                 <td>
-                    <label for="company-name">Company Name</label>
+                    <label for="company-name">Company Name:</label>
                 </td>
                 <td>
                     <input id="company-name" ng-model="company.name" required type="text" placeholder="My Company"/>
@@ -30,7 +30,7 @@
 
             <tr>
                 <td>
-                    <label for="company-employees">Invite Employees</label>
+                    <label for="company-employees">Invite Employees:</label>
                 </td>
                 <td>
                     <textarea id="company-employees" ng-model="company.emails" placeholder="zuckerberg@facebook.com"></textarea>
@@ -40,7 +40,39 @@
 
             <tr>
                 <td></td>
+                <td class="button-holder">
+                    <button class="primary-button large-button">
+                        Invite
+                    </button>
+                </td>
+            </tr>
+
+            <tr>
                 <td>
+                    <label for="company-name" class="company-roles-label">Invited Employees Roles:</label>
+                </td>
+                <td>
+                    <table class="company-roles">
+                        <tr ng-repeat="employee in companyEmployees">
+                            <td>
+                                <span class="employee-role">{{employee.displayName || employee.email}}</span>
+                            </td>
+                            <td>
+                                <select id="role"
+                                        ng-options="role as role for role in possibleRoles"
+                                        ng-model="employee.role"
+                                        class="form-control timesheet-control"
+                                        ng-change="changeRole()">
+                                </select>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td class="button-holder">
                     <button type="submit" class="primary-button large-button">
                         Save
                     </button>

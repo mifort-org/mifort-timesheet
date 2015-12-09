@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 .company-wrapper {
-  padding: 75px 0;
+  padding: 75px 0 50px;
   text-align: center;
   background: #fff; }
   .company-wrapper h1 {
@@ -22,20 +22,55 @@
     font-weight: 600;
     padding-bottom: 40px; }
   .company-wrapper form {
-    font-size: 1.8em; }
+    font-size: 1.8rem; }
   .company-wrapper table {
     width: 100%;
     text-align: left; }
     .company-wrapper table td {
-      vertical-align: top; }
+      vertical-align: top;
+      width: 60%; }
       .company-wrapper table td:first-child {
-        text-align: right; }
+        text-align: right;
+        width: 40%; }
+      .company-wrapper table td.button-holder {
+        padding-bottom: 25px; }
     .company-wrapper table button {
       margin: 0; }
-  .company-wrapper label {
+    .company-wrapper table .company-roles {
+      width: 70%;
+      margin-bottom: 25px; }
+      .company-wrapper table .company-roles tr {
+        border-bottom: 1px #ddd solid; }
+        .company-wrapper table .company-roles tr td {
+          width: 40%;
+          vertical-align: middle; }
+          .company-wrapper table .company-roles tr td:first-child {
+            text-align: left;
+            width: 60%; }
+          .company-wrapper table .company-roles tr td select {
+            float: right;
+            height: 50px;
+            max-width: 150px;
+            padding: 0;
+            font-size: 1.8rem;
+            color: #000;
+            font-weight: 600;
+            border: 0; }
+        .company-wrapper table .company-roles tr:first-child td {
+          padding-top: 0; }
+        .company-wrapper table .company-roles tr:last-child {
+          border-bottom: 0; }
+  .company-wrapper label,
+  .company-wrapper .employee-role {
     font-weight: 600;
-    vertical-align: top;
-    margin: 6px 20px 0 0; }
+    margin: 6px 20px 0 0;
+    color: #888; }
+  .company-wrapper .employee-role {
+    padding-left: 15px;
+    color: #000;
+    vertical-align: bottom; }
+  .company-wrapper .company-roles-label {
+    margin-top: 15px; }
   .company-wrapper input,
   .company-wrapper textarea {
     width: 70%;
@@ -48,5 +83,7 @@
     min-height: 120px;
     line-height: 1.2;
     resize: vertical; }
+  .company-wrapper button {
+    margin-bottom: 25px; }
 
 /*# sourceMappingURL=company.css.map */

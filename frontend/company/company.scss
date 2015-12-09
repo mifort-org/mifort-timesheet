@@ -15,7 +15,7 @@
  */
 
 .company-wrapper{
-    padding: 75px 0;
+    padding: 75px 0 50px;
     text-align: center;
     background: #fff;
 
@@ -26,7 +26,7 @@
     }
 
     form{
-        font-size: 1.8em;
+        font-size: 1.8rem;
     }
 
     table{
@@ -35,21 +35,72 @@
 
         td{
             vertical-align: top;
+            width: 60%;
 
             &:first-child{
                 text-align: right;
+                width: 40%;
+            }
+
+            &.button-holder{
+                padding-bottom: 25px;
             }
         }
 
         button{
             margin: 0;
         }
+        .company-roles{
+            width: 70%;
+            margin-bottom: 25px;
+
+            tr{
+                border-bottom: 1px #ddd solid;
+
+                td{
+                    width: 40%;
+                    vertical-align: middle;
+
+                    &:first-child{
+                        text-align: left;
+                        width: 60%;
+                    }
+
+                    select{
+                        float: right;
+                        height: 50px;
+                        max-width: 150px;
+                        padding: 0;
+                        font-size: 1.8rem;
+                        color: #000;
+                        font-weight: 600;
+                        border: 0;
+                    }
+                }
+
+                &:first-child td{
+                    padding-top: 0;
+                }
+                &:last-child{
+                    border-bottom: 0;
+                }
+            }
+        }
     }
 
-    label{
+    label,
+    .employee-role{
         font-weight: 600;
-        vertical-align: top;
         margin: 6px 20px 0 0;
+        color: #888;
+    }
+    .employee-role{
+        padding-left: 15px;
+        color: #000;
+        vertical-align: bottom;
+    }
+    .company-roles-label{
+        margin-top: 15px;
     }
 
     input,
@@ -66,5 +117,9 @@
         min-height: 120px;
         line-height: 1.2;
         resize: vertical;
+    }
+
+    button{
+        margin-bottom: 25px;
     }
 }

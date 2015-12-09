@@ -25,6 +25,9 @@ angular.module('mifortTimelog.company').factory('companyService',
             getCompany: function(companyId) {
                 return $http.get('company/' + companyId);
             },
+            getCompanyEmployees : function(companyId) {
+                return $http.get('user/company/' + companyId);
+            },
             saveCompany: function(company) {
                 return $http.post('company', company);
             }

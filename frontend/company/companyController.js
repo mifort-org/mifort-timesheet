@@ -39,9 +39,19 @@ angular.module('mifortTimelog.company', ['ngRoute'])
             emails: []
         };
 
+        $scope.possibleRoles = [
+            'Owner',
+            'Manager',
+            'Employee'
+        ];
+
         if($location.path() == '/company'){
             companyService.getCompany(user.companyId).success(function(company) {
                 $scope.company = company;
+            });
+
+            companyService.getCompanyEmployees(user.companyId).success(function(companyEmployees) {
+                $scope.companyEmployees = companyEmployees;
             });
         }
 
