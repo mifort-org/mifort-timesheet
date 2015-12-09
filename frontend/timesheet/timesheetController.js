@@ -60,7 +60,6 @@ angular.module('mifortTimelog.timesheet', ['ngRoute'])
             var startDate = moment(new Date($scope.company.periods[0].start)),
                 endDate = moment(new Date($scope.company.periods[$scope.company.periods.length - 1].end)),
                 daysToGenerate = endDate.diff(startDate, 'days') + 1;
-            //daysToGenerate = 30;
 
             for(var i = 0; i < daysToGenerate; i++){
                 var dayToPush = _.clone($scope.company.template);
@@ -111,7 +110,7 @@ angular.module('mifortTimelog.timesheet', ['ngRoute'])
                 currentDayWeek = 0;
             }
 
-            if(currentDate.getDay() == 0 || currentDate.getDay() == 1){
+            if(currentDate.getDay() == 6 || currentDate.getDay() == 0){
                 day.weekend = true;
             }
 
