@@ -63,21 +63,29 @@ angular.module('mifortTimelog')
                     }
                 ];
 
+                changeActiveTab(currentLocation);
+
                 attributes.$observe('companyName', function(value){
                     if(value){
                         scope.tabs[1].title = value;
                     }
                 });
 
-                scope.tabs.map(function(tab) {
-                    if(tab.url == currentLocation){
-                        tab.active = true;
-                    }
-                });
-
                 scope.changeTab = function (tab) {
                     $location.path('/' + tab.url);
                 };
+
+                scope.$on('$locationChangeStart', function(){
+                    changeActiveTab($location.path().substr(1))
+                });
+
+                function changeActiveTab(newLocation){
+                    scope.tabs.map(function(tab) {
+                        if(tab.url == newLocation){
+                            tab.active = true;
+                        }
+                    });
+                }
             },
             templateUrl: 'components/tabs/bootstrapTabs.html'
         };
