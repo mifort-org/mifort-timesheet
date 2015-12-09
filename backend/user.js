@@ -12,7 +12,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  * @author Andrew Voitov
  */
 
@@ -29,13 +29,13 @@ exports.restGetCurrent = function(req, res) {
 
 exports.restGetByProjectId = function(req, res, next) {
     var projectIdParam = utils.getProjectId(req);
-    log.debug('-REST call: Get users by project id. Project id: %s', 
+    log.debug('-REST call: Get users by project id. Project id: %s',
         projectIdParam.toHexString());
     var users = db.userCollection();
     users.find({'assignments.projectId': projectIdParam},
                {
                 workload: 1,
-                displayName: 1, 
+                displayName: 1,
                 assignments: 1
                })
       .toArray(function(err, projectUsers) {
@@ -43,7 +43,7 @@ exports.restGetByProjectId = function(req, res, next) {
             err.code = 404;
             next(err);
         } else {
-            if(projectUsers) { 
+            if(projectUsers) {
                 projectUsers.forEach(function(user) { // not efficient???? Maybe: Client side???
                     user.assignments = user.assignments.filter(function(assignment) {
                        return projectIdParam.equals(assignment.projectId);
@@ -51,7 +51,7 @@ exports.restGetByProjectId = function(req, res, next) {
                 });
             }
             res.json(projectUsers);
-            log.debug('-REST result: Get users by project id. Project id: %s, Number Of users: %d', 
+            log.debug('-REST result: Get users by project id. Project id: %s, Number Of users: %d',
                 projectIdParam.toHexString(), projectUsers.length);
         }
     });
@@ -59,20 +59,22 @@ exports.restGetByProjectId = function(req, res, next) {
 
 exports.restGetByCompanyId = function(req, res, next) {
     var companyIdParam = utils.getCompanyId(req);
-    log.debug('-REST call: Get users by company id. Company id: %s', 
+    log.debug('-REST call: Get users by company id. Company id: %s',
         companyIdParam.toHexString());
 
     var users = db.userCollection();
     users.find({companyId: companyIdParam},
                {workload: 1,
-                displayName: 1})
+                displayName: 1,
+                role: 1,
+                email: 1})
         .toArray(function(err, companyUsers) {
             if(err) {
                 err.code = 404;
                 next(err);
             } else {
                 res.json(companyUsers);
-                log.debug('-REST result: Get users by company id. Company id: %s. Number of company users: %d', 
+                log.debug('-REST result: Get users by company id. Company id: %s. Number of company users: %d',
                     companyIdParam.toHexString(), companyUsers.length);
             }
         });
@@ -81,7 +83,7 @@ exports.restGetByCompanyId = function(req, res, next) {
 exports.restReplaceAssignments = function(req, res, next) {
     var projectId = utils.getProjectId(req);
 
-    log.debug('-REST call: Replace assignments. Project id: %s', 
+    log.debug('-REST call: Replace assignments. Project id: %s',
         projectId.toHexString());
 
     var user = req.body;
@@ -96,7 +98,7 @@ exports.restReplaceAssignments = function(req, res, next) {
                              { $push: { assignments: { $each: assignments } }},
                     function(err, updatedUser){
                         res.json({ok: true}); //saved object???
-                        log.debug('-REST result: Replace assignments. Project id: %s', 
+                        log.debug('-REST result: Replace assignments. Project id: %s',
                             projectId.toHexString());
                     });
             } else {
@@ -107,7 +109,7 @@ exports.restReplaceAssignments = function(req, res, next) {
 
 exports.restUpdateUserRole = function(req, res, next) {
     var user = req.body;
-    log.debug('-REST call: Update user role. User id: %s, role: %s', 
+    log.debug('-REST call: Update user role. User id: %s, role: %s',
         user._id.toHexString(), user.role);
 
     var users = db.userCollection();
@@ -120,7 +122,7 @@ exports.restUpdateUserRole = function(req, res, next) {
             if(err) {
                 next(err);
             } else {
-                log.debug('-REST result: Update user role. User id: %s, role: %s', 
+                log.debug('-REST result: Update user role. User id: %s, role: %s',
                     user._id.toHexString(), user.role);
                 res.json({ok: 'true'});
             }
@@ -151,7 +153,7 @@ exports.restAddNewUser = function(req, res, next) {
         user.displayName = user.email;
     }
     var users = db.userCollection();
-    users.insertOne(user, {safe: true}, 
+    users.insertOne(user, {safe: true},
         function(err, result) {
             if(err) {
                 next(err);
@@ -159,7 +161,7 @@ exports.restAddNewUser = function(req, res, next) {
                 res.json(result.ops[0]);
                 log.debug('-REST result: User is added. User email: %s', user.email);
             }
-        }); 
+        });
 };
 
 //Public API
@@ -210,7 +212,7 @@ exports.findById = function(id, callback) {
 
 exports.findByExample = findByExample;
 
-//private 
+//private
 function findByExample(query, callback) {
     var users = db.userCollection();
     users.findOne(query, function(err, user){
