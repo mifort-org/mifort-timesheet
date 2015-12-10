@@ -12,7 +12,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  * @author Andrew Voitov
  */
 
@@ -36,6 +36,7 @@ var validators = require('./backend/libs/validators');
 var log = require('./backend/libs/logger');
 var errorHandler = require('./backend/libs/error_handler');
 var dbSettings = require('./backend/libs/mongodb_settings');
+var mail = require('./backend/libs/mail');
 
 var app = express();
 app.set('port', process.env.PORT || 1313);
@@ -69,7 +70,7 @@ app.use(session(
     name: 'kaas',
     cookie: { maxAge : 3600000 },
     resave: false,
-    rolling: true, 
+    rolling: true,
     saveUninitialized: true,
     store: new MongoStore({url: dbSettings.sessionMongoUrl})})
 );
@@ -84,15 +85,15 @@ app.use('/', function(req, res, next){
 //project
 app.post('/project',
         validators.validateSaveProject,
-        authorization.authorizeSaveProject, 
+        authorization.authorizeSaveProject,
         project.restSave);
-app.get('/project/:projectId', 
+app.get('/project/:projectId',
         validators.validateGetProjectById,
-        authorization.authorizeGetProjectById, 
+        authorization.authorizeGetProjectById,
         project.restGetById);
-app.get('/projects', 
+app.get('/projects',
         validators.validateGetProjectByCompanyId,
-        authorization.authorizeGetProjectsByCompanyId, 
+        authorization.authorizeGetProjectsByCompanyId,
         project.restGetByCompanyId);
 app.get('/project/deactivate/:projectId',
         validators.validateDeactivateProject,
@@ -105,7 +106,7 @@ app.post('/timelog',
         authorization.authorizeSaveTimelog,
         timelog.restSave);
 app.get('/timelog/:userId',
-        validators.validateGetTimelogByDates, 
+        validators.validateGetTimelogByDates,
         authorization.authorizeGetTimelog,
         timelog.restGetByDates);
 app.delete('/timelog/:timelogId',
@@ -114,9 +115,9 @@ app.delete('/timelog/:timelogId',
         timelog.restDelete);
 
 //user
-app.get('/user', 
+app.get('/user',
         user.restGetCurrent);
-app.get('/user/project/:projectId', 
+app.get('/user/project/:projectId',
         validators.validateGetUserByProjectId,
         authorization.authorizeGetUsersByProjectId,
         user.restGetByProjectId);
@@ -128,7 +129,7 @@ app.post('/user/assignment/:projectId',
         validators.validateReplaceAssignment,
         authorization.authorizeAddAssignment,
         user.restReplaceAssignments);
-app.post('/user/update-role', 
+app.post('/user/update-role',
         validators.validateUpdateRole,
         authorization.authorizaUpdateRole,
         user.restUpdateUserRole);
@@ -136,13 +137,13 @@ app.delete('/user/:userId',
         validators.validateDeleteUser,
         authorization.authorizeDeleteUser,
         user.restDeleteUser);
-app.put('/user', 
+app.put('/user',
         validators.validateAddNewUser,
         authorization.authorizeAddNewUser,
         user.restAddNewUser);
 
 //company
-app.post('/company', 
+app.post('/company',
         validators.validateUpdateCompany,
         authorization.authorizeUpdateCompany,
         company.restUpdateCompany);
@@ -176,6 +177,9 @@ log.info('REST API is ready!');
 // default error handler
 app.use(errorHandler);
 log.info('Error handler is initialized!');
+
+//email send example
+//mail.sendEmail('andreivoitau@gmail.com', 'Bla bla bla');
 
 //run application
 app.listen(app.get('port'), function() {
