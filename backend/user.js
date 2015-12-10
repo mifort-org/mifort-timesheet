@@ -33,11 +33,9 @@ exports.restGetByProjectId = function(req, res, next) {
         projectIdParam.toHexString());
     var users = db.userCollection();
     users.find({'assignments.projectId': projectIdParam},
-               {
-                workload: 1,
-                displayName: 1,
-                assignments: 1
-               })
+               { workload: 1,
+                 displayName: 1,
+                 assignments: 1})
       .toArray(function(err, projectUsers) {
         if(err) {
             err.code = 404;

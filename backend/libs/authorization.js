@@ -239,6 +239,11 @@ exports.authorizeDeleteUser = function(req, res, next) {
     var user = req.user;
     var userId = utils.getUserId(req);
 
+    if(user._id.equals(userId)) {
+        send403(res, 'You cannot delete yourself!');
+        return;
+    }
+
     isOwnerForUser(user, [userId],
                 function() { // fail callback
                     send403(res);
