@@ -347,7 +347,7 @@ function isOwnerForUser(owner, userIds, errorCallback, successCallback) {
 }
 
 function isSomebodyForUser(roles, parentUser, userIds, errorCallback, successCallback) {
-    if(roles.indexOf(manager.role) < 0 ) {
+    if(roles.indexOf(parentUser.role) < 0 ) {
         errorCallback();
         return;
     }
@@ -358,7 +358,7 @@ function isSomebodyForUser(roles, parentUser, userIds, errorCallback, successCal
             errorCallback(err);
         } else {
             var managerForEveryUser = selectedUsers.every(function(user){
-                return manager.companyId.equals(user.companyId);
+                return parentUser.companyId.equals(user.companyId);
             });
             if(managerForEveryUser) {
                 successCallback();
