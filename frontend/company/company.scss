@@ -35,11 +35,11 @@
 
         td{
             vertical-align: top;
-            width: 60%;
+            width: 65%;
 
             &:first-child{
                 text-align: right;
-                width: 40%;
+                width: 35%;
             }
 
             &.button-holder{
@@ -50,6 +50,7 @@
         button{
             margin: 0;
         }
+
         .company-roles{
             width: 70%;
             margin-bottom: 25px;
@@ -58,6 +59,7 @@
                 border-bottom: 1px #ddd solid;
 
                 td{
+                    position: relative;
                     width: 40%;
                     vertical-align: middle;
 
@@ -70,7 +72,7 @@
                         float: right;
                         height: 50px;
                         max-width: 150px;
-                        padding: 0;
+                        padding: 0 0 0 15px;
                         font-size: 1.8rem;
                         color: #000;
                         font-weight: 600;
@@ -121,5 +123,23 @@
 
     button{
         margin-bottom: 25px;
+    }
+}
+
+.remove-role{
+    position: absolute;
+    z-index: 1;
+    top: 12px;
+    right: -35px;
+    color: #fe6767;
+    font-size: 2.5rem;
+    opacity: 0.5;
+
+    &:hover,
+    &:active,
+    &:focus{
+        opacity: 1;
+        color: #fe6767;
+        text-decoration: none;
     }
 }

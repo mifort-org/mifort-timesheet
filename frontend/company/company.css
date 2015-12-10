@@ -28,10 +28,10 @@
     text-align: left; }
     .company-wrapper table td {
       vertical-align: top;
-      width: 60%; }
+      width: 65%; }
       .company-wrapper table td:first-child {
         text-align: right;
-        width: 40%; }
+        width: 35%; }
       .company-wrapper table td.button-holder {
         padding-bottom: 25px; }
     .company-wrapper table button {
@@ -42,6 +42,7 @@
       .company-wrapper table .company-roles tr {
         border-bottom: 1px #ddd solid; }
         .company-wrapper table .company-roles tr td {
+          position: relative;
           width: 40%;
           vertical-align: middle; }
           .company-wrapper table .company-roles tr td:first-child {
@@ -51,7 +52,7 @@
             float: right;
             height: 50px;
             max-width: 150px;
-            padding: 0;
+            padding: 0 0 0 15px;
             font-size: 1.8rem;
             color: #000;
             font-weight: 600;
@@ -85,5 +86,18 @@
     resize: vertical; }
   .company-wrapper button {
     margin-bottom: 25px; }
+
+.remove-role {
+  position: absolute;
+  z-index: 1;
+  top: 12px;
+  right: -35px;
+  color: #fe6767;
+  font-size: 2.5rem;
+  opacity: 0.5; }
+  .remove-role:hover, .remove-role:active, .remove-role:focus {
+    opacity: 1;
+    color: #fe6767;
+    text-decoration: none; }
 
 /*# sourceMappingURL=company.css.map */

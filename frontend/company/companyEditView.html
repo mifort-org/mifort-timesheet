@@ -41,7 +41,7 @@
             <tr>
                 <td></td>
                 <td class="button-holder">
-                    <button class="primary-button large-button">
+                    <button type="button" class="primary-button large-button" ng-click="inviteEmployees()">
                         Invite
                     </button>
                 </td>
@@ -57,13 +57,16 @@
                             <td>
                                 <span class="employee-role">{{employee.displayName || employee.email}}</span>
                             </td>
+
                             <td>
                                 <select id="role"
                                         ng-options="role as role for role in possibleRoles"
                                         ng-model="employee.role"
                                         class="form-control timesheet-control"
-                                        ng-change="changeRole()">
+                                        ng-change="changeRole(employee)">
                                 </select>
+
+                                <a href="" ng-if="employee._id != user._id" class="remove-role" ng-click="removeEmployee(employee)">&times;</a>
                             </td>
                         </tr>
                     </table>

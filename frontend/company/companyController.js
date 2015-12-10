@@ -31,7 +31,7 @@ angular.module('mifortTimelog.company', ['ngRoute'])
     }])
 
     .controller('companyController', ['$scope', '$location', 'companyService', 'preferences', function ($scope, $location, companyService, preferences) {
-        var user = preferences.get('user');
+        $scope.user = preferences.get('user');
 
         $scope.company = {
             name: null,
@@ -46,21 +46,24 @@ angular.module('mifortTimelog.company', ['ngRoute'])
         ];
 
         if($location.path() == '/company'){
-            companyService.getCompany(user.companyId).success(function(company) {
+            companyService.getCompany($scope.user.companyId).success(function(company) {
                 $scope.company = company;
+                $scope.company.emails = [];
             });
 
-            companyService.getCompanyEmployees(user.companyId).success(function(companyEmployees) {
+            getEmployees();
+        }
+
+        function getEmployees(){
+            companyService.getCompanyEmployees($scope.user.companyId).success(function(companyEmployees) {
                 $scope.companyEmployees = companyEmployees;
             });
         }
 
         $scope.createCompany = function () {
             companyService.createCompany($scope.company).success(function (data) {
-                var user = preferences.get('user');
-
-                user.companyId = data._id;
-                preferences.set('user', user);
+                $scope.user.companyId = data._id;
+                preferences.set('user', $scope.user);
                 $scope.$parent.companyId = data._id;
                 $location.path('/timesheet');
             });
@@ -70,6 +73,24 @@ angular.module('mifortTimelog.company', ['ngRoute'])
             companyService.saveCompany($scope.company).success(function () {
                 $location.path('/timesheet');
             });
+        };
+
+        $scope.inviteEmployees = function() {
+            companyService.saveCompany($scope.company).success(function () {
+                getEmployees();
+                $scope.company.emails = [];
+            });
+        };
+
+        $scope.changeRole = function(employee) {
+            companyService.changeRole(employee);
+        };
+
+        $scope.removeEmployee = function(employee) {
+            $scope.companyEmployees = _.filter($scope.companyEmployees, function(companyEmployee){
+                return companyEmployee._id != employee._id;
+            });
+            companyService.removeEmployee(employee._id);
         };
 
         $scope.$watch('company.emails', function (newValue) {
