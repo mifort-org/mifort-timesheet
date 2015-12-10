@@ -59,7 +59,7 @@ exports.restCreateCompany = function(req, res, next) {
             next(err);
         } else {
             //Warning: asynchronous operations!!!
-            registration.createDefaultProject(savedCompany, req.user); //Validation: check user!!!
+            registration.createDefaultProject(savedCompany, req.user);
             createUsersByEmails(savedCompany);
             res.json(savedCompany);
             log.debug('-REST result: Create company. Company id: %s',
@@ -83,7 +83,7 @@ exports.restUpdateCompany = function(req, res, next) {
                             periods: savedCompany.periods,
                             defaultValues: savedCompany.defaultValues,
                             dayTypes: savedCompany.dayTypes}},
-                    {multi:true},
+                    {multi: true},
                 function(err, result){
                     log.info('Company projects are updated!')
                 });
@@ -168,13 +168,13 @@ function createUsersByEmails(company) {
 
             users.findByExample(user, function(err, dbUser) {
                 if(err) {
-                    log.error('Cannot find user by email for new company.', {error: err});
+                    log.warn('Cannot find user by email for new company.', {error: err});
                 } else if(!dbUser) {
                     user.displayName = email;
                     user.role = authorization.EMPLOYEE_ROLE;
                     users.save(user, function(err, savedUser) {
                         if(err) {
-                            log.error('Cannot saved user by email for new company.', {error: err});
+                            log.error('Cannot save user by email for new company.', {error: err});
                         } else {
                             log.info('User saved with e-mail %s', savedUser.email);
                         }

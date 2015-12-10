@@ -12,7 +12,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  * @author Andrew Voitov
  */
 
@@ -39,22 +39,22 @@ exports.validateSaveProject = function(req, res, next) {
         }
 
         returnErrors(req, res, next);
-        
+
     } else {
         res.status(emptyBody.code).json({msg: emptyBody.message});
     }
 };
 
 exports.validateGetProjectById = function(req, res, next) {
-    req.checkParams(reqParams.projectIdParam, 
+    req.checkParams(reqParams.projectIdParam,
         util.format(invalidFormatMessageTemplate, reqParams.projectIdParam))
             .notEmpty().isMongoId();
-    
+
     returnErrors(req, res, next);
 };
 
 exports.validateGetProjectByCompanyId = function(req, res, next) {
-    req.check(reqParams.companyIdParam, 
+    req.check(reqParams.companyIdParam,
         util.format(invalidFormatMessageTemplate, reqParams.companyIdParam))
             .notEmpty().isMongoId();
 
@@ -63,22 +63,22 @@ exports.validateGetProjectByCompanyId = function(req, res, next) {
 
 //User Rest API validators
 exports.validateGetUserByProjectId = function(req, res, next) {
-    req.check(reqParams.projectIdParam, 
+    req.check(reqParams.projectIdParam,
         util.format(invalidFormatMessageTemplate, reqParams.projectIdParam))
             .notEmpty().isMongoId();
-    
+
     returnErrors(req, res, next);
 };
 
 exports.validateGetUserByCompanyId = function(req, res, next) {
-    req.check(reqParams.companyIdParam, 
+    req.check(reqParams.companyIdParam,
         util.format(invalidFormatMessageTemplate, reqParams.companyIdParam))
             .notEmpty().isMongoId();
     returnErrors(req, res, next);
 };
 
 exports.validateReplaceAssignment = function(req, res, next) {
-    req.checkParams(reqParams.projectIdParam, 
+    req.checkParams(reqParams.projectIdParam,
         util.format(invalidFormatMessageTemplate, reqParams.projectIdParam))
             .notEmpty().isMongoId();
 
@@ -104,7 +104,7 @@ exports.validateUpdateRole = function(req, res, next) {
 
     req.checkBody('_id', util.format(invalidFormatMessageTemplate, 'User id')).notEmpty().isMongoId();
     req.checkBody('role', util.format(invalidFormatMessageTemplate, 'Role'))
-        .notEmpty().isIn([authorization.EMPLOYEE_ROLE, authorization.MANAGER_ROLE]);
+        .notEmpty().isIn([authorization.EMPLOYEE_ROLE, authorization.MANAGER_ROLE, authorization.OWNER_ROLE]);
     returnErrors(req, res, next);
 };
 
@@ -159,7 +159,7 @@ exports.validateCreateCompany = function(req, res, next) {
 };
 
 exports.validateGetCompanyById = function(req, res, next) {
-    req.checkParams(reqParams.companyIdParam, 
+    req.checkParams(reqParams.companyIdParam,
         util.format(invalidFormatMessageTemplate, reqParams.companyIdParam))
             .notEmpty().isMongoId();
 
@@ -168,19 +168,19 @@ exports.validateGetCompanyById = function(req, res, next) {
 
 //Timelog Rest API validation
 exports.validateGetTimelogByDates = function(req, res, next) {
-    req.checkParams(reqParams.userIdParam, 
+    req.checkParams(reqParams.userIdParam,
         util.format(invalidFormatMessageTemplate, reqParams.userIdParam))
             .notEmpty().isMongoId();
 
-    req.checkQuery(reqParams.projectIdParam, 
+    req.checkQuery(reqParams.projectIdParam,
         util.format(invalidFormatMessageTemplate, reqParams.projectIdParam))
             .notEmpty().isMongoId();
 
-    req.checkQuery(reqParams.startDateParam, 
+    req.checkQuery(reqParams.startDateParam,
         util.format(invalidFormatMessageTemplate, reqParams.startDateParam))
             .notEmpty().isDate();
 
-    req.checkQuery(reqParams.endDateParam, 
+    req.checkQuery(reqParams.endDateParam,
         util.format(invalidFormatMessageTemplate, reqParams.endDateParam))
             .notEmpty().isDate();
 
@@ -202,12 +202,12 @@ exports.validateSaveTimelog = function(req, res, next) {
     }
     req.checkBody('timelog', 'Required fields: date, userId, projectId, projectName, userName')
         .isTimelog();
-    
+
     returnErrors(req, res, next);
 };
 
 exports.validateDeactivateProject = function(req, res, next) {
-    req.check(reqParams.projectIdParam, 
+    req.check(reqParams.projectIdParam,
         util.format(invalidFormatMessageTemplate, reqParams.projectIdParam))
             .notEmpty().isMongoId();
 
@@ -242,7 +242,7 @@ exports.validateDowloadCommonReport = function(req, res, next) {
 };
 
 exports.validateGetFilters = function(req, res, next) {
-    req.checkParams(reqParams.companyIdParam, 
+    req.checkParams(reqParams.companyIdParam,
         util.format(invalidFormatMessageTemplate, reqParams.companyIdParam))
             .notEmpty().isMongoId();
 
@@ -250,7 +250,7 @@ exports.validateGetFilters = function(req, res, next) {
 };
 
 exports.validateGetDownloadReport = function(req, res, next) {
-    req.checkParams(reqParams.fileNameParam, 
+    req.checkParams(reqParams.fileNameParam,
         util.format(invalidFormatMessageTemplate, reqParams.fileNameParam))
             .notEmpty().contains('.csv');
 
@@ -270,12 +270,12 @@ exports.timelogs = function(values) {
                 isValid = validator.isMongoId(val._id);
             }
             if(val.time){
-                isValid = isValid 
-                    && (validator.isInt(val.time) || validator.isFloat(val.time)) 
+                isValid = isValid
+                    && (validator.isInt(val.time) || validator.isFloat(val.time))
                     && val.time <= 24;
             }
             if(val.role){
-                isValid = isValid 
+                isValid = isValid
                     && (typeof val.role === 'string');
             }
             isValid = isValid
