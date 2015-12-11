@@ -18,7 +18,7 @@
 <html lang="en" ng-app="mifortTimelog" ng-controller="mifortTimelogController">
 <head>
     <meta charset="utf-8">
-    <title>{{companyName}} Timelog</title>
+    <title ng-bind="companyName + ' Timelog'">Timelog</title>
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
     <link rel="stylesheet" href="bower_components/angular-ui-grid/ui-grid.css" />
     <link rel="stylesheet" href="bower_components/bootstrap-daterangepicker/daterangepicker-bs3.css">
@@ -38,8 +38,8 @@
 </head>
 
 <body closable-popovers>
-<!--TODO: change with ul>li-->
-<div class="main-controls" ng-if="isLoggedIn">
+
+<nav class="main-controls" ng-if="isLoggedIn">
     <a class="logo" href="">
         <span class="timelog-icon"></span>
         Timelog
@@ -53,7 +53,7 @@
     <a href="" ng-click="openLink('info')" ng-if="isVisible('info') && isLoggedIn" class="info">Info</a>
     <a href="" ng-click="openLink('profile')" ng-if="isVisible('profile')" class="profile">Profile</a>
     <a href="" class="logout" ng-click="logout()">Logout</a>
-</div>
+</nav>
 
 <div ng-if="isLoggedIn && companyId" bootstrap-tabs company-name="{{companyName}}" class="main-tabs"></div>
 <div class="main-container" ng-view ng-class="{'login-wrapper': !isLoggedIn || !companyId}"></div>
