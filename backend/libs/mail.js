@@ -17,25 +17,36 @@
  */
 
  var request = require('request');
+ var log = require('./logger');
 
- exports.sendEmail = function(to, body) {
-     request.post({ url: 'https://api.mailgun.net/v3/sandbox22b92f927ef4426b859ac877a0260ad4.mailgun.org/messages',
-                    form: {
-                        from: 'Mifort Timesheet <mailgun@sandbox22b92f927ef4426b859ac877a0260ad4.mailgun.org>',
-                        to: to,
-                        subject: 'Invite to Mifort Timesheeet',
-                        text: body
-                    },
-                    auth: {
-                        'user': 'api',
-                        'pass': 'YOUR_KEY'
-                    }
-                },
-                function(err, httpResponse, body){
-                    console.log(err);
-                    console.log('---------------------------------');
-                    console.log(httpResponse);
-                    console.log('---------------------------------');
-                    console.log(body);
-                });
+ var fs = require('fs');
+
+ var MAIL_API_KEY = process.env.MAIL_API_KEY || 'YOUR_KEY';
+
+ exports.sendInvite = function(to) {
+     fs.readFile('./backend/libs/mail-templates/invite.htm', 'utf8', function(err, data) {
+         if(err) {
+             log.error('Cannot read e-mail template', err);
+         } else {
+             request.post({ url: 'https://api.mailgun.net/v3/sandbox22b92f927ef4426b859ac877a0260ad4.mailgun.org/messages',
+                            form: {
+                                from: 'Mifort Timesheet <mailgun@sandbox22b92f927ef4426b859ac877a0260ad4.mailgun.org>',
+                                to: to,
+                                subject: 'Invite to Mifort Timesheeet',
+                                html: data
+                            },
+                            auth: {
+                                'user': 'api',
+                                'pass': MAIL_API_KEY
+                            }
+                        },
+                        function(err, httpResponse, body){
+                            if(err) {
+                                log.error('Cannot send e-mail to %s', to, err);
+                            } else {
+                                log.debug('Invite sending complete: %s', to);
+                            }
+                        });
+         }
+     });
  };

@@ -179,7 +179,7 @@ app.use(errorHandler);
 log.info('Error handler is initialized!');
 
 //email send example
-//mail.sendEmail('andreivoitau@gmail.com', 'Bla bla bla');
+//mail.sendInvite('andreivoitau@gmail.com');
 
 //run application
 app.listen(app.get('port'), function() {

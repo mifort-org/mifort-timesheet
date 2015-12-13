@@ -24,6 +24,7 @@ var utils = require('./libs/utils');
 var registration = require('./libs/registration');
 var log = require('./libs/logger');
 var authorization = require('./libs/authorization');
+var mail = require('./libs/mail');
 
 //Rest API
 exports.restFindById = function(req, res, next) {
@@ -177,6 +178,7 @@ function createUsersByEmails(company) {
                             log.error('Cannot save user by email for new company.', {error: err});
                         } else {
                             log.info('User saved with e-mail %s', savedUser.email);
+                            mail.sendInvite(email);
                         }
                     });
                 }
