@@ -35,7 +35,6 @@ angular.module('mifortTimelog.company', ['ngRoute'])
 
         $scope.company = {
             name: null,
-            position: null,
             emails: []
         };
 

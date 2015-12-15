@@ -224,7 +224,7 @@ angular.module('mifortTimelog.timelog', ['ngRoute'])
 
         //date, userId, projectId, projectName, userName
         $scope.isWeekend = function(date) {
-            return new Date(date).getDay() == 0 || new Date(date).getDay() == 1;
+            return new Date(date).getDay() == 6 || new Date(date).getDay() == 0;
         };
 
         $scope.showPreviousPeriod = function(project) {
