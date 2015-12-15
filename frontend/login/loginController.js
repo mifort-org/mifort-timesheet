@@ -25,16 +25,16 @@ angular.module('mifortTimelog.login', ['ngRoute'])
         });
     }])
 
-    .controller('loginController', ['$scope', '$location', 'loginService', '$cookies', 'preferences', function ($scope, $location, loginService, $cookies, preferences) {
-        $scope.$parent.isLoggedIn = false;
+    .controller('loginController', ['$scope', '$location', 'loginService', '$cookies', 'preferences', '$rootScope', function ($scope, $location, loginService, $cookies, preferences, $rootScope) {
+        $rootScope.isLoggedIn = false;
+
         $scope.user = loginService.getUser().success(function (data) {
             if(data){
-                //$cookies.put('user', JSON.stringify(data));
                 preferences.set('user', data);
-                $scope.$parent.isLoggedIn = true;
+                $rootScope.isLoggedIn = true;
 
                 if(data.companyId){
-                    $scope.$parent.companyId = data.companyId;
+                    $rootScope.companyId = data.companyId;
                     $location.path('/timelog');
                 }
                 else{
@@ -44,7 +44,7 @@ angular.module('mifortTimelog.login', ['ngRoute'])
         });
 
         $scope.login = function () {
-            $scope.$parent.isLoggedIn = true;
+            $rootScope.isLoggedIn = true;
             $location.path('/Timelog');
         };
     }]);

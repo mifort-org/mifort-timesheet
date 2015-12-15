@@ -55,15 +55,15 @@ angular.module('mifortTimelog', [
         });
     }])
 
-    .controller('mifortTimelogController', ['$scope', '$location', '$cookies', '$http', 'preferences', 'companyService', 'topPanelService',
-        function($scope, $location, $cookies, $http, preferences, companyService, topPanelService) {
+    .controller('mifortTimelogController', ['$scope', '$location', '$cookies', '$http', 'preferences', 'companyService', 'topPanelService', '$rootScope',
+        function($scope, $location, $cookies, $http, preferences, companyService, topPanelService, $rootScope) {
             var user = preferences.get('user');
 
             if(user){
-                $scope.$parent.isLoggedIn = true;
+                $rootScope.isLoggedIn = true;
 
                 if(user.companyId){
-                    $scope.$parent.companyId = user.companyId;
+                    $rootScope.companyId = user.companyId;
                 }
             }
             else{
@@ -94,6 +94,10 @@ angular.module('mifortTimelog', [
             $scope.openLink = function(linkName) {
                 topPanelService.prepForBroadcast(linkName);
             };
+
+            $scope.$on('companyNameChanged', function(response, companyName) {
+                $scope.companyName = companyName;
+            })
         }])
 
     .factory('topPanelService', ['$location', '$rootScope', function($location, $rootScope) {

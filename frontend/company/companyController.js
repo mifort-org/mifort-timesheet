@@ -30,7 +30,7 @@ angular.module('mifortTimelog.company', ['ngRoute'])
         });
     }])
 
-    .controller('companyController', ['$scope', '$location', 'companyService', 'preferences', function ($scope, $location, companyService, preferences) {
+    .controller('companyController', ['$scope', '$location', 'companyService', 'preferences', '$rootScope', function ($scope, $location, companyService, preferences, $rootScope) {
         $scope.user = preferences.get('user');
 
         $scope.company = {
@@ -63,13 +63,14 @@ angular.module('mifortTimelog.company', ['ngRoute'])
             companyService.createCompany($scope.company).success(function (data) {
                 $scope.user.companyId = data._id;
                 preferences.set('user', $scope.user);
-                $scope.$parent.companyId = data._id;
+                $rootScope.companyId = data._id;
                 $location.path('/timesheet');
             });
         };
 
         $scope.saveCompany = function () {
-            companyService.saveCompany($scope.company).success(function () {
+            companyService.saveCompany($scope.company).success(function (data) {
+                $rootScope.$broadcast('companyNameChanged', data.name);
                 $location.path('/timesheet');
             });
         };
