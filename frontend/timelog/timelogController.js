@@ -97,7 +97,7 @@ angular.module('mifortTimelog.timelog', ['ngRoute'])
                 var timelogDayIndex = _.findIndex(period.timelog, {date: moment(new Date(day.date)).format("MM/DD/YYYY")});
 
                 //if current iterated log is not the first for this date to push
-                if(project.periods[periodIndex][index - 1] && project.periods[periodIndex][index - 1].date == day.date) {
+                if(project.periods[periodIndex].timelog[index - 1] && project.periods[periodIndex].timelog[index - 1].date == day.date) {
                     if(!period.timelog[timelogDayIndex]._id){
                         day.isFirstDayRecord = true;
                         period.timelog[timelogDayIndex] = day;
