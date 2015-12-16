@@ -178,11 +178,11 @@ angular.module('mifortTimelog.timelog', ['ngRoute'])
                                     return !log._id;
                                 });
 
-                            //if(noIdLog){
-                            //    angular.extend(periodTimelog, data.timelog);
-                            //}
+                            if(noIdLog){
+                                angular.extend(periodTimelog, data.timelog);
+                            }
 
-                            angular.extend(periodTimelog, data.timelog);
+                            //angular.extend(periodTimelog, data.timelog);
                         });
                     }, 500)
                 }
