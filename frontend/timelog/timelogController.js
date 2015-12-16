@@ -41,25 +41,13 @@ angular.module('mifortTimelog.timelog', ['ngRoute'])
                     if(!index || index && assignment.projectId != $scope.assignments[index-1].projectId){
                         timelogService.getProject(assignment.projectId).success(function(project) {
                             if(project && project.active) {
-                                project.userTimelogs = [];
-                                project.currentTimelogIndex = 0;
+                                project.currentPeriodIndex = 0;
                                 $scope.projects.push(project);
                             }
-                        }).then(function(data) {
-                            var currentProject = data.data;
+                        }).then(function() {
 
-                            if(currentProject && currentProject.active) {
-                                var startDate = currentProject.periods[0].start,
-                                    endDate = currentProject.periods[currentProject.periods.length - 1].end;
-
-                                timelogService.getTimelog(user._id, currentProject._id, startDate, endDate).success(function(projectTimelog) {
-                                    var projectUserTimelogs = currentProject.userTimelogs;
-
-                                    projectUserTimelogs.push.apply(projectUserTimelogs, projectTimelog.timelog);
-                                    if(index == $scope.assignments.length - 1){
-                                        $scope.init();
-                                    }
-                                });
+                            if(index == $scope.assignments.length - 1){
+                                $scope.init();
                             }
                         });
                     }
@@ -68,74 +56,72 @@ angular.module('mifortTimelog.timelog', ['ngRoute'])
         });
 
         $scope.init = function() {
-            $scope.projects.forEach(function(project, projectIndex) {
-                var startDate = moment(new Date(project.periods[0].start)),
-                    endDate = moment(new Date(project.periods[project.periods.length - 1].end)),
-                    daysToGenerate = endDate.diff(startDate, 'days'),
-                    today = moment().format("MM/DD/YYYY"),
-                    todayIndex = 0;
+            $scope.projects.forEach(function(project) {
+                var today = moment();
 
-                project.timelog = [];
-                project.splittedTimelog = [];
+                project.currentPeriodIndex = 0;
 
-                generateDaysTemplates(project, daysToGenerate, startDate);
-                applyProjectDefaultValues(project, startDate);
-                applyUserTimelogs(project);
-                splitPeriods(project);
-                initWatchers(project, projectIndex);
-
-               //scroll pages to current day
-                $scope.projects[projectIndex].splittedTimelog.forEach(function(period, periodIndex) {
-                    if(_.findIndex(period, {date: today}) >= 0){
-                        todayIndex = periodIndex;
+                project.periods.forEach(function(period, periodIndex) {
+                    if(today >= moment(new Date(period.start)) && today <= moment(new Date(period.end))){
+                        project.currentPeriodIndex = periodIndex;
                     }
                 });
 
-                project.currentTimelogIndex = todayIndex;
+                initPeriod(project, project.currentPeriodIndex);
             });
         };
 
-        function splitPeriods(project) {
-            project.splittedTimelog = [];
-            project.periods.forEach(function(period) {
-                var timelogPeriod,
-                    startIndex = _.findIndex(project.timelog, {date: moment(new Date(period.start)).format("MM/DD/YYYY")}),
-                    endIndex = _.findLastIndex(project.timelog, {date: moment(new Date(period.end)).format("MM/DD/YYYY")});
+        function initPeriod(project, periodIndex){
+            var startDate = project.periods[periodIndex].start,
+                endDate = project.periods[periodIndex].end;
 
-                timelogPeriod = project.timelog.slice(startIndex, endIndex + 1);
-                project.splittedTimelog.push(timelogPeriod);
+            project.periods[periodIndex].timelog = [];
+            project.periods[periodIndex].userTimelogs = [];
+
+            timelogService.getTimelog(user._id, project._id, startDate, endDate).success(function(dataTimelog) {
+                project.periods[periodIndex].userTimelogs.push.apply(project.periods[periodIndex].userTimelogs, dataTimelog.timelog);
+            }).then(function() {
+                var projectIndex = _.findIndex($scope.projects, {_id: project._id});
+
+                generateDaysTemplates(project, periodIndex);
+                applyProjectDefaultValues(project, periodIndex);
+                applyUserTimelogs(project, periodIndex);
+                initWatchers(projectIndex, periodIndex);
             });
         }
 
-        function applyUserTimelogs(project){
-            project.userTimelogs.forEach(function(day, index) {
-                var timelogDayIndex = _.findIndex(project.timelog, {date: moment(new Date(day.date)).format("MM/DD/YYYY")});
+        function applyUserTimelogs(project, periodIndex){
+            var period = project.periods[periodIndex];
+
+            project.periods[periodIndex].userTimelogs.forEach(function(day, index) {
+                var timelogDayIndex = _.findIndex(period.timelog, {date: moment(new Date(day.date)).format("MM/DD/YYYY")});
 
                 //if current iterated log is not the first for this date to push
-                if(project.userTimelogs[index - 1] && project.userTimelogs[index - 1].date == day.date) {
-                    if(!project.timelog[timelogDayIndex]._id){
+                if(project.periods[periodIndex][index - 1] && project.periods[periodIndex][index - 1].date == day.date) {
+                    if(!period.timelog[timelogDayIndex]._id){
                         day.isFirstDayRecord = true;
-                        project.timelog[timelogDayIndex] = day
+                        period.timelog[timelogDayIndex] = day;
                     }
                     else{
                         day.isFirstDayRecord = false;
-                        project.timelog.splice(timelogDayIndex + 1, 0, day);
+                        period.timelog.splice(timelogDayIndex + 1, 0, day);
                     }
                 }
                 else {
                     day.isFirstDayRecord = true;
-                    if(!_.findWhere(project.timelog, {date: day.date}).comment){
-                        _.findWhere(project.timelog, {date: day.date}).comment = project.timelog[timelogDayIndex].comment;
+                    if(!_.findWhere(period.timelog, {date: day.date}).comment){
+                        //_.findWhere(period.timelog, {date: day.date}).comment = period.timelog[timelogDayIndex].comment;
+                        _.findWhere(period.timelog, {date: day.date}).comment = day.comment;
                     }
-                    angular.extend(project.timelog[timelogDayIndex], day);
+                    angular.extend(period.timelog[timelogDayIndex], day);
                 }
             });
         }
 
-        function applyProjectDefaultValues(project){
+        function applyProjectDefaultValues(project, periodIndex){
             if(project.defaultValues) {
                 project.defaultValues.forEach(function(day) {
-                    var dayExisted = _.findWhere(project.timelog, {date: moment(new Date(day.date)).format("MM/DD/YYYY")});
+                    var dayExisted = _.findWhere(project.periods[periodIndex].timelog, {date: moment(new Date(day.date)).format("MM/DD/YYYY")});
                     if(dayExisted) {
                         angular.extend(dayExisted, day);
 
@@ -147,10 +133,15 @@ angular.module('mifortTimelog.timelog', ['ngRoute'])
             }
         }
 
-        function generateDaysTemplates(project, daysToGenerate, startDate){
+        function generateDaysTemplates(project, periodIndex){
+            var startDate = moment(new Date(project.periods[periodIndex].start)),
+                endDate = moment(new Date(project.periods[periodIndex].end)),
+                daysToGenerate = endDate.diff(startDate, 'days');
+
             for (var i = 0; i < daysToGenerate + 1; i++) {
                 var dayToPush;
 
+                //TODO: to template
                 project.template.workload = user.workload;
                 project.template.userId = user._id;
                 project.template.projectId = project._id;
@@ -161,82 +152,84 @@ angular.module('mifortTimelog.timelog', ['ngRoute'])
                 dayToPush.isFirstDayRecord = true;
                 dayToPush.userName = $scope.userName;
 
-                project.timelog.push(dayToPush);
+                project.periods[periodIndex].timelog.push(dayToPush);
             }
         }
 
-        function initWatchers(project, projectIndex){
-            project.splittedTimelog.forEach(function(period, index) {
-                var timer = null;
+        function initWatchers(projectIndex, periodIndex){
+            var timer = null;
 
-                $scope.$watch('projects[' + projectIndex + '].splittedTimelog[' + index +']', function(newValue, oldValue) {
-                    if(newValue != oldValue && newValue.length >= oldValue.length) {
-                        if(timer){
-                            $timeout.cancel(timer);
-                        }
+            $scope.$watch('projects[' + projectIndex + '].periods[' + periodIndex +'].timelog', function(newValue, oldValue) {
+                if(newValue != oldValue && newValue.length >= oldValue.length) {
+                    if(timer){
+                        $timeout.cancel(timer);
+                    }
 
-                        newValue.map(function(timelogDay) {
-                            delete timelogDay.color;
+                    newValue.map(function(timelogDay) {
+                        delete timelogDay.color;
 
-                            return timelogDay;
-                        });
+                        return timelogDay;
+                    });
 
-                        timer = $timeout(function() {
-                            timelogService.updateTimelog(user._id, newValue).success(function(data) {
-                                var noIdLog = _.find(project.splittedTimelog[index], function(log) {
+                    timer = $timeout(function() {
+                        timelogService.updateTimelog(user._id, newValue).success(function(data) {
+                            var periodTimelog = $scope.projects[projectIndex].periods[periodIndex].timelog,
+                                noIdLog = _.find(periodTimelog, function(log) {
                                     return !log._id;
                                 });
 
-                                if(noIdLog){
-                                    angular.extend(project.splittedTimelog[index], data.timelog);
-                                }
+                            //if(noIdLog){
+                            //    angular.extend(periodTimelog, data.timelog);
+                            //}
 
-                                angular.extend(project.timelog, data.timelog);
-                            });
-                        }, 500)
-                    }
-                }, true);
-            });
+                            angular.extend(periodTimelog, data.timelog);
+                        });
+                    }, 500)
+                }
+            }, true);
         }
 
-        $scope.addRow = function(log, project, currentTimelogIndex) {
+        $scope.addRow = function(log, project, periodIndex) {
             var newRow = angular.copy(project.template),
-                dayProjectIndex = _.findIndex(project.timelog, {date: log.date}),
-                dayPeriodIndex = _.findIndex(project.splittedTimelog[currentTimelogIndex], {date: log.date});
+                dayPeriodIndex = _.findIndex(project.periods[periodIndex].timelog, {date: log.date});
+
             newRow.date = log.date;
             newRow.userName = log.userName;
             newRow.isFirstDayRecord = false;
 
-            project.timelog.splice(dayProjectIndex + 1, 0, newRow);
-            project.splittedTimelog[currentTimelogIndex].splice(dayPeriodIndex + 1, 0, newRow);
+            project.periods[periodIndex].timelog.splice(dayPeriodIndex + 1, 0, newRow);
         };
 
-        $scope.removeRow = function(log, project, period) {
+        $scope.removeRow = function(log, project, periodIndex) {
             if(log._id) {
-                var dayProjectIndex = _.findIndex(project.timelog, {_id: log._id}),
-                    dayPeriodIndex = _.findIndex(project.splittedTimelog[period], {_id: log._id});
+                var dayPeriodIndex = _.findIndex(project.periods[periodIndex].timelog, {_id: log._id});
                 timelogService.removeTimelog(log);
 
-                project.splittedTimelog[period].splice(dayPeriodIndex, 1);
-                project.timelog.splice(dayProjectIndex, 1);
+                project.periods[periodIndex].timelog.splice(dayPeriodIndex, 1);
             }
         };
 
-        //date, userId, projectId, projectName, userName
         $scope.isWeekend = function(date) {
             return new Date(date).getDay() == 6 || new Date(date).getDay() == 0;
         };
 
         $scope.showPreviousPeriod = function(project) {
-            if(project.currentTimelogIndex){
-                project.currentTimelogIndex--;
+            if(project.currentPeriodIndex){
+                project.currentPeriodIndex--;
+
+                if(!project.periods[project.currentPeriodIndex].timelog){
+                    initPeriod(project, project.currentPeriodIndex);
+                }
             }
         };
 
         $scope.showNextPeriod = function(project) {
-            if(project.currentTimelogIndex < project.splittedTimelog.length - 1){
-                project.currentTimelogIndex++;
+            if(project.currentPeriodIndex < project.periods.length - 1){
+                project.currentPeriodIndex++;
+
+                if(!project.periods[project.currentPeriodIndex].timelog){
+                    initPeriod(project, project.currentPeriodIndex);
+                }
             }
         };
-
     }]);

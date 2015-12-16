@@ -13,7 +13,6 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-{{timelog}}
 <div class="timelog collapse-wrapper clearfix" ng-repeat="project in projects">
     <h2 ng-class="{'timelog-collapsed': isCollapsed}">
         <a href="" class="collapse-item" ng-class="{'collapsed': isCollapsed}" ng-click="isCollapsed = !isCollapsed">
@@ -22,11 +21,12 @@
     </h2>
 
     <div class="timelog-controls clearfix">
-        <button class="previous-period" ng-class="{'disabled' : project.currentTimelogIndex <= 0}" ng-click="showPreviousPeriod(project)"></button>
-        <button class="next-period" ng-class="{'disabled' : project.currentTimelogIndex >= project.splittedTimelog.length - 1}" ng-click="showNextPeriod(project)"></button>
+        <button class="previous-period" ng-class="{'disabled' : project.currentPeriodIndex <= 0}" ng-click="showPreviousPeriod(project)"></button>
+        <button class="next-period" ng-class="{'disabled' : project.currentPeriodIndex >= project.periods.length - 1}" ng-click="showNextPeriod(project)"></button>
     </div>
-<!--{{project.currentTimelogIndex}}||{{project.splittedTimelog.length}}-->
+
     <div collapse="isCollapsed">
+        <!--{{project.periods[project.currentPeriodIndex]}}-->
         <table class="table table-bordered timelog">
             <thead>
                 <tr>
@@ -37,17 +37,17 @@
             </thead>
 
             <tbody>
-                <tr ng-if="project.currentTimelogIndex >= 0"
-                    ng-repeat="log in project.splittedTimelog[project.currentTimelogIndex] track by $index"
+                <tr ng-if="project.currentPeriodIndex >= 0"
+                    ng-repeat="log in project.periods[project.currentPeriodIndex].timelog track by $index"
                     ng-class="{'weekend': isWeekend(log.date)}"
                     ng-style="{background: log.color}">
                     <td ng-class="log.isFirstDayRecord ? 'is-first-day-log' : 'is-not-first-day-log'">
                         <span class="timelog-data">
-                            <a href="" ng-if="log.isFirstDayRecord" class="add-timelog" ng-click="addRow(log, project, project.currentTimelogIndex)">+</a>
+                            <a href="" ng-if="log.isFirstDayRecord" class="add-timelog" ng-click="addRow(log, project, project.currentPeriodIndex)">+</a>
 
                             <span ng-if="log.isFirstDayRecord">{{log.date}}</span>
 
-                            <a href="" ng-if="!log.isFirstDayRecord" class="remove-timelog" ng-click="removeRow(log, project, project.currentTimelogIndex)">&#8211;</a>
+                            <a href="" ng-if="!log.isFirstDayRecord" class="remove-timelog" ng-click="removeRow(log, project, project.currentPeriodIndex)">&#8211;</a>
                         </span>
                     </td>
 
@@ -65,14 +65,10 @@
                     <td>
                         <input class="timelog-comment form-control" type="text" ng-model="log.comment"/>
                         <!--{{log._id}}-->
+                        <!--{{log}}-->
                     </td>
                 </tr>
             </tbody>
         </table>
     </div>
-    <!--<small>{{project.timelog}}</small>-->
-    <!--<small>{{project.splittedTimelog}}</small>-->
 </div>
-
-<!--<small>{{splittedTimelog.length}}</small>-->
-<!--<small>{{splittedTimelog}}</small>-->
