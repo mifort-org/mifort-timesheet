@@ -206,6 +206,10 @@ function convertFiltersToQuery(filters){
             }
         });
     }
+    //skip all empty timelogs
+    if(!query.time) {
+        query.time = {$gt: 0}
+    }
 
     return query;
 }
