@@ -262,6 +262,7 @@ exports.isArray = function(value) {
     return Array.isArray(value);
 };
 
+// should be refactored
 exports.timelogs = function(values) {
     if(Array.isArray(values)) {
         return values.every(function(val){
@@ -277,6 +278,9 @@ exports.timelogs = function(values) {
             if(val.role){
                 isValid = isValid
                     && (typeof val.role === 'string');
+            }
+            if(val.position) {
+                isValid = isValid && validator.isInt(val.position);
             }
             isValid = isValid
                 && validator.isMongoId(val.userId) //required && format

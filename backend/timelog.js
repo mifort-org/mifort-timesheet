@@ -12,7 +12,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  * @author Andrew Voitov
  */
 
@@ -24,7 +24,7 @@ var log = require('./libs/logger');
 exports.restSave = function(req, res, next) {
     var timelogCollection = db.timelogCollection();
     var batch = timelogCollection.initializeUnorderedBulkOp({useLegacyOps: true});
-    
+
     var ids = [];
     var timelogs = req.body.timelog;
 
@@ -58,7 +58,7 @@ exports.restDelete = function(req, res, next) {
             next(err);
         } else {
             res.status(204).json({ok: true});
-            log.debug('-REST result: Remove timelog. Timelog is removed. Id: %s', 
+            log.debug('-REST result: Remove timelog. Timelog is removed. Id: %s',
                 timelogId.toHexString());
         }
     });
@@ -70,7 +70,7 @@ exports.restGetByDates = function(req, res, next) {
     var userId = utils.getUserId(req);
     var projectId = utils.getProjectId(req);
 
-    log.debug('-REST call: Get timelogs by dates. Start date: %s, End date: %s, User Id: %s, Project Id: %s.', 
+    log.debug('-REST call: Get timelogs by dates. Start date: %s, End date: %s, User Id: %s, Project Id: %s.',
         start, end, userId.toHexString(), projectId.toHexString());
 
     var timelogCollection = db.timelogCollection();
@@ -81,9 +81,11 @@ exports.restGetByDates = function(req, res, next) {
                 $lte: end}
     };
 
-    timelogCollection.find(query, {sort: 'date'}).toArray(function(err, timelogs){
+    timelogCollection.find(query,
+                           {sort: [['date','asc'], ['position','acs']]})
+            .toArray(function(err, timelogs) {
         returnTimelogArray(err, res, timelogs, next);
-        log.debug('-REST result: Get timelogs by dates. User Id: %s, Timelog result size: %d.', 
+        log.debug('-REST result: Get timelogs by dates. User Id: %s, Timelog result size: %d.',
             userId.toHexString(), timelogs.length);
     });
 };
@@ -91,8 +93,10 @@ exports.restGetByDates = function(req, res, next) {
 //Private part
 function findAllByIds(ids, callback) {
     var timelogCollection = db.timelogCollection();
-    timelogCollection.find({_id:{ $in: ids}}, {sort: 'date'}).toArray(function(err, timelogs) {
-        callback(err, timelogs);
+    timelogCollection.find({_id:{ $in: ids}},
+                           {sort: [['date','asc'], ['position','acs']]})
+        .toArray(function(err, timelogs) {
+            callback(err, timelogs);
     });
 }
 
