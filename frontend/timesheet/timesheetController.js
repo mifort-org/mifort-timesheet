@@ -64,9 +64,6 @@ angular.module('mifortTimelog.timesheet', ['ngRoute'])
             for(var i = 0; i < daysToGenerate; i++){
                 var dayToPush = _.clone($scope.company.template);
                 dayToPush.date = moment(new Date(startDate)).add(i, 'days').format("MM/DD/YYYY");
-                if(dayToPush.date.getDay() == 6 || dayToPush.date.getDay() == 0){
-                    dayToPush.time = 0;
-                }
                 $scope.timesheet.push(dayToPush);
             }
 
