@@ -82,7 +82,7 @@ exports.restGetByDates = function(req, res, next) {
     };
 
     timelogCollection.find(query,
-                           {sort: [['date','asc'], ['position','acs']]})
+                           {sort: [['date','ascending'], ['position','ascending']]})
             .toArray(function(err, timelogs) {
         returnTimelogArray(err, res, timelogs, next);
         log.debug('-REST result: Get timelogs by dates. User Id: %s, Timelog result size: %d.',
@@ -94,7 +94,7 @@ exports.restGetByDates = function(req, res, next) {
 function findAllByIds(ids, callback) {
     var timelogCollection = db.timelogCollection();
     timelogCollection.find({_id:{ $in: ids}},
-                           {sort: [['date','asc'], ['position','acs']]})
+                           {sort: [['date','ascending'], ['position','ascending']]})
         .toArray(function(err, timelogs) {
             callback(err, timelogs);
     });
