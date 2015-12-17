@@ -153,7 +153,7 @@ angular.module('mifortTimelog')
                                 selector + ":before{border-bottom-color: " + hexagonColor + ";}" +
                                 "</style>");
                         });
-                    });
+                    }, 200);
                 }
 
                 paintHexagons();
