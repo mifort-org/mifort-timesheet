@@ -94,7 +94,9 @@ angular.module('mifortTimelog.timelog', ['ngRoute'])
             var period = project.periods[periodIndex];
 
             project.periods[periodIndex].userTimelogs.forEach(function(day, index) {
-                var timelogDayIndex = _.findIndex(period.timelog, {date: moment(new Date(day.date)).format("MM/DD/YYYY")});
+                var timelogDayIndex = _.findIndex(period.timelog, {date: moment(new Date(day.date)).format("MM/DD/YYYY")}),
+                    sameDateDays = _.where(period.timelog, {date: moment(new Date(day.date)).format("MM/DD/YYYY")}),
+                    lastDayWithSameDate = _.findIndex(period.timelog, {_id: sameDateDays[sameDateDays.length-1]._id});
 
                 //if current iterated log is not the first for this date to push
                 if(project.periods[periodIndex].timelog[index - 1] && project.periods[periodIndex].timelog[index - 1].date == day.date) {
@@ -105,7 +107,7 @@ angular.module('mifortTimelog.timelog', ['ngRoute'])
                     else{
                         day.isFirstDayRecord = false;
                         day.position = day.position ? day.position : period.timelog[timelogDayIndex].position + 1;
-                        period.timelog.splice(day.position, 0, day);
+                        period.timelog.splice(lastDayWithSameDate + 1, 0, day);
                     }
                 }
                 else {
