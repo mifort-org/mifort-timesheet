@@ -25,8 +25,8 @@ angular.module('mifortTimelog.timelog', ['ngRoute'])
         });
     }])
 
-    .controller('timelogController', ['$scope', '$filter', 'timelogService', 'timesheetService', 'preferences', 'loginService', '$timeout',
-        function($scope, $filter, timelogService, timesheetService, preferences, loginService, $timeout) {
+    .controller('timelogController', ['$scope', 'timelogService', 'timesheetService', 'preferences', 'loginService', '$timeout',
+        function($scope, timelogService, timesheetService, preferences, loginService, $timeout) {
         var user = preferences.get('user');
         $scope.projects = [];
         $scope.isCollapsed = false;
@@ -104,7 +104,8 @@ angular.module('mifortTimelog.timelog', ['ngRoute'])
                     }
                     else{
                         day.isFirstDayRecord = false;
-                        period.timelog.splice(timelogDayIndex + 1, 0, day);
+                        day.position = day.position ? day.position : period.timelog[timelogDayIndex].position + 1;
+                        period.timelog.splice(day.position, 0, day);
                     }
                 }
                 else {
@@ -146,6 +147,7 @@ angular.module('mifortTimelog.timelog', ['ngRoute'])
                 project.template.userId = user._id;
                 project.template.projectId = project._id;
                 project.template.projectName = project.name;
+                project.template.position = 0;
 
                 dayToPush = _.clone(project.template);
                 dayToPush.date = angular.copy(startDate).add(i, 'days').format("MM/DD/YYYY");
@@ -191,13 +193,25 @@ angular.module('mifortTimelog.timelog', ['ngRoute'])
 
         $scope.addRow = function(log, project, periodIndex) {
             var newRow = angular.copy(project.template),
-                dayPeriodIndex = _.findIndex(project.periods[periodIndex].timelog, {date: log.date});
+                currentPeriod = project.periods[periodIndex].timelog,
+                dayPeriodIndex = _.findIndex(currentPeriod, {date: log.date}),
+                sameDateDays = _.filter(currentPeriod, function(existedLog){
+                return existedLog.date == log.date;
+            }),
+                maxPosition = 0;
+
+            sameDateDays.forEach(function(sameDateDay) {
+                if(sameDateDay.position > maxPosition){
+                    maxPosition = sameDateDay.position;
+                }
+            });
 
             newRow.date = log.date;
             newRow.userName = log.userName;
             newRow.isFirstDayRecord = false;
+            newRow.position = maxPosition + 1;
 
-            project.periods[periodIndex].timelog.splice(dayPeriodIndex + 1, 0, newRow);
+            currentPeriod.splice(dayPeriodIndex + sameDateDays.length, 0, newRow);
         };
 
         $scope.removeRow = function(log, project, periodIndex) {
