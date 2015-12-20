@@ -51,6 +51,7 @@ exports.restCreateCompany = function(req, res, next) {
     company.template = defaultCompany.template;
     company.periods = defaultCompany.periods;
     company.dayTypes = defaultCompany.dayTypes;
+    company.defaultValues = defaultCompany.defaultValues;
     if(req.user) {
         company.ownerId = req.user._id;
     }
@@ -99,54 +100,28 @@ exports.restUpdateCompany = function(req, res, next) {
 //Public API
 exports.save = save;
 
+//dayTypes
+var Weekend = {
+    name: 'Weekend',
+    time: 0,
+    color: '#c5e9fb'
+};
+var Corporate = {
+    name: 'Corporate',
+    time: 0,
+    color: '#f3cce1'
+};
+var Holiday = {
+    name: 'Holiday',
+    time: 0,
+    color: '#fff9a1'
+};
+
 exports.generateDefaultCompany = function() {
-    var periods = [];
+    var periods = generateDefaultPeriods();
+    var defaultValues = generateDefaultValues(periods);
 
-    var firstPeriod = {
-        start: moment.utc().toDate(),
-        end: moment.utc().endOf('week').toDate()
-    };
-    periods.push(firstPeriod);
-
-    //generate 53 weeks (1 year)
-    var startDate = moment.utc(firstPeriod.end).add(1,'day').toDate();
-    var endDate = moment.utc(startDate).endOf('week').toDate();
-    for (var i = 0; i < 53; i++) {
-        periods.push({
-            start: startDate,
-            end: endDate
-        });
-        startDate = moment.utc(endDate).add(1,'day').toDate();
-        endDate = moment.utc(startDate).endOf('week').toDate();
-    };
-
-    var company = {
-        template : {
-            date: '',
-            role: '',
-            time: 8,
-            comment: ''
-        },
-        periods: periods,
-        dayTypes: [
-            {
-                name: 'Weekend',
-                time: 0,
-                color: '#c5e9fb'
-            },
-            {
-                name: 'Corporate',
-                time: 0,
-                color: '#f3cce1'
-            },
-            {
-                name: 'Holiday',
-                time: 0,
-                color: '#fff9a1'
-            }
-        ]
-    }
-
+    var company = constructCompany(periods, defaultValues);
     return company;
 };
 
@@ -197,4 +172,63 @@ function save(company, callback) {
             callback(err, company);
         }
     });
-};
+}
+
+function constructCompany(periods, defaultValues) {
+    return {
+        template : {
+            date: '',
+            role: '',
+            time: 8,
+            comment: ''
+        },
+        periods: periods,
+        dayTypes: [
+            Weekend, Corporate, Holiday
+        ],
+        defaultValues: defaultValues
+    };
+}
+
+function generateDefaultPeriods() {
+    var periods = [];
+
+    var firstPeriod = {
+        start: moment.utc().toDate(),
+        end: moment.utc().endOf('week').toDate()
+    };
+    periods.push(firstPeriod);
+
+    //generate 53 weeks (1 year)
+    var startDate = moment.utc(firstPeriod.end).add(1,'day').toDate();
+    var endDate = moment.utc(startDate).endOf('week').toDate();
+    for (var i = 0; i < 53; i++) {
+        periods.push({
+            start: startDate,
+            end: endDate
+        });
+        startDate = moment.utc(endDate).add(1,'day').toDate();
+        endDate = moment.utc(startDate).endOf('week').toDate();
+    };
+
+    return periods;
+}
+
+function generateDefaultValues(periods) {
+    var defaultValues = [];
+
+    periods.forEach(function(period) {
+        if(isWeekend(period.start)) {
+            defaultValues.push({date: period.start, dayType: Weekend.name});
+        }
+        if(isWeekend(period.end)) {
+            defaultValues.push({date: period.end, dayType: Weekend.name});
+        }
+    });
+
+    return defaultValues;
+}
+
+function isWeekend(date) {
+    return moment.utc(date).day() % 6 == 0;
+}
