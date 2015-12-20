@@ -28,6 +28,7 @@ var timelog = require('./backend/timelog');
 var user = require('./backend/user');
 var company = require('./backend/company');
 var report = require('./backend/report');
+var admin = require('./backend/admin')
 
 var authentication = require('./backend/libs/authentication');
 var authorization = require('./backend/libs/authorization');
@@ -172,6 +173,13 @@ app.post('/report/common/download',
 app.get('/report/download/:fileName',
         validators.validateGetDownloadReport,
         report.restDownloadFile);
+
+//Admin part
+app.get('/admin/log/:fileName',
+        validators.validateDownloadLogs,
+        authorization.authorizeDownloadLogs,
+        admin.restDownloadLog);
+
 log.info('REST API is ready!');
 
 // default error handler

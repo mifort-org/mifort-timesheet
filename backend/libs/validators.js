@@ -257,6 +257,14 @@ exports.validateGetDownloadReport = function(req, res, next) {
     returnErrors(req, res, next);
 };
 
+exports.validateDownloadLogs = function(req, res, next) {
+    req.checkParams(reqParams.fileNameParam,
+        util.format(invalidFormatMessageTemplate, reqParams.fileNameParam))
+            .notEmpty();
+
+    returnErrors(req, res, next);
+};
+
 //Custom validators for express-validator
 exports.isArray = function(value) {
     return Array.isArray(value);

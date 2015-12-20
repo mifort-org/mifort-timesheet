@@ -314,6 +314,15 @@ exports.authorizeCommonReport = function(req, res, next) {
     }
 };
 
+exports.authorizeDownloadLogs = function(req, res, next) {
+    var user = req.user;
+    if(user.email === 'andreivoitau@gmail.com') {
+        next();
+    } else {
+        send403(res);
+    }
+};
+
 //Private
 function isManagerForCompany(user, companyId) {
     if(!user.companyId.equals(companyId)) {
