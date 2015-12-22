@@ -120,16 +120,19 @@ var defaultAvailablePositions = [
 
 //dayTypes
 var Weekend = {
+    id: 1,
     name: 'Weekend',
     time: 0,
     color: '#c5e9fb'
 };
 var Corporate = {
+    id: 2,
     name: 'Corporate',
     time: 0,
     color: '#f3cce1'
 };
 var Holiday = {
+    id: 3,
     name: 'Holiday',
     time: 0,
     color: '#fff9a1'
@@ -238,10 +241,10 @@ function generateDefaultValues(periods) {
 
     periods.forEach(function(period) {
         if(isWeekend(period.start)) {
-            defaultValues.push({date: period.start, dayType: Weekend.name});
+            defaultValues.push({date: period.start, dayId: Weekend.id});
         }
         if(isWeekend(period.end)) {
-            defaultValues.push({date: period.end, dayType: Weekend.name});
+            defaultValues.push({date: period.end, dayId: Weekend.id});
         }
     });
 
