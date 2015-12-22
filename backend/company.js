@@ -52,6 +52,7 @@ exports.restCreateCompany = function(req, res, next) {
     company.periods = defaultCompany.periods;
     company.dayTypes = defaultCompany.dayTypes;
     company.defaultValues = defaultCompany.defaultValues;
+    company.availablePositions = defaultCompany.availablePositions;
     if(req.user) {
         company.ownerId = req.user._id;
     }
@@ -84,7 +85,8 @@ exports.restUpdateCompany = function(req, res, next) {
                     {$set: {template: savedCompany.template,
                             periods: savedCompany.periods,
                             defaultValues: savedCompany.defaultValues,
-                            dayTypes: savedCompany.dayTypes}},
+                            dayTypes: savedCompany.dayTypes,
+                            availablePositions: savedCompany.availablePositions}},
                     {multi: true},
                 function(err, result){
                     log.info('Company projects are updated!')
@@ -99,6 +101,22 @@ exports.restUpdateCompany = function(req, res, next) {
 
 //Public API
 exports.save = save;
+
+//Default roles
+var defaultAvailablePositions = [
+    'СEO',
+    'CTO',
+    'Designer',
+    'Developer',
+    'Junior Developer',
+    'Junior QA',
+    'Manager',
+    'QA',
+    'Senior Developer',
+    'Senior QA',
+    'Teamlead',
+    'UX'
+];
 
 //dayTypes
 var Weekend = {
@@ -186,7 +204,8 @@ function constructCompany(periods, defaultValues) {
         dayTypes: [
             Weekend, Corporate, Holiday
         ],
-        defaultValues: defaultValues
+        defaultValues: defaultValues,
+        availablePositions: defaultAvailablePositions
     };
 }
 

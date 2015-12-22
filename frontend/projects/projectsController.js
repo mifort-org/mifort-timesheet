@@ -38,7 +38,7 @@ angular.module('mifortTimelog.projects', ['ngRoute'])
             'QA',
             'Teamlead',
             'Manager',
-            'SEO',
+            'СEO',
             'CTO',
             'Junior Developer',
             'Senior Developer',
