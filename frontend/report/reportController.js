@@ -27,7 +27,8 @@ angular.module('mifortTimelog.report', ['ngRoute'])
 
     .controller('reportController', ['$scope', 'reportService', 'preferences', 'uiGridConstants', 'topPanelService', function($scope, reportService, preferences, uiGridConstants, topPanelService) {
         var companyId = preferences.get('user').companyId,
-            headerHeight = 38;
+            headerHeight = 38,
+            maxVisiblePages = 5;
 
         $scope.ranges = {
             'Today': [moment(), moment()],
@@ -226,7 +227,7 @@ angular.module('mifortTimelog.report', ['ngRoute'])
                 $scope.downloadCsv();
             }
         });
-        //
+
         //$scope.dateFilterChanged = function(dates) {
         //    var dateFilter = {
         //        "field": "date",
@@ -236,5 +237,31 @@ angular.module('mifortTimelog.report', ['ngRoute'])
         //
         //    $scope.reportSettings.filters.push(dateFilter);
         //    $scope.getReport();
+        //}
+
+        $scope.showOriginalPage = function(pageNumber) {
+            if($scope.totalPages > maxVisiblePages){
+                if($scope.reportSettings.page + 2 >= pageNumber &&
+                    $scope.reportSettings.page - 2 <= pageNumber){
+                    return true;
+                }
+                else if(($scope.reportSettings.page < 3 && pageNumber <= maxVisiblePages) ||
+                        ($scope.reportSettings.page + 1 >= $scope.totalPages && pageNumber + 4 >= $scope.totalPages)){
+                    return true;
+                }
+            }
+        };
+
+        //$scope.showFirstDots = function(pageNumber) {
+        //    if($scope.totalPages > maxVisiblePages &&
+        //      ($scope.reportSettings.page > 4 || $scope.reportSettings.page - 3 > 0)){
+        //        return true;
+        //    }
+        //};
+        //
+        //$scope.showLastDots = function(pageNumber) {
+        //    if($scope.totalPages > maxVisiblePages && $scope.reportSettings.page <= 5){
+        //        return true;
+        //    }
         //}
     }]);

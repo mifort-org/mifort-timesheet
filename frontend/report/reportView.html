@@ -14,27 +14,41 @@
   limitations under the License.
 -->
 
-<div class="report-controls">
-    <label for="perPage" class="per-page-label">Show</label>
-    <select id="perPage"
-            ng-options="pageSize as pageSize for pageSize in perPage"
-            ng-model="reportSettings.pageSize"
-            class="form-control per-page"
-            ng-change="perPageChanged()">
-    </select>
-    <span class="per-page-after">on page</span>
+<div class="report-controls clearfix">
+    <div class="per-page-wrapper">
+        <label for="per-page" class="per-page-label">Show</label>
+        <select id="per-page"
+                ng-options="pageSize as pageSize for pageSize in perPage"
+                ng-model="reportSettings.pageSize"
+                class="form-control per-page"
+                ng-change="perPageChanged()">
+        </select>
+        <span class="per-page-after">on page</span>
+    </div>
 
-    <span>{{reportSettings.pageSize * (reportSettings.page - 1) + 1}} - {{reportSettings.pageSize * reportSettings.page}} of {{totalCount}}</span>
+    <div class="pagination">
+        <span class="page-range">{{reportSettings.pageSize * (reportSettings.page - 1) + 1}} - {{reportSettings.pageSize * reportSettings.page}} of {{totalCount}}</span>
 
-    <a href="" class="next-page" ng-class="{'disabled': reportSettings.page == 1}" ng-click="prevPage()">Prev</a>
+        <a href="" class="next-page" ng-class="{'disabled': reportSettings.page == 1}" ng-click="prevPage()">Prev</a>
 
-    <ul>
-        <li ng-repeat="page in range(totalPages) track by $index">
-            <a href="" ng-class="{'active': reportSettings.page ==  $index + 1}" ng-click="openPage($index + 1)">{{$index + 1}}</a>
-        </li>
-    </ul>
+        <ul>
+            <li ng-if="showFirstDots()">
+                <a href="" ng-class="{'active': reportSettings.page ==  1}" ng-click="openPage(1)">{{1}}</a>
+            </li>
+            <li class="pagination-dots" ng-if="showFirstDots()">...</li>
 
-    <a href="" class="prev-page" ng-class="{'disabled': reportSettings.page >= totalCount/reportSettings.pageSize}" ng-click="nextPage()">Next</a>
+            <li ng-repeat="page in range(totalPages) track by $index" ng-show="showOriginalPage($index + 1)">
+                <a href="" ng-class="{'active': reportSettings.page ==  $index + 1}" ng-click="openPage($index + 1)">{{$index + 1}}</a>
+            </li>
+
+            <li class="pagination-dots" ng-if="showLastDots()">...</li>
+            <li ng-if="showLastDots()">
+                <a href="" ng-class="{'active': reportSettings.page ==  totalPages}" ng-click="openPage(totalPages)">{{totalPages}}</a>
+            </li>
+        </ul>
+
+        <a href="" class="prev-page" ng-class="{'disabled': reportSettings.page >= totalCount/reportSettings.pageSize}" ng-click="nextPage()">Next</a>
+    </div>
 </div>
 
 <div class="report-wrapper">
@@ -52,7 +66,7 @@
     <hr/>
 
     <div ng-repeat="filterValue in dynamicPopover.projectFilter.value | filter:{isChecked : true}">
-        <input type="checkbox" ng-model="filterValue.isChecked" />
+        <input type="checkbox" ng-model="filterValue.isChecked"/>
 
         {{filterValue.name.role || filterValue.name}}
     </div>
@@ -60,7 +74,7 @@
     <hr/>
 
     <div ng-repeat="filterValue in dynamicPopover.projectFilter.value | filter:filtersFilter | filter:{isChecked : false}">
-        <input type="checkbox" ng-model="filterValue.isChecked" />
+        <input type="checkbox" ng-model="filterValue.isChecked"/>
 
         {{filterValue.name.role || filterValue.name}}
     </div>

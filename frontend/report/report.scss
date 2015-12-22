@@ -50,20 +50,6 @@
     }
 }
 
-.per-page-label{
-    display: inline-block;
-}
-
-.per-page{
-    display: inline-block;
-    width: 80px;
-    margin: 0 5px;
-}
-
-.per-page-after{
-    margin-right: 30px;
-}
-
 /* UI Grid styles replacement*/
 .ui-grid{
     font-weight: normal;
@@ -228,4 +214,85 @@
 
 .no-data{
     text-align: center;
+}
+
+.report-controls{
+    background: #fff;
+    padding: 0 27px;
+    margin-bottom: 30px;
+    font-size: 1.4rem;
+
+    ul,
+    li{
+        display: inline-block;
+    }
+
+    a{
+        display: inline-block;
+        padding: 4px 8px;
+        margin: 0 2px;
+        text-align: center;
+        border-radius: 2px;
+        border: 1px transparent solid;
+        vertical-align: middle;
+        color: #000;
+        text-decoration: none;
+
+        &.next-page,
+        &.prev-page{
+            padding: 4px 12px;
+            border-color: #dedede;
+        }
+
+        &:hover{
+            border-color: #666;
+        }
+
+        &.active{
+            border-color: #dedede;
+        }
+
+        &.disabled{
+            color: #dedede;
+            cursor: default;
+            &:hover{
+                border-color: #dedede;
+            }
+        }
+    }
+
+    .pagination-dots{
+        padding: 4px 2px;
+        text-align: center;
+    }
+}
+
+.pagination{
+    float: right;
+    text-align: right;
+}
+
+.per-page-wrapper{
+    display: inline-block;
+    padding: 13px 0;
+
+    .per-page-label{
+        display: inline-block;
+    }
+
+    .per-page{
+        display: inline-block;
+        width: 80px;
+        margin: 0 5px;
+    }
+
+    .per-page-after{
+        margin-right: 10px;
+    }
+}
+
+.page-range{
+    color: #999;
+    font-weight: 100;
+    padding-right: 20px;
 }
