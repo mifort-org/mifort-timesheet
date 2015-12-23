@@ -12,7 +12,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  * @author Andrew Voitov
  */
 
@@ -28,7 +28,7 @@ exports.getStartDate = function(req) {
 
 exports.getEndDate = function(req) {
     return getDateParam(req, reqParams.endDateParam);
-}; 
+};
 
 exports.getProjectId = function(req) {
     return getObjectIdParam(req, reqParams.projectIdParam)
@@ -61,7 +61,7 @@ exports.jsonParse = function(key, value) {
             return moment(value, dateFormat).toDate();
         }
         var isIdField = key === '_id' //maybe should be some prefix/postfix ???
-                        || key === 'userId' 
+                        || key === 'userId'
                         || key === 'projectId'
                         || key === 'companyId';
         if(isIdField && ObjectID.isValid(value)) {
@@ -77,7 +77,7 @@ exports.jsonStringify = function(key, value) {
         || keyName === 'start'
         || keyName === 'end';
     if (isDateField && !isNaN(Date.parse(value))) {
-        return moment(Date.parse(value)).format(dateFormat);
+        return moment.utc(Date.parse(value)).format(dateFormat);
     }
     return value;
 };
