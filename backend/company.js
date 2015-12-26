@@ -117,6 +117,7 @@ var defaultAvailablePositions = [
     'Teamlead',
     'UX'
 ];
+exports.defaultPositions = defaultAvailablePositions;
 
 //dayTypes
 var Weekend = {
