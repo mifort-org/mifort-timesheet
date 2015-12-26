@@ -83,7 +83,7 @@
                         ng-repeat="day in week track by $index"
                         class="timesheet-day"
                         ng-class="{'period-start': day.isPeriodStartDate, 'period-end': day.isPeriodEndDate, 'disabled-day': day.disabled}"
-                        style="background: {{day.color}} !important"></td>
+                        style="background: {{getDayColor(day.dayId)}} !important"></td>
                 </tr>
                 </tbody>
             </table>
