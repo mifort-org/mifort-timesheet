@@ -35,22 +35,26 @@ angular.module('mifortTimelog.timelog', ['ngRoute'])
 
         loginService.getUser().success(function (user) {
             if(user){
+                var projectAssignments = [];
                 $scope.assignments = user.assignments;
 
-                $scope.assignments.forEach(function(assignment, index) {
-                    if(!index || index && assignment.projectId != $scope.assignments[index-1].projectId){
-                        timelogService.getProject(assignment.projectId).success(function(project) {
-                            if(project && project.active) {
-                                project.currentPeriodIndex = 0;
-                                $scope.projects.push(project);
-                            }
-                        }).then(function() {
+                user.assignments.forEach(function(assignment) {
+                    projectAssignments.push(assignment.projectId);
+                });
+                projectAssignments = _.uniq(projectAssignments);
 
-                            if(index == $scope.assignments.length - 1){
-                                $scope.init();
-                            }
-                        });
-                    }
+                //get timelogs
+                projectAssignments.forEach(function(assignment, index) {
+                    timelogService.getProject(assignment).success(function(project) {
+                        if(project && project.active) {
+                            project.currentPeriodIndex = 0;
+                            $scope.projects.push(project);
+                        }
+                    }).then(function() {
+                        if(index == projectAssignments.length - 1){
+                            $scope.init();
+                        }
+                    });
                 });
             }
         });
