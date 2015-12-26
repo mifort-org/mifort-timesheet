@@ -222,14 +222,18 @@
     margin-bottom: 30px;
     font-size: 1.4rem;
 
-    ul,
+    ul{
+        float: right;
+    }
+
     li{
-        display: inline-block;
+        float: left;
     }
 
     a{
         display: inline-block;
-        padding: 4px 8px;
+        width: 25px;
+        padding: 4px 0;
         margin: 0 2px;
         text-align: center;
         border-radius: 2px;
@@ -240,6 +244,8 @@
 
         &.next-page,
         &.prev-page{
+            float: right;
+            width: auto;
             padding: 4px 12px;
             border-color: #dedede;
         }

@@ -240,28 +240,39 @@ angular.module('mifortTimelog.report', ['ngRoute'])
         //}
 
         $scope.showOriginalPage = function(pageNumber) {
-            if($scope.totalPages > maxVisiblePages){
-                if($scope.reportSettings.page + 2 >= pageNumber &&
-                    $scope.reportSettings.page - 2 <= pageNumber){
-                    return true;
-                }
-                else if(($scope.reportSettings.page < 3 && pageNumber <= maxVisiblePages) ||
-                        ($scope.reportSettings.page + 1 >= $scope.totalPages && pageNumber + 4 >= $scope.totalPages)){
-                    return true;
-                }
+            if($scope.reportSettings.page + 2 >= pageNumber &&
+                $scope.reportSettings.page - 2 <= pageNumber){
+                return true;
+            }
+            else if(($scope.reportSettings.page < 3 && pageNumber <= maxVisiblePages) ||
+                    ($scope.reportSettings.page + 1 >= $scope.totalPages && pageNumber + 4 >= $scope.totalPages)){
+                return true;
             }
         };
 
-        //$scope.showFirstDots = function(pageNumber) {
-        //    if($scope.totalPages > maxVisiblePages &&
-        //      ($scope.reportSettings.page > 4 || $scope.reportSettings.page - 3 > 0)){
-        //        return true;
-        //    }
-        //};
-        //
-        //$scope.showLastDots = function(pageNumber) {
-        //    if($scope.totalPages > maxVisiblePages && $scope.reportSettings.page <= 5){
-        //        return true;
-        //    }
-        //}
+        $scope.showFirstPage = function() {
+            if($scope.totalPages > maxVisiblePages &&
+              ($scope.reportSettings.page > 4 || $scope.reportSettings.page - 3 > 0)){
+                return true;
+            }
+        };
+
+        $scope.showFirstDots = function() {
+            if($scope.totalPages > maxVisiblePages &&
+                ($scope.reportSettings.page > 4)){
+                return true;
+            }
+        };
+
+        $scope.showLastPage = function() {
+            if($scope.totalPages > maxVisiblePages && $scope.reportSettings.page + 3 <= $scope.totalPages){
+                return true;
+            }
+        };
+
+        $scope.showLastDots = function() {
+            if($scope.reportSettings.page + 4 <= $scope.totalPages){
+                return true;
+            }
+        };
     }]);

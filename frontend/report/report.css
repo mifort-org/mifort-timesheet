@@ -158,12 +158,14 @@
   padding: 0 27px;
   margin-bottom: 30px;
   font-size: 1.4rem; }
-  .report-controls ul,
+  .report-controls ul {
+    float: right; }
   .report-controls li {
-    display: inline-block; }
+    float: left; }
   .report-controls a {
     display: inline-block;
-    padding: 4px 8px;
+    width: 25px;
+    padding: 4px 0;
     margin: 0 2px;
     text-align: center;
     border-radius: 2px;
@@ -172,6 +174,8 @@
     color: #000;
     text-decoration: none; }
     .report-controls a.next-page, .report-controls a.prev-page {
+      float: right;
+      width: auto;
       padding: 4px 12px;
       border-color: #dedede; }
     .report-controls a:hover {
