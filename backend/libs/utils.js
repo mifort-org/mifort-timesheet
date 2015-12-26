@@ -57,8 +57,8 @@ exports.jsonParse = function(key, value) {
                           || key === 'start'
                           || key === 'end';
         if (isDateField
-                && moment(value, dateFormat).isValid()) {
-            return moment(value, dateFormat).toDate();
+                && moment.utc(value, dateFormat).isValid()) {
+            return moment.utc(value, dateFormat).toDate();
         }
         var isIdField = key === '_id' //maybe should be some prefix/postfix ???
                         || key === 'userId'

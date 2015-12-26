@@ -24,6 +24,7 @@ var log = require('./libs/logger');
 var utils = require('./libs/utils');
 
 var projects = require('./project');
+var company = require('./company');
 
 //Rest API
 exports.restCommonReport = function(req, res, next) {
@@ -145,50 +146,23 @@ exports.restGetFilterValues = function(req, res, next) {
     var companyId = utils.getCompanyId(req);
     log.debug('-REST call: Get filter values. Company id: %s', companyId.toHexString());
 
-    var timelogCollection = db.timelogCollection();
     var filterValues = [];
-
-    projects.findProjectIdsByCompanyId(companyId, function(err, projectIds) {
-        if(err) {
-            next(err);
-            return;
-        }
-
-        var projectIdArray = projectIds.map(function(object) {
-            return object._id;
-        });
-        timelogCollection.distinct('userName', {projectId : {$in: projectIdArray}},
-            function(err, userNames){
-                if(err) {
-                    next(err);
-                    return;
-                }
-                filterValues.push({field:'userName', value: userNames});
-
-                timelogCollection.distinct('projectName', {projectId : {$in: projectIdArray}},
-                    function(err, projectNames){
-                        if(err) {
-                            next(err);
-                            return;
+    fillUserNameValues(companyId, filterValues, next,
+        function() {
+            fillProjectNameValues(companyId, filterValues, next,
+                function() {
+                    fillRoleValues(companyId, filterValues,
+                        function() {
+                            res.json(filterValues);
+                            log.debug('-REST result: Report filters returned. Company id: %s',
+                                companyId.toHexString());
                         }
-                        filterValues.push({field:'projectName', value: projectNames});
-
-                        timelogCollection.distinct('role', {projectId : {$in: projectIdArray}},
-                            function(err, roles){
-                                if(err) {
-                                    next(err);
-                                    return;
-                                }
-                                filterValues.push({field:'role', value: roles});
-                                res.json(filterValues);
-                                log.debug('-REST result: Report filters returned. Company id: %s',
-                                    companyId.toHexString());
-                            });
-                    });
-            });
-    });
-
-};
+                    );
+                }
+            );
+        }
+    );
+}
 
 //Private
 function convertFiltersToQuery(filters){
@@ -233,4 +207,45 @@ function filterTimelog(query, sortObj, page, pageSize, res, callback) {
             res.json(timelogs);
             callback();
         });
+}
+
+function fillUserNameValues(companyId, filterValues, next, callback) {
+    var users = db.userCollection();
+    users.find({companyId: companyId},
+               {displayName: 1})
+        .sort({displayName: 1})
+        .toArray(function(err, userNames) {
+            if(!err) {
+                var displayNames = userNames.map(function(user){
+                    return user.displayName;
+                });
+                filterValues.push({field:'userName', value: displayNames});
+                callback();
+            } else {
+                next(err);
+            }
+        });
+}
+
+function fillProjectNameValues(companyId, filterValues, next, callback) {
+    var projects = db.projectCollection();
+    projects.find({companyId: companyId},
+                  {name: 1})
+            .sort({name: 1})
+        .toArray(function(err, projectDtos){
+            if(!err) {
+                var projectNames = projectDtos.map(function(projectDto){
+                    return projectDto.name;
+                });
+                filterValues.push({field:'projectName', value: projectNames});
+                callback();
+            } else {
+                next(err);
+            }
+        });
+}
+
+function fillRoleValues(companyId, filterValues, callback) {
+    filterValues.push({field:'role', value: company.defaultPositions});
+    callback();
 }
