@@ -49,6 +49,15 @@ angular.module('mifortTimelog')
                         scope.$apply();
                     }
                 });
+
+                scope.getDayTime = function(day) {
+                    if(!day.dayId){
+                        return day.time;
+                    }
+                    else{
+                        return _.findWhere(scope.company.dayTypes, {id: day.dayId}).time;
+                    }
+                }
             },
             templateUrl: 'components/tableCell/tableCell.html'
         };

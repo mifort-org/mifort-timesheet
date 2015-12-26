@@ -95,29 +95,37 @@ angular.module('mifortTimelog.timelog', ['ngRoute'])
 
             project.periods[periodIndex].userTimelogs.forEach(function(day, index) {
                 var timelogDayIndex = _.findIndex(period.timelog, {date: moment(new Date(day.date)).format("MM/DD/YYYY")}),
-                    sameDateDays = _.where(period.timelog, {date: moment(new Date(day.date)).format("MM/DD/YYYY")}),
+                    sameDateDays,
+                    lastDayWithSameDate;
+
+                if(timelogDayIndex != -1){
+                    sameDateDays = _.where(period.timelog, {date: moment(new Date(day.date)).format("MM/DD/YYYY")});
                     lastDayWithSameDate = _.findIndex(period.timelog, {_id: sameDateDays[sameDateDays.length-1]._id});
 
-                //if current iterated log is not the first for this date to push
-                if(project.periods[periodIndex].timelog[index - 1] && project.periods[periodIndex].timelog[index - 1].date == day.date) {
-                    if(!period.timelog[timelogDayIndex]._id){
+                    delete day.color;
+
+                    //if current iterated log is not the first for this date to push
+                    if(project.periods[periodIndex].timelog[index - 1] && project.periods[periodIndex].timelog[index - 1].date == day.date) {
+                        if(!period.timelog[timelogDayIndex]._id){
+                            day.isFirstDayRecord = true;
+                            period.timelog[timelogDayIndex] = day;
+                        }
+                        else{
+                            day.isFirstDayRecord = false;
+                            day.position = day.position ? day.position : period.timelog[timelogDayIndex].position + 1;
+                            period.timelog.splice(lastDayWithSameDate + 1, 0, day);
+                        }
+                    }
+                    else {
                         day.isFirstDayRecord = true;
-                        period.timelog[timelogDayIndex] = day;
-                    }
-                    else{
-                        day.isFirstDayRecord = false;
-                        day.position = day.position ? day.position : period.timelog[timelogDayIndex].position + 1;
-                        period.timelog.splice(lastDayWithSameDate + 1, 0, day);
+                        if(!_.findWhere(period.timelog, {date: day.date}).comment){
+                            //_.findWhere(period.timelog, {date: day.date}).comment = period.timelog[timelogDayIndex].comment;
+                            _.findWhere(period.timelog, {date: day.date}).comment = day.comment;
+                        }
+                        angular.extend(period.timelog[timelogDayIndex], day);
                     }
                 }
-                else {
-                    day.isFirstDayRecord = true;
-                    if(!_.findWhere(period.timelog, {date: day.date}).comment){
-                        //_.findWhere(period.timelog, {date: day.date}).comment = period.timelog[timelogDayIndex].comment;
-                        _.findWhere(period.timelog, {date: day.date}).comment = day.comment;
-                    }
-                    angular.extend(period.timelog[timelogDayIndex], day);
-                }
+
             });
         }
 
@@ -125,8 +133,9 @@ angular.module('mifortTimelog.timelog', ['ngRoute'])
             if(project.defaultValues) {
                 project.defaultValues.forEach(function(day) {
                     var dayExisted = _.findWhere(project.periods[periodIndex].timelog, {date: moment(new Date(day.date)).format("MM/DD/YYYY")});
-                    if(dayExisted) {
-                        angular.extend(dayExisted, day);
+
+                    if(dayExisted && day.dayId) {
+                        dayExisted.color = _.findWhere(project.dayTypes, {id: day.dayId}).color;
 
                         if(!dayExisted.comment){
                             dayExisted.comment = day.comment;
@@ -170,12 +179,6 @@ angular.module('mifortTimelog.timelog', ['ngRoute'])
                     if(timer){
                         $timeout.cancel(timer);
                     }
-
-                    timelogToSave.map(function(timelogDay) {
-                        delete timelogDay.color;
-
-                        return timelogDay;
-                    });
 
                     timer = $timeout(function() {
                         timelogService.updateTimelog(user._id, timelogToSave).success(function(data) {
@@ -223,10 +226,6 @@ angular.module('mifortTimelog.timelog', ['ngRoute'])
 
                 project.periods[periodIndex].timelog.splice(dayPeriodIndex, 1);
             }
-        };
-
-        $scope.isWeekend = function(date) {
-            return new Date(date).getDay() == 6 || new Date(date).getDay() == 0;
         };
 
         $scope.showPreviousPeriod = function(project) {

@@ -15,7 +15,7 @@
 -->
 
 <div ng-if="day.date" class="timesheet-data" ng-class="{'disabled-day-data': day.disabled}">
-    <span class="timesheet-time">{{day.time}}</span>
+    <span class="timesheet-time" ng-bind="getDayTime(day)"></span>
 
     <span class="timesheet-hours-label">hours</span>
 </div>
@@ -32,5 +32,5 @@
    data-toggle="popover">
     {{::day.date.slice(3, 5)}}
 </a>
-
+<!--{{day.dayId}}-->
 <div class="end-splitter"></div>

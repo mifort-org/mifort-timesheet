@@ -39,7 +39,6 @@
             <tbody>
                 <tr ng-if="project.currentPeriodIndex >= 0"
                     ng-repeat="log in project.periods[project.currentPeriodIndex].timelog track by $index"
-                    ng-class="{'weekend': isWeekend(log.date)}"
                     ng-style="{background: log.color}">
                     <td ng-class="log.isFirstDayRecord ? 'is-first-day-log' : 'is-not-first-day-log'">
                         <span class="timelog-data">

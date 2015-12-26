@@ -88,7 +88,10 @@ angular.module('mifortTimelog.timesheet', ['ngRoute'])
         function applyDefaultValues() {
             if($scope.company.defaultValues){
                 $scope.company.defaultValues.forEach(function(day) {
-                    var dayExisted = _.findWhere($scope.timesheet, {date: moment(new Date(day.date)).format('MM/DD/YYYY')});
+                    if(day && day.date){
+                        var dayExisted = _.findWhere($scope.timesheet, {date: moment(new Date(day.date)).format('MM/DD/YYYY')});
+                    }
+
                     if(dayExisted){
                         angular.extend(dayExisted, day);
                     }
@@ -108,10 +111,6 @@ angular.module('mifortTimelog.timesheet', ['ngRoute'])
             //last week reset
             if(currentDayWeek == 53 && $scope.splittedTimesheet[currentDayYear - 1]){
                 currentDayWeek = 0;
-            }
-
-            if(currentDate.getDay() == 6 || currentDate.getDay() == 0){
-                day.weekend = true;
             }
 
             function generateCurrentMonth() {
@@ -195,8 +194,11 @@ angular.module('mifortTimelog.timesheet', ['ngRoute'])
             $scope.$watch('timesheet', function(newValue, oldValue) {
                 if(oldValue && oldValue != newValue){
                     var existedDayIndex,
-                        changedDay = _.filter(newValue, function(obj) {
-                            return !_.findWhere(oldValue, obj);
+                        changedDay = _.filter(newValue, function(newValueDate) {
+                            return _.filter(oldValue, function(oldValueDate){
+                                    return oldValueDate.date == newValueDate.date && JSON.stringify(oldValueDate) != JSON.stringify(newValueDate)
+                                }
+                            )[0];
                         })[0];
 
                     $scope.company.defaultValues = $scope.company.defaultValues || [];
@@ -207,16 +209,18 @@ angular.module('mifortTimelog.timesheet', ['ngRoute'])
                         }
                     });
 
-                    if(existedDayIndex >= 0){
-                        angular.extend($scope.company.defaultValues[existedDayIndex], changedDay);
+                    if(existedDayIndex >= 0 && changedDay.dayId){
+                        $scope.company.defaultValues[existedDayIndex].dayId =  changedDay.dayId;
+                    }
+                    else if(existedDayIndex >= 0 && !changedDay.dayId){
+                        $scope.company.defaultValues.splice(existedDayIndex, 1);
                     }
                     else{
-                        $scope.company.defaultValues.push(changedDay);
+                        $scope.company.defaultValues.push({date: changedDay.date, dayId: changedDay.dayId});
                     }
                 }
 
                 timesheetService.saveCompany($scope.company);
-
             }, true);
         }
 
@@ -304,10 +308,6 @@ angular.module('mifortTimelog.timesheet', ['ngRoute'])
             $scope.calendarIsOpened = true;
         };
 
-        $scope.isWeekend = function(date) {
-            return $filter('isWeekendDay')(date);
-        };
-
         $scope.getMonthName = function(month) {
             //get last day of first week
             for(var i in month){
@@ -317,14 +317,18 @@ angular.module('mifortTimelog.timesheet', ['ngRoute'])
 
         $scope.chooseDayType = function(day, dayType) {
             if(dayType){
-                day.time = dayType.time;
-                day.comment = dayType.name;
-                day.color = dayType.color;
+                var customDay = _.find($scope.company.dayTypes, {id: dayType.id});
+
+                day.dayId = customDay.id;
+                day.color = customDay.color;
+                day.time = customDay.time;
+                day.comment = customDay.name;
             }
             else{
-                day.color = '';
-                day.time = $scope.company.template.time;
-                day.comment = $scope.company.template.comment;
+                delete day.dayId;
+                delete day.color;
+                delete day.comment;
+                day.time == 8;
             }
         };
 
@@ -357,5 +361,13 @@ angular.module('mifortTimelog.timesheet', ['ngRoute'])
             }
 
             generateTimesheet();
+        };
+
+        $scope.getDayColor = function(dayId) {
+            if(dayId){
+                var dayType = _.findWhere($scope.company.dayTypes, {id: dayId});
+
+                return dayType.color;
+            }
         };
     }]);
