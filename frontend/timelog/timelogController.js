@@ -88,8 +88,8 @@ angular.module('mifortTimelog.timelog', ['ngRoute'])
                 var projectIndex = _.findIndex($scope.projects, {_id: project._id});
 
                 generateDaysTemplates(project, periodIndex);
-                applyProjectDefaultValues(project, periodIndex);
                 applyUserTimelogs(project, periodIndex);
+                applyProjectDefaultValues(project, periodIndex);
                 initWatchers(projectIndex, periodIndex);
             });
         }
@@ -136,14 +136,16 @@ angular.module('mifortTimelog.timelog', ['ngRoute'])
         function applyProjectDefaultValues(project, periodIndex){
             if(project.defaultValues) {
                 project.defaultValues.forEach(function(day) {
-                    var dayExisted = _.findWhere(project.periods[periodIndex].timelog, {date: moment(new Date(day.date)).format("MM/DD/YYYY")});
+                    var existedDays = _.where(project.periods[periodIndex].timelog, {date: moment(new Date(day.date)).format("MM/DD/YYYY")});
 
-                    if(dayExisted && day.dayId) {
-                        dayExisted.color = _.findWhere(project.dayTypes, {id: day.dayId}).color;
+                    if(existedDays.length && day.dayId) {
+                        existedDays.forEach(function(existedDay) {
+                            existedDay.color = _.findWhere(project.dayTypes, {id: day.dayId}).color;
 
-                        if(!dayExisted.comment){
-                            dayExisted.comment = day.comment;
-                        }
+                            if(!existedDay.comment){
+                                existedDay.comment = day.comment;
+                            }
+                        });
                     }
                 });
             }
@@ -200,7 +202,7 @@ angular.module('mifortTimelog.timelog', ['ngRoute'])
             }, true);
         }
 
-        $scope.addRow = function(log, project, periodIndex) {
+        $scope.addLog = function(log, project, periodIndex) {
             var newRow = angular.copy(project.template),
                 currentPeriod = project.periods[periodIndex].timelog,
                 dayPeriodIndex = _.findIndex(currentPeriod, {date: log.date}),
@@ -217,6 +219,7 @@ angular.module('mifortTimelog.timelog', ['ngRoute'])
 
             newRow.date = log.date;
             newRow.userName = log.userName;
+            newRow.color = log.color;
             newRow.isFirstDayRecord = false;
             newRow.position = maxPosition + 1;
 

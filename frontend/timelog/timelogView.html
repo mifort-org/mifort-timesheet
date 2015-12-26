@@ -42,7 +42,7 @@
                     ng-style="{background: log.color}">
                     <td ng-class="log.isFirstDayRecord ? 'is-first-day-log' : 'is-not-first-day-log'">
                         <span class="timelog-data">
-                            <a href="" ng-if="log.isFirstDayRecord" class="add-timelog" ng-click="addRow(log, project, project.currentPeriodIndex)">+</a>
+                            <a href="" ng-if="log.isFirstDayRecord" class="add-timelog" ng-click="addLog(log, project, project.currentPeriodIndex)">+</a>
 
                             <span ng-if="log.isFirstDayRecord">{{log.date}}</span>
 
