@@ -36,6 +36,7 @@ angular.module('mifortTimelog.timelog', ['ngRoute'])
         loginService.getUser().success(function (user) {
             if(user){
                 var projectAssignments = [];
+                var loadedProjects = 0;
                 $scope.assignments = user.assignments;
 
                 user.assignments.forEach(function(assignment) {
@@ -50,8 +51,11 @@ angular.module('mifortTimelog.timelog', ['ngRoute'])
                             project.currentPeriodIndex = 0;
                             $scope.projects.push(project);
                         }
+
+                        loadedProjects++;
                     }).then(function() {
-                        if(index == projectAssignments.length - 1){
+                        //when all projects are loaded
+                        if(loadedProjects == projectAssignments.length){
                             $scope.init();
                         }
                     });
