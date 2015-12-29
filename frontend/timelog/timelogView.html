@@ -51,14 +51,14 @@
                     </td>
 
                     <td>
-                        <select ng-options="assignment.role as assignment.role for assignment in assignments"
+                        <select ng-options="assignment.role as assignment.role for assignment in project.assignments"
                                 ng-model="log.role"
                                 class="timelog-role form-control">
                         </select>
                     </td>
 
                     <td>
-                        <input class="timelog-hours form-control" type="number" min="0" max="24" ng-model="log.time"/>
+                        <input class="timelog-hours form-control" type="number" min="0" max="24" ng-model="log.time" placeholder="{{getTimePlaceholder(log, project)}}"/>
                     </td>
 
                     <td>

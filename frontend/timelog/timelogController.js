@@ -27,35 +27,36 @@ angular.module('mifortTimelog.timelog', ['ngRoute'])
 
     .controller('timelogController', ['$scope', 'timelogService', 'timesheetService', 'preferences', 'loginService', '$timeout',
         function($scope, timelogService, timesheetService, preferences, loginService, $timeout) {
-        var user = preferences.get('user');
+        var user;
         $scope.projects = [];
         $scope.isCollapsed = false;
         $scope.timelogKeys = timelogService.getTimelogKeys();
-        $scope.userName = user.displayName;
 
-        loginService.getUser().success(function (user) {
-            if(user){
-                var projectAssignments = [];
+        loginService.getUser().success(function (loggedUser) {
+            if(loggedUser){
+                var uniqueProjectAssignments = [];
                 var loadedProjects = 0;
-                $scope.assignments = user.assignments;
+                user = loggedUser;
+                $scope.userName = user.displayName;
 
                 user.assignments.forEach(function(assignment) {
-                    projectAssignments.push(assignment.projectId);
+                    uniqueProjectAssignments.push(assignment.projectId);
                 });
-                projectAssignments = _.uniq(projectAssignments);
+                uniqueProjectAssignments = _.uniq(uniqueProjectAssignments);
 
                 //get timelogs
-                projectAssignments.forEach(function(assignment, index) {
+                uniqueProjectAssignments.forEach(function(assignment, index) {
                     timelogService.getProject(assignment).success(function(project) {
                         if(project && project.active) {
                             project.currentPeriodIndex = 0;
+                            project.assignments = _.where(user.assignments, {projectId: project._id});
                             $scope.projects.push(project);
                         }
 
                         loadedProjects++;
                     }).then(function() {
                         //when all projects are loaded
-                        if(loadedProjects == projectAssignments.length){
+                        if(loadedProjects == uniqueProjectAssignments.length){
                             $scope.init();
                         }
                     });
@@ -164,14 +165,14 @@ angular.module('mifortTimelog.timelog', ['ngRoute'])
                 var dayToPush;
 
                 //TODO: to template
-                project.template.workload = user.workload;
                 project.template.userId = user._id;
                 project.template.projectId = project._id;
                 project.template.projectName = project.name;
-                project.template.position = 0;
+                delete project.template.time;
 
                 dayToPush = _.clone(project.template);
                 dayToPush.date = angular.copy(startDate).add(i, 'days').format("MM/DD/YYYY");
+                dayToPush.role = project.assignments[0].role;
                 dayToPush.isFirstDayRecord = true;
                 dayToPush.userName = $scope.userName;
 
@@ -257,5 +258,16 @@ angular.module('mifortTimelog.timelog', ['ngRoute'])
                     initPeriod(project, project.currentPeriodIndex);
                 }
             }
+        };
+
+        $scope.getTimePlaceholder = function(log, project) {
+            var timePlaceholder = 8,
+                assignment = _.findWhere(project.assignments, {role: log.role, projectId: log.projectId});
+
+            if(assignment){
+                timePlaceholder = assignment.workload;
+            }
+
+            return timePlaceholder;
         };
     }]);
