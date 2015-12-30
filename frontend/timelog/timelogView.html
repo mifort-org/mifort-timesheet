@@ -55,10 +55,22 @@
                                 ng-model="log.role"
                                 class="timelog-role form-control">
                         </select>
+
+                        <!--<span uib-dropdown on-toggle="toggled(open)">-->
+                            <!--<a href id="simple-dropdown" uib-dropdown-toggle>-->
+                                <!--Dropdown!-->
+                            <!--</a>-->
+
+                            <!--<ul class="uib-dropdown-menu" aria-labelledby="simple-dropdown">-->
+                                <!--<li ng-repeat="assignment in project.assignments">-->
+                                    <!--<a href>{{assignment.role}}</a>-->
+                                <!--</li>-->
+                            <!--</ul>-->
+                        <!--</span>-->
                     </td>
 
                     <td>
-                        <input class="timelog-hours form-control" type="number" min="0" max="24" ng-model="log.time" placeholder="{{getTimePlaceholder(log, project)}}"/>
+                        <input class="timelog-hours form-control" type="text" ng-model="log.time" placeholder="{{getTimePlaceholder(log, project)}}"/>
                     </td>
 
                     <td>
