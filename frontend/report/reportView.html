@@ -65,7 +65,7 @@
 
     <hr/>
 
-    <div ng-repeat="filterValue in dynamicPopover.projectFilter.value | filter:{isChecked : true}">
+    <div ng-repeat="filterValue in dynamicPopover.projectFilter.value track by $index | filter:{isChecked : true}">
         <input type="checkbox" ng-model="filterValue.isChecked"/>
 
         {{filterValue.name.role || filterValue.name}}
@@ -73,7 +73,7 @@
 
     <hr/>
 
-    <div ng-repeat="filterValue in dynamicPopover.projectFilter.value | filter:filtersFilter | filter:{isChecked : false}">
+    <div ng-repeat="filterValue in dynamicPopover.projectFilter.value track by $index | filter:filtersFilter | filter:{isChecked : false}">
         <input type="checkbox" ng-model="filterValue.isChecked"/>
 
         {{filterValue.name.role || filterValue.name}}

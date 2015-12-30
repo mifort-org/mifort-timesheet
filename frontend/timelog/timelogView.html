@@ -13,7 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-<div class="timelog collapse-wrapper clearfix" ng-repeat="project in projects">
+<div class="timelog collapse-wrapper clearfix" ng-repeat="project in projects track by $index">
     <h2 ng-class="{'timelog-collapsed': isCollapsed}">
         <a href="" class="collapse-item" ng-class="{'collapsed': isCollapsed}" ng-click="isCollapsed = !isCollapsed">
             {{project.name}}
@@ -30,7 +30,7 @@
         <table class="table table-bordered timelog">
             <thead>
                 <tr>
-                    <th ng-repeat="timelogKey in timelogKeys">
+                    <th ng-repeat="timelogKey in timelogKeys track by $index">
                         {{timelogKey}}
                     </th>
                 </tr>

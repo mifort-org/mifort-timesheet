@@ -16,6 +16,6 @@
 
 <div class="tabs-left">
     <uib-tabset vertical="true">
-        <uib-tab ng-repeat="tab in tabs" heading="{{tab.title}}" active="tab.active" select="changeTab(tab)" ng-if="tab.available"></uib-tab>
+        <uib-tab ng-repeat="tab in tabs track by $index" heading="{{tab.title}}" active="tab.active" select="changeTab(tab)" ng-if="tab.available"></uib-tab>
     </uib-tabset>
 </div>

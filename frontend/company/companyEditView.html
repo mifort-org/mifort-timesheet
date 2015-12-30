@@ -53,7 +53,7 @@
                 </td>
                 <td>
                     <table class="company-roles">
-                        <tr ng-repeat="employee in companyEmployees">
+                        <tr ng-repeat="employee in companyEmployees track by $index">
                             <td>
                                 <span class="employee-role">{{employee.displayName || employee.email}}</span>
                             </td>

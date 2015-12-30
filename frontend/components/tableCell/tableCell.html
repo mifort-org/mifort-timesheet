@@ -14,7 +14,7 @@
   limitations under the License.
 -->
 
-<div ng-if="day.date" class="timesheet-data" ng-class="{'disabled-day-data': day.disabled}">
+<div class="timesheet-data" ng-class="::{'disabled-day-data': day.disabled}">
     <span class="timesheet-time" ng-bind="getDayTime(day)"></span>
 
     <span class="timesheet-hours-label">hours</span>
@@ -22,10 +22,9 @@
 
 <div class="start-splitter"></div>
 
-<a ng-if="day.date"
-   href=""
+<a href=""
    class="timesheet-day-wrapper"
-   ng-class="{'disabled-day-data': day.disabled}"
+   ng-class="::{'disabled-day-data': day.disabled}"
    uib-popover-template="daySettingsPopover.templateUrl"
    popover-title="{{daySettingsPopover.title}}"
    popover-placement="bottom"

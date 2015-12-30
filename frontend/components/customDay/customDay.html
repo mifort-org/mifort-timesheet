@@ -41,14 +41,14 @@
     </dl>
 
     <div class="hexagon-underwear-wrapper">
-        <div class="hexagon-underwear" ng-repeat="day in company.dayTypes" ng-click="showColorPicker($index)"></div>
+        <div class="hexagon-underwear" ng-repeat="day in company.dayTypes track by $index" ng-click="showColorPicker($index)"></div>
         <div class="hexagon-underwear hexagon-add-day" ng-click="addCustomDay()">+</div>
     </div>
 
     <div class="hexagon-wrapper">
         <div class="hexagon"
-             ng-repeat="day in company.dayTypes"
-             style="background: {{day.color}};">
+             ng-repeat="day in company.dayTypes  track by $index"
+             ng-style="{'background': day.color}">
             <img class="color-picker"
                  ng-show="day.pickerVisible"
                  src="../../common/images/color-picker.png"
@@ -60,7 +60,13 @@
                  usemap="#color-picker-map-{{$index}}}"
                  alt=""/>
             <map name="color-picker-map-{{$index}}}" id="color-picker-map-{{$index}}}">
-                <area alt="area" href="#" title="area" shape="poly" coords="{{area.area}}" ng-click="chooseColor($index, $parent.day); $event.preventDefault();" ng-repeat="area in customColors" />
+                <area alt="area"
+                      href="#"
+                      title="area"
+                      shape="poly"
+                      coords="{{area.area}}"
+                      ng-click="chooseColor($index, $parent.day); $event.preventDefault();"
+                      ng-repeat="area in customColors  track by $index" />
             </map>
         </div>
     </div>
