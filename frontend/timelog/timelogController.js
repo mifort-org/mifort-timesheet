@@ -48,7 +48,6 @@ angular.module('mifortTimelog.timelog', ['ngRoute'])
                     uniqueProjectAssignments.forEach(function(assignment, index) {
                         timelogService.getProject(assignment).success(function(project) {
                             if(project && project.active){
-                                project.currentPeriodIndex = 0;
                                 project.assignments = _.where(user.assignments, {projectId: project._id});
                                 $scope.projects.push(project);
                             }
@@ -71,7 +70,10 @@ angular.module('mifortTimelog.timelog', ['ngRoute'])
                     project.currentPeriodIndex = 0;
 
                     project.periods.forEach(function(period, periodIndex) {
-                        if(today >= moment(new Date(period.start)) && today <= moment(new Date(period.end))){
+                        var momentStart = moment(new Date(period.start)),
+                            momentEnd = moment(new Date(period.end));
+
+                        if(today.isBetween(momentStart, momentEnd) || today.isSame(momentStart, 'day') || today.isSame(momentEnd, 'day')){
                             project.currentPeriodIndex = periodIndex;
                         }
                     });
