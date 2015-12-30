@@ -268,3 +268,16 @@ input[type=number]::-webkit-outer-spin-button {
 .table-bordered > tbody > tr > .is-first-day-log{
     border-bottom: 0;
 }
+
+.page-loading{
+    position: fixed;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    background: #fff;
+
+    object{
+        width: 100%;
+        height: 100%;
+    }
+}

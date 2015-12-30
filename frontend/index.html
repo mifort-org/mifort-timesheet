@@ -20,12 +20,12 @@
     <meta charset="utf-8">
     <title ng-bind="companyName + ' Timelog'">Timelog</title>
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
-    <link rel="stylesheet" href="bower_components/angular-ui-grid/ui-grid.css" />
+    <link rel="stylesheet" href="bower_components/angular-ui-grid/ui-grid.css">
     <link rel="stylesheet" href="bower_components/bootstrap-daterangepicker/daterangepicker-bs3.css">
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,600,400italic,600italic,700,700italic&subset=cyrillic-ext,latin">
     <link rel="stylesheet" href="common/sass/styles.css">
-    <link rel="stylesheet" href="common/sass/print.css" media="print" />
+    <link rel="stylesheet" href="common/sass/print.css" media="print">
     <link rel="stylesheet" href="common/sass/bootstrap-mifort.css">
 
     <link rel="stylesheet" href="components/tabs/tabs.css">
@@ -38,6 +38,16 @@
 </head>
 
 <body closable-popovers>
+
+<div class="page-loading" ng-if="false">
+    <object type="application/x-shockwave-flash" data="common/images/animation-wait.swf" id="page-loading-animation">
+        <param name="movie" value="common/images/animation-wait.swf"/>
+        <param name="wmode" value="transparent"/>
+        <param name="FlashVars" value=""/>
+        <param name="quality" value="high"/>
+        <param name="menu" value="false"/>
+    </object>
+</div>
 
 <nav class="main-controls" ng-if="isLoggedIn">
     <a class="logo" href="">
