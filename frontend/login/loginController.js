@@ -41,6 +41,8 @@ angular.module('mifortTimelog.login', ['ngRoute'])
                     $location.path('/company-create');
                 }
             }
+        }).error(function() {
+            $rootScope.isNotLoggedIn = true;
         });
 
         $scope.login = function () {

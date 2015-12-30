@@ -39,7 +39,7 @@
 
 <body closable-popovers>
 
-<div class="page-loading" ng-if="false">
+<div class="page-loading" ng-if="!isNotLoggedIn && !isLoggedIn">
     <object type="application/x-shockwave-flash" data="common/images/animation-wait.swf" id="page-loading-animation">
         <param name="movie" value="common/images/animation-wait.swf"/>
         <param name="wmode" value="transparent"/>
@@ -66,7 +66,7 @@
 </nav>
 
 <div ng-if="isLoggedIn && companyId" bootstrap-tabs company-name="{{companyName}}" class="main-tabs"></div>
-<div class="main-container" ng-view ng-class="{'login-wrapper': !isLoggedIn || !companyId}"></div>
+<div class="main-container" ng-view ng-class="{'login-wrapper': (!isLoggedIn || !companyId) && isNotLoggedIn}"></div>
 
 
 <!--JS libraries-->

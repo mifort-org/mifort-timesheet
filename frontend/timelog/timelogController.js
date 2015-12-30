@@ -273,17 +273,17 @@ angular.module('mifortTimelog.timelog', ['ngRoute'])
                 return timePlaceholder;
             };
 
-            //$scope.status = {
-            //    isopen: false
-            //};
-            //
-            //$scope.toggleDropdown = function($event) {
-            //    $event.preventDefault();
-            //    $event.stopPropagation();
-            //    $scope.status.isopen = !$scope.status.isopen;
-            //};
-            //
-            //$scope.assingRole = function(role, log) {
-            //    log.role = role;
-            //}
+            $scope.status = {
+                isOpen: false
+            };
+
+            $scope.toggleDropdown = function($event) {
+                $event.preventDefault();
+                $event.stopPropagation();
+                $scope.status.isOpen = !$scope.status.isOpen;
+            };
+
+            $scope.assingRole = function(role, log) {
+                log.role = role;
+            }
         }]);
