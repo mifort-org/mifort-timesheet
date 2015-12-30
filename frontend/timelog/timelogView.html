@@ -25,7 +25,7 @@
         <button class="next-period" ng-class="{'disabled' : project.currentPeriodIndex >= project.periods.length - 1}" ng-click="showNextPeriod(project)"></button>
     </div>
 
-    <div collapse="isCollapsed">
+    <div uib-collapse="isCollapsed">
         <!--{{project.periods[project.currentPeriodIndex]}}-->
         <table class="table table-bordered timelog">
             <thead>
