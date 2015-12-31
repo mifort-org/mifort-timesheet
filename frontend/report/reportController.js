@@ -39,7 +39,7 @@ angular.module('mifortTimelog.report', ['ngRoute'])
         };
 
         $scope.reportColumns = ['Data', 'User', 'Project', 'Assignment', 'Time', 'Action'];
-        $scope.perPage = [5, 10, 20, 50, 100];
+        $scope.perPage = [10, 20, 50, 100];
         $scope.totalCount = 0;
         $scope.projects = [];
 
@@ -50,7 +50,7 @@ angular.module('mifortTimelog.report', ['ngRoute'])
                 asc: true
             },
             filters: [],
-            pageSize: 5,
+            pageSize: 10,
             page: 1
         };
 
