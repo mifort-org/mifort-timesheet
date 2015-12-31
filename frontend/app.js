@@ -58,7 +58,7 @@ angular.module('mifortTimelog', [
 
     .config(function(NotificationProvider) {
         NotificationProvider.setOptions({
-            delay: 1000,
+            delay: 100000,
             startTop: 20,
             startRight: 40,
             verticalSpacing: 20,
