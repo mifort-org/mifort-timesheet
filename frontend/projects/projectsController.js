@@ -25,7 +25,8 @@ angular.module('mifortTimelog.projects', ['ngRoute'])
         });
     }])
 
-    .controller('projectsController', ['$scope', 'projectsService', 'preferences', 'topPanelService', function($scope, projectsService, preferences, topPanelService) {
+    .controller('projectsController', ['$scope', 'projectsService', 'preferences', 'topPanelService', 'Notification',
+        function($scope, projectsService, preferences, topPanelService, Notification) {
         var companyId = preferences.get('user').companyId;
 
         $scope.projectsKeys = [
@@ -80,7 +81,9 @@ angular.module('mifortTimelog.projects', ['ngRoute'])
         });
 
         $scope.changeProjectName = function(project) {
-            projectsService.saveOrCreateProject(project);
+            projectsService.saveOrCreateProject(project).success(function() {
+                Notification.success('Timesheet saved');
+            });
         };
 
         $scope.addProject = function() {
@@ -92,6 +95,7 @@ angular.module('mifortTimelog.projects', ['ngRoute'])
             $scope.projects.push(newProject);
             projectsService.saveOrCreateProject(newProject).success(function(project) {
                 $scope.projects[$scope.projects.length - 1] = project;
+                Notification.success('Timesheet saved');
             });
         };
 
@@ -105,7 +109,9 @@ angular.module('mifortTimelog.projects', ['ngRoute'])
 
             aggregatedEmployee = _.clone(employee);
             aggregatedEmployee.assignments = aggregatedEmployeeAssignments;
-            projectsService.saveAssignment(project._id, aggregatedEmployee);
+            projectsService.saveAssignment(project._id, aggregatedEmployee).success(function() {
+                Notification.success('Timesheet saved');
+            });
         };
 
         $scope.removeProject = function(project, projectIndex) {
@@ -117,7 +123,9 @@ angular.module('mifortTimelog.projects', ['ngRoute'])
 
         $scope.removeAssignment = function(project, assignment, assignmentIndex) {
             project.projectAssignments.splice(assignmentIndex, 1);
-            $scope.saveAssignment(project, assignment);
+            $scope.saveAssignment(project, assignment).success(function() {
+                Notification.success('Timesheet saved');
+            });
         };
 
         $scope.$on('handleBroadcast', function() {

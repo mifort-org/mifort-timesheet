@@ -23,7 +23,7 @@ angular.module('mifortTimelog.timesheet').factory('timesheetService',
                 return $http.get('company/' + companyId);
             },
             saveCompany: function (parameters) {
-                $http.post('company', parameters);
+                return $http.post('company', parameters);
             },
             getPeriodSettings: function () {
                 return [

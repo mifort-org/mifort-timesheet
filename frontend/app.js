@@ -27,6 +27,7 @@ angular.module('mifortTimelog', [
     'ui.grid.resizeColumns',
     'ui.grid.autoResize',
     'ngBootstrap',
+    'ui-notification',
     'mifortTimelog.login',
     'mifortTimelog.company',
     'mifortTimelog.projects',
@@ -54,6 +55,18 @@ angular.module('mifortTimelog', [
             };
         });
     }])
+
+    .config(function(NotificationProvider) {
+        NotificationProvider.setOptions({
+            delay: 1000,
+            startTop: 20,
+            startRight: 40,
+            verticalSpacing: 20,
+            horizontalSpacing: 20,
+            positionX: 'right',
+            positionY: 'bottom'
+        });
+    })
 
     .controller('mifortTimelogController', ['$scope', '$location', '$cookies', '$http', 'preferences', 'companyService', 'topPanelService', '$rootScope',
         function($scope, $location, $cookies, $http, preferences, companyService, topPanelService, $rootScope) {

@@ -25,8 +25,8 @@ angular.module('mifortTimelog.timelog', ['ngRoute'])
         });
     }])
 
-    .controller('timelogController', ['$scope', 'timelogService', 'timesheetService', 'preferences', 'loginService', '$timeout',
-        function($scope, timelogService, timesheetService, preferences, loginService, $timeout) {
+    .controller('timelogController', ['$scope', 'timelogService', 'timesheetService', 'preferences', 'loginService', '$timeout', 'Notification',
+        function($scope, timelogService, timesheetService, preferences, loginService, $timeout, Notification) {
             var user;
             $scope.projects = [];
             $scope.isCollapsed = false;
@@ -203,6 +203,8 @@ angular.module('mifortTimelog.timelog', ['ngRoute'])
                                 if(noIdLog){
                                     angular.extend(periodTimelog, data.timelog);
                                 }
+
+                                Notification.success('Timelog saved');
                             });
                         }, 500)
                     }

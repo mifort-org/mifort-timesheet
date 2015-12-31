@@ -25,7 +25,8 @@ angular.module('mifortTimelog.timesheet', ['ngRoute'])
         });
     }])
 
-    .controller('timesheetController', ['$scope', '$filter', 'timesheetService', 'moment', 'preferences', function($scope, $filter, timesheetService, moment, preferences) {
+    .controller('timesheetController', ['$scope', '$filter', 'timesheetService', 'moment', 'preferences', 'Notification',
+        function($scope, $filter, timesheetService, moment, preferences, Notification) {
         $scope.daySettingsPopover = {
             templateUrl: 'daySettimgs.html'
         };
@@ -220,7 +221,9 @@ angular.module('mifortTimelog.timesheet', ['ngRoute'])
                     }
                 }
 
-                timesheetService.saveCompany($scope.company);
+                timesheetService.saveCompany($scope.company).success(function() {
+                    Notification.success('Timesheet saved');
+                });
             }, true);
         }
 
