@@ -21,19 +21,23 @@
 
  var fs = require('fs');
 
- var MAIL_API_KEY = process.env.MAIL_API_KEY || 'YOUR_KEY';
+ var MAIL_API_KEY = process.env.MAIL_API_KEY || 'YOUR_API_KEY';
 
  exports.sendInvite = function(to) {
-     fs.readFile('./backend/libs/mail-templates/invite.htm', 'utf8', function(err, data) {
+     fs.readFile('./backend/libs/mail-templates/invite.html', 'utf8', function(err, data) {
          if(err) {
              log.error('Cannot read e-mail template', err);
          } else {
              request.post({ url: 'https://api.mailgun.net/v3/sandbox22b92f927ef4426b859ac877a0260ad4.mailgun.org/messages',
-                            form: {
+                            formData: {
                                 from: 'Mifort Timesheet <mailgun@sandbox22b92f927ef4426b859ac877a0260ad4.mailgun.org>',
                                 to: to,
                                 subject: 'Invite to Mifort Timesheeet',
-                                html: data
+                                html: data,
+                                inline: [
+                                    fs.createReadStream('./backend/libs/mail-templates/image/header.jpg'),
+                                    fs.createReadStream('./backend/libs/mail-templates/image/btn-start.jpg')
+                                ]
                             },
                             auth: {
                                 'user': 'api',
