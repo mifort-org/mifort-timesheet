@@ -98,7 +98,7 @@ function getObjectIdParam(req, name) {
 function getDateParam(req, name) {
     var date = getParameter(req, name);
     if(date) {
-        return moment(date, dateFormat).toDate();
+        return moment.utc(date, dateFormat).toDate();
     }
 };
 
