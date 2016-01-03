@@ -43,6 +43,19 @@ html {
 
 body {
   line-height: 1; }
+  body .ui-notification {
+    padding: 5px  10px 5px 45px;
+    font-size: 1.4rem;
+    border-left: 6px solid #74b65f; }
+    body .ui-notification.success {
+      color: #727272;
+      background: #fff url("../images/icons.png") 20px -1386px no-repeat; }
+    body .ui-notification div:after {
+      float: right;
+      width: 20px;
+      height: 20px;
+      content: "";
+      background: url("../images/icons.png") 1px -1479px no-repeat; }
 
 ol, ul {
   list-style: none; }
@@ -220,9 +233,5 @@ input[type=number]::-webkit-outer-spin-button {
   .page-loading object {
     width: 100%;
     height: 100%; }
-
-.ui-notification.success {
-  background: #fff;
-  border-left: 6px solid #74b65f; }
 
 /*# sourceMappingURL=styles.css.map */
