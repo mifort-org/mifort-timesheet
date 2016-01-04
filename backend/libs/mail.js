@@ -21,10 +21,10 @@
 
  var fs = require('fs');
 
- var MAIL_API_KEY = process.env.MAIL_API_KEY || 'YOUR_API_KEY';
+ var MAIL_API_KEY = process.env.MAIL_API_KEY || 'YOUR_KEY';
 
  exports.sendInvite = function(to) {
-     fs.readFile('./backend/libs/mail-templates/invite.html', 'utf8', function(err, data) {
+     fs.readFile(__dirname + '/mail-templates/invite.html', 'utf8', function(err, data) {
          if(err) {
              log.error('Cannot read e-mail template', err);
          } else {
@@ -35,8 +35,8 @@
                                 subject: 'Invite to Mifort Timesheeet',
                                 html: data,
                                 inline: [
-                                    fs.createReadStream('./backend/libs/mail-templates/image/header.jpg'),
-                                    fs.createReadStream('./backend/libs/mail-templates/image/btn-start.jpg')
+                                    fs.createReadStream(__dirname + '/mail-templates/image/header.jpg'),
+                                    fs.createReadStream(__dirname + '/mail-templates/image/btn-start.jpg')
                                 ]
                             },
                             auth: {
