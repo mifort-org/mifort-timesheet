@@ -26,7 +26,6 @@
     </div>
 
     <div uib-collapse="isCollapsed">
-        <!--{{project.periods[project.currentPeriodIndex]}}-->
         <table class="table table-bordered timelog">
             <thead>
                 <tr>
@@ -56,17 +55,17 @@
                                 class="timelog-role form-control">
                         </select>
 
-                        <!--<span uib-dropdown on-toggle="toggled(open)">-->
-                            <!--<a href id="simple-dropdown" uib-dropdown-toggle>-->
-                                <!--{{log.role}}-->
-                            <!--</a>-->
+                        <span class="blank-dropdown" uib-dropdown on-toggle="toggled(open)">
+                            <a href id="simple-dropdown" uib-dropdown-toggle>
+                                {{log.role}}
+                            </a>
 
-                            <!--<ul class="uib-dropdown-menu" aria-labelledby="simple-dropdown">-->
-                                <!--<li ng-repeat="assignment in project.assignments">-->
-                                    <!--<a href ng-click="assingRole(assignment.role, log)">{{assignment.role}}</a>-->
-                                <!--</li>-->
-                            <!--</ul>-->
-                        <!--</span>-->
+                            <ul class="uib-dropdown-menu" aria-labelledby="simple-dropdown">
+                                <li ng-repeat="assignment in project.assignments">
+                                    <a href ng-click="assingRole(assignment.role, log)">{{assignment.role}}</a>
+                                </li>
+                            </ul>
+                        </span>
                     </td>
 
                     <td>
