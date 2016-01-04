@@ -55,26 +55,26 @@
                                 class="timelog-role form-control">
                         </select>
 
-                        <span class="blank-dropdown" uib-dropdown on-toggle="toggled(open)">
-                            <a href id="simple-dropdown" uib-dropdown-toggle>
-                                {{log.role}}
-                            </a>
+                        <!--<span class="blank-dropdown" uib-dropdown on-toggle="toggled(open)">-->
+                            <!--<a href id="simple-dropdown" uib-dropdown-toggle>-->
+                                <!--{{log.role}}-->
+                            <!--</a>-->
 
-                            <ul class="uib-dropdown-menu" aria-labelledby="simple-dropdown">
-                                <li ng-repeat="assignment in project.assignments">
-                                    <a href ng-click="assingRole(assignment.role, log)">{{assignment.role}}</a>
-                                </li>
-                            </ul>
-                        </span>
+                            <!--<ul class="uib-dropdown-menu" aria-labelledby="simple-dropdown">-->
+                                <!--<li ng-repeat="assignment in project.assignments">-->
+                                    <!--<a href ng-click="assingRole(assignment.role, log)">{{assignment.role}}</a>-->
+                                <!--</li>-->
+                            <!--</ul>-->
+                        <!--</span>-->
                     </td>
 
                     <td>
-                        <input class="timelog-hours form-control" type="text" ng-model="log.time" placeholder="{{getTimePlaceholder(log, project)}}"/>
+                        <input class="timelog-hours form-control" type="number" ng-model="log.time" placeholder="{{getTimePlaceholder(log, project)}}"/>
                     </td>
 
                     <td>
                         <input class="timelog-comment form-control" type="text" ng-model="log.comment"/>
-                        <!--{{log._id}}-->
+                        {{log}}
                     </td>
                 </tr>
             </tbody>
