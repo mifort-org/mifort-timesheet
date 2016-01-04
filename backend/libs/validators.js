@@ -280,7 +280,7 @@ exports.timelogs = function(values) {
             }
             if(val.time){
                 isValid = isValid
-                    && (validator.isInt(val.time) || validator.isFloat(val.time))
+                    && (typeof val.time === 'number')
                     && val.time <= 24;
             }
             if(val.role){
