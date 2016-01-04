@@ -44,7 +44,6 @@ angular.module('mifortTimelog', [
                     var defer = $q.defer();
 
                     if(rejection.status == 401){
-                        //console.dir(rejection);
                         $location.path('login');
                     }
 

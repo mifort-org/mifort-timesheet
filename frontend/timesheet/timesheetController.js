@@ -331,7 +331,7 @@ angular.module('mifortTimelog.timesheet', ['ngRoute'])
                 delete day.dayId;
                 delete day.color;
                 delete day.comment;
-                day.time == 8;
+                day.time = 8;
             }
         };
 

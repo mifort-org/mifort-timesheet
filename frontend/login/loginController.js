@@ -25,7 +25,7 @@ angular.module('mifortTimelog.login', ['ngRoute'])
         });
     }])
 
-    .controller('loginController', ['$scope', '$location', 'loginService', '$cookies', 'preferences', '$rootScope', function ($scope, $location, loginService, $cookies, preferences, $rootScope) {
+    .controller('loginController', ['$scope', '$location', 'loginService', 'preferences', '$rootScope', function ($scope, $location, loginService, preferences, $rootScope) {
         $rootScope.isLoggedIn = false;
 
         $scope.user = loginService.getUser().success(function (data) {

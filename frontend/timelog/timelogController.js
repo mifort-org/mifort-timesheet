@@ -130,7 +130,6 @@ angular.module('mifortTimelog.timelog', ['ngRoute'])
                         else{
                             day.isFirstDayRecord = true;
                             if(!_.findWhere(period.timelog, {date: day.date}).comment){
-                                //_.findWhere(period.timelog, {date: day.date}).comment = period.timelog[timelogDayIndex].comment;
                                 _.findWhere(period.timelog, {date: day.date}).comment = day.comment;
                             }
                             angular.extend(period.timelog[timelogDayIndex], day);
