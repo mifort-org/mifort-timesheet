@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-select.form-control {
+.form-control {
   border-radius: 0;
   border-color: #f2f4f7;
   box-shadow: none;
   cursor: pointer; }
-  select.form-control:hover {
+  .form-control:hover {
     border-color: #a0a0a0; }
 
 .input-group {

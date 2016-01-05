@@ -82,7 +82,8 @@ angular.module('mifortTimelog.company', ['ngRoute'])
             });
         };
 
-        $scope.changeRole = function(employee) {
+        $scope.changeRole = function(employee, role) {
+            employee. role = role;
             companyService.changeRole(employee);
         };
 

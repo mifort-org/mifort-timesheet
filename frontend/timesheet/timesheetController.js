@@ -373,4 +373,8 @@ angular.module('mifortTimelog.timesheet', ['ngRoute'])
                 return dayType.color;
             }
         };
+
+        $scope.changePeriodSplit = function(period) {
+            $scope.selectedPeriod = period;
+        }
     }]);

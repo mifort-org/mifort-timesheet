@@ -19,11 +19,23 @@
         <div class="clearfix">
             <label for="period">Report Period</label>
 
-            <select id="period"
-                    ng-options="period as period.periodName for period in periodSettings"
-                    ng-model="selectedPeriod"
-                    class="form-control timesheet-control">
-            </select>
+            <!--<select id="period"-->
+                    <!--ng-options="period as period.periodName for period in periodSettings"-->
+                    <!--ng-model="selectedPeriod"-->
+                    <!--class="form-control timesheet-control">-->
+            <!--</select>-->
+
+            <span class="blank-dropdown blank-dropdown-small form-control timesheet-control" uib-dropdown on-toggle="toggled(open)">
+                <a href id="simple-dropdown" uib-dropdown-toggle>
+                    {{selectedPeriod.periodName}}
+                </a>
+
+                <ul class="uib-dropdown-menu" aria-labelledby="simple-dropdown">
+                    <li ng-repeat="period in periodSettings">
+                        <a href ng-click="changePeriodSplit(period)">{{period.periodName}}</a>
+                    </li>
+                </ul>
+            </span>
         </div>
 
         <div class="clearfix">

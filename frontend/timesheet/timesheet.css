@@ -47,7 +47,8 @@
     margin-bottom: 20px; }
   .timesheet-controls .timesheet-control {
     float: right;
-    width: 150px; }
+    width: 150px;
+    padding: 0; }
   .timesheet-controls .timesheet-control button {
     border-radius: 0;
     border-left: 0; }

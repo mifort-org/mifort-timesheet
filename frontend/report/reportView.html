@@ -55,7 +55,6 @@
     <div class="gridStyle" ui-grid="gridOptions" ui-grid-auto-resize ng-style="gridHeight" ui-grid-resize-columns></div>
     <div class="no-data" ng-show="!reportData.length">No timelogs to show</div>
 </div>
-<!--{{projectFilter}}-->
 <!--{{reportData}}-->
 
 <script type="text/ng-template" id="myPopoverTemplate.html">
@@ -64,8 +63,8 @@
     <input type="text" ng-model="filtersFilter"/>
 
     <hr/>
-
-    <div ng-repeat="filterValue in dynamicPopover.projectFilter.value track by $index | filter:{isChecked : true}">
+<!--{{dynamicPopover.projectFilter}}-->
+    <div ng-repeat="filterValue in dynamicPopover.projectFilter.value | filter:{isChecked : true}">
         <input type="checkbox" ng-model="filterValue.isChecked"/>
 
         {{filterValue.name.role || filterValue.name}}
@@ -73,7 +72,7 @@
 
     <hr/>
 
-    <div ng-repeat="filterValue in dynamicPopover.projectFilter.value track by $index | filter:filtersFilter | filter:{isChecked : false}">
+    <div ng-repeat="filterValue in dynamicPopover.projectFilter.value | filter:filtersFilter | filter:{isChecked : false}">
         <input type="checkbox" ng-model="filterValue.isChecked"/>
 
         {{filterValue.name.role || filterValue.name}}

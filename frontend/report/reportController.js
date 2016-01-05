@@ -92,6 +92,7 @@ angular.module('mifortTimelog.report', ['ngRoute'])
                     field: 'time',
                     enableColumnResizing: true,
                     enableColumnMenu: false,
+                    enableFiltering: false,
                     filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" col-name="time" col-title="time"></span></div>'
                 },
                 {
