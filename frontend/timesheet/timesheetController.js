@@ -222,7 +222,7 @@ angular.module('mifortTimelog.timesheet', ['ngRoute'])
                 }
 
                 timesheetService.saveCompany($scope.company).success(function() {
-                    Notification.success('Timesheet saved');
+                    Notification.success('Changes saved');
                 });
             }, true);
         }

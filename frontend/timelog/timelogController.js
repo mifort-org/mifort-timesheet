@@ -203,7 +203,7 @@ angular.module('mifortTimelog.timelog', ['ngRoute'])
                                     angular.extend(periodTimelog, data.timelog);
                                 }
 
-                                Notification.success('Timelog saved');
+                                Notification.success('Changes saved');
                             });
                         }, 500)
                     }

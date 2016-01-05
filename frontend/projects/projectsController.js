@@ -59,7 +59,7 @@ angular.module('mifortTimelog.projects', ['ngRoute'])
 
         $scope.changeProjectName = function(project) {
             projectsService.saveOrCreateProject(project).success(function() {
-                Notification.success('Timesheet saved');
+                Notification.success('Changes saved');
             });
         };
 
@@ -72,7 +72,7 @@ angular.module('mifortTimelog.projects', ['ngRoute'])
             $scope.projects.push(newProject);
             projectsService.saveOrCreateProject(newProject).success(function(project) {
                 $scope.projects[$scope.projects.length - 1] = project;
-                Notification.success('Timesheet saved');
+                Notification.success('Changes saved');
             });
         };
 
