@@ -20,20 +20,22 @@
  var log = require('./logger');
 
  var fs = require('fs');
+ var ejs = require('ejs');
 
  var MAIL_API_KEY = process.env.MAIL_API_KEY || 'YOUR_KEY';
 
- exports.sendInvite = function(to) {
-     fs.readFile(__dirname + '/mail-templates/invite.html', 'utf8', function(err, data) {
+ exports.sendInvite = function(to, companyName) {
+     fs.readFile(__dirname + '/mail-templates/invite.ejs', 'utf8', function(err, data) {
          if(err) {
              log.error('Cannot read e-mail template', err);
          } else {
+             var renderedTemplate = ejs.render(data, { companyName: companyName});
              request.post({ url: 'https://api.mailgun.net/v3/sandbox22b92f927ef4426b859ac877a0260ad4.mailgun.org/messages',
                             formData: {
                                 from: 'Mifort Timesheet <mailgun@sandbox22b92f927ef4426b859ac877a0260ad4.mailgun.org>',
                                 to: to,
                                 subject: 'Invite to Mifort Timesheeet',
-                                html: data,
+                                html: renderedTemplate,
                                 inline: [
                                     fs.createReadStream(__dirname + '/mail-templates/image/header.jpg'),
                                     fs.createReadStream(__dirname + '/mail-templates/image/btn-start.jpg')

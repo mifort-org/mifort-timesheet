@@ -175,7 +175,7 @@ function createUsersByEmails(company) {
                             log.error('Cannot save user by email for new company.', {error: err});
                         } else {
                             log.info('User saved with e-mail %s', savedUser.email);
-                            mail.sendInvite(email);
+                            mail.sendInvite(email, company.name);
                         }
                     });
                 }
