@@ -17,12 +17,26 @@
 <div class="report-controls clearfix">
     <div class="per-page-wrapper">
         <label for="per-page" class="per-page-label">Show</label>
-        <select id="per-page"
-                ng-options="pageSize as pageSize for pageSize in perPage"
-                ng-model="reportSettings.pageSize"
-                class="form-control per-page"
-                ng-change="perPageChanged()">
-        </select>
+
+        <!--<select id="per-page"-->
+                <!--ng-options="pageSize as pageSize for pageSize in perPage"-->
+                <!--ng-model="reportSettings.pageSize"-->
+                <!--class="form-control per-page"-->
+                <!--ng-change="perPageChanged()">-->
+        <!--</select>-->
+
+        <span class="blank-dropdown blank-dropdown-small form-control per-page" uib-dropdown on-toggle="toggled(open)">
+            <a href id="simple-dropdown" uib-dropdown-toggle>
+                {{reportSettings.pageSize}}
+            </a>
+
+            <ul class="uib-dropdown-menu" aria-labelledby="simple-dropdown">
+                <li ng-repeat="pageSize in perPage">
+                    <a href ng-click="perPageChanged(pageSize)">{{pageSize}}</a>
+                </li>
+            </ul>
+        </span>
+
         <span class="per-page-after">on page</span>
     </div>
 
@@ -63,7 +77,7 @@
     <input type="text" ng-model="filtersFilter"/>
 
     <hr/>
-<!--{{dynamicPopover.projectFilter}}-->
+    <!--{{dynamicPopover.projectFilter}}-->
     <div ng-repeat="filterValue in dynamicPopover.projectFilter.value | filter:{isChecked : true}">
         <input type="checkbox" ng-model="filterValue.isChecked"/>
 

@@ -158,11 +158,11 @@
   padding: 0 27px;
   margin-bottom: 30px;
   font-size: 1.4rem; }
-  .report-controls ul {
+  .report-controls .pagination ul {
     float: right; }
-  .report-controls li {
-    float: left; }
-  .report-controls a {
+    .report-controls .pagination ul li {
+      float: left; }
+  .report-controls .pagination a {
     display: inline-block;
     width: 25px;
     padding: 4px 0;
@@ -173,19 +173,19 @@
     vertical-align: middle;
     color: #000;
     text-decoration: none; }
-    .report-controls a.next-page, .report-controls a.prev-page {
+    .report-controls .pagination a.next-page, .report-controls .pagination a.prev-page {
       float: right;
       width: auto;
       padding: 4px 12px;
       border-color: #dedede; }
-    .report-controls a:hover {
+    .report-controls .pagination a:hover {
       border-color: #666; }
-    .report-controls a.active {
+    .report-controls .pagination a.active {
       border-color: #dedede; }
-    .report-controls a.disabled {
+    .report-controls .pagination a.disabled {
       color: #dedede;
       cursor: default; }
-      .report-controls a.disabled:hover {
+      .report-controls .pagination a.disabled:hover {
         border-color: #dedede; }
   .report-controls .pagination-dots {
     padding: 4px 2px;
@@ -210,6 +210,7 @@
 .page-range {
   color: #999;
   font-weight: 100;
-  padding-right: 20px; }
+  padding-right: 20px;
+  line-height: 23px; }
 
 /*# sourceMappingURL=report.css.map */

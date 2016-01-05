@@ -222,15 +222,17 @@
     margin-bottom: 30px;
     font-size: 1.4rem;
 
-    ul{
+    .pagination ul{
         float: right;
+
+        li{
+            float: left;
+        }
     }
 
-    li{
-        float: left;
-    }
 
-    a{
+
+    .pagination a{
         display: inline-block;
         width: 25px;
         padding: 4px 0;
@@ -301,4 +303,5 @@
     color: #999;
     font-weight: 100;
     padding-right: 20px;
+    line-height: 23px;
 }

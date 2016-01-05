@@ -73,13 +73,13 @@ angular.module('mifortTimelog.report', ['ngRoute'])
                     field: 'userName',
                     enableColumnResizing: true,
                     enableColumnMenu: false,
-                    filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" col-name="userName" col-title="UserName"></span></div>'
+                    filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" col-name="userName" col-title="User Name"></span></div>'
                 },
                 {
                     field: 'projectName',
                     enableColumnResizing: true,
                     enableColumnMenu: false,
-                    filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" col-name="projectName" col-title="ProjectName"></span></div>'
+                    filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" col-name="projectName" col-title="Project Name"></span></div>'
                 },
                 {
                     field: 'role',
@@ -93,7 +93,7 @@ angular.module('mifortTimelog.report', ['ngRoute'])
                     enableColumnResizing: true,
                     enableColumnMenu: false,
                     enableFiltering: false,
-                    filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" col-name="time" col-title="time"></span></div>'
+                    filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" col-name="time" col-title="Time"></span></div>'
                 },
                 {
                     field: 'comment',
@@ -101,7 +101,7 @@ angular.module('mifortTimelog.report', ['ngRoute'])
                     enableColumnMenu: false,
                     enableSorting: false,
                     enableFiltering: false,
-                    filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" col-name="time" col-title="time"></span></div>'
+                    filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" col-name="time" col-title="Comment"></span></div>'
                 }
             ],
             data: 'reportData',
@@ -218,7 +218,8 @@ angular.module('mifortTimelog.report', ['ngRoute'])
             });
         };
 
-        $scope.perPageChanged = function() {
+        $scope.perPageChanged = function(perPage) {
+            $scope.reportSettings.pageSize = perPage;
             $scope.reportSettings.page = 1;
             $scope.getReport();
         };
