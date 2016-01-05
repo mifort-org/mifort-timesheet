@@ -41,6 +41,20 @@ footer, header, hgroup, menu, nav, section{
     display: block;
 }
 
+input[type='number'] {
+    -moz-appearance:textfield;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+
+small{
+    font-size: 10px;
+    line-height: 8px;
+}
+
 html{
     font-size: 62.5%; // 10px to use "rem"
 }
@@ -49,7 +63,7 @@ body{
     line-height: 1;
 
     .ui-notification{
-        padding: 5px  10px 5px 45px;
+        padding: 5px 10px 5px 45px;
         font-size: 1.4rem;
         border-left: 6px solid #74b65f;
 
@@ -131,7 +145,7 @@ h2{
 }
 
 input[type=number]::-webkit-inner-spin-button,
-input[type=number]::-webkit-outer-spin-button {
+input[type=number]::-webkit-outer-spin-button{
     -webkit-appearance: none;
     margin: 0;
 }
@@ -239,20 +253,18 @@ input[type=number]::-webkit-outer-spin-button {
 
     h2{
         margin-top: 4px;
-        font-size: 2.4rem;
+        font-size: 2.1rem;
     }
 }
 
 .collapse-item{
     padding-left: 20px;
-    font-size: 0.9em;
-    background: url("../images/icons.png") -12px -310px no-repeat;
+    background: url("../images/icons.png") -25px -308px no-repeat;
 
     &.collapsed{
-        background-position: -12px -626px;
+        background-position: -12px -628px;
     }
 }
-
 
 .table-bordered{
     border-color: #eaeff7;
@@ -301,6 +313,47 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .blank-dropdown{
+    display: inline-block;
+    width: 100%;
+    cursor: pointer;
+    border: 1px transparent solid;
 
+    > a{
+        display: inline-block;
+        width: 100%;
+        min-height: 33px;
+        padding: 8px 19px;
+        color: #000;
+        text-decoration: none;
+        background: url("../images/icons.png") right 20px top -304px no-repeat;
+    }
 
+    &.open{
+        border-color: #a0a0a0;
+
+        a{
+            background-position: right 20px top -1505px;
+        }
+    }
+
+    .dropdown-menu{
+        left: -1px;
+        right: -1px;
+        margin: 1px 0 0 0;
+        padding: 0;
+        font-size: inherit;
+
+        border-radius: 0;
+        border-top: 0;
+        border-color: #a0a0a0;
+
+        li a{
+            padding: 10px 19px 9px;
+
+            &:hover{
+                color: #19b5fe;
+                background: transparent;
+            }
+        }
+    }
 }

@@ -22,26 +22,31 @@ angular.module('mifortTimelog')
             scope: true,
             link: function(scope) {
                 scope.addAssignment = function(project, employee) {
-                    var newEmployee = _.find(scope.companyEmployees, {displayName: employee.displayName});
+                    var userForAssignment = _.findWhere(scope.companyEmployees, {_id: employee._id});
 
-                    if(newEmployee){
-                        newEmployee.assignments = [{
-                            projectId: project._id,
-                            projectName: project.name,
-                            role: '',
-                            userId: newEmployee._id,
-                            workload: ''
-                        }];
+                    if(userForAssignment){
+                        var userWithAssignments = _.findWhere(project.assignedEmployers, {_id: employee._id}),
+                            newAssignment = {
+                                projectId: project._id,
+                                projectName: project.name,
+                                role: project.availablePositions[0],
+                                userId: userForAssignment._id,
+                                workload: ''
+                            };
 
-                        if(!project.projectAssignments){
-                            project.projectAssignments = [];
+                        //if user has assignments
+                        if(userWithAssignments){
+                            userWithAssignments.assignments.push(newAssignment);
+                        }
+                        else{
+                            userForAssignment.assignments = [newAssignment];
+                            project.assignedEmployers.push(userForAssignment);
                         }
 
-                        project.projectAssignments.push(_.clone(newEmployee));
-                        scope.saveAssignment(project, _.clone(newEmployee));
+                        scope.saveAssignment(project, _.clone(userWithAssignments || userForAssignment));
                     }
 
-                    employee.displayName = null;
+                    //employee = {};
                 };
             },
             templateUrl: 'components/projectRow/projectRow.html'

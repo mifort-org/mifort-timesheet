@@ -36,41 +36,18 @@ angular.module('mifortTimelog.projects', ['ngRoute'])
         ];
         $scope.assignments = [
             'Developer',
-            'QA',
-            'Teamlead',
-            'Manager',
-            'СEO',
-            'CTO',
-            'Junior Developer',
-            'Senior Developer',
-            'Junior QA',
-            'Senior QA',
-            'Designer',
-            'UX'
+            'QA'
         ];
         $scope.currentProjectIndex = 0;
 
         projectsService.getProjects(companyId).success(function(projects) {
             $scope.projects = projects;
+            $scope.availablePositions = projects[0].availablePositions;
 
             $scope.projects.forEach(function(project) {
                 projectsService.getAssignedEmployers(project._id).success(function(assignedEmployers) {
-                    project.projectAssignments = [];
-                    assignedEmployers.forEach(function(employee) {
-                        if(employee.assignments.length > 1){
-                            employee.assignments.forEach(function(assignment) {
-                                var projectAssignment = _.clone(employee);
-
-                                projectAssignment.assignments = [assignment];
-                                project.projectAssignments.push(projectAssignment);
-                            });
-                        }
-                        else{
-                            project.projectAssignments.push(employee);
-                        }
-                    });
+                    project.assignedEmployers = assignedEmployers;
                     project.isCollapsed = false;
-                    //temp, remove after backend validation
                     project.projectEdit = false;
                 });
             });
@@ -99,18 +76,9 @@ angular.module('mifortTimelog.projects', ['ngRoute'])
             });
         };
 
-        $scope.saveAssignment = function(project, employee) {
-            var aggregatedEmployee,
-                aggregatedEmployeeAssignments = [];
-
-            _.filter(project.projectAssignments, {_id: employee._id}).forEach(function(assignment) {
-                aggregatedEmployeeAssignments.push(assignment.assignments[0]);
-            });
-
-            aggregatedEmployee = _.clone(employee);
-            aggregatedEmployee.assignments = aggregatedEmployeeAssignments;
-            projectsService.saveAssignment(project._id, aggregatedEmployee).success(function() {
-                Notification.success('Timesheet saved');
+        $scope.saveAssignment = function(project, assignedEmployee, employee, previousEmployeeId, assignmentIndex) {
+            projectsService.saveAssignment(project._id, assignedEmployee).success(function() {
+                Notification.success('Changes saved');
             });
         };
 
@@ -121,11 +89,37 @@ angular.module('mifortTimelog.projects', ['ngRoute'])
             }
         };
 
-        $scope.removeAssignment = function(project, assignment, assignmentIndex) {
-            project.projectAssignments.splice(assignmentIndex, 1);
-            $scope.saveAssignment(project, assignment).success(function() {
-                Notification.success('Timesheet saved');
-            });
+        $scope.changeRole = function(project, assignedEmployee, assignment, availablePosition) {
+            assignment.role = availablePosition;
+            $scope.saveAssignment(project, assignedEmployee);
+        };
+            
+        $scope.changeUser = function(project, assignedEmployee, companyEmployeeId, assignmentIndex) {
+            var userLostAssignment = assignedEmployee,
+                userGotAssignment = _.findWhere(project.assignedEmployers, {_id: companyEmployeeId}) ||
+                                    _.findWhere(companyEmployees, {_id: companyEmployeeId}),
+                assignment = userLostAssignment.assignments[assignmentIndex];
+
+            assignment.userId = userGotAssignment._id;
+
+            //if user already assigned somewhere
+            if(userGotAssignment.assignments){
+                userGotAssignment.assignments.push(assignment);
+            }
+            else{
+                userGotAssignment.assignments = [assignment];
+            }
+
+            userLostAssignment.assignments.splice(assignmentIndex, 1);
+
+            //remove assignment for one and add for another
+            $scope.saveAssignment(project, userLostAssignment);
+            $scope.saveAssignment(project, userGotAssignment);
+        };
+
+        $scope.removeAssignment = function(project, assignedEmployee, assignmentIndex) {
+            assignedEmployee.assignments.splice(assignmentIndex, 1);
+            $scope.saveAssignment(project, assignedEmployee);
         };
 
         $scope.$on('handleBroadcast', function() {

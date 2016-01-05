@@ -228,6 +228,7 @@ angular.module('mifortTimelog.timelog', ['ngRoute'])
                 newRow.date = log.date;
                 newRow.userName = log.userName;
                 newRow.color = log.color;
+                newRow.role = log.role;
                 newRow.isFirstDayRecord = false;
                 newRow.position = maxPosition + 1;
 

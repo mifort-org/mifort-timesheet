@@ -33,7 +33,7 @@
       width: 90px;
       text-align: center; }
     .timelog .table td {
-      padding: 2px; }
+      padding: 0; }
       .timelog .table td:nth-child(3) {
         padding: 2px; }
     .timelog .table .form-control {

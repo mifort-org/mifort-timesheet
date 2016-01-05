@@ -15,22 +15,37 @@
 -->
 
 <td>
-    <select id="newEmployee"
-            ng-options="employee.displayName as employee.displayName for employee in companyEmployees"
-            ng-model="employee.displayName"
-            class="form-control timesheet-control"
-            ng-change="addAssignment(project, employee, true)">
-    </select>
+    <!--<select id="newEmployee"-->
+            <!--ng-options="employee as employee.displayName for employee in companyEmployees"-->
+            <!--ng-model="employee"-->
+            <!--class="form-control timesheet-control"-->
+            <!--ng-change="addAssignment(project, employee)">-->
+    <!--</select>-->
+
+    <span class="blank-dropdown" uib-dropdown on-toggle="toggled(open)">
+        <a href id="simple-dropdown" uib-dropdown-toggle>
+            {{employee.displayName}}
+        </a>
+
+        <ul class="uib-dropdown-menu" aria-labelledby="simple-dropdown">
+            <li ng-repeat="employee in companyEmployees">
+                <!--{{assignedEmployee}}-->
+                <a href ng-click="addAssignment(project, employee)">{{employee.displayName}}</a>
+            </li>
+        </ul>
+    </span>
 </td>
 
 <td>
-    <select id="newRole"
-            ng-options="assignment.role as assignment.role for assignment in employee.assignments"
-            ng-model="employee.assignments[0].role"
-            class="form-control timesheet-control">
-    </select>
+    <!--<select id="newRole"-->
+            <!--ng-options="assignment.role as assignment.role for assignment in employee.assignments"-->
+            <!--ng-model="employee.assignments[0].role"-->
+            <!--class="form-control timesheet-control">-->
+    <!--</select>-->
+
+    <input type="number" disabled="true" ng-model="employee.assignments[0].workload"/>
 </td>
 
 <td>
-    <input type="text" ng-model="employee.assignments[0].workload"/>
+    <input type="number" disabled="true" ng-model="employee.assignments[0].workload"/>
 </td>

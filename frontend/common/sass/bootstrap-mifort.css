@@ -50,4 +50,11 @@ select.form-control {
 .popover {
   border-radius: 0; }
 
+.table > tbody + tbody {
+  border-top: 0; }
+
+html input[disabled] {
+  cursor: not-allowed;
+  background: transparent; }
+
 /*# sourceMappingURL=bootstrap-mifort.css.map */
