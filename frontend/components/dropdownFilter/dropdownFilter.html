@@ -20,7 +20,6 @@
    popover-title="{{dynamicPopover.title}}"
    popover-placement="bottom"
    popover-trigger="outsideClick"data-toggle="popover"
-   ng-class="{'active': popoverOpened}"
-   ng-click="popoverOpened = !popoverOpened">
+   ng-class="{'active': hasFilter()}">
 </a>
 <!--popover-append-to-body="true"-->

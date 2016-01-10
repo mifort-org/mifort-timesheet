@@ -39,6 +39,10 @@ angular.module('mifortTimelog')
                         }
                     })
                 };
+
+                scope.hasFilter = function() {
+                    return _.where(scope.dynamicPopover.projectFilter.value, {isChecked : true}).length
+                }
             },
             templateUrl: 'components/dropdownFilter/dropdownFilter.html'
         };

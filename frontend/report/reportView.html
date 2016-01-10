@@ -13,7 +13,6 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-<button uib-popover="works!" popover-trigger="outsideClick" type="button">+</button>
 <div class="report-controls clearfix">
     <div class="per-page-wrapper">
         <label for="per-page" class="per-page-label">Show</label>
@@ -77,7 +76,7 @@
     <input type="text" ng-model="filtersFilter"/>
 
     <hr/>
-    <!--{{dynamicPopover.projectFilter}}-->
+
     <div ng-repeat="filterValue in dynamicPopover.projectFilter.value | filter:{isChecked : true}">
         <input type="checkbox" ng-model="filterValue.isChecked"/>
 
@@ -87,9 +86,8 @@
     <hr/>
 
     <div ng-repeat="filterValue in dynamicPopover.projectFilter.value | filter:filtersFilter | filter:{isChecked : false}">
-        <input type="checkbox" ng-model="filterValue.isChecked"/>
+        <input type="checkbox" ng-model="filterValue.isChecked" ng-click="$event.stopPropagation();"/>
 
         {{filterValue.name.role || filterValue.name}}
     </div>
-    <!--{{dynamicPopover.projectFilter}}-->
 </script>
