@@ -16,10 +16,10 @@
 
 <a href=""
    class="report-filter"
-   popover-template="dynamicPopover.templateUrl"
+   uib-popover-template="dynamicPopover.templateUrl"
    popover-title="{{dynamicPopover.title}}"
    popover-placement="bottom"
-   data-toggle="popover"
+   popover-trigger="outsideClick"data-toggle="popover"
    ng-class="{'active': popoverOpened}"
    ng-click="popoverOpened = !popoverOpened">
 </a>

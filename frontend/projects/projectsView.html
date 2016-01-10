@@ -53,7 +53,7 @@
                             {{assignedEmployee.displayName}}
                         </a>
 
-                        <ul class="uib-dropdown-menu" aria-labelledby="simple-dropdown">
+                        <ul uib-dropdown-menu aria-labelledby="simple-dropdown">
                             <li ng-repeat="companyEmployee in companyEmployees">
                                 <!--{{assignedEmployee}}-->
                                 <a href ng-click="changeUser(project, assignedEmployee, companyEmployee._id, $index)">{{companyEmployee.displayName}}</a>
@@ -75,7 +75,7 @@
                             {{assignment.role}}
                         </a>
 
-                        <ul class="uib-dropdown-menu" aria-labelledby="simple-dropdown">
+                        <ul uib-dropdown-menu aria-labelledby="simple-dropdown">
                             <li ng-repeat="availablePosition in availablePositions">
                                 <!--{{assignedEmployee}}-->
                                 <a href ng-click="changeRole(project, assignedEmployee, assignment, availablePosition)">{{availablePosition}}</a>

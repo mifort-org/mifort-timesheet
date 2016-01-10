@@ -27,7 +27,7 @@
             {{employee.displayName}}
         </a>
 
-        <ul class="uib-dropdown-menu" aria-labelledby="simple-dropdown">
+        <ul uib-dropdown-menu aria-labelledby="simple-dropdown">
             <li ng-repeat="employee in companyEmployees">
                 <a href ng-click="addAssignment(project, employee)">{{employee.displayName}}</a>
             </li>

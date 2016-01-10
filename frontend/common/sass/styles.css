@@ -267,7 +267,7 @@ input[type=number]::-webkit-outer-spin-button {
     border-color: #a0a0a0; }
     .blank-dropdown.open a {
       background-position: right 20px top -1504px; }
-  .blank-dropdown .dropdown-menu {
+  .blank-dropdown ul {
     left: -1px;
     right: -1px;
     min-width: 50px;
@@ -276,9 +276,9 @@ input[type=number]::-webkit-outer-spin-button {
     font-size: inherit;
     border-radius: 0;
     border-color: #a0a0a0; }
-    .blank-dropdown .dropdown-menu li a {
+    .blank-dropdown ul li a {
       padding: 10px 19px 9px; }
-      .blank-dropdown .dropdown-menu li a:hover {
+      .blank-dropdown ul li a:hover {
         color: #19b5fe;
         background: transparent; }
 

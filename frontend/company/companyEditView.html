@@ -71,7 +71,7 @@
                                         {{employee.role}}
                                     </a>
 
-                                    <ul class="uib-dropdown-menu" aria-labelledby="simple-dropdown">
+                                    <ul uib-dropdown-menu aria-labelledby="simple-dropdown">
                                         <li ng-repeat="role in possibleRoles">
                                             <a href ng-click="changeRole(employee, role)">{{role}}</a>
                                         </li>

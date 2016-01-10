@@ -13,7 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-
+<button uib-popover="works!" popover-trigger="outsideClick" type="button">+</button>
 <div class="report-controls clearfix">
     <div class="per-page-wrapper">
         <label for="per-page" class="per-page-label">Show</label>
@@ -30,7 +30,7 @@
                 {{reportSettings.pageSize}}
             </a>
 
-            <ul class="uib-dropdown-menu" aria-labelledby="simple-dropdown">
+            <ul uib-dropdown-menu aria-labelledby="simple-dropdown">
                 <li ng-repeat="pageSize in perPage">
                     <a href ng-click="perPageChanged(pageSize)">{{pageSize}}</a>
                 </li>

@@ -30,7 +30,7 @@
                     {{selectedPeriod.periodName}}
                 </a>
 
-                <ul class="uib-dropdown-menu" aria-labelledby="simple-dropdown">
+                <ul uib-dropdown-menu aria-labelledby="simple-dropdown">
                     <li ng-repeat="period in periodSettings">
                         <a href ng-click="changePeriodSplit(period)">{{period.periodName}}</a>
                     </li>
