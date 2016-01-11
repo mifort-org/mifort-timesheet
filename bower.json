@@ -1,14 +1,38 @@
 {
   "name": "mifort-timesheet",
   "description": "mifort description",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "homepage": "https://mifort.net/",
   "license": "Apache-2.0",
   "private": true,
   "dependencies": {
-    "angular": "~1.4.0",
-    "angular-route": "~1.4.0",
-    "angular-loader": "~1.4.0",
-    "angular-mocks": "~1.4.0"
+    "angular": "~1.4.6",
+    "angular-route": "~1.4.6",
+    "angular-i18n": "~1.4.6",
+    "angular-google-analytics": "~0.0.18",
+    "angular-ui-sortable": "~0.13.4",
+    "angular-ui-utils": "~0.1.1",
+    "angular-ui-select": "~0.13.1",
+    "angular-ui-select2": "~0.0.5",
+    "angular-ui-grid": "~3.0.6",
+    "angular-ui-slider": "~0.1.4",
+    "bootstrap": "~3.3.5",
+    "ngprogress": "~1.0.7",
+    "fontawesome": "~4.4.0",
+    "jquery": "~2.1.4",
+    "jquery-ui": "~1.11.4",
+    "select2": "~3.4.8",
+    "jquery-placeholder": "~2.0.8",
+    "momentjs": "~2.8.4",
+    "ng-joyride": "~0.1.11",
+    "ng-tags-input": "2.3.0",
+    "ng-focus-if": "~1.0.2",
+    "angular-ui-event": "~1.0.0",
+    "angular-ui-unique": "angular-ui-utils#unique-0.2.3",
+    "angular-ui-highlight": "angular-ui-utils#highlight-0.2.3",
+    "angular-bootstrap": "~0.14.3"
+  },
+  "resolutions": {
+    "angular": "~1.4.6"
   }
 }
