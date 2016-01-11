@@ -85,9 +85,12 @@
 
     <hr/>
 
-    <div ng-repeat="filterValue in dynamicPopover.projectFilter.value | filter:filtersFilter | filter:{isChecked : false}">
-        <input type="checkbox" ng-model="filterValue.isChecked" ng-click="$event.stopPropagation();"/>
+    <!--angular bootstrap popover unintentional close solution-->
+    <div ng-repeat="n in range(dynamicPopover.projectFilter.value.length) track by $index">
+        <input type="checkbox" ng-model="dynamicPopover.projectFilter.value[$index].isChecked"/>
 
-        {{filterValue.name.role || filterValue.name}}
+        {{dynamicPopover.projectFilter.value[$index].name.role || dynamicPopover.projectFilter.value[$index].name}}
     </div>
 </script>
+
+<!--{{gridOptions.reportFilters[0]}}-->

@@ -42,7 +42,11 @@ angular.module('mifortTimelog')
 
                 scope.hasFilter = function() {
                     return _.where(scope.dynamicPopover.projectFilter.value, {isChecked : true}).length
-                }
+                };
+
+                scope.range = function(n) {
+                    return new Array(n);
+                };
             },
             templateUrl: 'components/dropdownFilter/dropdownFilter.html'
         };
