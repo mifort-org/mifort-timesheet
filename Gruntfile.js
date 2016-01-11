@@ -1,11 +1,24 @@
 'use strict';
 
-module.exports = function (grunt) {
-    //grunt.loadNpmTasks('grunt-usemin');
+module.exports = function(grunt) {
+
+    grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-contrib-clean');
+    grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-contrib-concat');
+    grunt.loadNpmTasks('grunt-usemin');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-cssmin');
+    grunt.loadNpmTasks('grunt-notify');
+    grunt.loadNpmTasks('grunt-remove');
+    grunt.loadNpmTasks('grunt-cache-breaker');
+    grunt.loadNpmTasks('grunt-ng-annotate');
+    grunt.loadNpmTasks('grunt-angular-templates');
+
 
     grunt.initConfig({
         clean: {
-            build: ['src/main/webapp/dist', '.tmp']
+            build: ['dist', '.tmp']
         },
 
         copy: {
@@ -13,100 +26,39 @@ module.exports = function (grunt) {
                 files: [
                     {
                         expand: true,
-                        cwd: 'src/main/webapp/app',
+                        cwd: 'frontend',
                         src: [
-                            'assets/images/**',
-                            '**/*.html',
-                            '**/*Columns.json',
-                            '!testFramework/**/*',
-                            'customerManagement/orgsManagement/orgNotes/fixtureData.json'
+                            'common/images/**',
+                            '**/**/*.html',
+                            '**/*.html'
                         ],
-                        dest: 'src/main/webapp/dist'
-                    },
-                    {
-                        expand: true,
-                        cwd: 'src/main/webapp/app/testFramework',
-                        src: [
-                            '**'
-                        ],
-                        dest: 'src/main/webapp/dist/testFramework'
-                    },
-                    {
-                        expand: true,
-                        flatten: true,
-                        src: [
-                            'src/main/webapp/app/bower_components/angular-i18n/angular-locale_de.js',
-                            'src/main/webapp/app/bower_components/angular-i18n/angular-locale_en.js',
-                            'src/main/webapp/app/bower_components/angular-i18n/angular-locale_ru.js'
-                        ],
-                        dest: 'src/main/webapp/dist/assets/scripts/i18n'
-                    },
-                    {
-                        expand: true,
-                        flatten: true,
-                        src: [
-                            'src/main/webapp/app/updateBrowser/updateBrowserBanner.js'
-                        ],
-                        dest: 'src/main/webapp/dist/assets/scripts/updateBrowser'
-                    },
-                    {
-                        expand: true,
-                        cwd: 'src/main/webapp/app/updateBrowser',
-                        src: [
-                            '**',
-                            '!updateBrowserBanner.js'
-                        ],
-                        dest: 'src/main/webapp/dist/updateBrowser'
-                    },
-                    {
-                        expand: true,
-                        cwd: 'src/main/webapp/app/tjvmDocument',
-                        src: [
-                            '**'
-                        ],
-                        dest: 'src/main/webapp/dist/tjvmDocument'
-                    },
-                    {
-                        expand: true,
-                        flatten: true,
-                        src: 'src/main/webapp/app/bower_components/fontawesome/fonts/*',
-                        dest: 'src/main/webapp/dist/assets/fonts'
-                    },
-                    {
-                        expand: true,
-                        flatten: true,
-                        src: 'src/main/webapp/app/bower_components/bootstrap/dist/fonts/*',
-                        dest: 'src/main/webapp/dist/assets/fonts'
-                    },
-                    {
-                        expand: true,
-                        flatten: true,
-                        src: [
-                            'src/main/webapp/app/bower_components/angular-ui-grid/ui-grid.ttf',
-                            'src/main/webapp/app/bower_components/angular-ui-grid/ui-grid.woff'
-                        ],
-                        dest: 'src/main/webapp/dist/assets/styles'
-                    },
-                    {
-                        expand: true,
-                        flatten: true,
-                        src: [
-                            'src/main/webapp/app/bower_components/jquery-ui/themes/overcast/images/*'
-                        ],
-                        dest: 'src/main/webapp/dist/assets/images'
+                        dest: 'dist/frontend'
                     }
+                    //{
+                    //    expand: true,
+                    //    flatten: true,
+                    //    src: 'frontend/bower_components/fontawesome/fonts/*',
+                    //    dest: 'dist/assets/fonts'
+                    //},
+                    //{
+                    //    expand: true,
+                    //    flatten: true,
+                    //    src: [
+                    //        'frontend/bower_components/jquery-ui/themes/overcast/images/*'
+                    //    ],
+                    //    dest: 'dist/assets/images'
+                    //}
                 ]
             },
             dist: {
-
                 files: [
                     {
                         expand: true,
-                        cwd: 'src/main/webapp/dist',
+                        cwd: 'dist/frontend',
                         src: [
                             '**'
                         ],
-                        dest: 'src/main/webapp/app'
+                        dest: 'frontend'
                     }
                 ]
             }
@@ -115,107 +67,60 @@ module.exports = function (grunt) {
         concat: {
             styles: {
                 files: {
-                    'src/main/webapp/dist/assets/styles/vendors.css': [
-                        'src/main/webapp/app/components/ng-table/ng-table.min.css',
-                        'src/main/webapp/app/components/nvd3/build/nv.d3.min.css',
-                        'src/main/webapp/app/bower_components/bootstrap/dist/css/bootstrap.min.css',
-                        'src/main/webapp/app/bower_components/fontawesome/css/font-awesome.min.css',
-                        'src/main/webapp/app/bower_components/select2/select2.css',
-                        'src/main/webapp/app/bower_components/ngprogress/ngProgress.css',
-                        'src/main/webapp/app/bower_components/angular-bootstrap-toggle-switch/style/bootstrap3/angular-toggle-switch-bootstrap-3.css',
-                        'src/main/webapp/app/bower_components/ng-joyride/ng-joyride.css',
-                        'src/main/webapp/app/bower_components/angular-ui-select/dist/select.min.css',
-                        'src/main/webapp/app/bower_components/angular-ui-grid/ui-grid.min.css',
-                        'src/main/webapp/app/bower_components/ng-tags-input/ng-tags-input.min.css',
-                        'src/main/webapp/app/bower_components/ng-tags-input/ng-tags-input.bootstrap.min.css',
-                        'src/main/webapp/app/bower_components/jquery-ui/themes/overcast/jquery-ui.min.css'
+                    'dist/styles/vendors.css': [
+                        'frontend/bower_components/angular-ui-grid/ui-grid.min.css',
+                        'frontend/bower_components/angular-ui-notification/dist/angular-ui-notification.min.css',
+                        'frontend/bower_components/bootstrap/dist/css/bootstrap.min.css',
+                        'frontend/bower_components/bootstrap-daterangepicker/daterangepicker-bs3.css'
                     ],
-                    'src/main/webapp/dist/assets/styles/styles.css': [
-                        'src/main/webapp/app/**/*.css',
-                        '!src/main/webapp/app/vendors/**/*.css',
-                        '!src/main/webapp/app/bower_components/**',
-                        '!src/main/webapp/app/updateBrowser/updateBrowser.css',
-                        '!src/main/webapp/app/tjvmDocument/tjvmDocument.css',
-                        '!src/main/webapp/app/components/angular-nvd3/**',
-                        '!src/main/webapp/app/components/nvd3/**',
-                        '!src/main/webapp/app/components/d3/**'
+                    'dist/styles/styles.css': [
+                        'frontend/**/**/*.css',
+                        'frontend/**/*.css',
+                        '!frontend/bower_components/**'
                     ]
                 },
                 options: {
-                    process: function (src) {
-                        return src.replace(/(?:(?:(?:\.\.\/)+assets\/)|(?:(?:\.\.\/)*))images\//g, '../images/');
+                    process: function(src) {
+                        return src.replace(/(?:(?:(?:\.\.\/)+common\/)|(?:(?:\.\.\/)*))images\//g, '../images/');
                     }
                 }
             },
             scripts: {
-                src: (function (pattern) {
+                src: (function(pattern) {
                     var scriptsPaths = grunt.file.expand(pattern);
-                    return scriptsPaths.sort(function (a, b) {
+                    return scriptsPaths.sort(function(a, b) {
                         var am = a.match(/-/g) || [],
                             bm = b.match(/-/g) || [];
                         return am.length - bm.length;
                     });
                 })([
-                    'src/main/webapp/app/**/*.js',
-                    '!src/main/webapp/app/testFramework/init.js',
-                    '!src/main/webapp/app/components/vm-custom/**/*.js',
-                    '!src/main/webapp/app/components/d3/**',
-                    '!src/main/webapp/app/components/nvd3/**',
-                    '!src/main/webapp/app/components/angular-nvd3/**',
-                    '!src/main/webapp/app/vendors/**/*.js',
-                    '!src/main/webapp/app/bower_components/**',
-                    '!src/main/webapp/app/updateBrowser/updateBrowserBanner.js',
-                    '!src/main/webapp/app/tjvmDocument/tjvmDocument.js'
+                    'frontend/**/*.js',
+                    '!frontend/bower_components/**'
                 ]),
-                dest: 'src/main/webapp/dist/assets/scripts/scripts.js'
-            },
-            vmscripts: {
-                src: ['src/main/webapp/app/testFramework/init.js', 'src/main/webapp/app/components/vm-custom/**/*.js'],
-                dest: 'src/main/webapp/dist/assets/scripts/vmscripts.js'
+                dest: 'dist/scripts/scripts.js'
             },
             vendors: {
                 src: [
-                    'src/main/webapp/app/bower_components/jquery/dist/jquery.min.js',
-                    'src/main/webapp/app/bower_components/jquery-ui/jquery-ui.min.js',
-                    'src/main/webapp/app/bower_components/jquery-placeholder/jquery.placeholder.js',
-                    'src/main/webapp/app/bower_components/angular/angular.min.js',
-                    'src/main/webapp/app/bower_components/select2/select2.js',
-                    'src/main/webapp/app/bower_components/angular-route/angular-route.min.js',
-                    'src/main/webapp/app/bower_components/ngprogress/build/ngProgress.min.js',
-                    'src/main/webapp/app/bower_components/angular-ui-select2/src/select2.js',
-                    'src/main/webapp/app/bower_components/bootstrap/dist/js/bootstrap.min.js',
-                    'src/main/webapp/app/bower_components/angular-bootstrap/ui-bootstrap.min.js',
-                    'src/main/webapp/app/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js',
-                    'src/main/webapp/app/bower_components/angular-ui-event/dist/event.min.js',
-                    'src/main/webapp/app/bower_components/angular-ui-unique/unique.min.js',
-                    'src/main/webapp/app/bower_components/angular-ui-highlight/highlight.min.js',
-                    'src/main/webapp/app/components/d3/d3.min.js',
-                    'src/main/webapp/app/components/nvd3/build/nv.d3.min.js',
-                    'src/main/webapp/app/components/angular-nvd3/dist/angular-nvd3.min.js',
-                    'src/main/webapp/app/bower_components/angular-google-analytics/dist/angular-google-analytics.min.js',
-                    'src/main/webapp/app/bower_components/angular-touch/angular-touch.min.js',
-                    'src/main/webapp/app/bower_components/angular-ui-sortable/sortable.min.js',
-                    'src/main/webapp/app/bower_components/angularjs-placeholder/src/angularjs-placeholder.js',
-                    'src/main/webapp/app/bower_components/angular-bootstrap-toggle-switch/angular-toggle-switch.min.js',
-                    'src/main/webapp/app/bower_components/ng-joyride/ng-joyride.js',
-                    'src/main/webapp/app/bower_components/momentjs/min/moment-with-locales.min.js',
-                    'src/main/webapp/app/bower_components/angular-ui-select/dist/select.min.js',
-                    'src/main/webapp/app/bower_components/angular-ui-grid/ui-grid.min.js',
-                    'src/main/webapp/app/bower_components/angular-validation/angular-validation.min.js',
-                    'src/main/webapp/app/bower_components/angular-validation/angular-validation-rule.min.js',
-                    'src/main/webapp/app/bower_components/angular-file-upload/angular-file-upload.min.js',
-                    'src/main/webapp/app/bower_components/file-saver/file-saver.js',
-                    'src/main/webapp/app/bower_components/xml2json/xml2json.js',
-                    'src/main/webapp/app/bower_components/ng-tags-input/ng-tags-input.min.js',
-                    'src/main/webapp/app/bower_components/ng-focus-if/focusIf.min.js',
-                    'src/main/webapp/app/bower_components/angular-ui-slider/src/slider.js'
+                    'frontend/bower_components/jquery/dist/jquery.min.js',
+                    'frontend/bower_components/angular/angular.min.js',
+                    'frontend/bower_components/angular-route/angular-route.min.js',
+                    'frontend/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js',
+                    'frontend/bower_components/underscore/underscore-min.js',
+                    'frontend/bower_components/moment/min/moment.min.js',
+                    'frontend/bower_components/angular-moment/angular-moment.min.js',
+                    'frontend/bower_components/angular-cookies/angular-cookies.min.js',
+                    'frontend/bower_components/angular-ui-grid/ui-grid.min.js',
+                    'frontend/bower_components/angular-click-outside/clickoutside.directive.js',
+                    'frontend/bower_components/bootstrap-daterangepicker/daterangepicker.js',
+                    'frontend/bower_components/ng-bs-daterangepicker/dist/ng-bs-daterangepicker.min.js',
+                    'frontend/bower_components/angular-ui-notification/dist/angular-ui-notification.min.js'
                 ],
-                dest: 'src/main/webapp/dist/assets/scripts/modules.js'
+                dest: 'dist/scripts/vendors.js'
             }
         },
 
         usemin: {
-            html: ['src/main/webapp/dist/index.html']
+            html: ['dist/index.html']
         },
 
         ngAnnotate: {
@@ -224,23 +129,23 @@ module.exports = function (grunt) {
             },
             app: {
                 files: {
-                    'src/main/webapp/dist/assets/scripts/scripts.js': ['src/main/webapp/dist/assets/scripts/scripts.js'],
-                    'src/main/webapp/dist/assets/scripts/vmscripts.js': ['src/main/webapp/dist/assets/scripts/vmscripts.js']
+                    'dist/scripts/scripts.js': ['dist/scripts/scripts.js']
                 }
             }
         },
 
+        //for later usage(caching html templates)
         ngtemplates: {
             app: {
-                src: 'src/main/webapp/dist/**/*.html',
-                dest: 'src/main/webapp/dist/assets/scripts/templates.js',
+                src: 'dist/**/*.html',
+                dest: 'dist/scripts/templates.js',
                 options: {
-                    url: function (url) {
+                    url: function(url) {
                         url = url.slice(url.indexOf('dist'));
 
                         return url.replace('dist/', '');
                     },
-                    module: 'egx',
+                    module: 'mifortTimelog',
                     htmlmin: {
                         collapseBooleanAttributes: false, // Otherwise 'sortable' attribute values are deleted
                         collapseWhitespace: true,
@@ -261,10 +166,8 @@ module.exports = function (grunt) {
             },
             build: {
                 files: {
-                    'src/main/webapp/dist/assets/scripts/scripts.min.js': ['src/main/webapp/dist/assets/scripts/scripts.js'],
-                    'src/main/webapp/dist/assets/scripts/vmscripts.min.js': ['src/main/webapp/dist/assets/scripts/vmscripts.js'],
-                    'src/main/webapp/dist/assets/scripts/modules.min.js': ['src/main/webapp/dist/assets/scripts/modules.js'],
-                    'src/main/webapp/dist/assets/scripts/templates.min.js': ['src/main/webapp/dist/assets/scripts/templates.js']
+                    'dist/scripts/scripts.min.js': ['dist/scripts/scripts.js'],
+                    'dist/scripts/vendors.min.js': ['dist/scripts/vendors.js']
                 }
             }
         },
@@ -274,9 +177,9 @@ module.exports = function (grunt) {
                 files: [
                     {
                         expand: true,
-                        cwd: 'src/main/webapp/dist/assets/styles/',
+                        cwd: 'dist/styles/',
                         src: ['*.css', '!*.min.css'],
-                        dest: 'src/main/webapp/dist/assets/styles/',
+                        dest: 'dist/styles/',
                         ext: '.css'
                     }
                 ]
@@ -286,7 +189,7 @@ module.exports = function (grunt) {
         notify: {
             options: {
                 enabled: true,
-                title: 'EGX'
+                title: 'Mifort'
             }
         },
 
@@ -294,10 +197,10 @@ module.exports = function (grunt) {
             // Removes the webapp/app directory. Careful. Used to replace app with dist
             // in official build.
             app: {
-                dirList: ['src/main/webapp/app/']
+                dirList: ['frontend/']
             },
             dist: {
-                dirList: ['src/main/webapp/dist/']
+                dirList: ['dist/frontend']
             }
         },
 
@@ -307,71 +210,23 @@ module.exports = function (grunt) {
                     match: ['scripts.min.js'],
                     replacement: 'md5',
                     src: {
-                        path: 'src/main/webapp/dist/assets/scripts/scripts.min.js'
+                        path: 'dist/scripts/scripts.min.js'
                     }
                 },
                 files: {
-                    src: ['src/main/webapp/dist/index.html']
+                    src: ['dist/index.html']
                 }
             },
-            vmscripts: {
+            vendorsscripts: {
                 options: {
-                    match: ['vmscripts.min.js'],
+                    match: ['vendors.min.js'],
                     replacement: 'md5',
                     src: {
-                        path: 'src/main/webapp/dist/assets/scripts/vmscripts.min.js'
+                        path: 'dist/scripts/vendors.min.js'
                     }
                 },
                 files: {
-                    src: ['src/main/webapp/dist/index.html']
-                }
-            },
-            modules: {
-                options: {
-                    match: ['modules.min.js'],
-                    replacement: 'md5',
-                    src: {
-                        path: 'src/main/webapp/dist/assets/scripts/modules.min.js'
-                    }
-                },
-                files: {
-                    src: ['src/main/webapp/dist/index.html']
-                }
-            },
-            updateBrowser: {
-                options: {
-                    match: ['updateBrowserBanner.js'],
-                    replacement: 'md5',
-                    src: {
-                        path: 'src/main/webapp/dist/assets/scripts/updateBrowser/updateBrowserBanner.js'
-                    }
-                },
-                files: {
-                    src: ['src/main/webapp/dist/index.html']
-                }
-            },
-            locale: {
-                options: {
-                    match: ['angular-locale_\\${locale}.js'],
-                    replacement: 'md5',
-                    src: {
-                        path: 'src/main/webapp/dist/assets/scripts/i18n/angular-locale_en.js'
-                    }
-                },
-                files: {
-                    src: ['src/main/webapp/dist/index.html']
-                }
-            },
-            templates: {
-                options: {
-                    match: ['templates.min.js'],
-                    replacement: 'md5',
-                    src: {
-                        path: 'src/main/webapp/dist/assets/scripts/templates.min.js'
-                    }
-                },
-                files: {
-                    src: ['src/main/webapp/dist/index.html']
+                    src: ['dist/index.html']
                 }
             },
             vendors: {
@@ -379,11 +234,11 @@ module.exports = function (grunt) {
                     match: ['vendors.css'],
                     replacement: 'md5',
                     src: {
-                        path: 'src/main/webapp/dist/assets/styles/vendors.css'
+                        path: 'dist/styles/vendors.css'
                     }
                 },
                 files: {
-                    src: ['src/main/webapp/dist/index.html']
+                    src: ['dist/index.html']
                 }
             },
             styles: {
@@ -391,25 +246,26 @@ module.exports = function (grunt) {
                     match: ['styles.css'],
                     replacement: 'md5',
                     src: {
-                        path: 'src/main/webapp/dist/assets/styles/styles.css'
+                        path: 'dist/styles/styles.css'
                     }
                 },
                 files: {
-                    src: ['src/main/webapp/dist/index.html']
-                }
-            },
-            favicon: {
-                options: {
-                    match: ['favicon.ico'],
-                    replacement: 'md5',
-                    src: {
-                        path: 'src/main/webapp/dist/assets/images/favicon.ico'
-                    }
-                },
-                files: {
-                    src: ['src/main/webapp/dist/index.html']
+                    src: ['dist/index.html']
                 }
             }
+            //,
+            //favicon: {
+            //    options: {
+            //        match: ['favicon.ico'],
+            //        replacement: 'md5',
+            //        src: {
+            //            path: 'dist/assets/images/favicon.ico'
+            //        }
+            //    },
+            //    files: {
+            //        src: ['dist/index.html']
+            //    }
+            //}
         }
     });
 
