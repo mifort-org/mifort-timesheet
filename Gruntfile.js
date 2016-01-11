@@ -1,19 +1,20 @@
 'use strict';
 
 module.exports = function(grunt) {
+    grunt.loadNpmTasks('grunt-contrib-watch'); //Run predefined tasks whenever watched file patterns are added, changed or deleted
+    grunt.loadNpmTasks('grunt-contrib-clean'); //Clean files and folders
+    grunt.loadNpmTasks('grunt-contrib-copy'); //Copy files and folders
+    grunt.loadNpmTasks('grunt-contrib-concat'); //Concatenate files
+    grunt.loadNpmTasks('grunt-remove'); //Remove directory and files
 
-    grunt.loadNpmTasks('grunt-contrib-watch');
-    grunt.loadNpmTasks('grunt-contrib-clean');
-    grunt.loadNpmTasks('grunt-contrib-copy');
-    grunt.loadNpmTasks('grunt-contrib-concat');
-    grunt.loadNpmTasks('grunt-usemin');
-    grunt.loadNpmTasks('grunt-contrib-uglify');
-    grunt.loadNpmTasks('grunt-contrib-cssmin');
-    grunt.loadNpmTasks('grunt-notify');
-    grunt.loadNpmTasks('grunt-remove');
-    grunt.loadNpmTasks('grunt-cache-breaker');
-    grunt.loadNpmTasks('grunt-ng-annotate');
-    grunt.loadNpmTasks('grunt-angular-templates');
+    grunt.loadNpmTasks('grunt-usemin'); //Replaces references to non-optimized scripts or stylesheets into a set of HTML
+    grunt.loadNpmTasks('grunt-contrib-uglify'); //Minify files with UglifyJS
+    grunt.loadNpmTasks('grunt-contrib-cssmin'); //Minify CSS
+
+    grunt.loadNpmTasks('grunt-notify'); //Automatic desktop notifications for Grunt errors and warnings
+    grunt.loadNpmTasks('grunt-cache-breaker'); //Cache-breaker, appends a timestamp or md5 hash to any urls
+    grunt.loadNpmTasks('grunt-ng-annotate'); //AngularJS dependency injection annotations
+    grunt.loadNpmTasks('grunt-angular-templates'); //Concatenate & register your AngularJS templates in the $templateCache
 
 
     grunt.initConfig({
@@ -288,5 +289,4 @@ module.exports = function(grunt) {
         'copy:dist',
         'remove:dist'
     ]);
-
 };
