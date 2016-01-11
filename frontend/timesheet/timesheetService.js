@@ -32,7 +32,7 @@ angular.module('mifortTimelog.timesheet').factory('timesheetService',
                 ]
             },
             getWeekDays: function () {
-                return ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
+                return ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
             }
         };
     }

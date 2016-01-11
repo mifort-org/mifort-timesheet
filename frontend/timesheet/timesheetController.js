@@ -102,11 +102,11 @@ angular.module('mifortTimelog.timesheet', ['ngRoute'])
 
         function generateTimesheetTables(day, index) {
             var currentDate = new Date(day.date),
-                currentDayWeek = moment(currentDate).get('isoWeek'),
+                currentDayWeek = moment(currentDate).get('week'),
                 currentDayMonth = moment(currentDate).get('month'),
                 currentDayYear = moment(currentDate).get('year') - moment(new Date()).get('year'),
-                daysBeforeTimesheetStart = moment(currentDate).isoWeekday(),
-                daysAfterTimesheetEnd = $scope.timesheet[index - 1] && 7 - moment(new Date($scope.timesheet[index - 1].date)).isoWeekday(),
+                daysBeforeTimesheetStart = moment(currentDate).weekday(),
+                daysAfterTimesheetEnd = $scope.timesheet[index - 1] && 6 - moment(new Date($scope.timesheet[index - 1].date)).weekday(),
                 generatedDay;
 
             //last week reset
@@ -123,7 +123,7 @@ angular.module('mifortTimelog.timesheet', ['ngRoute'])
             }
 
             function generatePreviousMonthDays() {
-                for(var k = 0; k < daysBeforeTimesheetStart - 1; k++){
+                for(var k = 0; k < daysBeforeTimesheetStart; k++){
                     generatedDay = _.clone($scope.company.template);
                     generatedDay.date = moment(currentDate).subtract(k + 1, 'day').format('MM/DD/YYYY');
                     generatedDay.disabled = true;
