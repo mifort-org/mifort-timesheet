@@ -121,7 +121,7 @@ module.exports = function(grunt) {
         },
 
         usemin: {
-            html: ['dist/index.html']
+            html: ['dist/frontend/index.html']
         },
 
         ngAnnotate: {
@@ -138,7 +138,10 @@ module.exports = function(grunt) {
         //for later usage(caching html templates)
         ngtemplates: {
             app: {
-                src: 'dist/**/*.html',
+                src: [
+                    'dist/**/*.html',
+                    '!dist/frontend/bower_components/**'
+                ],
                 dest: 'dist/scripts/templates.js',
                 options: {
                     url: function(url) {
@@ -198,10 +201,10 @@ module.exports = function(grunt) {
             // Removes the webapp/app directory. Careful. Used to replace app with dist
             // in official build.
             app: {
-                dirList: ['frontend/']
+                dirList: ['dist/frontend']
             },
             dist: {
-                dirList: ['dist/frontend']
+                dirList: ['frontend']
             }
         },
 
@@ -215,7 +218,7 @@ module.exports = function(grunt) {
                     }
                 },
                 files: {
-                    src: ['dist/index.html']
+                    src: ['dist/frontend/index.html']
                 }
             },
             vendorsscripts: {
@@ -227,7 +230,7 @@ module.exports = function(grunt) {
                     }
                 },
                 files: {
-                    src: ['dist/index.html']
+                    src: ['dist/frontend/index.html']
                 }
             },
             vendors: {
@@ -239,7 +242,7 @@ module.exports = function(grunt) {
                     }
                 },
                 files: {
-                    src: ['dist/index.html']
+                    src: ['dist/frontend/index.html']
                 }
             },
             styles: {
@@ -251,7 +254,7 @@ module.exports = function(grunt) {
                     }
                 },
                 files: {
-                    src: ['dist/index.html']
+                    src: ['dist/frontend/index.html']
                 }
             }
             //,
@@ -264,7 +267,7 @@ module.exports = function(grunt) {
             //        }
             //    },
             //    files: {
-            //        src: ['dist/index.html']
+            //        src: ['dist/frontend/index.html']
             //    }
             //}
         }
