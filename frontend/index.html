@@ -47,13 +47,7 @@
 <body>
 
 <div class="page-loading" ng-if="!isNotLoggedIn && !isLoggedIn">
-    <object type="application/x-shockwave-flash" data="common/images/animation-wait.swf" id="page-loading-animation">
-        <param name="movie" value="common/images/animation-wait.swf"/>
-        <param name="wmode" value="transparent"/>
-        <param name="FlashVars" value=""/>
-        <param name="quality" value="high"/>
-        <param name="menu" value="false"/>
-    </object>
+    <img src="common/images/animation-wait.gif" alt=""/>
 </div>
 
 <nav class="main-controls" ng-if="isLoggedIn">
