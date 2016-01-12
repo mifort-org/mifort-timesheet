@@ -5,6 +5,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-clean'); //Clean files and folders
     grunt.loadNpmTasks('grunt-contrib-copy'); //Copy files and folders
     grunt.loadNpmTasks('grunt-contrib-concat'); //Concatenate files
+    grunt.loadNpmTasks('grunt-mkdir'); //Create directories with Grunt
     grunt.loadNpmTasks('grunt-remove'); //Remove directory and files
 
     grunt.loadNpmTasks('grunt-usemin'); //Replaces references to non-optimized scripts or stylesheets into a set of HTML
@@ -244,11 +245,22 @@ module.exports = function(grunt) {
 
         remove: {
             // Removes the frontend directory. Careful. Used to replace app with dist in official build.
-            app: {
+            frontend: {
                 dirList: ['frontend']
             },
             dist: {
                 dirList: ['dist']
+            },
+            distfrontend: {
+                dirList: ['dist/frontend']
+            }
+        },
+
+        mkdir: {
+            frontend: {
+                options: {
+                    create: ['frontend']
+                }
             }
         }
     });
@@ -264,7 +276,9 @@ module.exports = function(grunt) {
         'cssmin',
         'notify',
         'cachebreaker',
-        'remove:app',
+        'remove:frontend',
+        'remove:distfrontend',
+        'mkdir:frontend',
         'copy:dist',
         'remove:dist'
     ]);
