@@ -13,54 +13,36 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-.main-tabs{
-    width: 250px;
-    float: left;
-}
+.main-tabs {
+  width: 250px;
+  float: left; }
 
-.tabs-left{
-    padding-bottom: 2px;
-    font-size: 1.6em;
-}
-
-.tabs-left .nav-tabs{
-    border-bottom: 0;
-}
-
-.tabs-left .nav-tabs > li{
-    margin-bottom: 0;
-}
-
-.tabs-left .nav-stacked > li + li{
-    margin: 0;
-}
-
-.tabs-left li{
+.tabs-left {
+  padding-bottom: 2px;
+  font-size: 1.6em; }
+  .tabs-left .nav-tabs {
+    border-bottom: 0; }
+    .tabs-left .nav-tabs > li {
+      margin-bottom: 0; }
+  .tabs-left .nav-stacked > li + li {
+    margin: 0; }
+  .tabs-left li {
     border-bottom: 1px #f2f4f7 solid;
-    cursor: pointer;
-}
-
-.tabs-left li:first-child{
-    border-top: 1px #f2f4f7 solid;
-}
-
-.tabs-left li.active div, .tabs-left li.active div:hover, .tabs-left li.active div:focus{
-    color: #19b5fe;
-    border-color: transparent;
-    border-left: 3px #19b5fe solid;
-}
-
-.tabs-left li div{
-    border-radius: 0;
-    margin-right: 0;
-    padding: 17px 25px;
-    color: #000;
-    display: block;
-}
-
-.tabs-left li div:hover{
-    background: #eaeff7;
-    border-bottom-color: #eee;
-}
+    cursor: pointer; }
+    .tabs-left li:first-child {
+      border-top: 1px #f2f4f7 solid; }
+    .tabs-left li.active div, .tabs-left li.active div:hover, .tabs-left li.active div:focus {
+      color: #19b5fe;
+      border-color: transparent;
+      border-left: 3px #19b5fe solid; }
+    .tabs-left li div {
+      border-radius: 0;
+      margin-right: 0;
+      padding: 17px 25px;
+      color: #000;
+      display: block; }
+      .tabs-left li div:hover {
+        background: #eaeff7;
+        border-bottom-color: #eee; }
 
 /*# sourceMappingURL=tabs.css.map */

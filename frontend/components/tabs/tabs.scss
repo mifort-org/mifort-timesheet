@@ -37,20 +37,21 @@
 
     li{
         border-bottom: 1px #f2f4f7 solid;
+        cursor: pointer;
 
         &:first-child{
             border-top: 1px #f2f4f7 solid;
         }
 
-        &.active a,
-        &.active a:hover,
-        &.active a:focus{
+        &.active div,
+        &.active div:hover,
+        &.active div:focus{
             color: #19b5fe;
             border-color: transparent;
             border-left: 3px #19b5fe solid;
         }
 
-        a{
+        div{
             border-radius: 0;
             margin-right: 0;
             padding: 17px 25px;
