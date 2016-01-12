@@ -33,7 +33,7 @@ module.exports = function(grunt) {
                             'common/images/**',
                             '**/**/*.html'
                         ],
-                        dest: 'dist/frontend'
+                        dest: 'dist'
                     },
                     {
                         expand: true,
@@ -67,9 +67,16 @@ module.exports = function(grunt) {
                         'frontend/bower_components/bootstrap-daterangepicker/daterangepicker-bs3.css'
                     ],
                     'dist/styles/styles.css': [
-                        'frontend/**/*.css',
-                        'frontend/**/**/*.css',
-                        '!frontend/bower_components/**'
+                        'frontend/common/sass/styles.css',
+                        'frontend/common/sass/print.css',
+                        'frontend/common/sass/bootstrap-mifort.css',
+                        'frontend/components/tabs/tabs.css',
+                        'frontend/company/company.css',
+                        'frontend/login/login.css',
+                        'frontend/projects/projects.css',
+                        'frontend/timelog/timelog.css',
+                        'frontend/timesheet/timesheet.css',
+                        'frontend/report/report.css'
                     ]
                 },
                 options: {
@@ -79,18 +86,30 @@ module.exports = function(grunt) {
                 }
             },
             scripts: {
-                src: (function(pattern) {
-                    var scriptsPaths = grunt.file.expand(pattern);
-                    return scriptsPaths.sort(function(a, b) {
-                        var am = a.match(/-/g) || [],
-                            bm = b.match(/-/g) || [];
-                        return am.length - bm.length;
-                    });
-                })([
-                    'frontend/**/*.js',
-                    'frontend/*.js',
-                    '!frontend/bower_components/**'
-                ]),
+                src: [
+                    'frontend/app.js',
+                    'frontend/components/tabs/bootstrapTabs.js',
+                    'frontend/components/tableCell/tableCell.js',
+                    'frontend/components/projectRow/projectRow.js',
+                    'frontend/components/preferences/preferences.js',
+                    'frontend/components/preferences/preferencesService.js',
+                    'frontend/components/customDay/customDay.js',
+                    'frontend/components/filters/getByProperty.js',
+                    'frontend/components/dropdownFilter/dropdownFilter.js',
+                    'frontend/components/reportDatePicker/reportDatePicker.js',
+                    'frontend/login/loginController.js',
+                    'frontend/login/loginService.js',
+                    'frontend/company/companyController.js',
+                    'frontend/company/companyService.js',
+                    'frontend/projects/projectsController.js',
+                    'frontend/projects/projectsService.js',
+                    'frontend/timelog/timelogController.js',
+                    'frontend/timelog/timelogService.js',
+                    'frontend/timesheet/timesheetController.js',
+                    'frontend/timesheet/timesheetService.js',
+                    'frontend/report/reportController.js',
+                    'frontend/report/reportService.js'
+                ],
                 dest: 'dist/scripts/scripts.js'
             },
             vendors: {
@@ -248,9 +267,6 @@ module.exports = function(grunt) {
             },
             dist: {
                 dirList: ['dist']
-            },
-            distfrontend: {
-                dirList: ['dist/frontend']
             }
         },
 
@@ -269,13 +285,13 @@ module.exports = function(grunt) {
         'concat',
         'ngAnnotate',
         'usemin',
-        'ngtemplates',
+        //'ngtemplates',
         'uglify',
         'cssmin',
         'notify',
         'cachebreaker',
+
         'remove:frontend',
-        'remove:distfrontend',
         'mkdir:frontend',
         'copy:dist',
         'remove:dist'
