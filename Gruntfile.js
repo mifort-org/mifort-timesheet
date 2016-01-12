@@ -68,7 +68,6 @@ module.exports = function(grunt) {
                     ],
                     'dist/styles/styles.css': [
                         'frontend/common/sass/styles.css',
-                        'frontend/common/sass/print.css',
                         'frontend/common/sass/bootstrap-mifort.css',
                         'frontend/components/tabs/tabs.css',
                         'frontend/company/company.css',
@@ -84,7 +83,7 @@ module.exports = function(grunt) {
                 },
                 options: {
                     process: function(src) {
-                        return src.replace(/(?:(?:(?:\.\.\/)+common\/)|(?:(?:\.\.\/)*))images\//g, '../images/');
+                        return src.replace(/(?:(?:(?:\.\.\/)+common\/)|(?:(?:\.\.\/)*))images\//g, '../common/images/');
                     }
                 }
             },
