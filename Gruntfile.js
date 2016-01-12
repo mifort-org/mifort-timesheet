@@ -77,6 +77,9 @@ module.exports = function(grunt) {
                         'frontend/timelog/timelog.css',
                         'frontend/timesheet/timesheet.css',
                         'frontend/report/report.css'
+                    ],
+                    'dist/styles/print.css': [
+                        'frontend/common/sass/print.css'
                     ]
                 },
                 options: {
