@@ -30,25 +30,18 @@ module.exports = function(grunt) {
                         cwd: 'frontend',
                         src: [
                             'common/images/**',
-                            '**/**/*.html',
-                            '**/*.html'
+                            '**/**/*.html'
                         ],
                         dest: 'dist/frontend'
+                    },
+                    {
+                        expand: true,
+                        cwd: 'frontend',
+                        src: [
+                            '*.html'
+                        ],
+                        dest: 'dist'
                     }
-                    //{
-                    //    expand: true,
-                    //    flatten: true,
-                    //    src: 'frontend/bower_components/fontawesome/fonts/*',
-                    //    dest: 'dist/assets/fonts'
-                    //},
-                    //{
-                    //    expand: true,
-                    //    flatten: true,
-                    //    src: [
-                    //        'frontend/bower_components/jquery-ui/themes/overcast/images/*'
-                    //    ],
-                    //    dest: 'dist/assets/images'
-                    //}
                 ]
             },
             dist: {
@@ -75,8 +68,8 @@ module.exports = function(grunt) {
                         'frontend/bower_components/bootstrap-daterangepicker/daterangepicker-bs3.css'
                     ],
                     'dist/styles/styles.css': [
-                        'frontend/**/**/*.css',
                         'frontend/**/*.css',
+                        'frontend/**/**/*.css',
                         '!frontend/bower_components/**'
                     ]
                 },
@@ -96,6 +89,7 @@ module.exports = function(grunt) {
                     });
                 })([
                     'frontend/**/*.js',
+                    'frontend/*.js',
                     '!frontend/bower_components/**'
                 ]),
                 dest: 'dist/scripts/scripts.js'
@@ -121,7 +115,7 @@ module.exports = function(grunt) {
         },
 
         usemin: {
-            html: ['dist/frontend/index.html']
+            html: ['dist/index.html']
         },
 
         ngAnnotate: {
@@ -184,7 +178,7 @@ module.exports = function(grunt) {
                         cwd: 'dist/styles/',
                         src: ['*.css', '!*.min.css'],
                         dest: 'dist/styles/',
-                        ext: '.css'
+                        ext: '.min.css'
                     }
                 ]
             }
@@ -194,17 +188,6 @@ module.exports = function(grunt) {
             options: {
                 enabled: true,
                 title: 'Mifort'
-            }
-        },
-
-        remove: {
-            // Removes the webapp/app directory. Careful. Used to replace app with dist
-            // in official build.
-            app: {
-                dirList: ['dist/frontend']
-            },
-            dist: {
-                dirList: ['frontend']
             }
         },
 
@@ -218,7 +201,7 @@ module.exports = function(grunt) {
                     }
                 },
                 files: {
-                    src: ['dist/frontend/index.html']
+                    src: ['dist/index.html']
                 }
             },
             vendorsscripts: {
@@ -230,46 +213,43 @@ module.exports = function(grunt) {
                     }
                 },
                 files: {
-                    src: ['dist/frontend/index.html']
+                    src: ['dist/index.html']
                 }
             },
             vendors: {
                 options: {
-                    match: ['vendors.css'],
+                    match: ['vendors.min.css'],
                     replacement: 'md5',
                     src: {
-                        path: 'dist/styles/vendors.css'
+                        path: 'dist/styles/vendors.min.css'
                     }
                 },
                 files: {
-                    src: ['dist/frontend/index.html']
+                    src: ['dist/index.html']
                 }
             },
             styles: {
                 options: {
-                    match: ['styles.css'],
+                    match: ['styles.min.css'],
                     replacement: 'md5',
                     src: {
-                        path: 'dist/styles/styles.css'
+                        path: 'dist/styles/styles.min.css'
                     }
                 },
                 files: {
-                    src: ['dist/frontend/index.html']
+                    src: ['dist/index.html']
                 }
             }
-            //,
-            //favicon: {
-            //    options: {
-            //        match: ['favicon.ico'],
-            //        replacement: 'md5',
-            //        src: {
-            //            path: 'dist/assets/images/favicon.ico'
-            //        }
-            //    },
-            //    files: {
-            //        src: ['dist/frontend/index.html']
-            //    }
-            //}
+        },
+
+        remove: {
+            // Removes the frontend directory. Careful. Used to replace app with dist in official build.
+            app: {
+                dirList: ['frontend/**']
+            },
+            dist: {
+                dirList: ['dist']
+            }
         }
     });
 

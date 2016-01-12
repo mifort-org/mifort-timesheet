@@ -19,12 +19,15 @@
 <head>
     <meta charset="utf-8">
     <title ng-bind="companyName + ' Timelog'">Timelog</title>
+
+    <!-- build:css styles/vendors.min.css -->
     <link rel="stylesheet" href="bower_components/angular-ui-grid/ui-grid.min.css">
     <link rel="stylesheet" href="bower_components/angular-ui-notification/dist/angular-ui-notification.min.css">
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="bower_components/bootstrap-daterangepicker/daterangepicker-bs3.css">
+    <!-- endbuild -->
 
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,600,400italic,600italic,700,700italic&subset=cyrillic-ext,latin">
+    <!-- build:css styles/styles.min.css -->
     <link rel="stylesheet" href="common/sass/styles.css">
     <link rel="stylesheet" href="common/sass/print.css" media="print">
     <link rel="stylesheet" href="common/sass/bootstrap-mifort.css">
@@ -36,6 +39,9 @@
     <link rel="stylesheet" href="timelog/timelog.css">
     <link rel="stylesheet" href="timesheet/timesheet.css">
     <link rel="stylesheet" href="report/report.css">
+    <!-- endbuild -->
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,600,400italic,600italic,700,700italic&subset=cyrillic-ext,latin">
 </head>
 
 <body>
@@ -70,6 +76,7 @@
 <div class="main-container" ng-view ng-class="{'login-wrapper': (!isLoggedIn || !companyId) && isNotLoggedIn}"></div>
 
 
+<!-- build:js scripts/vendors.min.js -->
 <!--JS libraries-->
 <script src="bower_components/jquery/dist/jquery.min.js"></script>
 <script src="bower_components/angular/angular.min.js"></script>
@@ -84,6 +91,9 @@
 <script src="bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
 <script src="bower_components/ng-bs-daterangepicker/dist/ng-bs-daterangepicker.min.js"></script>
 <script src="bower_components/angular-ui-notification/dist/angular-ui-notification.min.js"></script>
+<!-- endbuild -->
+
+<!-- build:js scripts/scripts.min.js -->
 <script src="app.js"></script>
 
 <!--Custom components-->
@@ -115,6 +125,7 @@
 
 <script src="report/reportController.js"></script>
 <script src="report/reportService.js"></script>
+<!-- endbuild -->
 
 </body>
 </html>
