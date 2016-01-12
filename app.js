@@ -22,6 +22,7 @@ var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
 var expressValidator = require('express-validator');
+var compression = require('compression');
 
 var project = require('./backend/project');
 var timelog = require('./backend/timelog');
@@ -51,6 +52,7 @@ if (app.get('env') === 'production') {
 }
 
 app.use(cookieParser());
+app.use(compression());
 app.use(express.static('frontend'));
 app.use(bodyParser.json({reviver:util.jsonParse}));
 log.info('Static resources are initialized!');
