@@ -245,7 +245,7 @@ module.exports = function(grunt) {
         remove: {
             // Removes the frontend directory. Careful. Used to replace app with dist in official build.
             app: {
-                dirList: ['frontend/**']
+                dirList: ['frontend']
             },
             dist: {
                 dirList: ['dist']
@@ -264,10 +264,6 @@ module.exports = function(grunt) {
         'cssmin',
         'notify',
         'cachebreaker',
-        'clobberApp'
-    ]);
-
-    grunt.registerTask('clobberApp', [
         'remove:app',
         'copy:dist',
         'remove:dist'
