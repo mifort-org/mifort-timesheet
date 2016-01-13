@@ -45,7 +45,6 @@ app.set('port', process.env.PORT || 1313);
 app.set('json replacer', util.jsonStringify);
 
 if (app.get('env') === 'production') {
-    app.set('trust proxy', true);
     log.info('Production Mode!!!');
 } else {
     log.info('Development Mode!!!');
