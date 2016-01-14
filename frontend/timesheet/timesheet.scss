@@ -100,7 +100,7 @@
         }
 
         dt{
-            margin-top: 22.5px;
+            margin-top: 21.5px;
             margin-bottom: 4px;
             font-size: 1.8rem;
 
@@ -473,4 +473,34 @@
     float: left;
     clear: left;
     width: 546px;
+}
+
+.custom-days-removing{
+    position: absolute;
+    top: 0;
+    left: 50%;
+    margin-left: -72px;
+
+    .remove-day-wrapper{
+        margin-top: 19px;
+        margin-bottom: 36px;
+
+        &:nth-child(2n){
+            margin-left: 130px;
+        }
+    }
+
+    .remove-day{
+        color: #fe6767;
+        font-size: 2.5rem;
+        opacity: 0.5;
+
+        &:hover,
+        &:active,
+        &:focus{
+            opacity: 1;
+            color: #fe6767;
+            text-decoration: none;
+        }
+    }
 }

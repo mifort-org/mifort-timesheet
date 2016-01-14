@@ -18,7 +18,7 @@
 
 <div class="custom-days-wrapper">
     <dl>
-        <dt ng-repeat-start="day in company.dayTypes"
+        <dt ng-repeat-start="day in company.dayTypes track by $index"
             id="customDay-{{$index}}"
             ng-class="{'odd-day' : $index%2}"
             ng-click="editableName = true"
@@ -66,8 +66,14 @@
                       shape="poly"
                       coords="{{area.area}}"
                       ng-click="chooseColor($index, $parent.day); $event.preventDefault();"
-                      ng-repeat="area in customColors  track by $index" />
+                      ng-repeat="area in customColors  track by $index"/>
             </map>
+        </div>
+    </div>
+
+    <div class="custom-days-removing">
+        <div class="remove-day-wrapper" ng-repeat="customDay in company.dayTypes track by $index">
+            <a href="" class="remove-day" ng-click="removeCustomDayTemplate(customDay)">&times;</a>
         </div>
     </div>
 </div>
