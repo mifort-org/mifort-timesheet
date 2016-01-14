@@ -281,21 +281,26 @@ module.exports = function(grunt) {
         }
     });
 
-    grunt.registerTask('build', [
-        'clean:build',
-        'copy:build',
-        'concat',
-        'ngAnnotate',
-        'usemin',
-        //'ngtemplates',
-        'uglify',
-        'cssmin',
-        'notify',
-        'cachebreaker',
+    var tasks = [];
+    if(process.env.NODE_ENV === 'production') {
+        tasks = [
+            'clean:build',
+            'copy:build',
+            'concat',
+            'ngAnnotate',
+            'usemin',
+            //'ngtemplates',
+            'uglify',
+            'cssmin',
+            'notify',
+            'cachebreaker',
 
-        'remove:frontend',
-        'mkdir:frontend',
-        'copy:dist',
-        'remove:dist'
-    ]);
+            'remove:frontend',
+            'mkdir:frontend',
+            'copy:dist',
+            'remove:dist'
+        ];
+    }
+
+    grunt.registerTask('build', tasks);
 };
