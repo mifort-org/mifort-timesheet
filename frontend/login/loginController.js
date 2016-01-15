@@ -31,7 +31,6 @@ angular.module('mifortTimelog.login', ['ngRoute'])
         $scope.user = loginService.getUser().success(function (data) {
             if(data){
                 preferences.set('user', data);
-                $rootScope.isLoggedIn = true;
 
                 if(data.companyId){
                     $rootScope.companyId = data.companyId;
@@ -40,13 +39,15 @@ angular.module('mifortTimelog.login', ['ngRoute'])
                 else{
                     $location.path('/company-create');
                 }
+
+                $rootScope.isLoggedIn = true;
             }
         }).error(function() {
             $rootScope.isNotLoggedIn = true;
         });
 
         $scope.login = function () {
-            $rootScope.isLoggedIn = true;
             $location.path('/Timelog');
+            $rootScope.isLoggedIn = true;
         };
     }]);

@@ -72,11 +72,11 @@ angular.module('mifortTimelog', [
             var user = preferences.get('user');
 
             if(user){
-                $rootScope.isLoggedIn = true;
-
                 if(user.companyId){
                     $rootScope.companyId = user.companyId;
                 }
+
+                $rootScope.isLoggedIn = true;
             }
             else{
                 $location.path('login');
