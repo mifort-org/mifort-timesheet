@@ -140,20 +140,21 @@ angular.module('mifortTimelog')
                 };
 
                 function paintHexagons() {
-                    $timeout(function() {
-                        //pseudo elements PAINtning
-                        $(element).find('.hexagon').each(function(index) {
-                            var hexagon = $(this),
-                                hexagonColor = scope.company.dayTypes[$(this).index()].color,
-                                selector = '.custom-days-wrapper .hexagon-wrapper .hexagon-' + index;
+                    $('.hexagon-wrapper').bind('DOMSubtreeModified', function(e) {
+                        if (e.target.innerHTML.length > 0) {
+                            $(element).find('.hexagon').each(function(index) {
+                                var hexagon = $(this),
+                                    hexagonColor = scope.company.dayTypes[$(this).index()].color,
+                                    selector = '.custom-days-wrapper .hexagon-wrapper .hexagon-' + index;
 
-                            hexagon.addClass('hexagon-' + index);
-                            $('head').append("<style>" +
-                                selector + ":after{border-top-color: " + hexagonColor + ";}" +
-                                selector + ":before{border-bottom-color: " + hexagonColor + ";}" +
-                                "</style>");
-                        });
-                    }, 200);
+                                hexagon.addClass('hexagon-' + index);
+                                $('head').append("<style>" +
+                                    selector + ":after{border-top-color: " + hexagonColor + ";}" +
+                                    selector + ":before{border-bottom-color: " + hexagonColor + ";}" +
+                                    "</style>");
+                            });
+                        }
+                    });
                 }
 
                 paintHexagons();
