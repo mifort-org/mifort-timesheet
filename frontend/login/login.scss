@@ -33,7 +33,7 @@
 }
 
 .form-signin h1{
-    padding: 20px 85px;
+    padding: 10px 85px;
     font-size: 2.4em;
     color: #666;
     font-weight: normal;
@@ -41,10 +41,10 @@
     border-bottom: 1px #706e6d solid;
 }
 
-.timelog-icon{
-    padding: 11px 15px 11px 11px;
-    background: url("../common/images/icons.png") -7px -262px no-repeat;
-    opacity: 0.7;
+.timesheet-icon{
+    width: 50px;
+    margin-top: -4px;
+    vertical-align: middle;
 }
 
 .form-signin{

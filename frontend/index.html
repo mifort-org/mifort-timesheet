@@ -19,7 +19,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title ng-bind="companyName + ' Timelog'">Timelog</title>
+    <title ng-bind="companyName + ' Timelog'">Timesheet</title>
 
     <!-- build:css styles/vendors.min.css -->
     <link rel="stylesheet" href="bower_components/angular-ui-grid/ui-grid.min.css">
@@ -56,8 +56,8 @@
 
 <nav class="main-controls" ng-if="isLoggedIn">
     <a class="logo" href="">
-        <span class="timelog-icon"></span>
-        Timelog
+        <img class="timesheet-icon" src="../common/images/logo-small.png" alt=""/>
+        <span ng-bind="companyName + ' Timelog'">Timesheet</span>
     </a>
 
     <!--TODO: to array of objects-->
