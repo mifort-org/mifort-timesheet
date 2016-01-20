@@ -43,7 +43,10 @@
                         <span class="timelog-data">
                             <a href="" ng-if="log.isFirstDayRecord" class="add-timelog" ng-click="addLog(log, project, project.currentPeriodIndex)">+</a>
 
-                            <span ng-if="log.isFirstDayRecord">{{log.date}}</span>
+                            <span ng-if="log.isFirstDayRecord">
+                                {{::getWeekDay(log.date)}}
+                                <span class="log-date">{{log.date}}</span>
+                            </span>
 
                             <a href="" ng-if="!log.isFirstDayRecord" class="remove-timelog" ng-click="removeRow(log, project, project.currentPeriodIndex)">&#8211;</a>
                         </span>
@@ -62,7 +65,7 @@
 
                             <ul uib-dropdown-menu aria-labelledby="simple-dropdown">
                                 <li ng-repeat="assignment in project.assignments">
-                                    <a href ng-click="assingRole(assignment.role, log)">{{assignment.role}}</a>
+                                    <a href ng-click="assignRole(assignment.role, log)">{{assignment.role}}</a>
                                 </li>
                             </ul>
                         </span>
@@ -74,7 +77,7 @@
 
                     <td>
                         <input class="timelog-comment form-control" type="text" ng-model="log.comment"/>
-                        <!--{{log}}-->
+                        <!--{{log._id}}-->
                     </td>
                 </tr>
             </tbody>

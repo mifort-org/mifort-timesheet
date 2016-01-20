@@ -199,13 +199,19 @@ angular.module('mifortTimelog.timelog', ['ngRoute'])
                                         return !log._id;
                                     });
 
+                                //data.timelog.map(function(logFromServer){
+                                //    delete logFromServer.comment;
+                                //    delete logFromServer.role;
+                                //    delete logFromServer.time;
+                                //});
+
                                 if(noIdLog){
                                     angular.extend(periodTimelog, data.timelog);
                                 }
 
                                 Notification.success('Changes saved');
                             });
-                        }, 500)
+                        }, 500);
                     }
                 }, true);
             }
@@ -238,7 +244,9 @@ angular.module('mifortTimelog.timelog', ['ngRoute'])
             $scope.removeRow = function(log, project, periodIndex) {
                 if(log._id){
                     var dayPeriodIndex = _.findIndex(project.periods[periodIndex].timelog, {_id: log._id});
-                    timelogService.removeTimelog(log);
+                    timelogService.removeTimelog(log).success(function() {
+                        Notification.success('Changes saved');
+                    });
 
                     project.periods[periodIndex].timelog.splice(dayPeriodIndex, 1);
                 }
@@ -285,7 +293,11 @@ angular.module('mifortTimelog.timelog', ['ngRoute'])
                 $scope.status.isOpen = !$scope.status.isOpen;
             };
 
-            $scope.assingRole = function(role, log) {
+            $scope.assignRole = function(role, log) {
                 log.role = role;
+            };
+
+            $scope.getWeekDay = function(date) {
+                return moment(new Date(date)).format("dddd");
             }
         }]);
