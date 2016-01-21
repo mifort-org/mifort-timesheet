@@ -37,8 +37,7 @@
                                 subject: 'Invite to Mifort Timesheeet',
                                 html: renderedTemplate,
                                 inline: [
-                                    fs.createReadStream(__dirname + '/mail-templates/image/header.jpg'),
-                                    fs.createReadStream(__dirname + '/mail-templates/image/btn-start.jpg')
+                                    fs.createReadStream(__dirname + '/mail-templates/image/header.jpg')
                                 ]
                             },
                             auth: {
