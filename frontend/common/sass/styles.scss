@@ -319,6 +319,12 @@ input[type=number]::-webkit-outer-spin-button{
     cursor: pointer;
     border: 1px transparent solid;
 
+    &:focus{
+        box-shadow: none;
+        border-color: transparent;
+        outline: 0;
+    }
+
     > a{
         display: inline-block;
         width: 100%;
@@ -369,5 +375,50 @@ input[type=number]::-webkit-outer-spin-button{
                 background: transparent;
             }
         }
+    }
+
+    //ui-select
+    .btn{
+        height: auto;
+        padding: 8px 19px;
+        font-size: 1.8rem;
+        color: #000;
+        border: 0;
+        box-shadow: none;
+
+        &:hover, &:focus{
+            background: transparent;
+            border-color: transparent;
+            outline: 0;
+        }
+    }
+
+    .bth-default-focus{
+        box-shadow: none;
+        border: 0;
+        outline: 0;
+
+        &:hover, &:focus{
+            background: transparent;
+        }
+    }
+
+    .ui-select-match{
+        box-shadow: none;
+        border: 0;
+        outline: 0;
+
+        &:hover, &:focus{
+            box-shadow: none;
+            border: 0;
+            outline: 0;
+        }
+    }
+
+    &.open .form-control{
+        font-size: 1.8rem;
+        cursor: text;
+        box-shadow: none;
+        outline: 0;
     }
 }
