@@ -21,33 +21,7 @@ angular.module('mifortTimelog')
         return {
             scope: true,
             link: function(scope) {
-                scope.addAssignment = function(project, employee) {
-                    var userForAssignment = _.findWhere(scope.companyEmployees, {_id: employee._id});
 
-                    if(userForAssignment){
-                        var userWithAssignments = _.findWhere(project.assignedEmployers, {_id: employee._id}),
-                            newAssignment = {
-                                projectId: project._id,
-                                projectName: project.name,
-                                role: project.availablePositions[0],
-                                userId: userForAssignment._id,
-                                workload: ''
-                            };
-
-                        //if user has assignments
-                        if(userWithAssignments){
-                            userWithAssignments.assignments.push(newAssignment);
-                        }
-                        else{
-                            userForAssignment.assignments = [newAssignment];
-                            project.assignedEmployers.push(userForAssignment);
-                        }
-
-                        scope.saveAssignment(project, _.clone(userWithAssignments || userForAssignment));
-                    }
-
-                    //employee = {};
-                };
             },
             templateUrl: 'components/projectRow/projectRow.html'
         };

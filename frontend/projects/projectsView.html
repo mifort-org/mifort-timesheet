@@ -45,10 +45,9 @@
                         <a href id="simple-dropdown" uib-dropdown-toggle>
                             {{assignedEmployee.displayName}}
                         </a>
-
                         <ul uib-dropdown-menu aria-labelledby="simple-dropdown">
                             <li ng-repeat="companyEmployee in companyEmployees">
-                                <a href ng-click="changeUser(project, assignedEmployee, companyEmployee._id, $index)">{{companyEmployee.displayName}}</a>
+                                <a href ng-click="changeUser(project, assignedEmployee, companyEmployee._id, $parent.$index)">{{companyEmployee.displayName}}</a>
                             </li>
                         </ul>
                     </span>
