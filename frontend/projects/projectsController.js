@@ -97,7 +97,7 @@ angular.module('mifortTimelog.projects', ['ngRoute'])
         $scope.changeUser = function(project, assignedEmployee, companyEmployeeId, assignmentIndex) {
             var userLostAssignment = assignedEmployee,
                 userGotAssignment = _.findWhere(project.assignedEmployers, {_id: companyEmployeeId}) ||
-                                    _.findWhere(companyEmployees, {_id: companyEmployeeId}),
+                                    _.findWhere($scope.companyEmployees, {_id: companyEmployeeId}),
                 assignment = userLostAssignment.assignments[assignmentIndex];
 
             assignment.userId = userGotAssignment._id;

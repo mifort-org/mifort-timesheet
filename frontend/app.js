@@ -26,6 +26,8 @@ angular.module('mifortTimelog', [
     'ui.grid',
     'ui.grid.resizeColumns',
     'ui.grid.autoResize',
+    'ui.select',
+    'ngSanitize',
     'ngBootstrap',
     'ui-notification',
     'mifortTimelog.login',

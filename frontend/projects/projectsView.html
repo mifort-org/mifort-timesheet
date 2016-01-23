@@ -27,7 +27,7 @@
 
         <a href="" class="remove-project" ng-click="removeProject(project, $index)"></a>
     </h2>
-<!--<small>{{project.assignedEmployers}}</small>-->
+
     <div uib-collapse="project.isCollapsed">
         <table class="table table-bordered">
             <thead>
@@ -41,13 +41,6 @@
             <tbody ng-repeat="assignedEmployee in project.assignedEmployers track by $index">
             <tr ng-if="currentProjectIndex >= 0" ng-repeat="assignment in assignedEmployee.assignments track by $index">
                 <td>
-                    <!--<select id="employeeName"-->
-                            <!--ng-options="assignment as assignment.displayName for assignment in companyEmployees"-->
-                            <!--ng-model="assignment.displayName"-->
-                            <!--class="form-control timesheet-control"-->
-                            <!--ng-change="saveAssignment(project, assignment, '{{assignment._id}}', $index)">-->
-                    <!--</select>-->
-
                     <span class="blank-dropdown" uib-dropdown on-toggle="toggled(open)">
                         <a href id="simple-dropdown" uib-dropdown-toggle>
                             {{assignedEmployee.displayName}}
@@ -55,21 +48,21 @@
 
                         <ul uib-dropdown-menu aria-labelledby="simple-dropdown">
                             <li ng-repeat="companyEmployee in companyEmployees">
-                                <!--{{assignedEmployee}}-->
                                 <a href ng-click="changeUser(project, assignedEmployee, companyEmployee._id, $index)">{{companyEmployee.displayName}}</a>
                             </li>
                         </ul>
                     </span>
+
+                    <!--<ui-select ng-model="assignedEmployee" on-select="changeUser(project, assignedEmployee, $select.selected._id, $index)">-->
+                        <!--<ui-select-match placeholder="Select employee">{{$select.selected.displayName}}</ui-select-match>-->
+
+                        <!--<ui-select-choices repeat="companyEmployee in companyEmployees | propsFilter: {displayName: $select.search}">-->
+                            <!--<div ng-bind-html="companyEmployee.displayName | highlight: $select.search"></div>-->
+                        <!--</ui-select-choices>-->
+                    <!--</ui-select>-->
                 </td>
 
                 <td>
-                    <!--<select id="role"-->
-                            <!--ng-options="assignment as assignment for assignment in availablePositions"-->
-                            <!--ng-model="assignment.role"-->
-                            <!--class="form-control timesheet-control"-->
-                            <!--ng-change="saveAssignment(project, assignedEmployee)">-->
-                    <!--</select>-->
-
                     <span class="blank-dropdown" uib-dropdown on-toggle="toggled(open)">
                         <a href id="simple-dropdown-two" uib-dropdown-toggle>
                             {{assignment.role}}
@@ -77,7 +70,6 @@
 
                         <ul uib-dropdown-menu aria-labelledby="simple-dropdown">
                             <li ng-repeat="availablePosition in availablePositions">
-                                <!--{{assignedEmployee}}-->
                                 <a href ng-click="changeRole(project, assignedEmployee, assignment, availablePosition)">{{availablePosition}}</a>
                             </li>
                         </ul>
@@ -96,7 +88,6 @@
             </tbody>
         </table>
     </div>
-    <!--{{project._id}}-->
 </div>
-<!--{{projects}}-->
+
 <a href="" ng-click="addProject()" class="add-project">+</a>
