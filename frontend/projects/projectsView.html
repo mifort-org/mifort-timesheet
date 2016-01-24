@@ -41,16 +41,16 @@
             <tbody ng-repeat="assignedEmployee in project.assignedEmployers track by $index">
             <tr ng-if="currentProjectIndex >= 0" ng-repeat="assignment in assignedEmployee.assignments track by $index">
                 <td>
-                    <span class="blank-dropdown" uib-dropdown on-toggle="toggled(open)">
-                        <a href id="simple-dropdown" uib-dropdown-toggle>
-                            {{assignedEmployee.displayName}}
-                        </a>
-                        <ul uib-dropdown-menu aria-labelledby="simple-dropdown">
-                            <li ng-repeat="companyEmployee in companyEmployees">
-                                <a href ng-click="changeUser(project, assignedEmployee, companyEmployee._id, $parent.$index)">{{companyEmployee.displayName}}</a>
-                            </li>
-                        </ul>
-                    </span>
+                    <!--<span class="blank-dropdown" uib-dropdown on-toggle="toggled(open)">-->
+                        <!--<a href id="simple-dropdown" uib-dropdown-toggle>-->
+                            <!--{{assignedEmployee.displayName}}-->
+                        <!--</a>-->
+                        <!--<ul uib-dropdown-menu aria-labelledby="simple-dropdown">-->
+                            <!--<li ng-repeat="companyEmployee in companyEmployees">-->
+                                <!--<a href ng-click="changeUser(project, assignedEmployee, companyEmployee._id, $parent.$index)">{{companyEmployee.displayName}}</a>-->
+                            <!--</li>-->
+                        <!--</ul>-->
+                    <!--</span>-->
 
                     <ui-select ng-model="assignedEmployee" class="blank-dropdown">
                         <ui-select-match placeholder="Select employee">{{$select.selected.displayName}}</ui-select-match>
