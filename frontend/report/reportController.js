@@ -145,34 +145,34 @@ angular.module('mifortTimelog.report', ['ngRoute'])
             $scope.gridOptions.reportFilters = data;
         });
 
-        //$scope.$watch('gridOptions.reportFilters', function(newValue, oldValue) {
-        //    if(newValue && newValue != oldValue){
-        //        //$scope.reportSettings.filters = [];
-        //        //
-        //        //var dateFilter = _.where(newValue, {field: 'date'})[0];
-        //        //
-        //        //if(dateFilter){
-        //        //    $scope.reportSettings.filters.push(dateFilter)
-        //        //}
-        //
-        //        //newValue.forEach(function(filter) {
-        //        //    var filterToPush = {
-        //        //            field: filter.field
-        //        //        },
-        //        //        checkedFilters = _.where(filter.value, {isChecked: true});
-        //        //
-        //        //    filterToPush.value = checkedFilters.map(function(checkedFilter) {
-        //        //        return checkedFilter.name
-        //        //    });
-        //        //
-        //        //    if(filterToPush.value.length){
-        //        //        $scope.reportSettings.filters.push(filterToPush);
-        //        //    }
-        //        //});
-        //
-        //        //$scope.getReport();
-        //    }
-        //}, true);
+        $scope.$watch('gridOptions.reportFilters', function(newValue, oldValue) {
+            if(newValue && newValue != oldValue){
+                $scope.reportSettings.filters = [];
+
+                var dateFilter = _.where(newValue, {field: 'date'})[0];
+
+                if(dateFilter){
+                    $scope.reportSettings.filters.push(dateFilter)
+                }
+
+                newValue.forEach(function(filter) {
+                    var filterToPush = {
+                            field: filter.field
+                        },
+                        checkedFilters = _.where(filter.value, {isChecked: true});
+
+                    filterToPush.value = checkedFilters.map(function(checkedFilter) {
+                        return checkedFilter.name
+                    });
+
+                    if(filterToPush.value.length){
+                        $scope.reportSettings.filters.push(filterToPush);
+                    }
+                });
+
+                $scope.getReport();
+            }
+        }, true);
 
         $scope.getReport = function() {
             reportService.getReport($scope.reportSettings).success(function(data, status, headers) {
@@ -239,7 +239,7 @@ angular.module('mifortTimelog.report', ['ngRoute'])
         //
         //    $scope.reportSettings.filters.push(dateFilter);
         //    $scope.getReport();
-        //}
+        //};
 
         $scope.showOriginalPage = function(pageNumber) {
             if($scope.reportSettings.page + 2 >= pageNumber &&
