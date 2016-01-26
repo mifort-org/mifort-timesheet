@@ -64,7 +64,7 @@
     </a>
 
     <!--TODO: to array of objects-->
-    <a href="javascript:window.print()" ng-if="isVisible('print') && isLoggedIn" class="info">Print</a>
+    <a href="javascript:window.print()" ng-if="isVisible('print') && isLoggedIn" class="info" id="print">Print</a>
     <a href="" ng-click="openLink('pdf')" ng-if="isVisible('pdf') && isLoggedIn" class="info">PDF</a>
     <a href="" ng-click="openLink('csv')" ng-if="isVisible('csv') && isLoggedIn" class="info">CSV</a>
     <a href="" ng-click="openLink('project')" ng-if="isVisible('project') && isLoggedIn" class="info">Add Project</a>

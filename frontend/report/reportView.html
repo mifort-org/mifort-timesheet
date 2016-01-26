@@ -13,9 +13,11 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-<div class="report-controls clearfix">
-    <div class="per-page-wrapper">
-        <label for="per-page" class="per-page-label">Show</label>
+<div class="report-controls clearfix"
+     ng-intro-options="IntroOptions"
+     ng-intro-method="startIntro">
+    <div class="per-page-wrapper" id="step3">
+        <label for="" class="per-page-label">Show</label>
 
         <!--<select id="per-page"-->
                 <!--ng-options="pageSize as pageSize for pageSize in perPage"-->
@@ -39,7 +41,7 @@
         <span class="per-page-after">on page</span>
     </div>
 
-    <div class="pagination">
+    <div class="pagination" id="step4">
         <span class="page-range">{{reportSettings.pageSize * (reportSettings.page - 1) + 1}} - {{reportSettings.pageSize * reportSettings.page}} of {{totalCount}}</span>
 
         <a href="" class="prev-page" ng-class="{'disabled': reportSettings.page >= totalCount/reportSettings.pageSize}" ng-click="nextPage()">Next</a>
@@ -65,7 +67,7 @@
 </div>
 
 <div class="report-wrapper">
-    <div class="gridStyle" ui-grid="gridOptions" ui-grid-auto-resize ng-style="gridHeight" ui-grid-resize-columns></div>
+    <div class="gridStyle" id="step1" ui-grid="gridOptions" ui-grid-auto-resize ng-style="gridHeight" ui-grid-resize-columns></div>
     <div class="no-data" ng-show="!reportData.length">No timelogs to show</div>
 </div>
 <!--{{reportData}}-->
