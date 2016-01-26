@@ -140,24 +140,29 @@ angular.module('mifortTimelog')
                 };
 
                 function paintHexagons() {
+                    $(element).find('.hexagon').each(function(index) {
+                        var hexagon = $(this),
+                            hexagonColor = scope.company.dayTypes[$(this).index()].color,
+                            selector = '.custom-days-wrapper .hexagon-wrapper .hexagon-' + index;
+
+                        hexagon.addClass('hexagon-' + index);
+                        $('head').append("<style>" +
+                            selector + ":after{border-top-color: " + hexagonColor + ";}" +
+                            selector + ":before{border-bottom-color: " + hexagonColor + ";}" +
+                            "</style>");
+                    });
+
+                }
+
+                addHexagonsListener();
+
+                function addHexagonsListener(){
                     $('.hexagon-wrapper').bind('DOMSubtreeModified', function(e) {
                         if (e.target.innerHTML.length > 0) {
-                            $(element).find('.hexagon').each(function(index) {
-                                var hexagon = $(this),
-                                    hexagonColor = scope.company.dayTypes[$(this).index()].color,
-                                    selector = '.custom-days-wrapper .hexagon-wrapper .hexagon-' + index;
-
-                                hexagon.addClass('hexagon-' + index);
-                                $('head').append("<style>" +
-                                    selector + ":after{border-top-color: " + hexagonColor + ";}" +
-                                    selector + ":before{border-bottom-color: " + hexagonColor + ";}" +
-                                    "</style>");
-                            });
+                            paintHexagons();
                         }
                     });
                 }
-
-                paintHexagons();
 
                 scope.addCustomDay = function() {
                     scope.company.dayTypes.push({
@@ -165,7 +170,9 @@ angular.module('mifortTimelog')
                         workload: 8,
                         color: '#fff'
                     });
-                    paintHexagons();
+
+                    addHexagonsListener();
+                    paintHexagons()
                 };
             },
             templateUrl: 'components/customDay/customDay.html'

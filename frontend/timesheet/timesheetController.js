@@ -25,8 +25,8 @@ angular.module('mifortTimelog.timesheet', ['ngRoute'])
         });
     }])
 
-    .controller('timesheetController', ['$scope', '$filter', 'timesheetService', 'moment', 'preferences', 'Notification',
-        function($scope, $filter, timesheetService, moment, preferences, Notification) {
+    .controller('timesheetController', ['$scope', '$filter', 'timesheetService', 'moment', 'preferences', 'Notification', 'notifyingService',
+        function($scope, $filter, timesheetService, moment, preferences, Notification, notifyingService) {
             $scope.daySettingsPopover = {
                 templateUrl: 'daySettimgs.html'
             };
@@ -51,6 +51,9 @@ angular.module('mifortTimelog.timesheet', ['ngRoute'])
             $scope.init = function() {
                 generateTimesheet();
                 initWatchers();
+                initIntro();
+
+                notifyingService.subscribe('startIntro', $scope.startIntro, $scope);
             };
 
             function generateTimesheet() {
@@ -227,6 +230,36 @@ angular.module('mifortTimelog.timesheet', ['ngRoute'])
                 }, true);
             }
 
+            function initIntro() {
+                $scope.IntroOptions = {
+                    steps:[
+                        {
+                            element: '#step1',
+                            intro: "This is the first tooltip.",
+                            position: 'bottom'
+                        },
+                        {
+                            element: '#step2',
+                            intro: "<strong>You</strong> can also <em>include</em> HTML",
+                            position: 'left'
+                        },
+                        {
+                            element: '#step3',
+                            intro: "Another step.",
+                            position: 'bottom'
+                        }
+                    ],
+                    showStepNumbers: false,
+                    showBullets: true,
+                    exitOnOverlayClick: true,
+                    exitOnEsc:true,
+                    nextLabel: '<strong>next</strong>',
+                    prevLabel: '<strong>previos</strong>',
+                    skipLabel: 'Exit',
+                    doneLabel: 'Done'
+                };
+            }
+
             $scope.splitTimesheet = function(period, splitStartDate) {
                 if(period.periodName == 'month' && splitStartDate.getDate() > 28){
                     alert('Please choose the correct date for split');
@@ -384,5 +417,5 @@ angular.module('mifortTimelog.timesheet', ['ngRoute'])
                 $scope.company.dayTypes.splice(customDayIndex, 1);
 
                 timesheetService.saveCompany($scope.company);
-            }
+            };
         }]);

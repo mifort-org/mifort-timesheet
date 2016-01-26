@@ -28,6 +28,7 @@
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="bower_components/bootstrap-daterangepicker/daterangepicker-bs3.css">
     <link rel="stylesheet" href="bower_components/ui-select/dist/select.css">
+    <link rel="stylesheet" href="bower_components/intro.js/minified/introjs.min.css">
     <!-- endbuild -->
 
     <!-- build:css styles/styles.min.css -->
@@ -67,7 +68,7 @@
     <a href="" ng-click="openLink('pdf')" ng-if="isVisible('pdf') && isLoggedIn" class="info">PDF</a>
     <a href="" ng-click="openLink('csv')" ng-if="isVisible('csv') && isLoggedIn" class="info">CSV</a>
     <a href="" ng-click="openLink('project')" ng-if="isVisible('project') && isLoggedIn" class="info">Add Project</a>
-    <a href="" ng-click="openLink('info')" ng-if="isVisible('info') && isLoggedIn" class="info">Info</a>
+    <a href="" ng-click="startIntro()" ng-if="isLoggedIn" class="info" >Info</a>
     <a href="" ng-click="openLink('profile')" ng-if="isVisible('profile')" class="profile">Profile</a>
     <a href="" class="logout" ng-click="logout()">Logout</a>
 </nav>
@@ -93,6 +94,8 @@
 <script src="bower_components/angular-ui-notification/dist/angular-ui-notification.min.js"></script>
 <script src="bower_components/ui-select/dist/select.js"></script>
 <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+<script src="bower_components/intro.js/minified/intro.min.js"></script>
+<script src="bower_components/angular-intro.js/build/angular-intro.min.js"></script>
 <!-- endbuild -->
 
 <!-- build:js scripts/scripts.min.js -->

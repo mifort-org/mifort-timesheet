@@ -30,6 +30,7 @@ angular.module('mifortTimelog', [
     'ngSanitize',
     'ngBootstrap',
     'ui-notification',
+    'angular-intro',
     'mifortTimelog.login',
     'mifortTimelog.company',
     'mifortTimelog.projects',
@@ -42,7 +43,7 @@ angular.module('mifortTimelog', [
 
         $httpProvider.interceptors.push(function($q, $location) {
             return {
-                'responseError': function(rejection){
+                'responseError': function(rejection) {
                     var defer = $q.defer();
 
                     if(rejection.status == 401){
@@ -69,8 +70,8 @@ angular.module('mifortTimelog', [
         });
     })
 
-    .controller('mifortTimelogController', ['$scope', '$location', '$cookies', '$http', 'preferences', 'companyService', 'topPanelService', '$rootScope',
-        function($scope, $location, $cookies, $http, preferences, companyService, topPanelService, $rootScope) {
+    .controller('mifortTimelogController', ['$scope', '$location', '$cookies', '$http', 'preferences', 'companyService', 'topPanelService', '$rootScope', 'notifyingService',
+        function($scope, $location, $cookies, $http, preferences, companyService, topPanelService, $rootScope, notifyingService) {
             var user = preferences.get('user');
 
             if(user){
@@ -111,7 +112,12 @@ angular.module('mifortTimelog', [
 
             $scope.$on('companyNameChanged', function(response, companyName) {
                 $scope.companyName = companyName;
-            })
+            });
+
+            $scope.startIntro = function() {
+                notifyingService.notify('startIntro');
+            };
+
         }])
 
     .factory('topPanelService', ['$location', '$rootScope', function($location, $rootScope) {
@@ -140,8 +146,21 @@ angular.module('mifortTimelog', [
 
         topPanelService.prepForBroadcast = function(linkName) {
             topPanelService.linkName = linkName;
-            $rootScope.$broadcast('handleBroadcast');
+            $rootScope.$broadcast('handleBroadcast'); //use notifyingService instead
         };
 
         return topPanelService;
-    }]);
+    }])
+
+    .factory('notifyingService', function($rootScope) {
+        return {
+            subscribe: function(message, callback, scope) {
+                var handler = $rootScope.$on(message, callback);
+                scope.$on('$destroy', handler);
+            },
+
+            notify: function(message) {
+                $rootScope.$emit(message);
+            }
+        };
+    });
