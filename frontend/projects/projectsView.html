@@ -14,12 +14,7 @@
   limitations under the License.
 -->
 <div ng-intro-options="IntroOptions"
-     ng-intro-method="startIntro"
-     ng-intro-oncomplete="CompletedEvent"
-     ng-intro-onexit="ExitEvent"
-     ng-intro-onchange="ChangeEvent"
-     ng-intro-onbeforechange="BeforeChangeEvent"
-     ng-intro-autostart="false">
+     ng-intro-method="startIntro">
     <div class="collapse-wrapper project" ng-repeat="project in projects track by $index" id="{{$first ? 'step1' : ''}}">
         <h2 ng-class="{'timelog-collapsed': project.isCollapsed}">
             <a href="" id="{{$first ? 'step4' : ''}}" ng-if="!project.projectEdit" class="collapse-item project-name" ng-class="{'collapsed': project.isCollapsed}" ng-click="project.isCollapsed = !project.isCollapsed">
