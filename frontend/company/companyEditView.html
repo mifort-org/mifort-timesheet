@@ -14,26 +14,34 @@
   limitations under the License.
 -->
 
-<div class="company-wrapper">
+<div class="company-wrapper"
+     ng-intro-options="IntroOptions"
+     ng-intro-method="startIntro"
+     ng-intro-oncomplete="CompletedEvent"
+     ng-intro-onexit="ExitEvent"
+     ng-intro-onchange="ChangeEvent"
+     ng-intro-onbeforechange="BeforeChangeEvent"
+     ng-intro-autostart="false">
     <h1>Company Edit</h1>
 
     <form name="companyCreateForm" ng-submit="companyCreateForm.$valid && saveCompany()">
         <table>
+            <tbody>
             <tr>
                 <td>
-                    <label for="company-name">Company Name:</label>
+                    <label for="step1">Company Name:</label>
                 </td>
                 <td>
-                    <input id="company-name" ng-model="company.name" required type="text" placeholder="My Company"/>
+                    <input id="step1" ng-model="company.name" required type="text" placeholder="My Company"/>
                 </td>
             </tr>
 
             <tr>
                 <td>
-                    <label for="company-employees">Invite Employees:</label>
+                    <label for="step2">Invite Employees:</label>
                 </td>
                 <td>
-                    <textarea id="company-employees" ng-model="company.emails" placeholder="zuckerberg@facebook.com"></textarea>
+                    <textarea id="step2" ng-model="company.emails" placeholder="zuckerberg@facebook.com"></textarea>
                     <!--{{company.emails}}-->
                 </td>
             </tr>
@@ -41,15 +49,19 @@
             <tr>
                 <td></td>
                 <td class="button-holder">
-                    <button type="button" class="primary-button large-button" ng-click="inviteEmployees()">
+                    <button type="button" id="step3" class="primary-button large-button" ng-click="inviteEmployees()">
                         Invite
                     </button>
                 </td>
             </tr>
+            </tbody>
+        </table>
 
+        <table id="step4">
+            <tbody>
             <tr>
                 <td>
-                    <label for="company-name" class="company-roles-label">Invited Employees Roles:</label>
+                    <label for="" class="company-roles-label">Invited Employees Roles:</label>
                 </td>
                 <td>
                     <table class="company-roles">
@@ -60,10 +72,10 @@
 
                             <td>
                                 <!--<select id="role"-->
-                                        <!--ng-options="role as role for role in possibleRoles"-->
-                                        <!--ng-model="employee.role"-->
-                                        <!--class="form-control timesheet-control"-->
-                                        <!--ng-change="changeRole(employee)">-->
+                                <!--ng-options="role as role for role in possibleRoles"-->
+                                <!--ng-model="employee.role"-->
+                                <!--class="form-control timesheet-control"-->
+                                <!--ng-change="changeRole(employee)">-->
                                 <!--</select>-->
 
                                 <span class="blank-dropdown" uib-dropdown on-toggle="toggled(open)">
@@ -93,6 +105,7 @@
                     </button>
                 </td>
             </tr>
+            </tbody>
         </table>
     </form>
 </div>

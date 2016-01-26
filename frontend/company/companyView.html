@@ -14,31 +14,38 @@
   limitations under the License.
 -->
 
-<div class="company-wrapper">
+<div class="company-wrapper"
+     ng-intro-options="IntroOptions"
+     ng-intro-method="startIntro"
+     ng-intro-oncomplete="CompletedEvent"
+     ng-intro-onexit="ExitEvent"
+     ng-intro-onchange="ChangeEvent"
+     ng-intro-onbeforechange="BeforeChangeEvent"
+     ng-intro-autostart="false">
     <h1>Company Create</h1>
 
     <form name="companyCreateForm" ng-submit="companyCreateForm.$valid && createCompany()">
         <table>
             <tr>
                 <td>
-                    <label for="company-name">Company Name</label>
+                    <label for="step1">Company Name</label>
                 </td>
                 <td>
-                    <input id="company-name" ng-model="company.name" required type="text" placeholder="My Company"/>
+                    <input id="step1" ng-model="company.name" required type="text" placeholder="My Company"/>
                 </td>
             </tr>
             <tr>
                 <td>
-                    <label for="company-employees">Invite Employees</label>
+                    <label for="step2">Invite Employees</label>
                 </td>
                 <td>
-                    <textarea id="company-employees" ng-model="company.emails" placeholder="zuckerberg@facebook.com"></textarea>
+                    <textarea id="step2" ng-model="company.emails" placeholder="zuckerberg@facebook.com"></textarea>
                 </td>
             </tr>
             <tr>
                 <td></td>
                 <td>
-                    <button type="submit" class="primary-button large-button">
+                    <button type="submit" id="step3" class="primary-button large-button">
                         Continue
                     </button>
                 </td>
