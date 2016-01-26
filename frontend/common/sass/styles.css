@@ -319,4 +319,39 @@ input[type=number]::-webkit-outer-spin-button {
   .blank-dropdown .ui-select-choices {
     width: calc(100% + 2px); }
 
+.introjs-overlay {
+  background: #000;
+  opacity: 0.6 !important; }
+
+.introjs-helperLayer {
+  border-radius: 0;
+  box-shadow: none; }
+
+.introjs-tooltip {
+  padding: 20px;
+  font-size: 1.4rem;
+  border-radius: 0; }
+
+.introjs-bullets ul {
+  padding: 7px 9px;
+  border: 1px #949494 solid;
+  border-radius: 20px; }
+  .introjs-bullets ul li a {
+    width: 12px;
+    height: 12px; }
+    .introjs-bullets ul li a.active {
+      background: #22a7f0; }
+
+.introjs-button {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  font-size: 2.2rem;
+  text-align: center;
+  background: transparent;
+  border-color: #949494;
+  border-radius: 50px; }
+  .introjs-button:hover {
+    box-shadow: none; }
+
 /*# sourceMappingURL=styles.css.map */
