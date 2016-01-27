@@ -44,10 +44,7 @@ exports.restCommonReport = function(req, res, next) {
             next(err);
             return;
         }
-        var projectIdArray = projectIds.map(function(object) {
-            return object._id;
-        });
-        var query = convertFiltersToQuery(filterObj.filters);
+        var query = convertFiltersToQuery(filterObj.filters, projectIds);
         var sorting = convertToSortQuery(filterObj.sort);
         var pageInfo = {number: filterObj.page, size: filterObj.pageSize};
         var filterCallback = function() {
@@ -80,10 +77,7 @@ exports.restConstructCSV = function(req, res, next) {
             next(err);
             return;
         }
-        var projectIdArray = projectIds.map(function(object) {
-            return object._id;
-        });
-        var query = convertFiltersToQuery(filterObj.filters);
+        var query = convertFiltersToQuery(filterObj.filters, projectIds);
         var sorting = convertToSortQuery(filterObj.sort);
 
         var cursorStream = timelogCollection.find(query)
@@ -113,16 +107,15 @@ exports.restDownloadFile = function(req, res, next) {
         if(err) {
             next(err);
             return;
-        } else {
-            if(res.headersSent) {
-                fs.unlink('./report_files/' + fileName, function(err) {
-                    if (err) {
-                        log.warn('Cannot delete %s', fileName);
-                    } else {
-                        log.info('Successfully deleted %s', fileName);
-                    }
-                });
-            }
+        }
+        if(res.headersSent) {
+            fs.unlink('./report_files/' + fileName, function(err) {
+                if (err) {
+                    log.warn('Cannot delete %s', fileName);
+                } else {
+                    log.info('Successfully deleted %s', fileName);
+                }
+            });
         }
         log.debug('-REST Result: Download file. File is downloaded. %s', fileName);
     })
@@ -148,10 +141,22 @@ exports.restGetFilterValues = function(req, res, next) {
             );
         }
     );
-}
+};
+
+exports.restAggregationReport = function(req, res, next) {
+    var filterObj = req.body;
+    log.debug('-REST call: aggregation report. Company id: %s', filterObj.companyId.toHexString());
+
+    projects.findProjectIdsByCompanyId(filterObj.companyId, function(err, projectIds) {
+        if(err) {
+            next(err);
+            return;
+        }
+    });
+};
 
 //Private
-function convertFiltersToQuery(filters){
+function convertFiltersToQuery(filters, projectIds) {
     var query = {};
     if(filters) {
         filters.forEach(function(filter) {
@@ -168,7 +173,10 @@ function convertFiltersToQuery(filters){
     }
     //skip all empty timelogs
     if(!query.time) {
-        query.time = {$gt: 0}
+        query.time = {$gt: 0};
+    }
+    if(projectIds) {
+        query.projectId = {$in: projectIds};
     }
 
     return query;
