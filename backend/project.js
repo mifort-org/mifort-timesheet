@@ -12,7 +12,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  * @author Andrew Voitov
  */
 
@@ -28,7 +28,7 @@ exports.restGetById = function(req, res, next) {
     log.debug('-REST call: Get project by id. Project id: %s', projectId.toHexString());
 
     var projects = db.projectCollection();
-    projects.findOne({_id: projectId}, 
+    projects.findOne({_id: projectId},
         function(err, doc) {
             returnProjectCallback(err, res, doc, next);
             log.debug('-REST result: Get project by id. Project id: %s', doc._id.toHexString());
@@ -60,7 +60,7 @@ exports.restGetByCompanyId = function(req, res, next) {
                 next(err);
             } else {
                 res.json(findedProjects);
-                log.debug('-REST result: Get projects by company id. Number of projects: %d', 
+                log.debug('-REST result: Get projects by company id. Number of projects: %d',
                     findedProjects.length);
             }
         });
@@ -78,10 +78,10 @@ exports.restDeactivateProject = function(req, res, next) {
                 next(err);
                 return;
             }
-            projects.findOne({_id: projectId}, 
+            projects.findOne({_id: projectId},
                 function(err, doc) {
                     returnProjectCallback(err, res, doc, next);
-                    log.debug('-REST result: Deactivate project. Project id: %s', 
+                    log.debug('-REST result: Deactivate project. Project id: %s',
                         doc._id.toHexString());
                 });
         });
@@ -116,7 +116,10 @@ exports.findProjectIdsByCompanyId = function(companyId, callback) {
     projects.find({companyId: companyId},
                   {_id:1})
         .toArray(function(err, findedProjectIds){
-            callback(err, findedProjectIds);
+            var projectIdArray = findedProjectIds.map(function(object) {
+                return object._id;
+            });
+            callback(err, projectIdArray);
         });
 };
 
@@ -142,7 +145,7 @@ function updateProject(project, res, next) {
                                 },
                                 $currentDate: { updatedOn: true }},
                     function(err, savedProject) { //need error handler
-                        projects.findOne({_id: project._id}, 
+                        projects.findOne({_id: project._id},
                             function(err, doc) {
                                 returnProjectCallback(err, res, doc, next);
                                 log.debug('-REST result: Save(Update) project. Project id: %s',
@@ -174,7 +177,7 @@ function createProject(project, res, next){
         project.createdOn = currentDate;
         project.updatedOn = currentDate;
         project.active = true;
-        projects.insertOne(project, {safe: true}, 
+        projects.insertOne(project, {safe: true},
             function(err, result) {
                 if(err) {
                     next(err);

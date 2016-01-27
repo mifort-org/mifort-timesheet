@@ -330,7 +330,7 @@ exports.isEmails = function(values) {
 };
 
 exports.isFilters = function(filters) {
-    if(!filters.length) { // if array is empty
+    if(!filters || !filters.length) { // if array is empty
         return true;
     }
 

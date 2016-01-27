@@ -26,6 +26,14 @@ var utils = require('./libs/utils');
 var projects = require('./project');
 var company = require('./company');
 
+var REPORT_COLUMNS = {
+    date: 'Date',
+    userName: 'User',
+    projectName: 'Project',
+    role: 'Role',
+    time: 'Time'
+};
+
 //Rest API
 exports.restCommonReport = function(req, res, next) {
     var filterObj = req.body;
@@ -36,42 +44,27 @@ exports.restCommonReport = function(req, res, next) {
             next(err);
             return;
         }
-        var projectIdArray = projectIds.map(function(object) {
-            return object._id;
-        });
-        var query = convertFiltersToQuery(filterObj.filters);
-        var sortObj = makeSortObject(filterObj.sort);
-        var page = filterObj.page;
+        var query = convertFiltersToQuery(filterObj.filters, projectIds);
+        var sorting = convertToSortQuery(filterObj.sort);
+        var pageInfo = {number: filterObj.page, size: filterObj.pageSize};
+        var filterCallback = function() {
+            log.debug('-REST result: common report. Company id: %s',
+                filterObj.companyId.toHexString());
+        };
 
-        if(page == 1) {
+        if(pageInfo.number == 1) {
             var timelogCollection = db.timelogCollection();
             timelogCollection.find(query)
                 .count(function(err, count) {
                     res.append('X-Total-Count', count);
-                    filterTimelog(query, sortObj, page, filterObj.pageSize, res,
-                        function() {
-                            log.debug('-REST result: common report. Company id: %s',
-                                filterObj.companyId.toHexString());
-                        });
+                    filterTimelog(query, sorting, pageInfo, res, filterCallback);
                 });
         } else {
-            filterTimelog(query, sortObj, page, filterObj.pageSize, res,
-                function() {
-                    log.debug('-REST result: common report. Company id: %s',
-                        filterObj.companyId.toHexString());
-                });
+            filterTimelog(query, sorting, pageInfo, res, filterCallback);
         }
-
     });
 };
 
-var columns = {
-    date: 'Date',
-    userName: 'User',
-    projectName: 'Project',
-    role: 'Role',
-    time: 'Time'
-};
 //need to extract common parts to separate method!!!!
 exports.restConstructCSV = function(req, res, next) {
     var filterObj = req.body;
@@ -84,14 +77,11 @@ exports.restConstructCSV = function(req, res, next) {
             next(err);
             return;
         }
-        var projectIdArray = projectIds.map(function(object) {
-            return object._id;
-        });
-        var query = convertFiltersToQuery(filterObj.filters);
-        var sortObj = makeSortObject(filterObj.sort);
+        var query = convertFiltersToQuery(filterObj.filters, projectIds);
+        var sorting = convertToSortQuery(filterObj.sort);
 
         var cursorStream = timelogCollection.find(query)
-            .sort(sortObj)
+            .sort(sorting)
             .stream({
                 transform: function(doc) {
                     if(doc.date) {
@@ -100,21 +90,11 @@ exports.restConstructCSV = function(req, res, next) {
                     return doc;
                 }
             });
-        var csvStringifier = csvStringify({ header: true, columns: columns });
-        var fileName = 'report_' + shortid.generate() + '.csv';
-        var writeStream = fs.createWriteStream('./report_files/' + fileName,
-            {defaultEncoding: 'utf8'});
 
-        cursorStream.pipe(csvStringifier).pipe(writeStream);
-
-        cursorStream.on('end', function() {
+        createCSVFile(cursorStream, function(fileName) {
             log.debug('-REST Result: Download common report. CSV file is generated. Company id: %s',
                 filterObj.companyId.toHexString());
             res.json({url: '/report/download/' + fileName});
-        });
-
-        writeStream.on('error', function (err) {
-            log.error(err);
         });
     });
 };
@@ -127,16 +107,15 @@ exports.restDownloadFile = function(req, res, next) {
         if(err) {
             next(err);
             return;
-        } else {
-            if(res.headersSent) {
-                fs.unlink('./report_files/' + fileName, function(err) {
-                    if (err) {
-                        log.warn('Cannot delete %s', fileName);
-                    } else {
-                        log.info('Successfully deleted %s', fileName);
-                    }
-                });
-            }
+        }
+        if(res.headersSent) {
+            fs.unlink('./report_files/' + fileName, function(err) {
+                if (err) {
+                    log.warn('Cannot delete %s', fileName);
+                } else {
+                    log.info('Successfully deleted %s', fileName);
+                }
+            });
         }
         log.debug('-REST Result: Download file. File is downloaded. %s', fileName);
     })
@@ -162,10 +141,37 @@ exports.restGetFilterValues = function(req, res, next) {
             );
         }
     );
-}
+};
+
+exports.restAggregationReport = function(req, res, next) {
+    var filterObj = req.body;
+    log.debug('-REST call: aggregation report. Company id: %s', filterObj.companyId.toHexString());
+
+    var timelogCollection = db.timelogCollection();
+    projects.findProjectIdsByCompanyId(filterObj.companyId, function(err, projectIds) {
+        if(err) {
+            next(err);
+            return;
+        }
+
+        var query = convertFiltersToQuery(filterObj.filters, projectIds);
+        var sorting = convertToSortQuery(filterObj.sort);
+        var pageInfo = {number: filterObj.page, size: filterObj.pageSize};
+
+        timelogCollection.aggregate([
+                     { $match: query },
+                     { $group: { _id: {userName: '$userName', projectName: '$projectName'}, time: { $sum:'$time' }} },
+                     {$project : {userName : '$_id.userName', projectName : '$_id.projectName', time : '$time', _id : 0}}
+                 ])
+            .toArray(function(err, groupEntries) {
+                console.log(groupEntries);
+            });
+        res.end();
+    });
+};
 
 //Private
-function convertFiltersToQuery(filters){
+function convertFiltersToQuery(filters, projectIds) {
     var query = {};
     if(filters) {
         filters.forEach(function(filter) {
@@ -176,19 +182,21 @@ function convertFiltersToQuery(filters){
                     break;
                 default:
                     query[filter.field] = {$in: filter.value};
-
             }
         });
     }
     //skip all empty timelogs
     if(!query.time) {
-        query.time = {$gt: 0}
+        query.time = {$gt: 0};
+    }
+    if(projectIds) {
+        query.projectId = {$in: projectIds};
     }
 
     return query;
 }
 
-function makeSortObject(sort) {
+function convertToSortQuery(sort) {
     var sortObj = {};
     if(sort) {
         sortObj[sort.field] = (sort.asc ? 1 : -1);
@@ -197,12 +205,12 @@ function makeSortObject(sort) {
     return sortObj;
 }
 
-function filterTimelog(query, sortObj, page, pageSize, res, callback) {
+function filterTimelog(query, sortObj, pageInfo, res, callback) {
     var timelogCollection = db.timelogCollection();
     timelogCollection.find(query)
         .sort(sortObj)
-        .skip((page-1)*pageSize) // not efficient way but It's just for the first implementation
-        .limit(pageSize)
+        .skip((pageInfo.number - 1) * pageInfo.size) // not efficient way but It's just for the first implementation
+        .limit(pageInfo.size)
         .toArray(function(err, timelogs) {
             res.json(timelogs);
             callback();
@@ -248,4 +256,21 @@ function fillProjectNameValues(companyId, filterValues, next, callback) {
 function fillRoleValues(companyId, filterValues, callback) {
     filterValues.push({field:'role', value: company.defaultPositions});
     callback();
+}
+
+function createCSVFile(outputStream, callback) {
+    var csvStringifier = csvStringify({ header: true, columns: REPORT_COLUMNS });
+    var fileName = 'report_' + shortid.generate() + '.csv';
+    var writeStream = fs.createWriteStream('./report_files/' + fileName,
+        {defaultEncoding: 'utf8'});
+
+    outputStream.pipe(csvStringifier).pipe(writeStream);
+
+    outputStream.on('end', function() {
+        callback(fileName);
+    });
+
+    writeStream.on('error', function (err) {
+        log.error(err);
+    });
 }
