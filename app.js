@@ -174,6 +174,10 @@ app.post('/report/common/download',
 app.get('/report/download/:fileName',
         validators.validateGetDownloadReport,
         report.restDownloadFile);
+app.post('/report/aggregation',
+        validators.validateCommonReport,
+        authorization.authorizeCommonReport,
+        report.restAggregationReport);
 
 //Admin part
 app.get('/admin/log/:fileName',

@@ -147,11 +147,26 @@ exports.restAggregationReport = function(req, res, next) {
     var filterObj = req.body;
     log.debug('-REST call: aggregation report. Company id: %s', filterObj.companyId.toHexString());
 
+    var timelogCollection = db.timelogCollection();
     projects.findProjectIdsByCompanyId(filterObj.companyId, function(err, projectIds) {
         if(err) {
             next(err);
             return;
         }
+
+        var query = convertFiltersToQuery(filterObj.filters, projectIds);
+        var sorting = convertToSortQuery(filterObj.sort);
+        var pageInfo = {number: filterObj.page, size: filterObj.pageSize};
+
+        timelogCollection.aggregate([
+                     { $match: query },
+                     { $group: { _id: {userName: '$userName', projectName: '$projectName'}, time: { $sum:'$time' }} },
+                     {$project : {userName : '$_id.userName', projectName : '$_id.projectName', time : '$time', _id : 0}}
+                 ])
+            .toArray(function(err, groupEntries) {
+                console.log(groupEntries);
+            });
+        res.end();
     });
 };
 
@@ -167,7 +182,6 @@ function convertFiltersToQuery(filters, projectIds) {
                     break;
                 default:
                     query[filter.field] = {$in: filter.value};
-
             }
         });
     }
