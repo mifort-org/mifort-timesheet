@@ -228,10 +228,10 @@ angular.module('mifortTimelog.report', ['ngRoute'])
                 showBullets: true,
                 exitOnOverlayClick: true,
                 exitOnEsc: true,
-                nextLabel: '<strong>></strong>',
-                prevLabel: '<strong><</strong>',
-                skipLabel: 'x',
-                doneLabel: 'x'
+                nextLabel: '',
+                prevLabel: '',
+                skipLabel: '&times;',
+                doneLabel: '&times;'
             };
         }
 

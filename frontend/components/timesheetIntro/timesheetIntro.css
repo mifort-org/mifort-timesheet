@@ -1,0 +1,48 @@
+/*!
+ * Copyright 2015 mifort.org
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+.introjs-helperLayer {
+  border-radius: 0;
+  box-shadow: none; }
+
+.introjs-tooltip {
+  max-width: 500px;
+  padding: 20px;
+  font-size: 1.4rem;
+  border-radius: 0; }
+
+.introjs-bullets ul {
+  padding: 7px 9px;
+  border: 1px #949494 solid;
+  border-radius: 20px; }
+  .introjs-bullets ul li a {
+    width: 12px;
+    height: 12px; }
+    .introjs-bullets ul li a.active {
+      background: #22a7f0; }
+
+.introjs-button {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  font-size: 2.2rem;
+  text-align: center;
+  background: transparent;
+  border-color: #949494;
+  border-radius: 50px; }
+  .introjs-button:hover {
+    box-shadow: none; }
+
+/*# sourceMappingURL=timesheetIntro.css.map */
