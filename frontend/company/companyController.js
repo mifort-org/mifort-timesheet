@@ -49,7 +49,7 @@ angular.module('mifortTimelog.company', ['ngRoute'])
             companyService.getCompany($scope.user.companyId).success(function(company) {
                 $scope.company = company;
                 $scope.company.emails = [];
-                $scope.IntroOptions.steps.push({
+                $scope.IntroSteps.push({
                     element: '#step4',
                     intro: "<p>Also user will see a two-column table (pic #) with all invited employees and their roles (Owner, Manager, Employee, HRM).</p>" +
                     "<p>Name column will show employee\'s Name if he already logged in and shared google account data, otherwise his email will be shown instead of name.</p>" +

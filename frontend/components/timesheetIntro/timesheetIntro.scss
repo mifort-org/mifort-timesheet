@@ -26,6 +26,7 @@
 
 .introjs-tooltip{
     max-width: 500px;
+    min-width: 300px;
     padding: 20px;
     font-size: 1.4rem;
     border-radius: 0;
@@ -46,26 +47,55 @@
     }
 }
 
+.introjs-tooltipbuttons{
+    margin-top: 15px;
+    text-align: center;
+}
+
 .introjs-button{
     width: 31px;
     height: 31px;
     padding: 0;
     margin: 0 5px 0 0;
     vertical-align: top;
-    line-height: 28px;
+    line-height: 29px;
     font-size: 2.2rem;
     text-align: center;
     background: transparent;
     border-color: #949494;
     border-radius: 50px;
 
-    &:hover{
+    &:hover,
+    &:focus{
+        color: #949494;
+        background-color: transparent;
+        outline: none;
         box-shadow: none;
+        border-color: #949494;
     }
 }
 
 .introjs-prevbutton,
-.introjs-nextbutton{
+.introjs-prevbutton.introjs-disabled,
+.introjs-prevbutton:focus,
+.introjs-nextbutton,
+.introjs-nextbutton.introjs-disabled,
+.introjs-nextbutton:focus{
     background: url("../../common/images/icons.png") -2px -358px no-repeat;
     border: 0;
+}
+
+.introjs-nextbutton{
+    margin-right: 0;
+}
+
+.introjs-disabled{
+    opacity: 0.5;
+    cursor: default;
+}
+
+.introjs-nextbutton,
+.introjs-nextbutton.introjs-disabled,
+.introjs-nextbutton:focus{
+    background-position: -2px -406px;
 }

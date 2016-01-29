@@ -28,7 +28,7 @@
   display: inline-block;
   height: 20px;
   width: 20px;
-  background: url("../common/images/icons.png") 3px -1237px;
+  background: url("../common/images/icons.png") 2px -1237px;
   opacity: 0.1; }
   .report-filter:hover {
     opacity: 0.6; }
@@ -204,8 +204,6 @@
     display: inline-block;
     width: 80px;
     margin: 0 5px; }
-  .per-page-wrapper .per-page-after {
-    margin-right: 10px; }
 
 .page-range {
   color: #999;
