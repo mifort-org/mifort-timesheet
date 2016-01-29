@@ -157,20 +157,44 @@ exports.restAggregationReport = function(req, res, next) {
         var query = convertFiltersToQuery(filterObj.filters, projectIds);
         var sorting = convertToSortQuery(filterObj.sort);
         var pageInfo = {number: filterObj.page, size: filterObj.pageSize};
+        var groupBy = createGroupBy(filterObj.groupBy);
+        var projection = createProjection(filterObj.groupBy);
 
         timelogCollection.aggregate([
                      { $match: query },
-                     { $group: { _id: {userName: '$userName', projectName: '$projectName'}, time: { $sum:'$time' }} },
-                     {$project : {userName : '$_id.userName', projectName : '$_id.projectName', time : '$time', _id : 0}}
+                     { $group: { _id: groupBy, time: { $sum:'$time' }} },
+                     { $project : projection }
                  ])
             .toArray(function(err, groupEntries) {
-                console.log(groupEntries);
+                log.debug('-REST result: aggregation report. Company id: %s', filterObj.companyId.toHexString());
+                res.json(groupEntries);
             });
-        res.end();
     });
 };
 
 //Private
+function createGroupBy(fieldNames) {
+    var groupBy = {};
+    if(fieldNames) {
+        fieldNames.forEach(function(fieldName) {
+            groupBy[fieldName] = '$'+fieldName;
+        });
+    }
+    return groupBy;
+}
+
+function createProjection(fieldNames) {
+    var projection = {
+        time : '$time', _id : 0
+    };
+    if(fieldNames) {
+        fieldNames.forEach(function(fieldName) {
+            projection[fieldName] = '$_id.'+fieldName;
+        });
+    }
+    return projection;
+}
+
 function convertFiltersToQuery(filters, projectIds) {
     var query = {};
     if(filters) {

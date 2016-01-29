@@ -34,9 +34,12 @@
       background: #22a7f0; }
 
 .introjs-button {
-  width: 28px;
-  height: 28px;
+  width: 31px;
+  height: 31px;
   padding: 0;
+  margin: 0 5px 0 0;
+  vertical-align: top;
+  line-height: 28px;
   font-size: 2.2rem;
   text-align: center;
   background: transparent;
@@ -44,5 +47,10 @@
   border-radius: 50px; }
   .introjs-button:hover {
     box-shadow: none; }
+
+.introjs-prevbutton,
+.introjs-nextbutton {
+  background: url("../../common/images/icons.png") -2px -358px no-repeat;
+  border: 0; }
 
 /*# sourceMappingURL=timesheetIntro.css.map */
