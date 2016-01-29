@@ -154,17 +154,9 @@ exports.restAggregationReport = function(req, res, next) {
             return;
         }
 
-        var query = convertFiltersToQuery(filterObj.filters, projectIds);
-        var sorting = convertToSortQuery(filterObj.sort);
-        var pageInfo = {number: filterObj.page, size: filterObj.pageSize};
-        var groupBy = createGroupBy(filterObj.groupBy);
-        var projection = createProjection(filterObj.groupBy);
+        var aggregationArray = createAggregationArray(filterObj, projectIds);
 
-        timelogCollection.aggregate([
-                     { $match: query },
-                     { $group: { _id: groupBy, time: { $sum:'$time' }} },
-                     { $project : projection }
-                 ])
+        timelogCollection.aggregate(aggregationArray)
             .toArray(function(err, groupEntries) {
                 log.debug('-REST result: aggregation report. Company id: %s', filterObj.companyId.toHexString());
                 res.json(groupEntries);
@@ -227,6 +219,39 @@ function convertToSortQuery(sort) {
     }
 
     return sortObj;
+}
+
+function createAggregationArray(filterObj, projectIds) {
+    var query = convertFiltersToQuery(filterObj.filters, projectIds);
+    //Prepare sorting params
+    var sorting = convertToSortQuery(filterObj.sort);
+    var postGroupSort = {};
+    if(sorting.time) {
+        postGroupSort.time = sorting.time;
+    }
+    delete sorting.time;
+
+    var pageInfo = {number: filterObj.page, size: filterObj.pageSize};
+    var groupBy = createGroupBy(filterObj.groupBy);
+    var projection = createProjection(filterObj.groupBy);
+
+    var aggregationArray = [{$match : query}];
+    if(!isObjectEmpty(sorting)) {
+        aggregationArray.push({ $sort: sorting });
+    }
+    aggregationArray.push({ $group: { _id: groupBy, time: { $sum:'$time' }} });
+    if(!isObjectEmpty(postGroupSort)) {
+        aggregationArray.push({ $sort: postGroupSort });
+    }
+    aggregationArray.push({ $project : projection });
+    return aggregationArray;
+}
+
+function isObjectEmpty(obj) {
+  for (var key in obj) {
+    return false;
+  }
+  return true;
 }
 
 function filterTimelog(query, sortObj, pageInfo, res, callback) {
