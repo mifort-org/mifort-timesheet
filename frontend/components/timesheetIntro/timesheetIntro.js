@@ -17,22 +17,25 @@
 'use strict';
 
 angular.module('mifortTimelog')
-    .directive('timesheetIntro', function() {
+    .directive('timesheetIntro', ['notifyingService', '$timeout', function(notifyingService, $timeout) {
         return {
             scope: true,
-            link: function (scope, element, attributes) {
-                scope.IntroOptions = {
-                    steps: scope.steps,
-                    showStepNumbers: false,
-                    showBullets: true,
-                    exitOnOverlayClick: true,
-                    exitOnEsc: true,
-                    nextLabel: '',
-                    prevLabel: '',
-                    skipLabel: '&times;',
-                    doneLabel: '&times;'
-                };
+            link: function(scope, element, attributes) {
+                $timeout(function() {
+                    scope.IntroOptions = {
+                        steps: scope.IntroSteps,
+                        showStepNumbers: false,
+                        showBullets: true,
+                        exitOnOverlayClick: true,
+                        exitOnEsc: true,
+                        nextLabel: '',
+                        prevLabel: '',
+                        skipLabel: '&times;',
+                        doneLabel: '&times;'
+                    };
+                    notifyingService.subscribe('startIntro', scope.startIntro, scope);
+                });
             },
             templateUrl: 'components/timesheetIntro/timesheetIntro.html'
-        };
-    });
+        }
+    }]);

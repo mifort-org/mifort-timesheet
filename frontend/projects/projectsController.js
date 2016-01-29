@@ -43,9 +43,6 @@ angular.module('mifortTimelog.projects', ['ngRoute'])
             projectsService.getProjects(companyId).success(function(projects) {
                 $scope.projects = projects;
                 $scope.availablePositions = projects[0].availablePositions;
-                initIntro();
-                notifyingService.subscribe('startIntro', $scope.startIntro, $scope);
-
 
                 $scope.projects.forEach(function(project) {
                     projectsService.getAssignedEmployers(project._id).success(function(assignedEmployers) {
@@ -56,47 +53,35 @@ angular.module('mifortTimelog.projects', ['ngRoute'])
                 });
             });
 
-            function initIntro() {
-                $scope.IntroOptions = {
-                    steps: [
-                        {
-                            element: '#step1',
-                            intro: "<p>This page contains a list of tables for each company project. </p>" +
-                            "<p>Each project table has three columns: </p>" +
-                            "<p>Assignment - contains the dropdown list with all possible assignments for current company (i.e. Developer, QA, Manager, Team Lead etc.). </p>" +
-                            "<p>Workload - set\'s the employee\'s default workload for the current project. </p>" +
-                            "<p>Person - contains the search/dropdown with all company\'s employees. Each assigned employee could be deassigned by pressing the red cross button next to that employees table row. " +
-                            "Each employee could be assigned on any project any number of times under any roles. </p>",
-                            position: 'bottom'
-                        },
-                        {
-                            element: '#step2',
-                            intro: "<p>Pressing the blue Diamond button at the bottom right corner of the page as well as \"Add Project\" link at the top of page will create a new empty project.</p>",
-                            position: 'left'
-                        },
-                        {
-                            element: '#step3',
-                            intro: "<p>Each project has the cross button at the right top corner that will close and archive the project and make it inactive, " +
-                            "so assigned users will be unassigned and will not be able to log time on this project.</p>",
-                            position: 'left'
-                        },
-                        {
-                            element: '#step4',
-                            intro: "<p>Click on the Project Name will allow the user to change the Project Name.</p>" +
-                            "<p>Each project could be minimized or maximized by pressing the arrow icon near the Project Name.</p>",
-                            position: 'right'
-                        }
-                    ],
-                    showStepNumbers: false,
-                    showBullets: true,
-                    exitOnOverlayClick: true,
-                    exitOnEsc: true,
-                    nextLabel: '<strong>next</strong>',
-                    prevLabel: '<strong>previos</strong>',
-                    skipLabel: 'Exit',
-                    doneLabel: 'Done'
-                };
-            }
+            $scope.IntroSteps = [
+                {
+                    element: '#step1',
+                    intro: "<p>This page contains a list of tables for each company project. </p>" +
+                    "<p>Each project table has three columns: </p>" +
+                    "<p>Assignment - contains the dropdown list with all possible assignments for current company (i.e. Developer, QA, Manager, Team Lead etc.). </p>" +
+                    "<p>Workload - set\'s the employee\'s default workload for the current project. </p>" +
+                    "<p>Person - contains the search/dropdown with all company\'s employees. Each assigned employee could be deassigned by pressing the red cross button next to that employees table row. " +
+                    "Each employee could be assigned on any project any number of times under any roles. </p>",
+                    position: 'bottom'
+                },
+                {
+                    element: '#step2',
+                    intro: "<p>Pressing the blue Diamond button at the bottom right corner of the page as well as \"Add Project\" link at the top of page will create a new empty project.</p>",
+                    position: 'left'
+                },
+                {
+                    element: '#step3',
+                    intro: "<p>Each project has the cross button at the right top corner that will close and archive the project and make it inactive, " +
+                    "so assigned users will be unassigned and will not be able to log time on this project.</p>",
+                    position: 'left'
+                },
+                {
+                    element: '#step4',
+                    intro: "<p>Click on the Project Name will allow the user to change the Project Name.</p>" +
+                    "<p>Each project could be minimized or maximized by pressing the arrow icon near the Project Name.</p>",
+                    position: 'right'
+                }
+            ];
 
             projectsService.getCompanyEmployers(companyId).success(function(employees) {
                 $scope.companyEmployees = employees;

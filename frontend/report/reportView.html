@@ -13,9 +13,10 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-<div class="report-controls clearfix"
-     ng-intro-options="IntroOptions"
-     ng-intro-method="startIntro">
+
+<div class="report-controls clearfix">
+    <div timesheet-intro></div>
+
     <div class="per-page-wrapper" id="step3">
         <label for="" class="per-page-label">Show</label>
 
@@ -71,7 +72,6 @@
     <div class="no-data" ng-show="!reportData.length">No timelogs to show</div>
 </div>
 <!--{{reportData}}-->
-
 <script type="text/ng-template" id="myPopoverTemplate.html">
     <div>{{dynamicPopover.content}}</div>
 

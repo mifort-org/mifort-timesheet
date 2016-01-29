@@ -143,9 +143,6 @@ angular.module('mifortTimelog.report', ['ngRoute'])
         reportService.getFilters(companyId).success(function(data) {
             $scope.filtersSettings = data;
             $scope.gridOptions.reportFilters = data;
-
-            initIntro();
-            notifyingService.subscribe('startIntro', $scope.startIntro, $scope);
         });
 
         $scope.$watch('gridOptions.reportFilters', function(newValue, oldValue) {
@@ -192,48 +189,36 @@ angular.module('mifortTimelog.report', ['ngRoute'])
             });
         };
 
-        function initIntro() {
-            $scope.IntroOptions = {
-                steps: [
-                    {
-                        element: '#step1',
-                        intro: "<p>This page have the table of all logs among the application. Each column could be sorted by clicking on column name " +
-                        "and each of them has filter that could be opened on the filter button next to column name.</p>" +
-                        "<p>Report page has the pagination and logs per page dropdown at the top of the page.</p>",
-                        position: 'bottom'
-                    },
-                    {
-                        element: '#step2',
-                        intro: "<p>Date - keeps all logs dates and could be filtered by choosing the period from the list or period or by custom period chosen from calendar.</p>" +
-                        "<p>User, Project and Assignment columns has dropdown filter with the quick search field and checkboxes to choose the filtered options.</p>",
-                        position: 'bottom'
-                    },
-                    {
-                        element: '#step3',
-                        intro: "<p>In Report controls section you could choose for how many records you want to see on page.</p>",
-                        position: 'bottom'
-                    },
-                    {
-                        element: '#step4',
-                        intro: "<p>You could also switch pages here.</p>",
-                        position: 'left'
-                    },
-                    {
-                        element: '#print',
-                        intro: "<p>User can print or export the report by pressing the top panel buttons Print/CSV/PDF.</p>",
-                        position: 'left'
-                    }
-                ],
-                showStepNumbers: false,
-                showBullets: true,
-                exitOnOverlayClick: true,
-                exitOnEsc: true,
-                nextLabel: '',
-                prevLabel: '',
-                skipLabel: '&times;',
-                doneLabel: '&times;'
-            };
-        }
+        $scope.IntroSteps = [
+            {
+                element: '#step1',
+                intro: "<p>This page have the table of all logs among the application. Each column could be sorted by clicking on column name " +
+                "and each of them has filter that could be opened on the filter button next to column name.</p>" +
+                "<p>Report page has the pagination and logs per page dropdown at the top of the page.</p>",
+                position: 'bottom'
+            },
+            {
+                element: '#step2',
+                intro: "<p>Date - keeps all logs dates and could be filtered by choosing the period from the list or period or by custom period chosen from calendar.</p>" +
+                "<p>User, Project and Assignment columns has dropdown filter with the quick search field and checkboxes to choose the filtered options.</p>",
+                position: 'bottom'
+            },
+            {
+                element: '#step3',
+                intro: "<p>In Report controls section you could choose for how many records you want to see on page.</p>",
+                position: 'bottom'
+            },
+            {
+                element: '#step4',
+                intro: "<p>You could also switch pages here.</p>",
+                position: 'left'
+            },
+            {
+                element: '#print',
+                intro: "<p>User can print or export the report by pressing the top panel buttons Print/CSV/PDF.</p>",
+                position: 'left'
+            }
+        ];
 
         $scope.openPage = function(pageIndex) {
             $scope.reportSettings.page = pageIndex;

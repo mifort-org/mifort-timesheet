@@ -51,9 +51,6 @@ angular.module('mifortTimelog.timesheet', ['ngRoute'])
             $scope.init = function() {
                 generateTimesheet();
                 initWatchers();
-                initIntro();
-
-                notifyingService.subscribe('startIntro', $scope.startIntro, $scope);
             };
 
             function generateTimesheet() {
@@ -230,48 +227,36 @@ angular.module('mifortTimelog.timesheet', ['ngRoute'])
                 }, true);
             }
 
-            function initIntro() {
-                $scope.IntroOptions = {
-                    steps:[
-                        {
-                            element: '#step1',
-                            intro: "<p>Here you could see the list of months with tables containing all month\'s days splitted by rows by month weeks. " +
-                            "Each day contain the date and the default workload of this day.</p>" +
-                            "<p>By default all weekend days are colored with light blue color.</p>" +
-                            "<p>You can change the workload and color of each day by clicking on this day and choosing from the collection of Day Types.</p>" +
-                            "<p>User have ability to create and edit the periods of Company. All periods splitters are marked on Calendar with blue vertical lines. " +
-                            "Clicking on period splitter will remove it and merge two periods between it. Click on border of any two days will create the period " +
-                            "splitter and split the current period in two.</p>",
-                            position: 'bottom'
-                        },
-                        {
-                            element: '#step2',
-                            intro: "<p>The control panel at the right has the autosplitting engine that allows the user to split all months automatically. " +
-                            "Choosing the report period (Month, Week) and the Start date of splitting and pressing the blue \"Split\" button will generate periods for all year.</p>",
-                            position: 'left'
-                        },
-                        {
-                            element: '#step3',
-                            intro: "<p>To add new Day Types user could use the right part of page controls. </p>" +
-                            "Pressing the Plus hexagon will add new Day Type. </p>" +
-                            "Clicking the existed Day Type Name will allow user to change it\'s name. </p>" +
-                            "Click on the workload will allow user to change the workload of the current Day Type. </p>" +
-                            "Clicking inside of exists Day Type Hexagon will allow user to select the color for edited day type. </p>" +
-                            "Changing the Color of Day Type will change all days of this type in Calendar and all Timelogs days for chosen Day Type in calendar. </p>" +
-                            "Clicking on red cross next to each Day Type in controls panel will remove this Day Type from list, remove all days of this type from Calendar and Timelogs.</p>",
-                            position: 'left'
-                        }
-                    ],
-                    showStepNumbers: false,
-                    showBullets: true,
-                    exitOnOverlayClick: true,
-                    exitOnEsc:true,
-                    nextLabel: '<strong>next</strong>',
-                    prevLabel: '<strong>previos</strong>',
-                    skipLabel: 'Exit',
-                    doneLabel: 'Done'
-                };
-            }
+            $scope.IntroSteps = [
+                {
+                    element: '#step1',
+                    intro: "<p>Here you could see the list of months with tables containing all month\'s days splitted by rows by month weeks. " +
+                    "Each day contain the date and the default workload of this day.</p>" +
+                    "<p>By default all weekend days are colored with light blue color.</p>" +
+                    "<p>You can change the workload and color of each day by clicking on this day and choosing from the collection of Day Types.</p>" +
+                    "<p>User have ability to create and edit the periods of Company. All periods splitters are marked on Calendar with blue vertical lines. " +
+                    "Clicking on period splitter will remove it and merge two periods between it. Click on border of any two days will create the period " +
+                    "splitter and split the current period in two.</p>",
+                    position: 'bottom'
+                },
+                {
+                    element: '#step2',
+                    intro: "<p>The control panel at the right has the autosplitting engine that allows the user to split all months automatically. " +
+                    "Choosing the report period (Month, Week) and the Start date of splitting and pressing the blue \"Split\" button will generate periods for all year.</p>",
+                    position: 'left'
+                },
+                {
+                    element: '#step3',
+                    intro: "<p>To add new Day Types user could use the right part of page controls. </p>" +
+                    "Pressing the Plus hexagon will add new Day Type. </p>" +
+                    "Clicking the existed Day Type Name will allow user to change it\'s name. </p>" +
+                    "Click on the workload will allow user to change the workload of the current Day Type. </p>" +
+                    "Clicking inside of exists Day Type Hexagon will allow user to select the color for edited day type. </p>" +
+                    "Changing the Color of Day Type will change all days of this type in Calendar and all Timelogs days for chosen Day Type in calendar. </p>" +
+                    "Clicking on red cross next to each Day Type in controls panel will remove this Day Type from list, remove all days of this type from Calendar and Timelogs.</p>",
+                    position: 'left'
+                }
+            ];
 
             $scope.splitTimesheet = function(period, splitStartDate) {
                 if(period.periodName == 'month' && splitStartDate.getDate() > 28){

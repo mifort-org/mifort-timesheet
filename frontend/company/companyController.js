@@ -45,11 +45,6 @@ angular.module('mifortTimelog.company', ['ngRoute'])
             'Employee'
         ];
 
-        $timeout(function() {
-            initIntro();
-            notifyingService.subscribe('startIntro', $scope.startIntro, $scope);
-        });
-
         if($location.path() == '/company'){
             companyService.getCompany($scope.user.companyId).success(function(company) {
                 $scope.company = company;
@@ -73,35 +68,23 @@ angular.module('mifortTimelog.company', ['ngRoute'])
             });
         }
 
-        function initIntro() {
-            $scope.IntroOptions = {
-                steps: [
-                    {
-                        element: '#step1',
-                        intro: "<p>Where he can change company name.</p>",
-                        position: 'bottom'
-                    },
-                    {
-                        element: '#step2',
-                        intro: "<p>invite more employees by adding their emails to the \"Invite Employees\" field splitted by comma.</p>",
-                        position: 'left'
-                    },
-                    {
-                        element: '#step3',
-                        intro: "<p>Pressing the Invite button will sent the emails to invited employees and add them to \"Invited Employees\" table to change company roles.</p>",
-                        position: 'top'
-                    }
-                ],
-                showStepNumbers: false,
-                showBullets: true,
-                exitOnOverlayClick: true,
-                exitOnEsc: true,
-                nextLabel: '<strong>next</strong>',
-                prevLabel: '<strong>previos</strong>',
-                skipLabel: 'Exit',
-                doneLabel: 'Done'
-            };
-        }
+        $scope.IntroSteps = [
+            {
+                element: '#step1',
+                intro: "<p>Where he can change company name.</p>",
+                position: 'bottom'
+            },
+            {
+                element: '#step2',
+                intro: "<p>invite more employees by adding their emails to the \"Invite Employees\" field splitted by comma.</p>",
+                position: 'left'
+            },
+            {
+                element: '#step3',
+                intro: "<p>Pressing the Invite button will sent the emails to invited employees and add them to \"Invited Employees\" table to change company roles.</p>",
+                position: 'top'
+            }
+        ];
 
         $scope.createCompany = function () {
             companyService.createCompany($scope.company).success(function (data) {

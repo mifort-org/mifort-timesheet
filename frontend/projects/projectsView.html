@@ -13,56 +13,56 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-<div ng-intro-options="IntroOptions"
-     ng-intro-method="startIntro">
-    <div class="collapse-wrapper project" ng-repeat="project in projects track by $index" id="{{$first ? 'step1' : ''}}">
-        <h2 ng-class="{'timelog-collapsed': project.isCollapsed}">
-            <a href="" id="{{$first ? 'step4' : ''}}" ng-if="!project.projectEdit" class="collapse-item project-name" ng-class="{'collapsed': project.isCollapsed}" ng-click="project.isCollapsed = !project.isCollapsed">
-                {{project.name}}
-            </a>
+<div timesheet-intro></div>
 
-            <input ng-if="project.projectEdit" type="text" ng-model="project.name" ng-change="changeProjectName(project)"/>
+<div class="collapse-wrapper project" ng-repeat="project in projects track by $index" id="{{$first ? 'step1' : ''}}">
+    <h2 ng-class="{'timelog-collapsed': project.isCollapsed}">
+        <a href="" id="{{$first ? 'step4' : ''}}" ng-if="!project.projectEdit" class="collapse-item project-name" ng-class="{'collapsed': project.isCollapsed}" ng-click="project.isCollapsed = !project.isCollapsed">
+            {{project.name}}
+        </a>
 
-            <a href="" ng-if="project.projectEdit" class="edit-project" ng-click="project.projectEdit = !project.projectEdit">Done</a>
-            <a href="" ng-if="!project.projectEdit" class="edit-project" ng-click="project.projectEdit = !project.projectEdit">Edit</a>
+        <input ng-if="project.projectEdit" type="text" ng-model="project.name" ng-change="changeProjectName(project)"/>
 
-            <a href="" id="{{$first ? 'step3' : ''}}" class="remove-project" ng-click="removeProject(project, $index)"></a>
-        </h2>
+        <a href="" ng-if="project.projectEdit" class="edit-project" ng-click="project.projectEdit = !project.projectEdit">Done</a>
+        <a href="" ng-if="!project.projectEdit" class="edit-project" ng-click="project.projectEdit = !project.projectEdit">Edit</a>
 
-        <div uib-collapse="project.isCollapsed">
-            <table class="table table-bordered">
-                <thead>
-                <tr>
-                    <th ng-repeat="projectsKey in projectsKeys track by $index">
-                        {{projectsKey}}
-                    </th>
-                </tr>
-                </thead>
+        <a href="" id="{{$first ? 'step3' : ''}}" class="remove-project" ng-click="removeProject(project, $index)"></a>
+    </h2>
 
-                <tbody ng-repeat="assignedEmployee in project.assignedEmployers track by $index">
-                <tr ng-if="currentProjectIndex >= 0" ng-repeat="assignment in assignedEmployee.assignments track by $index">
-                    <td>
-                        <!--<span class="blank-dropdown" uib-dropdown on-toggle="toggled(open)">-->
-                        <!--<a href id="simple-dropdown" uib-dropdown-toggle>-->
-                        <!--{{assignedEmployee.displayName}}-->
-                        <!--</a>-->
-                        <!--<ul uib-dropdown-menu aria-labelledby="simple-dropdown">-->
-                        <!--<li ng-repeat="companyEmployee in companyEmployees">-->
-                        <!--<a href ng-click="changeUser(project, assignedEmployee, companyEmployee._id, $parent.$index)">{{companyEmployee.displayName}}</a>-->
-                        <!--</li>-->
-                        <!--</ul>-->
-                        <!--</span>-->
+    <div uib-collapse="project.isCollapsed">
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th ng-repeat="projectsKey in projectsKeys track by $index">
+                    {{projectsKey}}
+                </th>
+            </tr>
+            </thead>
 
-                        <ui-select ng-model="assignedEmployee" class="blank-dropdown">
-                            <ui-select-match placeholder="Select employee">{{$select.selected.displayName}}</ui-select-match>
+            <tbody ng-repeat="assignedEmployee in project.assignedEmployers track by $index">
+            <tr ng-if="currentProjectIndex >= 0" ng-repeat="assignment in assignedEmployee.assignments track by $index">
+                <td>
+                    <!--<span class="blank-dropdown" uib-dropdown on-toggle="toggled(open)">-->
+                    <!--<a href id="simple-dropdown" uib-dropdown-toggle>-->
+                    <!--{{assignedEmployee.displayName}}-->
+                    <!--</a>-->
+                    <!--<ul uib-dropdown-menu aria-labelledby="simple-dropdown">-->
+                    <!--<li ng-repeat="companyEmployee in companyEmployees">-->
+                    <!--<a href ng-click="changeUser(project, assignedEmployee, companyEmployee._id, $parent.$index)">{{companyEmployee.displayName}}</a>-->
+                    <!--</li>-->
+                    <!--</ul>-->
+                    <!--</span>-->
 
-                            <ui-select-choices repeat="companyEmployee in companyEmployees | propsFilter: {displayName: $select.search}">
-                                <div ng-bind-html="companyEmployee.displayName | highlight: $select.search" ng-click="changeUser(project, assignedEmployee, companyEmployee._id, $parent.$parent.$index)"></div>
-                            </ui-select-choices>
-                        </ui-select>
-                    </td>
+                    <ui-select ng-model="assignedEmployee" class="blank-dropdown">
+                        <ui-select-match placeholder="Select employee">{{$select.selected.displayName}}</ui-select-match>
 
-                    <td>
+                        <ui-select-choices repeat="companyEmployee in companyEmployees | propsFilter: {displayName: $select.search}">
+                            <div ng-bind-html="companyEmployee.displayName | highlight: $select.search" ng-click="changeUser(project, assignedEmployee, companyEmployee._id, $parent.$parent.$index)"></div>
+                        </ui-select-choices>
+                    </ui-select>
+                </td>
+
+                <td>
                     <span class="blank-dropdown" uib-dropdown on-toggle="toggled(open)">
                         <a href id="simple-dropdown-two" uib-dropdown-toggle>
                             {{assignment.role}}
@@ -74,21 +74,20 @@
                             </li>
                         </ul>
                     </span>
-                    </td>
+                </td>
 
-                    <td>
-                        <input type="number" ng-model="assignment.workload" ng-change="saveAssignment(project, assignedEmployee)"/>
-                        <a href="" class="remove-assignment" ng-click="removeAssignment(project, assignedEmployee, $index)">&times;</a>
-                    </td>
-                </tr>
-                </tbody>
+                <td>
+                    <input type="number" ng-model="assignment.workload" ng-change="saveAssignment(project, assignedEmployee)"/>
+                    <a href="" class="remove-assignment" ng-click="removeAssignment(project, assignedEmployee, $index)">&times;</a>
+                </td>
+            </tr>
+            </tbody>
 
-                <tbody>
-                <tr project-row></tr>
-                </tbody>
-            </table>
-        </div>
+            <tbody>
+            <tr project-row></tr>
+            </tbody>
+        </table>
     </div>
-
-    <a href="" id="step2" ng-click="addProject()" class="add-project">+</a>
 </div>
+
+<a href="" id="step2" ng-click="addProject()" class="add-project">+</a>

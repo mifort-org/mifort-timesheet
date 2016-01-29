@@ -14,9 +14,9 @@
   limitations under the License.
 -->
 
-<div class="company-wrapper"
-     ng-intro-options="IntroOptions"
-     ng-intro-method="startIntro">
+<div class="company-wrapper">
+    <div timesheet-intro></div>
+
     <h1>Company Edit</h1>
 
     <form name="companyCreateForm" ng-submit="companyCreateForm.$valid && saveCompany()">
