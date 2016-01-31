@@ -155,15 +155,30 @@ exports.restAggregationReport = function(req, res, next) {
         }
 
         var aggregationArray = createAggregationArray(filterObj, projectIds);
+        var countQuery = aggregationArray.slice();
         var pageInfo = {number: filterObj.page, size: filterObj.pageSize};
-        aggregationArray.push({'$skip': (pageInfo.number - 1) * pageInfo.size});
-        aggregationArray.push({'$limit': pageInfo.size});
+        aggregationArray.push({$skip: (pageInfo.number - 1) * pageInfo.size});
+        aggregationArray.push({$limit: pageInfo.size});
 
-        timelogCollection.aggregate(aggregationArray)
-            .toArray(function(err, groupEntries) {
-                log.debug('-REST result: aggregation report. Company id: %s', filterObj.companyId.toHexString());
-                res.json(groupEntries);
-            });
+        var aggregationCallback = function(err, groupEntries) {
+            log.debug('-REST result: aggregation report. Company id: %s', filterObj.companyId.toHexString());
+            res.json(groupEntries);
+        };
+
+        if(pageInfo.number == 1) {
+            //can be optimized - just need to remove sort stage
+            countQuery.push({ $group: {_id: null, count: {$sum: 1}}});
+            timelogCollection.aggregate(countQuery)
+                .next(function(err, countObj) {
+                    if(countObj) {
+                        res.append('X-Total-Count', countObj.count);
+                    }
+                    timelogCollection.aggregate(aggregationArray).toArray(aggregationCallback);
+                })
+        } else {
+            timelogCollection.aggregate(aggregationArray).toArray(aggregationCallback);
+        }
+
     });
 };
 
