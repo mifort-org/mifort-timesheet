@@ -231,6 +231,12 @@ exports.validateAggregationReport = function(req, res, next) {
     returnErrors(req, res, next);
 };
 
+exports.validateDownloadAggregationReport = function(req, res, next) {
+    checkReportRequiredFields(req);
+    req.checkBody('groupBy', 'Aggregation group by params are not an array of strings').isGroupBy();
+    returnErrors(req, res, next);
+};
+
 exports.validateGetFilters = function(req, res, next) {
     req.checkParams(reqParams.companyIdParam,
         util.format(invalidFormatMessageTemplate, reqParams.companyIdParam))
