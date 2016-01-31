@@ -170,14 +170,20 @@ app.post('/report/common',
 app.post('/report/common/download',
         validators.validateDowloadCommonReport,
         authorization.authorizeCommonReport,
-        report.restConstructCSV);
-app.get('/report/download/:fileName',
-        validators.validateGetDownloadReport,
-        report.restDownloadFile);
+        report.restCommonReportCSV);
+//aggregation reports
 app.post('/report/aggregation',
         validators.validateCommonReport,
         authorization.authorizeCommonReport,
         report.restAggregationReport);
+app.post('/report/aggregation/download',
+        validators.validateDowloadCommonReport,
+        authorization.authorizeCommonReport,
+        report.restAggregationReportCSV);
+
+app.get('/report/download/:fileName',
+        validators.validateGetDownloadReport,
+        report.restDownloadFile);
 
 //Admin part
 app.get('/admin/log/:fileName',

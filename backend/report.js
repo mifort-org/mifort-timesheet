@@ -66,7 +66,7 @@ exports.restCommonReport = function(req, res, next) {
 };
 
 //need to extract common parts to separate method!!!!
-exports.restConstructCSV = function(req, res, next) {
+exports.restCommonReportCSV = function(req, res, next) {
     var filterObj = req.body;
     log.debug('-REST call: Download common report. Company id: %s',
         filterObj.companyId.toHexString());
@@ -91,7 +91,7 @@ exports.restConstructCSV = function(req, res, next) {
                 }
             });
 
-        createCSVFile(cursorStream, function(fileName) {
+        createCSVFile(cursorStream, REPORT_COLUMNS, function(fileName) {
             log.debug('-REST Result: Download common report. CSV file is generated. Company id: %s',
                 filterObj.companyId.toHexString());
             res.json({url: '/report/download/' + fileName});
@@ -155,12 +155,47 @@ exports.restAggregationReport = function(req, res, next) {
         }
 
         var aggregationArray = createAggregationArray(filterObj, projectIds);
+        var pageInfo = {number: filterObj.page, size: filterObj.pageSize};
+        aggregationArray.push({'$skip': (pageInfo.number - 1) * pageInfo.size});
+        aggregationArray.push({'$limit': pageInfo.size});
 
         timelogCollection.aggregate(aggregationArray)
             .toArray(function(err, groupEntries) {
                 log.debug('-REST result: aggregation report. Company id: %s', filterObj.companyId.toHexString());
                 res.json(groupEntries);
             });
+    });
+};
+
+exports.restAggregationReportCSV = function(req, res, next) {
+    var filterObj = req.body;
+    log.debug('-REST call: aggregation report download CSV. Company id: %s', filterObj.companyId.toHexString());
+
+    var timelogCollection = db.timelogCollection();
+    projects.findProjectIdsByCompanyId(filterObj.companyId, function(err, projectIds) {
+        if(err) {
+            next(err);
+            return;
+        }
+
+        var aggregationArray = createAggregationArray(filterObj, projectIds);
+        var aggregationStream = timelogCollection.aggregate(aggregationArray)
+            .stream({
+                transform: function(doc) {
+                    if(doc.date) {
+                        doc.date = utils.formatDate(doc.date);
+                    }
+                    return doc;
+                }
+            });
+
+        var aggregationColumns = filterObj.groupBy;
+        aggregationColumns.push('time');
+        createCSVFile(aggregationStream, aggregationColumns, function(fileName) {
+            res.json({url: '/report/download/' + fileName});
+            log.debug('-REST call: aggregation report download CSV. Company id: %s',
+                filterObj.companyId.toHexString());
+        });
     });
 };
 
@@ -231,8 +266,7 @@ function createAggregationArray(filterObj, projectIds) {
     }
     delete sorting.time;
 
-    var pageInfo = {number: filterObj.page, size: filterObj.pageSize};
-    var groupBy = createGroupBy(filterObj.groupBy);
+        var groupBy = createGroupBy(filterObj.groupBy);
     var projection = createProjection(filterObj.groupBy);
 
     var aggregationArray = [{$match : query}];
@@ -307,8 +341,8 @@ function fillRoleValues(companyId, filterValues, callback) {
     callback();
 }
 
-function createCSVFile(outputStream, callback) {
-    var csvStringifier = csvStringify({ header: true, columns: REPORT_COLUMNS });
+function createCSVFile(outputStream, reportColumns, callback) {
+    var csvStringifier = csvStringify({ header: true, columns: reportColumns });
     var fileName = 'report_' + shortid.generate() + '.csv';
     var writeStream = fs.createWriteStream('./report_files/' + fileName,
         {defaultEncoding: 'utf8'});
