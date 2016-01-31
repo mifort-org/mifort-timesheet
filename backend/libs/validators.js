@@ -216,28 +216,18 @@ exports.validateDeactivateProject = function(req, res, next) {
 
 //Report validation
 exports.validateCommonReport = function(req, res, next) {
-    var filterObj = req.body;
-    req.checkBody('page', 'Page is required').notEmpty().isInt();
-    req.checkBody('pageSize', 'Page size is required').notEmpty().isInt();
-    req.checkBody('companyId', 'Company id is required').notEmpty().isMongoId();
-    req.checkBody('filters', 'Incorrect filters value').isFilters();
-    if(filterObj.sort) {
-        req.checkBody('sort.field', 'Field name is required for sort object').notEmpty();
-        req.checkBody('sort.asc', 'Asc attribute is required for sort object').notEmpty().isBoolean();
-    }
-
+    checkReportFieldsWithPaging(req);
     returnErrors(req, res, next);
 };
 
 exports.validateDowloadCommonReport = function(req, res, next) {
-    var filterObj = req.body;
-    req.checkBody('companyId', 'Company id is required').notEmpty().isMongoId();
-    req.checkBody('filters', 'Incorrect filters value').isFilters();
-    if(filterObj.sort) {
-        req.checkBody('sort.field', 'Field name is required for sort object').notEmpty();
-        req.checkBody('sort.asc', 'Asc attribute is required for sort object').notEmpty().isBoolean();
-    }
+    checkReportRequiredFields(req);
+    returnErrors(req, res, next);
+};
 
+exports.validateAggregationReport = function(req, res, next) {
+    checkReportFieldsWithPaging(req);
+    req.checkBody('groupBy', 'Aggregation group by params are not an array of strings').isGroupBy();
     returnErrors(req, res, next);
 };
 
@@ -330,7 +320,7 @@ exports.isEmails = function(values) {
 };
 
 exports.isFilters = function(filters) {
-    if(!filters || !filters.length) { // if array is empty
+    if(!filters.length) { // if array is empty
         return true;
     }
 
@@ -352,6 +342,16 @@ exports.isString = function(obj) {
     return typeof obj === 'string';
 };
 
+exports.isGroupBy = function(values) {
+    if(Array.isArray(values)) {
+        return values.every(function(val) {
+            return exports.isString(val);
+        });
+    }
+
+    return false;
+};
+
 //Private part
 function returnErrors(req, res, next) {
     var errors = req.validationErrors(true);
@@ -361,4 +361,20 @@ function returnErrors(req, res, next) {
     }
 
     next();
+}
+
+function checkReportRequiredFields(req) {
+    var filterObj = req.body;
+    req.checkBody('companyId', 'Company id is required').notEmpty().isMongoId();
+    req.checkBody('filters', 'Incorrect filters value').isFilters();
+    if(filterObj.sort) {
+        req.checkBody('sort.field', 'Field name is required for sort object').notEmpty();
+        req.checkBody('sort.asc', 'Asc attribute is required for sort object').notEmpty().isBoolean();
+    }
+}
+
+function checkReportFieldsWithPaging(req) {
+    req.checkBody('page', 'Page is required').notEmpty().isInt();
+    req.checkBody('pageSize', 'Page size is required').notEmpty().isInt();
+    checkReportRequiredFields(req);
 }

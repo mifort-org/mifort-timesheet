@@ -63,7 +63,8 @@ app.use(expressValidator({
         isAssignments: validators.isAssignments,
         isEmails: validators.isEmails,
         isFilters: validators.isFilters,
-        isString: validators.isString
+        isString: validators.isString,
+        isGroupBy: validators.isGroupBy
     }
 }));
 
@@ -173,11 +174,11 @@ app.post('/report/common/download',
         report.restCommonReportCSV);
 //aggregation reports
 app.post('/report/aggregation',
-        validators.validateCommonReport,
+        validators.validateAggregationReport,
         authorization.authorizeCommonReport,
         report.restAggregationReport);
 app.post('/report/aggregation/download',
-        validators.validateDowloadCommonReport,
+        validators.validateDownloadAggregationReport,
         authorization.authorizeCommonReport,
         report.restAggregationReportCSV);
 
