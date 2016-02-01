@@ -90,19 +90,20 @@ angular.module('mifortTimelog.timelog', ['ngRoute'])
                 },
                 {
                     element: '#step2',
-                    intro: "<p>Periods switch arrows (next and previous) at the top right corner of section will switch the period</p>",
+                    intro: "<p>Use periods switch arrows (next and previous) to switch the period</p>",
                     position: 'left'
                 },
                 {
                     element: '#step3',
-                    intro: "<p>Table of logs. The Timelog table has four columns: " +
-                    "<p>Date - is not editable but user can add several logs to the current date by pressing the blue plus icon next to Date field. </p>" +
-                    "<p>New row for log created for current date will have the red minus icon that will delete the log on click. </p>" +
-                    "<p>Role - dropdown with roles in which this particular user assigned to the project. If it is only one role it is selected by default and disabled. </p>" +
-                    "<p>There is no possibility to log time with empty role. </p>" +
-                    "<p>Time - numeric input where user have to log time that he spent. </p>" +
-                    "<p>Empty input shows placeholder with minimum of user workload (personal workload how much time this person works per day) and project assignment workload. </p>" +
-                    "<p>Comment - textarea where user writes detailed description of tasks which he is done at logged time. </p>" +
+                    intro: "<p>Table of logs has four columns:" +
+                    "<ul class=\"dotted" +
+                    "gn\"><li>Date - is not editable but user can add several logs to the current date by pressing the blue plus icon next to Date field." +
+                    "New row for log created for current date will have the red minus icon that will delete the log on click</li>" +
+                    "<li>Role - dropdown with roles in which this particular user assigned to the project. If it is only one role it is selected by default and disabled." +
+                    "There is no possibility to log time with empty role.</li>" +
+                    "<li>Time - numeric input where user have to log time that he spent." +
+                    "Empty input shows placeholder with minimum of user workload (personal workload how much time this person works per day) and project assignment workload.</li>" +
+                    "<li>Comment - textarea where user writes detailed description of tasks which he is done at logged time.</li></ul>" +
                     "<p>Each day will may have a background color and workload according to Timesheet calendar option created by Owner/HR/Manager. </p>",
                     position: 'bottom'
                 }

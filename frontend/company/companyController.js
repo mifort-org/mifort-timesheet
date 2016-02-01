@@ -51,10 +51,10 @@ angular.module('mifortTimelog.company', ['ngRoute'])
                 $scope.company.emails = [];
                 $scope.IntroSteps.push({
                     element: '#step4',
-                    intro: "<p>Also user will see a two-column table (pic #) with all invited employees and their roles (Owner, Manager, Employee, HRM).</p>" +
-                    "<p>Name column will show employee\'s Name if he already logged in and shared google account data, otherwise his email will be shown instead of name.</p>" +
-                    "<p>Role column will show the assigned role of employee. Here company owner can change employee's roles and remove an employee from their company.</p>" +
-                    "<p>After pressing the Continue button user will be redirected to Projects page.</p>",
+                    intro: "<p>Table with all invited employees and roles.</p>" +
+                    "<p><strong>Name</strong> column will show employee\'s Name if he already logged in and shared google account data, otherwise his email will be shown instead of name.</p>" +
+                    "<p><strong>Role</strong> column will show the assigned role of employee. Company owner can change employee's roles and remove an employee from company.</p>" +
+                    "<p>Pressing the Continue button will save all data and redirect to Projects page.</p>",
                     position: 'top'
                 })
             });
@@ -71,17 +71,17 @@ angular.module('mifortTimelog.company', ['ngRoute'])
         $scope.IntroSteps = [
             {
                 element: '#step1',
-                intro: "<p>Where he can change company name.</p>",
+                intro: "<p>Use this field to change the company name.</p>",
                 position: 'bottom'
             },
             {
                 element: '#step2',
-                intro: "<p>invite more employees by adding their emails to the \"Invite Employees\" field splitted by comma.</p>",
+                intro: "<p>Invite more employees by adding their emails to the \"Invite Employees\" field splitted by comma.</p>",
                 position: 'left'
             },
             {
                 element: '#step3',
-                intro: "<p>Pressing the Invite button will sent the emails to invited employees and add them to \"Invited Employees\" table to change company roles.</p>",
+                intro: "<p>Pressing the Invite button will send the emails to invited employees and add them to \"Invited Employees\" table to change company roles.</p>",
                 position: 'top'
             }
         ];

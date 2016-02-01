@@ -41,44 +41,46 @@ angular.module('mifortTimelog.projects', ['ngRoute'])
             $scope.currentProjectIndex = 0;
 
             projectsService.getProjects(companyId).success(function(projects) {
-                $scope.projects = projects;
-                $scope.availablePositions = projects[0].availablePositions;
+                if(projects.length){
+                    $scope.projects = projects;
+                    $scope.availablePositions = projects[0].availablePositions;
 
-                $scope.projects.forEach(function(project) {
-                    projectsService.getAssignedEmployers(project._id).success(function(assignedEmployers) {
-                        project.assignedEmployers = assignedEmployers;
-                        project.isCollapsed = false;
-                        project.projectEdit = false;
+                    $scope.projects.forEach(function(project) {
+                        projectsService.getAssignedEmployers(project._id).success(function(assignedEmployers) {
+                            project.assignedEmployers = assignedEmployers;
+                            project.isCollapsed = false;
+                            project.projectEdit = false;
+                        });
                     });
-                });
+                }
             });
 
             $scope.IntroSteps = [
                 {
                     element: '#step1',
-                    intro: "<p>This page contains a list of tables for each company project. </p>" +
+                    intro: "<p>This section contains a company project. </p>" +
                     "<p>Each project table has three columns: </p>" +
-                    "<p>Assignment - contains the dropdown list with all possible assignments for current company (i.e. Developer, QA, Manager, Team Lead etc.). </p>" +
-                    "<p>Workload - set\'s the employee\'s default workload for the current project. </p>" +
-                    "<p>Person - contains the search/dropdown with all company\'s employees. Each assigned employee could be deassigned by pressing the red cross button next to that employees table row. " +
-                    "Each employee could be assigned on any project any number of times under any roles. </p>",
+                    "<ul class=\"dotted-list\"><li><strong>Assignment</strong> - contains the dropdown list with all possible assignments for current company (i.e. Developer, QA, Manager, Team Lead etc.). </li>" +
+                    "<li><strong>Workload</strong> - set\'s the employee\'s default workload for the current project. </li>" +
+                    "<li><strong>Person</strong> - contains the search/dropdown with all company\'s employees. Each assigned employee could be deassigned by pressing the red cross button next to that employees table row. " +
+                    "Each employee could be assigned on any project any number of times under any roles.</li></ul>",
                     position: 'bottom'
                 },
                 {
                     element: '#step2',
-                    intro: "<p>Pressing the blue Diamond button at the bottom right corner of the page as well as \"Add Project\" link at the top of page will create a new empty project.</p>",
+                    intro: "<p>Pressing the blue Diamond button as well as \"<strong>Add Project</strong>\" link at the top of page will create a new empty project.</p>",
                     position: 'left'
                 },
                 {
                     element: '#step3',
-                    intro: "<p>Each project has the cross button at the right top corner that will close and archive the project and make it inactive, " +
-                    "so assigned users will be unassigned and will not be able to log time on this project.</p>",
+                    intro: "<p>Pressing the cross button will close and archive the project and make it inactive." +
+                    "Assigned users will be unassigned and will not be able to log time on this project.</p>",
                     position: 'left'
                 },
                 {
                     element: '#step4',
-                    intro: "<p>Click on the Project Name will allow the user to change the Project Name.</p>" +
-                    "<p>Each project could be minimized or maximized by pressing the arrow icon near the Project Name.</p>",
+                    intro: "<p>Click on the Project Name will allow the user to change it.</p>" +
+                    "<p>Pressing the arrow icon will minimize or maximize the project.</p>",
                     position: 'right'
                 }
             ];

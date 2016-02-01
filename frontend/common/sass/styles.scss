@@ -118,15 +118,22 @@ body{
     height: 100%;
 }
 
-a:focus{
-    text-decoration: none;
-}
 
 body{
     color: #000;
     font-family: 'Open Sans', sans-serif;
 }
 
+a:focus{
+    text-decoration: none;
+}
+
+ul.dotted-list{
+    li{
+        list-style-type: circle;
+        margin-left: 20px;
+    }
+}
 h2{
     padding-bottom: 32px;
     font-size: 1.8em;

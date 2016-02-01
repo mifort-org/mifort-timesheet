@@ -192,14 +192,13 @@ angular.module('mifortTimelog.report', ['ngRoute'])
         $scope.IntroSteps = [
             {
                 element: '#step1',
-                intro: "<p>This page have the table of all logs among the application. Each column could be sorted by clicking on column name " +
-                "and each of them has filter that could be opened on the filter button next to column name.</p>" +
-                "<p>Report page has the pagination and logs per page dropdown at the top of the page.</p>",
+                intro: "<p>This is a table of all logs among the application. Each column could be sorted by clicking on column name " +
+                "and each of them has filter that could be opened on the filter button next to column name.</p>",
                 position: 'bottom'
             },
             {
                 element: '#step2',
-                intro: "<p>Date - keeps all logs dates and could be filtered by choosing the period from the list or period or by custom period chosen from calendar.</p>" +
+                intro: "<p>Date column keeps all logs dates and could be filtered by choosing the period from the list or period or by custom period chosen from calendar.</p>" +
                 "<p>User, Project and Assignment columns has dropdown filter with the quick search field and checkboxes to choose the filtered options.</p>",
                 position: 'bottom'
             },
@@ -210,12 +209,12 @@ angular.module('mifortTimelog.report', ['ngRoute'])
             },
             {
                 element: '#step4',
-                intro: "<p>You could also switch pages here.</p>",
+                intro: "<p>You could also switch pages.</p>",
                 position: 'left'
             },
             {
                 element: '#print',
-                intro: "<p>User can print or export the report by pressing the top panel buttons Print/CSV/PDF.</p>",
+                intro: "<p>You could print or export the report by pressing the top panel buttons Print/CSV/PDF.</p>",
                 position: 'left'
             }
         ];

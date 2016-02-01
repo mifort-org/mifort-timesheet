@@ -24,6 +24,11 @@
   font-size: 1.4rem;
   border-radius: 0; }
 
+.introjs-tooltiptext p {
+  margin-bottom: 10px; }
+  .introjs-tooltiptext p:last-child {
+    margin-bottom: 0; }
+
 .introjs-bullets ul {
   padding: 7px 9px;
   border: 1px #949494 solid;
