@@ -66,7 +66,7 @@ exports.restCommonReport = function(req, res, next) {
 };
 
 //need to extract common parts to separate method!!!!
-exports.restConstructCSV = function(req, res, next) {
+exports.restCommonReportCSV = function(req, res, next) {
     var filterObj = req.body;
     log.debug('-REST call: Download common report. Company id: %s',
         filterObj.companyId.toHexString());
@@ -91,7 +91,7 @@ exports.restConstructCSV = function(req, res, next) {
                 }
             });
 
-        createCSVFile(cursorStream, function(fileName) {
+        createCSVFile(cursorStream, REPORT_COLUMNS, function(fileName) {
             log.debug('-REST Result: Download common report. CSV file is generated. Company id: %s',
                 filterObj.companyId.toHexString());
             res.json({url: '/report/download/' + fileName});
@@ -154,21 +154,63 @@ exports.restAggregationReport = function(req, res, next) {
             return;
         }
 
-        var query = convertFiltersToQuery(filterObj.filters, projectIds);
-        var sorting = convertToSortQuery(filterObj.sort);
+        var aggregationArray = createAggregationArray(filterObj, projectIds);
+        var countQuery = aggregationArray.slice();
         var pageInfo = {number: filterObj.page, size: filterObj.pageSize};
-        var groupBy = createGroupBy(filterObj.groupBy);
-        var projection = createProjection(filterObj.groupBy);
+        aggregationArray.push({$skip: (pageInfo.number - 1) * pageInfo.size});
+        aggregationArray.push({$limit: pageInfo.size});
 
-        timelogCollection.aggregate([
-                     { $match: query },
-                     { $group: { _id: groupBy, time: { $sum:'$time' }} },
-                     { $project : projection }
-                 ])
-            .toArray(function(err, groupEntries) {
-                log.debug('-REST result: aggregation report. Company id: %s', filterObj.companyId.toHexString());
-                res.json(groupEntries);
+        var aggregationCallback = function(err, groupEntries) {
+            log.debug('-REST result: aggregation report. Company id: %s', filterObj.companyId.toHexString());
+            res.json(groupEntries);
+        };
+
+        if(pageInfo.number == 1) {
+            //can be optimized - just need to remove sort stage
+            countQuery.push({ $group: {_id: null, count: {$sum: 1}}});
+            timelogCollection.aggregate(countQuery)
+                .next(function(err, countObj) {
+                    if(countObj) {
+                        res.append('X-Total-Count', countObj.count);
+                    }
+                    timelogCollection.aggregate(aggregationArray).toArray(aggregationCallback);
+                })
+        } else {
+            timelogCollection.aggregate(aggregationArray).toArray(aggregationCallback);
+        }
+
+    });
+};
+
+exports.restAggregationReportCSV = function(req, res, next) {
+    var filterObj = req.body;
+    log.debug('-REST call: aggregation report download CSV. Company id: %s', filterObj.companyId.toHexString());
+
+    var timelogCollection = db.timelogCollection();
+    projects.findProjectIdsByCompanyId(filterObj.companyId, function(err, projectIds) {
+        if(err) {
+            next(err);
+            return;
+        }
+
+        var aggregationArray = createAggregationArray(filterObj, projectIds);
+        var aggregationStream = timelogCollection.aggregate(aggregationArray)
+            .stream({
+                transform: function(doc) {
+                    if(doc.date) {
+                        doc.date = utils.formatDate(doc.date);
+                    }
+                    return doc;
+                }
             });
+
+        var aggregationColumns = filterObj.groupBy;
+        aggregationColumns.push('time');
+        createCSVFile(aggregationStream, aggregationColumns, function(fileName) {
+            res.json({url: '/report/download/' + fileName});
+            log.debug('-REST call: aggregation report download CSV. Company id: %s',
+                filterObj.companyId.toHexString());
+        });
     });
 };
 
@@ -229,6 +271,38 @@ function convertToSortQuery(sort) {
     return sortObj;
 }
 
+function createAggregationArray(filterObj, projectIds) {
+    var query = convertFiltersToQuery(filterObj.filters, projectIds);
+    //Prepare sorting params
+    var sorting = convertToSortQuery(filterObj.sort);
+    var postGroupSort = {};
+    if(sorting.time) {
+        postGroupSort.time = sorting.time;
+    }
+    delete sorting.time;
+
+        var groupBy = createGroupBy(filterObj.groupBy);
+    var projection = createProjection(filterObj.groupBy);
+
+    var aggregationArray = [{$match : query}];
+    if(!isObjectEmpty(sorting)) {
+        aggregationArray.push({ $sort: sorting });
+    }
+    aggregationArray.push({ $group: { _id: groupBy, time: { $sum:'$time' }} });
+    if(!isObjectEmpty(postGroupSort)) {
+        aggregationArray.push({ $sort: postGroupSort });
+    }
+    aggregationArray.push({ $project : projection });
+    return aggregationArray;
+}
+
+function isObjectEmpty(obj) {
+  for (var key in obj) {
+    return false;
+  }
+  return true;
+}
+
 function filterTimelog(query, sortObj, pageInfo, res, callback) {
     var timelogCollection = db.timelogCollection();
     timelogCollection.find(query)
@@ -282,8 +356,8 @@ function fillRoleValues(companyId, filterValues, callback) {
     callback();
 }
 
-function createCSVFile(outputStream, callback) {
-    var csvStringifier = csvStringify({ header: true, columns: REPORT_COLUMNS });
+function createCSVFile(outputStream, reportColumns, callback) {
+    var csvStringifier = csvStringify({ header: true, columns: reportColumns });
     var fileName = 'report_' + shortid.generate() + '.csv';
     var writeStream = fs.createWriteStream('./report_files/' + fileName,
         {defaultEncoding: 'utf8'});

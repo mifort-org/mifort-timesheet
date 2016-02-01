@@ -63,7 +63,8 @@ app.use(expressValidator({
         isAssignments: validators.isAssignments,
         isEmails: validators.isEmails,
         isFilters: validators.isFilters,
-        isString: validators.isString
+        isString: validators.isString,
+        isGroupBy: validators.isGroupBy
     }
 }));
 
@@ -170,14 +171,20 @@ app.post('/report/common',
 app.post('/report/common/download',
         validators.validateDowloadCommonReport,
         authorization.authorizeCommonReport,
-        report.restConstructCSV);
+        report.restCommonReportCSV);
+//aggregation reports
+app.post('/report/aggregation',
+        validators.validateAggregationReport,
+        authorization.authorizeCommonReport,
+        report.restAggregationReport);
+app.post('/report/aggregation/download',
+        validators.validateDownloadAggregationReport,
+        authorization.authorizeCommonReport,
+        report.restAggregationReportCSV);
+
 app.get('/report/download/:fileName',
         validators.validateGetDownloadReport,
         report.restDownloadFile);
-app.post('/report/aggregation',
-        validators.validateCommonReport,
-        authorization.authorizeCommonReport,
-        report.restAggregationReport);
 
 //Admin part
 app.get('/admin/log/:fileName',
