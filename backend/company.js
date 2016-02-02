@@ -25,6 +25,7 @@ var registration = require('./libs/registration');
 var log = require('./libs/logger');
 var authorization = require('./libs/authorization');
 var mail = require('./libs/mail');
+var constants = require('./libs/config_constants');
 
 //Rest API
 exports.restFindById = function(req, res, next) {
@@ -102,22 +103,7 @@ exports.restUpdateCompany = function(req, res, next) {
 //Public API
 exports.save = save;
 
-//Default roles
-var defaultAvailablePositions = [
-    'СEO',
-    'CTO',
-    'Designer',
-    'Developer',
-    'Junior Developer',
-    'Junior QA',
-    'Manager',
-    'QA',
-    'Senior Developer',
-    'Senior QA',
-    'Teamlead',
-    'UX'
-];
-exports.defaultPositions = defaultAvailablePositions;
+exports.defaultPositions = constants.DEFAULT_AVAILABLE_POSITIONS.slice();
 
 //dayTypes
 var Weekend = {
@@ -209,7 +195,7 @@ function constructCompany(periods, defaultValues) {
             Weekend, Corporate, Holiday
         ],
         defaultValues: defaultValues,
-        availablePositions: defaultAvailablePositions
+        availablePositions: constants.DEFAULT_AVAILABLE_POSITIONS
     };
 }
 

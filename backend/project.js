@@ -21,6 +21,7 @@ var utils = require('./libs/utils');
 var companies = require('./company');
 var users = require('./user');
 var log = require('./libs/logger');
+var constants = require('./libs/config_constants');
 
 //Rest API
 exports.restGetById = function(req, res, next) {
@@ -106,6 +107,7 @@ exports.generateDefaultProject = function(company) {
         periods: company.periods,
         dayTypes: company.dayTypes,
         defaultValues: company.defaultValues,
+        availablePositions: constants.DEFAULT_AVAILABLE_POSITIONS,
         companyId: company._id,
         active: true
     };
@@ -177,6 +179,8 @@ function createProject(project, res, next){
         project.createdOn = currentDate;
         project.updatedOn = currentDate;
         project.active = true;
+        project.availablePositions = company.DEFAULT_AVAILABLE_POSITIONS;
+
         projects.insertOne(project, {safe: true},
             function(err, result) {
                 if(err) {
