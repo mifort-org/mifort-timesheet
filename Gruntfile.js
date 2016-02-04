@@ -9,12 +9,12 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-remove'); //Remove directory and files
 
     grunt.loadNpmTasks('grunt-usemin'); //Replaces references to non-optimized scripts or stylesheets into a set of HTML
+    grunt.loadNpmTasks('grunt-ng-annotate'); //AngularJS dependency injection annotations
     grunt.loadNpmTasks('grunt-contrib-uglify'); //Minify files with UglifyJS
     grunt.loadNpmTasks('grunt-contrib-cssmin'); //Minify CSS
 
     grunt.loadNpmTasks('grunt-notify'); //Automatic desktop notifications for Grunt errors and warnings
     grunt.loadNpmTasks('grunt-cache-breaker'); //Cache-breaker, appends a timestamp or md5 hash to any urls
-    grunt.loadNpmTasks('grunt-ng-annotate'); //AngularJS dependency injection annotations
     grunt.loadNpmTasks('grunt-angular-templates'); //Concatenate & register your AngularJS templates in the $templateCache
 
 
@@ -97,8 +97,10 @@ module.exports = function(grunt) {
                     'frontend/components/preferences/preferencesService.js',
                     'frontend/components/customDay/customDay.js',
                     'frontend/components/filters/getByProperty.js',
+                    'frontend/components/filters/propsFilter.js',
                     'frontend/components/dropdownFilter/dropdownFilter.js',
                     'frontend/components/reportDatePicker/reportDatePicker.js',
+                    'frontend/components/timesheetIntro/timesheetIntro.js',
                     'frontend/login/loginController.js',
                     'frontend/login/loginService.js',
                     'frontend/company/companyController.js',
@@ -128,7 +130,11 @@ module.exports = function(grunt) {
                     'frontend/bower_components/angular-click-outside/clickoutside.directive.js',
                     'frontend/bower_components/bootstrap-daterangepicker/daterangepicker.js',
                     'frontend/bower_components/ng-bs-daterangepicker/dist/ng-bs-daterangepicker.min.js',
-                    'frontend/bower_components/angular-ui-notification/dist/angular-ui-notification.min.js'
+                    'frontend/bower_components/angular-ui-notification/dist/angular-ui-notification.min.js',
+                    'frontend/bower_components/ui-select/dist/select.min.js',
+                    'frontend/bower_components/angular-sanitize/angular-sanitize.min.js',
+                    'frontend/bower_components/intro.js/minified/intro.min.js',
+                    'frontend/bower_components/angular-intro.js/build/angular-intro.min.js'
                 ],
                 dest: 'dist/scripts/vendors.js'
             }
@@ -144,7 +150,10 @@ module.exports = function(grunt) {
             },
             app: {
                 files: {
-                    'dist/scripts/scripts.js': ['dist/scripts/scripts.js']
+                    'dist/scripts/scripts.js': ['dist/scripts/scripts.js'],
+                    'dist/scripts/scripts.min.js': ['dist/scripts/scripts.min.js'],
+                    'dist/scripts/vendors.js': ['dist/scripts/vendors.js'],
+                    'dist/scripts/vendors.min.js': ['dist/scripts/vendors.min.js']
                 }
             }
         },
@@ -180,6 +189,7 @@ module.exports = function(grunt) {
 
         uglify: {
             options: {
+                mangle: false,
                 sourceMap: true
             },
             build: {
@@ -285,7 +295,7 @@ module.exports = function(grunt) {
     });
 
     var tasks = [];
-    if(process.env.GRUNT_ENV === 'production') {
+    if(process.env.GRUNT_ENV !== 'production') {
         tasks = [
             'clean:build',
             'copy:build',
