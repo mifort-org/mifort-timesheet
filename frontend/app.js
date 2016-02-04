@@ -38,7 +38,7 @@ angular.module('mifortTimelog', [
     'mifortTimelog.timesheet',
     'mifortTimelog.report'
 ])
-    .config(['$routeProvider', '$httpProvider', function($routeProvider, $httpProvider) {
+    .config(['$routeProvider', '$httpProvider', '$locationProvider', function($routeProvider, $httpProvider, $locationProvider) {
         $routeProvider.otherwise({redirectTo: '/login'});
 
         $httpProvider.interceptors.push(function($q, $location) {
@@ -56,6 +56,8 @@ angular.module('mifortTimelog', [
                 }
             };
         });
+
+        //$locationProvider.html5Mode(true);
     }])
 
     .config(function(NotificationProvider) {
