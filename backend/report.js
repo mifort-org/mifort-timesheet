@@ -225,10 +225,14 @@ function createGroupBy(fieldNames) {
     return groupBy;
 }
 
-function createProjection(fieldNames) {
+function createProjection(filterObj) {
+    var fieldNames = filterObj.groupBy;
     var projection = {
         time : '$time', _id : 0
     };
+    if(filterObj.isCommentNeeded) {
+        projection.comments = '$comments';
+    }
     if(fieldNames) {
         fieldNames.forEach(function(fieldName) {
             projection[fieldName] = '$_id.'+fieldName;
@@ -281,14 +285,20 @@ function createAggregationArray(filterObj, projectIds) {
     }
     delete sorting.time;
 
-        var groupBy = createGroupBy(filterObj.groupBy);
-    var projection = createProjection(filterObj.groupBy);
+    var groupBy = createGroupBy(filterObj.groupBy);
+    var projection = createProjection(filterObj);
 
     var aggregationArray = [{$match : query}];
     if(!isObjectEmpty(sorting)) {
         aggregationArray.push({ $sort: sorting });
     }
-    aggregationArray.push({ $group: { _id: groupBy, time: { $sum:'$time' }} });
+
+    var groupObj = { _id: groupBy, time: { $sum:'$time' }};
+    if(filterObj.isCommentNeeded) {
+        groupObj.comments = { $push: '$comment' };
+    }
+
+    aggregationArray.push({ $group: groupObj });
     if(!isObjectEmpty(postGroupSort)) {
         aggregationArray.push({ $sort: postGroupSort });
     }
