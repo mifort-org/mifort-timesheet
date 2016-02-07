@@ -42,35 +42,30 @@
                 ng-repeat="log in project.periods[project.currentPeriodIndex].timesheet track by $index"
                 ng-style="{background: log.color}">
                 <td ng-class="log.isFirstDayRecord ? 'is-first-day-log' : 'is-not-first-day-log'">
-                        <span class="timesheet-data">
-                            <a href="" ng-if="log.isFirstDayRecord" class="add-timesheet" ng-click="addLog(log, project, project.currentPeriodIndex)">+</a>
+                    <span class="timesheet-data">
+                        <a href="" ng-if="log.isFirstDayRecord" class="add-timesheet" ng-click="addLog(log, project, project.currentPeriodIndex)">+</a>
 
-                            <span ng-if="log.isFirstDayRecord">
-                                {{::getWeekDay(log.date)}}
-                                <span class="log-date">{{log.date}}</span>
-                            </span>
-
-                            <a href="" ng-if="!log.isFirstDayRecord" class="remove-timesheet" ng-click="removeRow(log, project, project.currentPeriodIndex)">&#8211;</a>
+                        <span ng-if="log.isFirstDayRecord">
+                            {{::getWeekDay(log.date)}}
+                            <span class="log-date">{{log.date}}</span>
                         </span>
+
+                        <a href="" ng-if="!log.isFirstDayRecord" class="remove-timesheet" ng-click="removeRow(log, project, project.currentPeriodIndex)">&#8211;</a>
+                    </span>
                 </td>
 
                 <td>
-                    <!--<select ng-options="assignment.role as assignment.role for assignment in project.assignments"-->
-                    <!--ng-model="log.role"-->
-                    <!--class="timesheet-role form-control">-->
-                    <!--</select>-->
+                    <span class="blank-dropdown" uib-dropdown on-toggle="toggled(open)">
+                        <a href id="simple-dropdown" uib-dropdown-toggle>
+                            {{log.role}}
+                        </a>
 
-                        <span class="blank-dropdown" uib-dropdown on-toggle="toggled(open)">
-                            <a href id="simple-dropdown" uib-dropdown-toggle>
-                                {{log.role}}
-                            </a>
-
-                            <ul uib-dropdown-menu aria-labelledby="simple-dropdown">
-                                <li ng-repeat="assignment in project.assignments">
-                                    <a href ng-click="assignRole(assignment.role, log)">{{assignment.role}}</a>
-                                </li>
-                            </ul>
-                        </span>
+                        <ul uib-dropdown-menu aria-labelledby="simple-dropdown">
+                            <li ng-repeat="assignment in project.assignments">
+                                <a href ng-click="assignRole(assignment.role, log)">{{assignment.role}}</a>
+                            </li>
+                        </ul>
+                    </span>
                 </td>
 
                 <td>
@@ -79,7 +74,6 @@
 
                 <td>
                     <input class="timesheet-comment form-control" type="text" ng-model="log.comment"/>
-                    <!--{{log._id}}-->
                 </td>
             </tr>
             </tbody>

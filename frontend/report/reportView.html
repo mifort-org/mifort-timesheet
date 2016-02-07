@@ -20,13 +20,6 @@
     <div class="per-page-wrapper" id="step3">
         <label for="" class="per-page-label">Show</label>
 
-        <!--<select id="per-page"-->
-                <!--ng-options="pageSize as pageSize for pageSize in perPage"-->
-                <!--ng-model="reportSettings.pageSize"-->
-                <!--class="form-control per-page"-->
-                <!--ng-change="perPageChanged()">-->
-        <!--</select>-->
-
         <span class="blank-dropdown blank-dropdown-small form-control per-page" uib-dropdown on-toggle="toggled(open)">
             <a href id="simple-dropdown" uib-dropdown-toggle>
                 {{reportSettings.pageSize}}
@@ -95,5 +88,3 @@
         {{dynamicPopover.projectFilter.value[$index].name.role || dynamicPopover.projectFilter.value[$index].name}}
     </div>
 </script>
-
-<!--{{gridOptions.reportFilters[0]}}-->
