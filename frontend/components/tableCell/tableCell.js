@@ -25,16 +25,16 @@ angular.module('mifortTimelog')
 
                 element.on('click', function (e) {
                     if(scope.day.date && ($(e.target).hasClass('start-splitter') || $(e.target).hasClass('end-splitter'))){
-                        var dayIndex = _.findIndex(scope.timesheet, scope.day);
-                        var nextDay = scope.timesheet[dayIndex + 1],
-                            previousDay = scope.timesheet[dayIndex - 1];
+                        var dayIndex = _.findIndex(scope.calendar, scope.day);
+                        var nextDay = scope.calendar[dayIndex + 1],
+                            previousDay = scope.calendar[dayIndex - 1];
 
                         //left border click
                         if (e.pageX - clickableAreaWidth < $(this).offset().left) {
                             scope.day.isPeriodStartDate = !scope.day.isPeriodStartDate;
                             if(previousDay && previousDay.date){
                                 previousDay.isPeriodEndDate = !previousDay.isPeriodEndDate;
-                                scope.aggregatePeriods(scope.timesheet);
+                                scope.aggregatePeriods(scope.calendar);
                             }
                         }
                         //right border click
@@ -42,7 +42,7 @@ angular.module('mifortTimelog')
                             scope.day.isPeriodEndDate = !scope.day.isPeriodEndDate;
                             if(nextDay && nextDay.date) {
                                 nextDay.isPeriodStartDate = !nextDay.isPeriodStartDate;
-                                scope.aggregatePeriods(scope.timesheet);
+                                scope.aggregatePeriods(scope.calendar);
                             }
                         }
 

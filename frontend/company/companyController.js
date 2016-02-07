@@ -91,14 +91,14 @@ angular.module('mifortTimelog.company', ['ngRoute'])
                 $scope.user.companyId = data._id;
                 preferences.set('user', $scope.user);
                 $rootScope.companyId = data._id;
-                $location.path('/timesheet');
+                $location.path('/calendar');
             });
         };
 
         $scope.saveCompany = function () {
             companyService.saveCompany($scope.company).success(function (data) {
                 $rootScope.$broadcast('companyNameChanged', data.name);
-                $location.path('/timesheet');
+                $location.path('/calendar');
             });
         };
 

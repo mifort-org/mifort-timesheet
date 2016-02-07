@@ -14,16 +14,16 @@
   limitations under the License.
 -->
 
-<div class="timesheet-data" ng-class="::{'disabled-day-data': day.disabled}">
-    <span class="timesheet-time" ng-bind="getDayTime(day)"></span>
+<div class="calendar-data" ng-class="::{'disabled-day-data': day.disabled}">
+    <span class="calendar-time" ng-bind="getDayTime(day)"></span>
 
-    <span class="timesheet-hours-label">hours</span>
+    <span class="calendar-hours-label">hours</span>
 </div>
 
 <div class="start-splitter"></div>
 
 <a href=""
-   class="timesheet-day-wrapper"
+   class="calendar-day-wrapper"
    ng-class="::{'disabled-day-data': day.disabled}"
    uib-popover-template="daySettingsPopover.templateUrl"
    popover-title="{{daySettingsPopover.title}}"

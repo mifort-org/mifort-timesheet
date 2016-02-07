@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-.timesheet-container {
+.calendar-container {
   float: left;
   clear: left; }
 
-.timesheet-wrapper {
+.calendar-wrapper {
   float: left;
   clear: left;
   width: 546px;
@@ -26,10 +26,10 @@
   padding: 36px 27px;
   background: #fff; }
 
-.timesheet-controls-wrapper {
+.calendar-controls-wrapper {
   float: right; }
 
-.timesheet-controls {
+.calendar-controls {
   float: right;
   clear: right;
   width: calc(40% - 42px);
@@ -39,21 +39,21 @@
   font-size: 1.8em;
   background: #fff;
   padding: 25px; }
-  .timesheet-controls:last-child {
+  .calendar-controls:last-child {
     margin-bottom: 0; }
-  .timesheet-controls label {
+  .calendar-controls label {
     float: left;
     line-height: 1.8;
     margin-bottom: 20px; }
-  .timesheet-controls .timesheet-control {
+  .calendar-controls .calendar-control {
     float: right;
     width: 150px;
     padding: 0; }
-  .timesheet-controls .timesheet-control button {
+  .calendar-controls .calendar-control button {
     border-radius: 0;
     border-left: 0; }
 
-.timesheet-hours {
+.calendar-hours {
   float: left;
   width: 42px;
   margin-right: 10px;
@@ -207,7 +207,7 @@
         font-weight: 300;
         text-align: center; }
 
-.timesheet-header {
+.calendar-header {
   font-size: 1.6em;
   padding: 8px 15px;
   background: #f5f7f9;
@@ -245,7 +245,7 @@
   .periods td:first-child:hover {
     border-left: 1px #eaeff7 solid; }
 
-.timesheet-day {
+.calendar-day {
   position: relative;
   text-align: right; }
 
@@ -254,10 +254,10 @@
 
 .disabled-day {
   background: #f5f7f9; }
-  .disabled-day .timesheet-data {
+  .disabled-day .calendar-data {
     display: none; }
 
-.timesheet-day-wrapper {
+.calendar-day-wrapper {
   position: absolute;
   top: 5px;
   left: 10px;
@@ -267,10 +267,10 @@
   color: #000;
   font-size: 1.8em;
   font-weight: 600; }
-  .timesheet-day-wrapper:hover {
+  .calendar-day-wrapper:hover {
     text-decoration: none; }
 
-.timesheet-data {
+.calendar-data {
   position: absolute;
   left: 10px;
   bottom: 7px; }
@@ -317,8 +317,8 @@
 .periods > tbody > tr > .period-end .end-splitter:hover:before {
   background: url("../../common/images/icons.png") 0 -894px no-repeat; }
 
-.timesheet-time,
-.timesheet-hours-label {
+.calendar-time,
+.calendar-hours-label {
   color: #b0b0b0;
   font-size: 1.2em; }
 

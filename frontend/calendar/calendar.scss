@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-.timesheet-container{
+.calendar-container{
     float: left;
     clear: left;
 }
 
-.timesheet-wrapper{
+.calendar-wrapper{
     float: left;
     clear: left;
     width: 546px;
@@ -29,11 +29,11 @@
     background: #fff;
 }
 
-.timesheet-controls-wrapper{
+.calendar-controls-wrapper{
     float: right;
 }
 
-.timesheet-controls{
+.calendar-controls{
     float: right;
     clear: right;
     width: calc(40% - 42px);
@@ -54,19 +54,19 @@
         margin-bottom: 20px;
     }
 
-    .timesheet-control{
+    .calendar-control{
         float: right;
         width: 150px;
         padding: 0;
     }
 
-    .timesheet-control button{
+    .calendar-control button{
         border-radius: 0;
         border-left: 0;
     }
 }
 
-.timesheet-hours{
+.calendar-hours{
     float: left;
     width: 42px;
     margin-right: 10px;
@@ -280,7 +280,7 @@
     }
 }
 
-.timesheet-header{
+.calendar-header{
     font-size: 1.6em;
     padding: 8px 15px;
     background: #f5f7f9;
@@ -338,7 +338,7 @@
     }
 }
 
-.timesheet-day{
+.calendar-day{
     position: relative;
     text-align: right;
 }
@@ -350,12 +350,12 @@
 .disabled-day{
     background: #f5f7f9;
 
-    .timesheet-data{
+    .calendar-data{
         display: none;
     }
 }
 
-.timesheet-day-wrapper{
+.calendar-day-wrapper{
     position: absolute;
     top: 5px;
     left: 10px;
@@ -371,7 +371,7 @@
     }
 }
 
-.timesheet-data{
+.calendar-data{
     position: absolute;
     left: 10px;
     bottom: 7px;
@@ -434,8 +434,8 @@
     }
 }
 
-.timesheet-time,
-.timesheet-hours-label{
+.calendar-time,
+.calendar-hours-label{
     color: #b0b0b0;
     font-size: 1.2em;
 

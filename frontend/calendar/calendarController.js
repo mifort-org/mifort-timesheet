@@ -16,31 +16,31 @@
 
 'use strict';
 
-angular.module('mifortTimelog.timesheet', ['ngRoute'])
+angular.module('mifortTimelog.calendar', ['ngRoute'])
 
     .config(['$routeProvider', function($routeProvider) {
-        $routeProvider.when('/timesheet', {
-            templateUrl: 'timesheet/timesheetView.html',
-            controller: 'timesheetController'
+        $routeProvider.when('/calendar', {
+            templateUrl: 'calendar/calendarView.html',
+            controller: 'calendarController'
         });
     }])
 
-    .controller('timesheetController', ['$scope', '$filter', 'timesheetService', 'moment', 'preferences', 'Notification', 'notifyingService',
-        function($scope, $filter, timesheetService, moment, preferences, Notification, notifyingService) {
+    .controller('calendarController', ['$scope', '$filter', 'calendarService', 'moment', 'preferences', 'Notification', 'notifyingService',
+        function($scope, $filter, calendarService, moment, preferences, Notification, notifyingService) {
             $scope.daySettingsPopover = {
                 templateUrl: 'daySettimgs.html'
             };
-            $scope.periodSettings = timesheetService.getPeriodSettings();
-            $scope.weekDays = timesheetService.getWeekDays();
+            $scope.periodSettings = calendarService.getPeriodSettings();
+            $scope.weekDays = calendarService.getWeekDays();
 
-            timesheetService.getCompany(preferences.get('user').companyId).success(function(data) {
+            calendarService.getCompany(preferences.get('user').companyId).success(function(data) {
                 $scope.company = data;
             }).then(function() {
                 $scope.init();
             });
 
             $scope.selectedPeriod = $scope.periodSettings[0]; //default period is week
-            $scope.splittedTimesheet = [];
+            $scope.splittedCalendar = [];
             $scope.calendarIsOpened = false;
 
             //check and remove
@@ -49,14 +49,14 @@ angular.module('mifortTimelog.timesheet', ['ngRoute'])
             };
 
             $scope.init = function() {
-                generateTimesheet();
+                generateCalendar();
                 initWatchers();
             };
 
-            function generateTimesheet() {
+            function generateCalendar() {
                 $scope.startDate = new Date($scope.company.periods[0].start); //default for peridos split date
-                $scope.timesheet = [];
-                $scope.splittedTimesheet = [];
+                $scope.calendar = [];
+                $scope.splittedCalendar = [];
 
                 var startDate = moment(new Date($scope.company.periods[0].start)),
                     endDate = moment(new Date($scope.company.periods[$scope.company.periods.length - 1].end)),
@@ -65,22 +65,22 @@ angular.module('mifortTimelog.timesheet', ['ngRoute'])
                 for(var i = 0; i < daysToGenerate; i++){
                     var dayToPush = _.clone($scope.company.template);
                     dayToPush.date = moment(new Date(startDate)).add(i, 'days').format("MM/DD/YYYY");
-                    $scope.timesheet.push(dayToPush);
+                    $scope.calendar.push(dayToPush);
                 }
 
                 $scope.company.periods.forEach(function(period) {
                     if(period.start){
-                        _.findWhere($scope.timesheet, {date: moment(new Date(period.start)).format('MM/DD/YYYY')}).isPeriodStartDate = true;
+                        _.findWhere($scope.calendar, {date: moment(new Date(period.start)).format('MM/DD/YYYY')}).isPeriodStartDate = true;
                     }
 
                     if(period.end){
-                        _.findWhere($scope.timesheet, {date: moment(new Date(period.end)).format('MM/DD/YYYY')}).isPeriodEndDate = true;
+                        _.findWhere($scope.calendar, {date: moment(new Date(period.end)).format('MM/DD/YYYY')}).isPeriodEndDate = true;
                     }
                 });
 
-                //Splitting the timesheet
-                $scope.timesheet.forEach(function(day, index) {
-                    generateTimesheetTables(day, index);
+                //Splitting the calendar
+                $scope.calendar.forEach(function(day, index) {
+                    generateCalendarTables(day, index);
                 });
 
                 applyDefaultValues();
@@ -90,7 +90,7 @@ angular.module('mifortTimelog.timesheet', ['ngRoute'])
                 if($scope.company.defaultValues){
                     $scope.company.defaultValues.forEach(function(day) {
                         if(day && day.date){
-                            var dayExisted = _.findWhere($scope.timesheet, {date: moment(new Date(day.date)).format('MM/DD/YYYY')});
+                            var dayExisted = _.findWhere($scope.calendar, {date: moment(new Date(day.date)).format('MM/DD/YYYY')});
                         }
 
                         if(dayExisted){
@@ -100,52 +100,52 @@ angular.module('mifortTimelog.timesheet', ['ngRoute'])
                 }
             }
 
-            function generateTimesheetTables(day, index) {
+            function generateCalendarTables(day, index) {
                 var currentDate = new Date(day.date),
                     currentDayWeek = moment(currentDate).get('week'),
                     currentDayMonth = moment(currentDate).get('month'),
                     currentDayYear = moment(currentDate).get('year') - moment(new Date()).get('year'),
-                    daysBeforeTimesheetStart = moment(currentDate).weekday(),
-                    daysAfterTimesheetEnd = $scope.timesheet[index - 1] && 6 - moment(new Date($scope.timesheet[index - 1].date)).weekday(),
+                    daysBeforeCalendarStart = moment(currentDate).weekday(),
+                    daysAfterCalendarEnd = $scope.calendar[index - 1] && 6 - moment(new Date($scope.calendar[index - 1].date)).weekday(),
                     generatedDay;
 
                 //last week reset
-                if(currentDayWeek == 53 && $scope.splittedTimesheet[currentDayYear - 1]){
+                if(currentDayWeek == 53 && $scope.splittedCalendar[currentDayYear - 1]){
                     currentDayWeek = 0;
                 }
 
                 function generateCurrentMonth() {
-                    $scope.splittedTimesheet[currentDayYear][currentDayMonth] = [];
+                    $scope.splittedCalendar[currentDayYear][currentDayMonth] = [];
                 }
 
                 function generateCurrentWeek() {
-                    $scope.splittedTimesheet[currentDayYear][currentDayMonth][currentDayWeek] = [];
+                    $scope.splittedCalendar[currentDayYear][currentDayMonth][currentDayWeek] = [];
                 }
 
                 function generatePreviousMonthDays() {
-                    for(var k = 0; k < daysBeforeTimesheetStart; k++){
+                    for(var k = 0; k < daysBeforeCalendarStart; k++){
                         generatedDay = _.clone($scope.company.template);
                         generatedDay.date = moment(currentDate).subtract(k + 1, 'day').format('MM/DD/YYYY');
                         generatedDay.disabled = true;
-                        $scope.splittedTimesheet[currentDayYear][currentDayMonth][currentDayWeek].unshift(generatedDay);
+                        $scope.splittedCalendar[currentDayYear][currentDayMonth][currentDayWeek].unshift(generatedDay);
                     }
 
-                    $scope.splittedTimesheet[currentDayYear][currentDayMonth][currentDayWeek].push(day);
+                    $scope.splittedCalendar[currentDayYear][currentDayMonth][currentDayWeek].push(day);
                 }
 
                 function generateNextMonthDays() {
                     var previousMonth;
 
-                    if($scope.splittedTimesheet[currentDayYear].length && $scope.splittedTimesheet[currentDayYear][currentDayMonth - 1]){
+                    if($scope.splittedCalendar[currentDayYear].length && $scope.splittedCalendar[currentDayYear][currentDayMonth - 1]){
                         //get current year month
-                        previousMonth = $scope.splittedTimesheet[currentDayYear][currentDayMonth - 1];
+                        previousMonth = $scope.splittedCalendar[currentDayYear][currentDayMonth - 1];
                     }
                     else{
                         //get previous year month
-                        previousMonth = $scope.splittedTimesheet[currentDayYear - 1][$scope.splittedTimesheet[currentDayYear - 1].length - 1];
+                        previousMonth = $scope.splittedCalendar[currentDayYear - 1][$scope.splittedCalendar[currentDayYear - 1].length - 1];
                     }
 
-                    for(var i = 0; i < daysAfterTimesheetEnd; i++){
+                    for(var i = 0; i < daysAfterCalendarEnd; i++){
                         generatedDay = _.clone($scope.company.template);
                         generatedDay.date = moment(currentDate).subtract(i, 'day').format('MM/DD/YYYY');
                         generatedDay.disabled = true;
@@ -154,14 +154,14 @@ angular.module('mifortTimelog.timesheet', ['ngRoute'])
                 }
 
 
-                if($scope.splittedTimesheet[currentDayYear]){
-                    if($scope.splittedTimesheet[currentDayYear][currentDayMonth]){
-                        if($scope.splittedTimesheet[currentDayYear][currentDayMonth][currentDayWeek]){
-                            $scope.splittedTimesheet[currentDayYear][currentDayMonth][currentDayWeek].push(day);
+                if($scope.splittedCalendar[currentDayYear]){
+                    if($scope.splittedCalendar[currentDayYear][currentDayMonth]){
+                        if($scope.splittedCalendar[currentDayYear][currentDayMonth][currentDayWeek]){
+                            $scope.splittedCalendar[currentDayYear][currentDayMonth][currentDayWeek].push(day);
                         }
                         else{
-                            $scope.splittedTimesheet[currentDayYear][currentDayMonth][currentDayWeek] = [];
-                            $scope.splittedTimesheet[currentDayYear][currentDayMonth][currentDayWeek].push(day);
+                            $scope.splittedCalendar[currentDayYear][currentDayMonth][currentDayWeek] = [];
+                            $scope.splittedCalendar[currentDayYear][currentDayMonth][currentDayWeek].push(day);
                         }
                     }
                     else{
@@ -169,7 +169,7 @@ angular.module('mifortTimelog.timesheet', ['ngRoute'])
                         generateCurrentWeek();
 
                         //generate days after previous month end
-                        if($scope.splittedTimesheet[currentDayYear][currentDayMonth - 1]){
+                        if($scope.splittedCalendar[currentDayYear][currentDayMonth - 1]){
                             generateNextMonthDays();
                         }
 
@@ -177,13 +177,13 @@ angular.module('mifortTimelog.timesheet', ['ngRoute'])
                     }
                 }
                 else{
-                    $scope.splittedTimesheet[currentDayYear] = [];
+                    $scope.splittedCalendar[currentDayYear] = [];
 
                     generateCurrentMonth();
                     generateCurrentWeek();
 
                     //generate days after previous year end
-                    if($scope.splittedTimesheet[currentDayYear - 1]){
+                    if($scope.splittedCalendar[currentDayYear - 1]){
                         generateNextMonthDays();
                     }
 
@@ -192,7 +192,7 @@ angular.module('mifortTimelog.timesheet', ['ngRoute'])
             }
 
             function initWatchers() {
-                $scope.$watch('timesheet', function(newValue, oldValue) {
+                $scope.$watch('calendar', function(newValue, oldValue) {
                     if(oldValue && oldValue != newValue){
                         var existedDayIndex,
                             changedDay = _.filter(newValue, function(newValueDate) {
@@ -221,7 +221,7 @@ angular.module('mifortTimelog.timesheet', ['ngRoute'])
                         }
                     }
 
-                    timesheetService.saveCompany($scope.company).success(function() {
+                    calendarService.saveCompany($scope.company).success(function() {
                         Notification.success('Changes saved');
                     });
                 }, true);
@@ -258,7 +258,7 @@ angular.module('mifortTimelog.timesheet', ['ngRoute'])
                 }
             ];
 
-            $scope.splitTimesheet = function(period, splitStartDate) {
+            $scope.splitCalendar = function(period, splitStartDate) {
                 if(period.periodName == 'month' && splitStartDate.getDate() > 28){
                     alert('Please choose the correct date for split');
                     return;
@@ -269,7 +269,7 @@ angular.module('mifortTimelog.timesheet', ['ngRoute'])
                         var startWeekDay = splitStartDate.getDay(),
                             endWeekDay = startWeekDay == 0 ? 6 : startWeekDay - 1;
 
-                        $scope.timesheet.forEach(function(day) {
+                        $scope.calendar.forEach(function(day) {
                             if(day.date){
                                 var currentDateWeekDay = new Date(day.date).getDay();
 
@@ -288,7 +288,7 @@ angular.module('mifortTimelog.timesheet', ['ngRoute'])
                     case 'Month':
                         var startDateDay = splitStartDate.getDate();
 
-                        $scope.timesheet.forEach(function(day) {
+                        $scope.calendar.forEach(function(day) {
                             var currentDateDay,
                                 endDateDay;
 
@@ -307,16 +307,16 @@ angular.module('mifortTimelog.timesheet', ['ngRoute'])
                         break;
                 }
 
-                $scope.timesheet[$scope.timesheet.length - 1].isPeriodEndDate = true;
-                $scope.aggregatePeriods($scope.timesheet);
+                $scope.calendar[$scope.calendar.length - 1].isPeriodEndDate = true;
+                $scope.aggregatePeriods($scope.calendar);
             };
 
             //used by tableCell directive
-            $scope.aggregatePeriods = function(timesheet) {
+            $scope.aggregatePeriods = function(calendar) {
                 var periodSplitters = [],
                     periods = [];
 
-                timesheet.forEach(function(day) {
+                calendar.forEach(function(day) {
                     if(day.isPeriodStartDate){
                         periodSplitters.push({'start': day.date});
                     }
@@ -375,7 +375,7 @@ angular.module('mifortTimelog.timesheet', ['ngRoute'])
 
                 applyDefaultValues();
 
-                timesheetService.saveCompany($scope.company);
+                calendarService.saveCompany($scope.company);
             };
 
             $scope.GenerateMoreDays = function() {
@@ -394,7 +394,7 @@ angular.module('mifortTimelog.timesheet', ['ngRoute'])
                     });
                 }
 
-                generateTimesheet();
+                generateCalendar();
             };
 
             $scope.getDayColor = function(dayId) {
@@ -414,6 +414,6 @@ angular.module('mifortTimelog.timesheet', ['ngRoute'])
 
                 $scope.company.dayTypes.splice(customDayIndex, 1);
 
-                timesheetService.saveCompany($scope.company);
+                calendarService.saveCompany($scope.company);
             };
         }]);

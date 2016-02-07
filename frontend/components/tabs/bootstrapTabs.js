@@ -38,8 +38,8 @@ angular.module('mifortTimelog')
                         available: userRole == 'owner' || userRole == 'manager'
                     },
                     {
-                        title: 'Timesheet',
-                        url: 'timesheet',
+                        title: 'Calendar',
+                        url: 'calendar',
                         active: false,
                         available: userRole == 'owner' || userRole == 'manager'
                     },

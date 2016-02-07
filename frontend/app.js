@@ -35,7 +35,7 @@ angular.module('mifortTimelog', [
     'mifortTimelog.company',
     'mifortTimelog.projects',
     'mifortTimelog.timelog',
-    'mifortTimelog.timesheet',
+    'mifortTimelog.calendar',
     'mifortTimelog.report'
 ])
     .config(['$routeProvider', '$httpProvider', '$locationProvider', function($routeProvider, $httpProvider, $locationProvider) {

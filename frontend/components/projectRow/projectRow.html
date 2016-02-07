@@ -15,13 +15,6 @@
 -->
 
 <td>
-    <!--<select id="newEmployee"-->
-            <!--ng-options="employee as employee.displayName for employee in companyEmployees"-->
-            <!--ng-model="employee"-->
-            <!--class="form-control timesheet-control"-->
-            <!--ng-change="addAssignment(project, employee)">-->
-    <!--</select>-->
-
     <span class="blank-dropdown" uib-dropdown on-toggle="toggled(open)">
         <a href id="simple-dropdown" uib-dropdown-toggle>
             {{employee.displayName}}
@@ -36,12 +29,6 @@
 </td>
 
 <td>
-    <!--<select id="newRole"-->
-            <!--ng-options="assignment.role as assignment.role for assignment in employee.assignments"-->
-            <!--ng-model="employee.assignments[0].role"-->
-            <!--class="form-control timesheet-control">-->
-    <!--</select>-->
-
     <input type="number" disabled="true" ng-model="employee.assignments[0].workload"/>
 </td>
 

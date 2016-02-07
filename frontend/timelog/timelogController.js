@@ -25,8 +25,8 @@ angular.module('mifortTimelog.timelog', ['ngRoute'])
         });
     }])
 
-    .controller('timelogController', ['$scope', 'timelogService', 'timesheetService', 'preferences', 'loginService', '$timeout', 'Notification', 'notifyingService',
-        function($scope, timelogService, timesheetService, preferences, loginService, $timeout, Notification, notifyingService) {
+    .controller('timelogController', ['$scope', 'timelogService', 'calendarService', 'preferences', 'loginService', '$timeout', 'Notification', 'notifyingService',
+        function($scope, timelogService, calendarService, preferences, loginService, $timeout, Notification, notifyingService) {
             var user;
             $scope.projects = [];
             $scope.isCollapsed = false;
@@ -104,7 +104,7 @@ angular.module('mifortTimelog.timelog', ['ngRoute'])
                     "<li>Time - numeric input where user have to log time that he spent." +
                     "Empty input shows placeholder with minimum of user workload (personal workload how much time this person works per day) and project assignment workload.</li>" +
                     "<li>Comment - textarea where user writes detailed description of tasks which he is done at logged time.</li></ul>" +
-                    "<p>Each day will may have a background color and workload according to Timesheet calendar option created by Owner/HR/Manager. </p>",
+                    "<p>Each day will may have a background color and workload according to Timesheet Calendar option created by Owner/HR/Manager. </p>",
                     position: 'bottom'
                 }
             ];

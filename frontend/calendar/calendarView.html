@@ -14,19 +14,19 @@
   limitations under the License.
 -->
 
-<div class="timesheet-controls-wrapper">
-    <div timesheet-intro></div>
+<div class="calendar-controls-wrapper">
+    <div calendar-intro></div>
 
-    <div id="step2" class="timesheet-controls">
+    <div id="step2" class="calendar-controls">
         <div class="clearfix">
             <label for="">Report Period</label>
             <!--<select id="period"-->
                     <!--ng-options="period as period.periodName for period in periodSettings"-->
                     <!--ng-model="selectedPeriod"-->
-                    <!--class="form-control timesheet-control">-->
+                    <!--class="form-control calendar-control">-->
             <!--</select>-->
 
-            <span class="blank-dropdown blank-dropdown-small form-control timesheet-control" uib-dropdown on-toggle="toggled(open)">
+            <span class="blank-dropdown blank-dropdown-small form-control calendar-control" uib-dropdown on-toggle="toggled(open)">
                 <a href id="simple-dropdown" uib-dropdown-toggle>
                     {{selectedPeriod.periodName}}
                 </a>
@@ -42,7 +42,7 @@
         <div class="clearfix">
             <label for="startDate">Start Date</label>
 
-            <div class="timesheet-control">
+            <div class="calendar-control">
                 <p class="input-group ">
                     <input id="startDate"
                            class="form-control"
@@ -65,12 +65,12 @@
             </div>
         </div>
 
-        <button type="button" class="primary-button" ng-click="splitTimesheet(selectedPeriod, startDate)">
+        <button type="button" class="primary-button" ng-click="splitCalendar(selectedPeriod, startDate)">
             Split
         </button>
     </div>
 
-    <div id="step3" class="timesheet-controls">
+    <div id="step3" class="calendar-controls">
         <h3>Custom Day</h3>
 
         <div class="clearfix">
@@ -79,9 +79,9 @@
     </div>
 </div>
 
-<div class="timesheet-container" ng-repeat="year in splittedTimesheet track by $index">
-    <div class="timesheet-wrapper" ng-if="month" ng-repeat="month in year track by $index">
-        <div class="timesheet-header">{{::getMonthName(month)}}</div>
+<div class="calendar-container" ng-repeat="year in splittedCalendar track by $index">
+    <div class="calendar-wrapper" ng-if="month" ng-repeat="month in year track by $index">
+        <div class="calendar-header">{{::getMonthName(month)}}</div>
         <div class="periods-wrapper">
             <table class="periods table table-bordered" id="{{$first ? 'step1' : ''}}">
                 <thead>
@@ -94,7 +94,7 @@
                 <tr ng-repeat="week in month track by $index" ng-if="week.length">
                     <td table-cell
                         ng-repeat="day in week track by $index"
-                        class="timesheet-day"
+                        class="calendar-day"
                         ng-class="{'period-start': day.isPeriodStartDate, 'period-end': day.isPeriodEndDate, 'disabled-day': day.disabled}"
                         ng-style="{'background': getDayColor(day.dayId)}"></td>
                 </tr>
