@@ -16,7 +16,7 @@
 
 'use strict';
 
-angular.module('mifortTimelog')
+angular.module('mifortTimesheet')
     .directive('bootstrapTabs', function($location, preferences) {
         return {
             scope: true,
@@ -50,8 +50,8 @@ angular.module('mifortTimelog')
                         available: userRole == 'owner' || userRole == 'manager'
                     },
                     {
-                        title: 'Timelog',
-                        url: 'timelog',
+                        title: 'Timesheet',
+                        url: 'timesheet',
                         active: false,
                         available: true
                     }

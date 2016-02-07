@@ -16,7 +16,7 @@
 
 'use strict';
 
-angular.module('mifortTimelog.calendar', ['ngRoute'])
+angular.module('mifortTimesheet.calendar', ['ngRoute'])
 
     .config(['$routeProvider', function($routeProvider) {
         $routeProvider.when('/calendar', {
@@ -252,8 +252,8 @@ angular.module('mifortTimelog.calendar', ['ngRoute'])
                     "<p>Click on existed Day Type Name will change it\'s name. </p>" +
                     "<p>Click on workload will change the workload of current Day Type. </p>" +
                     "<p>Click inside existed Day Type Hexagon will allow you to select the color for edited Day Type." +
-                    "Changing the Color of Day Type will change all days of this type in Calendar and all Timelogs days for chosen Day Type in calendar. </p>" +
-                    "<p>Click on red cross next to each Day Type in controls panel will remove this Day Type from list and remove all days of this type from Calendar and Timelogs.</p>",
+                    "Changing the Color of Day Type will change all days of this type in Calendar and all Timesheet days for chosen Day Type in calendar. </p>" +
+                    "<p>Click on red cross next to each Day Type in controls panel will remove this Day Type from list and remove all days of this type from Calendar and Timesheets.</p>",
                     position: 'left'
                 }
             ];

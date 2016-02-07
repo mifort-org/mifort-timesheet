@@ -22,12 +22,12 @@
     box-shadow: none;
 }
 
-.timelog{
+.timesheet{
     position: relative;
 
     h2{
         padding-bottom: 25px;
-        &.timelog-collapsed{
+        &.timesheet-collapsed{
             padding-bottom: 11px;
         }
     }
@@ -84,7 +84,7 @@
 }
 
 
-.timelog-controls{
+.timesheet-controls{
     position: absolute;
     right: 25px;
     top: 20px;
@@ -134,8 +134,8 @@
 }
 
 
-.add-timelog,
-.remove-timelog{
+.add-timesheet,
+.remove-timesheet{
     position: relative;
     top: 6px;
     margin: 0 16px 0 10px;
@@ -145,49 +145,49 @@
     line-height: 1;
 }
 
-.add-timelog{
+.add-timesheet{
     float: left;
 }
 
-.remove-timelog{
+.remove-timesheet{
     color: red;
     float: right;
 
     margin-top: -10px;
 }
 
-.add-timelog:hover,
-.add-timelog:focus,
-.add-timelog:active,
-.remove-timelog:hover,
-.remove-timelog:focus,
-.remove-timelog:active{
+.add-timesheet:hover,
+.add-timesheet:focus,
+.add-timesheet:active,
+.remove-timesheet:hover,
+.remove-timesheet:focus,
+.remove-timesheet:active{
     text-decoration: none;
 }
 
-.add-timelog:hover,
-.add-timelog:focus,
-.add-timelog:active{
+.add-timesheet:hover,
+.add-timesheet:focus,
+.add-timesheet:active{
     color: #19b5fe;
 }
 
-.remove-timelog:hover,
-.remove-timelog:focus,
-.remove-timelog:active{
+.remove-timesheet:hover,
+.remove-timesheet:focus,
+.remove-timesheet:active{
     color: darkred;
 }
 
-.timelog-role{
+.timesheet-role{
     height: 37px;
     padding: 6px 15px;
     @include hide-control-border();
 }
 
-.timelog-validation{
+.timesheet-validation{
     padding: 10px;
 }
 
-.timelog-hours{
+.timesheet-hours{
     width: 100%;
     height: 47px;
     margin: 0 auto;
@@ -195,14 +195,14 @@
     @include hide-control-border();
 }
 
-.timelog-comment{
+.timesheet-comment{
     width: 100%;
     height: 47px;
     padding: 6px 18px;
     @include hide-control-border();
 }
 
-.timelog-new{
+.timesheet-new{
     margin-left: 10px;
 }
 

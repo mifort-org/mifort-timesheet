@@ -16,19 +16,19 @@
 
 'use strict';
 
-angular.module('mifortTimelog.timelog').factory('timelogService',
+angular.module('mifortTimesheet.timesheet').factory('timesheetService',
     ['$http', function ($http) {
         return {
             getProject: function (projectId) {
                 return $http.get('project/' + projectId);
             },
-            getTimelog: function (userId, projectId, startDate, endDate) {
+            getTimesheet: function (userId, projectId, startDate, endDate) {
                 return $http.get('timelog/' + userId + '?projectId=' + projectId + '&startDate=' + startDate+ '&endDate=' + endDate);
             },
-            removeTimelog: function (log) {
+            removeTimesheet: function (log) {
                 return $http.delete('timelog/' + log._id);
             },
-            getTimelogKeys: function () {
+            getTimesheetKeys: function () {
                 return {
                     'date': 'Date',
                     'role': 'Role',
@@ -36,8 +36,8 @@ angular.module('mifortTimelog.timelog').factory('timelogService',
                     'comment': 'Comment'
                 }
             },
-            updateTimelog: function (userId, timetog) {
-                return $http.post('timelog', {'timelog': timetog});
+            updateTimesheet: function (userId, timetog) {
+                return $http.post('timelog', {'timesheet': timetog});
             }
         }
     }

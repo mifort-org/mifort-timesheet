@@ -16,7 +16,7 @@
 
 'use strict';
 
-angular.module('mifortTimelog')
+angular.module('mifortTimesheet')
     .directive('projectRow', function() {
         return {
             scope: true,

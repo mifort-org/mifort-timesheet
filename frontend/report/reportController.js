@@ -16,7 +16,7 @@
 
 'use strict';
 
-angular.module('mifortTimelog.report', ['ngRoute'])
+angular.module('mifortTimesheet.report', ['ngRoute'])
 
     .config(['$routeProvider', function($routeProvider) {
         $routeProvider.when('/report', {

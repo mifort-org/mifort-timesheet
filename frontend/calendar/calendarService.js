@@ -16,7 +16,7 @@
 
 'use strict';
 
-angular.module('mifortTimelog.calendar').factory('calendarService',
+angular.module('mifortTimesheet.calendar').factory('calendarService',
     ['$http', function ($http) {
         return {
             getCompany: function (companyId) {

@@ -15,11 +15,11 @@
 -->
 
 <!DOCTYPE html>
-<html lang="en" ng-app="mifortTimelog" ng-controller="mifortTimelogController">
+<html lang="en" ng-app="mifortTimesheet" ng-controller="mifortTimesheetController">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title ng-bind="companyName + ' Timelog'">Timesheet</title>
+    <title ng-bind="companyName + ' Timesheet'">Timesheet</title>
     <base href="/">
     <link rel="shortcut icon" type="image/x-icon" href="common/images/favicon.ico"/>
 
@@ -41,7 +41,7 @@
     <link rel="stylesheet" href="company/company.css">
     <link rel="stylesheet" href="login/login.css">
     <link rel="stylesheet" href="projects/projects.css">
-    <link rel="stylesheet" href="timelog/timelog.css">
+    <link rel="stylesheet" href="timesheet/timesheet.css">
     <link rel="stylesheet" href="calendar/calendar.css">
     <link rel="stylesheet" href="report/report.css">
     <!-- endbuild -->
@@ -62,7 +62,7 @@
 <nav class="main-controls" ng-if="isLoggedIn">
     <a class="logo" href="">
         <img class="timesheet-icon" src="../common/images/logo-small.png" alt=""/>
-        <span ng-bind="companyName + ' Timelog'">Timesheet</span>
+        <span ng-bind="companyName + ' Timesheet'">Timesheet</span>
     </a>
 
     <!--TODO: to array of objects-->
@@ -126,8 +126,8 @@
 <script src="projects/projectsController.js"></script>
 <script src="projects/projectsService.js"></script>
 
-<script src="timelog/timelogController.js"></script>
-<script src="timelog/timelogService.js"></script>
+<script src="timesheet/timesheetController.js"></script>
+<script src="timesheet/timesheetService.js"></script>
 
 <script src="calendar/calendarController.js"></script>
 <script src="calendar/calendarService.js"></script>

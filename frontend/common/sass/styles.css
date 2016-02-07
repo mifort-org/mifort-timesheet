@@ -113,7 +113,7 @@ h2 {
   padding-bottom: 32px;
   font-size: 1.8em;
   font-weight: 600; }
-  h2.timelog-collapsed {
+  h2.timesheet-collapsed {
     padding-bottom: 11px; }
   h2 a,
   h2 a:hover,
@@ -156,7 +156,7 @@ input[type=number]::-webkit-outer-spin-button {
   .logo:hover {
     color: #000;
     text-decoration: none; }
-  .logo .timelog-icon {
+  .logo .timesheet-icon {
     background-position: -7px -267px;
     width: 25px; }
 

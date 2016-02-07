@@ -16,7 +16,7 @@
 
 'use strict';
 
-angular.module('mifortTimelog', [
+angular.module('mifortTimesheet', [
     'ngRoute',
     'ngCookies',
     'ui.bootstrap',
@@ -31,12 +31,12 @@ angular.module('mifortTimelog', [
     'ngBootstrap',
     'ui-notification',
     'angular-intro',
-    'mifortTimelog.login',
-    'mifortTimelog.company',
-    'mifortTimelog.projects',
-    'mifortTimelog.timelog',
-    'mifortTimelog.calendar',
-    'mifortTimelog.report'
+    'mifortTimesheet.login',
+    'mifortTimesheet.company',
+    'mifortTimesheet.projects',
+    'mifortTimesheet.timesheet',
+    'mifortTimesheet.calendar',
+    'mifortTimesheet.report'
 ])
     .config(['$routeProvider', '$httpProvider', '$locationProvider', function($routeProvider, $httpProvider, $locationProvider) {
         $routeProvider.otherwise({redirectTo: '/login'});
@@ -72,7 +72,7 @@ angular.module('mifortTimelog', [
         });
     })
 
-    .controller('mifortTimelogController', ['$scope', '$location', '$cookies', '$http', 'preferences', 'companyService', 'topPanelService', '$rootScope', 'notifyingService',
+    .controller('mifortTimesheetController', ['$scope', '$location', '$cookies', '$http', 'preferences', 'companyService', 'topPanelService', '$rootScope', 'notifyingService',
         function($scope, $location, $cookies, $http, preferences, companyService, topPanelService, $rootScope, notifyingService) {
             var user = preferences.get('user');
 

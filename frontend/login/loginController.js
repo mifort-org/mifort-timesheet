@@ -16,7 +16,7 @@
 
 'use strict';
 
-angular.module('mifortTimelog.login', ['ngRoute'])
+angular.module('mifortTimesheet.login', ['ngRoute'])
 
     .config(['$routeProvider', function ($routeProvider) {
         $routeProvider.when('/login', {
@@ -34,7 +34,7 @@ angular.module('mifortTimelog.login', ['ngRoute'])
 
                 if(data.companyId){
                     $rootScope.companyId = data.companyId;
-                    $location.path('/timelog');
+                    $location.path('/timesheet');
                 }
                 else{
                     $location.path('/company-create');
@@ -47,7 +47,7 @@ angular.module('mifortTimelog.login', ['ngRoute'])
         });
 
         $scope.login = function () {
-            $location.path('/Timelog');
+            $location.path('/timesheet');
             $rootScope.isLoggedIn = true;
         };
     }]);

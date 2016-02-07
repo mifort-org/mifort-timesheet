@@ -15,7 +15,7 @@
  */
 
 
-angular.module('mifortTimelog').filter('propsFilter', function() {
+angular.module('mifortTimesheet').filter('propsFilter', function() {
     return function(items, props) {
         var out = [];
 
