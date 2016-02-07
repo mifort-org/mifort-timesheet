@@ -61,7 +61,14 @@
 </div>
 
 <div class="report-wrapper">
-    <div class="gridStyle" id="step1" ui-grid="gridOptions" ui-grid-auto-resize ng-style="gridHeight" ui-grid-resize-columns></div>
+    <div class="gridStyle" id="step1" ui-grid="timesheetGridOptions" ui-grid-auto-resize ng-style="gridHeight" ui-grid-resize-columns></div>
+    <div class="no-data" ng-show="!reportData.length">No timesheets to show</div>
+</div>
+
+<div class="report-wrapper">
+    <h1>Aggregated report</h1>
+
+    <div class="gridStyle" ui-grid="aggregatedGridOptions" ui-grid-auto-resize ng-style="gridHeight" ui-grid-resize-columns></div>
     <div class="no-data" ng-show="!reportData.length">No timesheets to show</div>
 </div>
 <!--{{reportData}}-->
