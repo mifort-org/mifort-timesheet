@@ -77,9 +77,10 @@
 
     <input type="text" ng-model="filtersFilter"/>
 
-    <hr/>
 
     <div ng-repeat="filterValue in dynamicPopover.projectFilter.value | filter:{isChecked : true}">
+        <hr ng-if="$first"/>
+
         <input type="checkbox" ng-model="filterValue.isChecked"/>
 
         {{filterValue.name.role || filterValue.name}}

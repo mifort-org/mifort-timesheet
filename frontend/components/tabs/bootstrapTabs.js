@@ -26,16 +26,16 @@ angular.module('mifortTimelog')
 
                 scope.tabs = [
                     {
-                        title: 'Projects',
-                        url: 'projects',
-                        active: false,
-                        available: userRole == 'owner' || userRole == 'manager'
-                    },
-                    {
                         title: scope.companyName,
                         url: 'company',
                         active: false,
                         available: userRole == 'owner'
+                    },
+                    {
+                        title: 'Projects',
+                        url: 'projects',
+                        active: false,
+                        available: userRole == 'owner' || userRole == 'manager'
                     },
                     {
                         title: 'Timesheet',
@@ -44,30 +44,30 @@ angular.module('mifortTimelog')
                         available: userRole == 'owner' || userRole == 'manager'
                     },
                     {
-                        title: 'Timelog',
-                        url: 'timelog',
-                        active: false,
-                        available: true
-                    },
-                    {
                         title: 'Report',
                         url: 'report',
                         active: false,
                         available: userRole == 'owner' || userRole == 'manager'
                     },
                     {
-                        title: 'Company create',
-                        url: 'company-create',
+                        title: 'Timelog',
+                        url: 'timelog',
                         active: false,
-                        available: false
+                        available: true
                     }
+                    //{
+                    //    title: 'Company create',
+                    //    url: 'company-create',
+                    //    active: false,
+                    //    available: false
+                    //}
                 ];
 
                 changeActiveTab(currentLocation);
 
                 attributes.$observe('companyName', function(value){
                     if(value){
-                        scope.tabs[1].title = value;
+                        scope.tabs[0].title = value;
                     }
                 });
 
