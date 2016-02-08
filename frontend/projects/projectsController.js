@@ -25,9 +25,10 @@ angular.module('mifortTimesheet.projects', ['ngRoute'])
         });
     }])
 
-    .controller('projectsController', ['$scope', 'projectsService', 'preferences', 'topPanelService', 'Notification', 'notifyingService',
-        function($scope, projectsService, preferences, topPanelService, Notification, notifyingService) {
-            var companyId = preferences.get('user').companyId;
+    .controller('projectsController', ['$scope', 'projectsService', 'preferences', 'topPanelService', 'Notification', '$timeout',
+        function($scope, projectsService, preferences, topPanelService, Notification, $timeout) {
+            var companyId = preferences.get('user').companyId,
+                timer = null;
 
             $scope.projectsKeys = [
                 'Employee',
@@ -90,9 +91,14 @@ angular.module('mifortTimesheet.projects', ['ngRoute'])
             });
 
             $scope.changeProjectName = function(project) {
-                projectsService.saveOrCreateProject(project).success(function() {
-                    Notification.success('Changes saved');
-                });
+                if(timer){
+                    $timeout.cancel(timer);
+                }
+                timer = $timeout(function() {
+                    projectsService.saveOrCreateProject(project).success(function() {
+                        Notification.success('Changes saved');
+                    });
+                }, 500);
             };
 
             $scope.addProject = function() {

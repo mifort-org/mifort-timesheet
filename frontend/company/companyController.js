@@ -30,8 +30,8 @@ angular.module('mifortTimesheet.company', ['ngRoute'])
         });
     }])
 
-    .controller('companyController', ['$scope', '$location', 'companyService', 'preferences', '$rootScope', 'notifyingService', '$timeout',
-        function ($scope, $location, companyService, preferences, $rootScope, notifyingService, $timeout) {
+    .controller('companyController', ['$scope', '$location', 'companyService', 'preferences', '$rootScope',
+        function ($scope, $location, companyService, preferences, $rootScope) {
         $scope.user = preferences.get('user');
 
         $scope.company = {

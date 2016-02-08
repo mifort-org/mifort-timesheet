@@ -25,8 +25,8 @@ angular.module('mifortTimesheet.calendar', ['ngRoute'])
         });
     }])
 
-    .controller('calendarController', ['$scope', '$filter', 'calendarService', 'moment', 'preferences', 'Notification', 'notifyingService',
-        function($scope, $filter, calendarService, moment, preferences, Notification, notifyingService) {
+    .controller('calendarController', ['$scope', '$filter', 'calendarService', 'moment', 'preferences', 'Notification',
+        function($scope, $filter, calendarService, moment, preferences, Notification) {
             $scope.daySettingsPopover = {
                 templateUrl: 'daySettimgs.html'
             };

@@ -25,8 +25,8 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
         });
     }])
 
-    .controller('reportController', ['$scope', 'reportService', 'preferences', 'uiGridConstants', 'topPanelService', 'notifyingService',
-        function($scope, reportService, preferences, uiGridConstants, topPanelService, notifyingService) {
+    .controller('reportController', ['$scope', 'reportService', 'preferences', 'uiGridConstants', 'topPanelService',
+        function($scope, reportService, preferences, uiGridConstants, topPanelService) {
             var companyId = preferences.get('user').companyId,
                 headerHeight = 38,
                 maxVisiblePages = 5,
@@ -104,7 +104,7 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                 pageSize: 10,
                 page: 1
             };
-            
+
             $scope.reportSettings.groupBy = ['userName', 'projectName'];
             $scope.reportSettings.isCommentNeeded  = true;
 

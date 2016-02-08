@@ -25,8 +25,8 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
         });
     }])
 
-    .controller('timesheetController', ['$scope', 'timesheetService', 'calendarService', 'preferences', 'loginService', '$timeout', 'Notification', 'notifyingService',
-        function($scope, timesheetService, calendarService, preferences, loginService, $timeout, Notification, notifyingService) {
+    .controller('timesheetController', ['$scope', 'timesheetService', 'calendarService', 'preferences', 'loginService', '$timeout', 'Notification',
+        function($scope, timesheetService, calendarService, preferences, loginService, $timeout, Notification) {
             var user;
             $scope.projects = [];
             $scope.isCollapsed = false;
