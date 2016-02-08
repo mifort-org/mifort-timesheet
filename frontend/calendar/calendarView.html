@@ -78,6 +78,7 @@
     <div class="calendar-wrapper" ng-if="month" ng-repeat="month in year track by $index">
         <div class="calendar-header">{{::getMonthName(month)}}</div>
         <div class="periods-wrapper">
+            <!--{{month}}-->
             <table class="periods table table-bordered" id="{{$first ? 'step1' : ''}}">
                 <thead>
                     <tr>

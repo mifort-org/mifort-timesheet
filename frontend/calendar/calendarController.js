@@ -78,7 +78,7 @@ angular.module('mifortTimesheet.calendar', ['ngRoute'])
                     }
                 });
 
-                //Splitting the calendar
+                //Splitting the calendar days into tables
                 $scope.calendar.forEach(function(day, index) {
                     generateCalendarTables(day, index);
                 });
@@ -110,8 +110,11 @@ angular.module('mifortTimesheet.calendar', ['ngRoute'])
                     generatedDay;
 
                 //last week reset
-                if(currentDayWeek == 53 && $scope.splittedCalendar[currentDayYear - 1]){
-                    currentDayWeek = 0;
+                //if(currentDayWeek == 53 && $scope.splittedCalendar[currentDayYear - 1]){
+                //    currentDayWeek = 0;
+                //}
+                if(currentDayWeek == 1 && $scope.splittedCalendar[currentDayYear - 1] && moment(currentDate).get('date') == 31){
+                    currentDayWeek = 53;
                 }
 
                 function generateCurrentMonth() {
@@ -216,7 +219,7 @@ angular.module('mifortTimesheet.calendar', ['ngRoute'])
                         else if(existedDayIndex >= 0 && !changedDay.dayId){
                             $scope.company.defaultValues.splice(existedDayIndex, 1);
                         }
-                        else{
+                        else if(changedDay){
                             $scope.company.defaultValues.push({date: changedDay.date, dayId: changedDay.dayId});
                         }
                     }
