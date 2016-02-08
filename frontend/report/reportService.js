@@ -17,13 +17,18 @@
 'use strict';
 
 angular.module('mifortTimesheet.report').factory('reportService',
-    ['$http', function ($http) {
+    ['$http', function($http) {
         return {
-            getFilters: function (companyId) {
+            getFilters: function(companyId) {
                 return $http.get('report/filters/' + companyId);
             },
-            getReport: function (reportSettings) {
-                return $http.post('report/common/', reportSettings);
+            getReport: function(reportSettings) {
+                if(reportSettings.groupBy && reportSettings.groupBy.length){
+                    return $http.post('report/aggregation', reportSettings);
+                }
+                else{
+                    return $http.post('report/common/', reportSettings);
+                }
             },
             downloadCsv: function(reportSettings) {
                 return $http.post('report/common/download/', reportSettings);

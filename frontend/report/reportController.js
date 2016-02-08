@@ -29,7 +29,49 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
         function($scope, reportService, preferences, uiGridConstants, topPanelService, notifyingService) {
             var companyId = preferences.get('user').companyId,
                 headerHeight = 38,
-                maxVisiblePages = 5;
+                maxVisiblePages = 5,
+                columns = {
+                    date: {
+                        field: 'date',
+                        enableColumnResizing: true,
+                        enableColumnMenu: false,
+                        filterHeaderTemplate: '<div class="ui-grid-filter-container"><span report-date-picker id="step2" class="report-filter"></span></div>'
+                    },
+                    userName: {
+                        field: 'userName',
+                        enableColumnResizing: true,
+                        enableColumnMenu: false,
+                        filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" col-name="userName" col-title="User Name"></span></div>'
+                    },
+                    projectName: {
+                        field: 'projectName',
+                        enableColumnResizing: true,
+                        enableColumnMenu: false,
+                        filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" col-name="projectName" col-title="Project Name"></span></div>'
+                    },
+                    role: {
+                        field: 'role',
+                        enableColumnResizing: true,
+                        enableColumnMenu: false,
+                        cellTemplate: '<div class="ui-grid-cell-contents">{{row.entity.role}}</div>',
+                        filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" col-name="role" col-title="Role"></span></div>'
+                    },
+                    time: {
+                        field: 'time',
+                        enableColumnResizing: true,
+                        enableColumnMenu: false,
+                        enableFiltering: false,
+                        filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" col-name="time" col-title="Time"></span></div>'
+                    },
+                    comment: {
+                        field: 'comment',
+                        enableColumnResizing: true,
+                        enableColumnMenu: false,
+                        enableSorting: false,
+                        enableFiltering: false,
+                        filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" col-name="time" col-title="Comment"></span></div>'
+                    }
+                };
 
             $scope.ranges = {
                 'Today': [moment(), moment()],
@@ -54,6 +96,7 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                 pageSize: 10,
                 page: 1
             };
+            //$scope.reportSettings.groupBy = ['userName', 'projectName'];
 
             $scope.timesheetGridOptions = {
                 ranges: $scope.ranges,
@@ -63,61 +106,21 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                 enableHorizontalScrollbar: 0,
                 enableVerticalScrollbar: uiGridConstants.scrollbars.NEVER,
                 rowHeight: 30,
-                columnDefs: [
-                    {
-                        field: 'date',
-                        enableColumnResizing: true,
-                        enableColumnMenu: false,
-                        filterHeaderTemplate: '<div class="ui-grid-filter-container"><span report-date-picker id="step2" class="report-filter"></span></div>'
-                    },
-                    {
-                        field: 'userName',
-                        enableColumnResizing: true,
-                        enableColumnMenu: false,
-                        filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" col-name="userName" col-title="User Name"></span></div>'
-                    },
-                    {
-                        field: 'projectName',
-                        enableColumnResizing: true,
-                        enableColumnMenu: false,
-                        filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" col-name="projectName" col-title="Project Name"></span></div>'
-                    },
-                    {
-                        field: 'role',
-                        enableColumnResizing: true,
-                        enableColumnMenu: false,
-                        cellTemplate: '<div class="ui-grid-cell-contents">{{row.entity.role}}</div>',
-                        filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" col-name="role" col-title="Role"></span></div>'
-                    },
-                    {
-                        field: 'time',
-                        enableColumnResizing: true,
-                        enableColumnMenu: false,
-                        enableFiltering: false,
-                        filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" col-name="time" col-title="Time"></span></div>'
-                    },
-                    {
-                        field: 'comment',
-                        enableColumnResizing: true,
-                        enableColumnMenu: false,
-                        enableSorting: false,
-                        enableFiltering: false,
-                        filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" col-name="time" col-title="Comment"></span></div>'
-                    }
-                ],
+                columnDefs: [],
                 data: 'reportData',
 
                 onRegisterApi: function(gridApi) {
                     $scope.gridApi = gridApi;
                     $scope.gridApi.core.on.sortChanged($scope, $scope.sortChanged);
-                    $scope.sortChanged($scope.gridApi.grid, [$scope.timesheetGridOptions.columnDefs[1]]);
+                    $scope.getReport();
                 }
             };
+
 
             $scope.sortChanged = function(grid, sortColumns) {
                 $scope.reportSettings.page = 1;
 
-                if(sortColumns.length === 0 || !sortColumns[0].sort){
+                if(sortColumns.length === 0 || (sortColumns[0] && !sortColumns[0].sort)){
                     $scope.getReport();
                 }else{
                     switch(sortColumns[0].sort.direction){
@@ -177,6 +180,13 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
             $scope.getReport = function() {
                 reportService.getReport($scope.reportSettings).success(function(data, status, headers) {
                     $scope.reportData = data;
+
+                    //add columns to grid
+                    for(var column in data[0]){
+                        if(columns[column]){
+                            $scope.timesheetGridOptions.columnDefs.push(columns[column]);
+                        }
+                    }
 
                     $scope.gridHeight = {
                         height: ((data.length) * ($scope.timesheetGridOptions.rowHeight + 1)) + headerHeight + "px"
