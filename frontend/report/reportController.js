@@ -70,6 +70,14 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                         enableSorting: false,
                         enableFiltering: false,
                         filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" col-name="time" col-title="Comment"></span></div>'
+                    },
+                    comments: {
+                        field: 'comments',
+                        enableColumnResizing: true,
+                        enableColumnMenu: false,
+                        enableSorting: false,
+                        filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" col-name="time" col-title="Comments"></span></div>',
+                        cellTemplate: '<div class="ui-grid-cell-contents">{{row.entity.comments.join(", ")}}</div>'
                     }
                 };
 
@@ -96,7 +104,9 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                 pageSize: 10,
                 page: 1
             };
-            //$scope.reportSettings.groupBy = ['userName', 'projectName'];
+            
+            $scope.reportSettings.groupBy = ['userName', 'projectName'];
+            $scope.reportSettings.isCommentNeeded  = true;
 
             $scope.timesheetGridOptions = {
                 ranges: $scope.ranges,
