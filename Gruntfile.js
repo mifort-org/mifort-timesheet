@@ -73,8 +73,8 @@ module.exports = function(grunt) {
                         'frontend/company/company.css',
                         'frontend/login/login.css',
                         'frontend/projects/projects.css',
-                        'frontend/timelog/timelog.css',
                         'frontend/timesheet/timesheet.css',
+                        'frontend/calendar/calendar.css',
                         'frontend/report/report.css'
                     ],
                     'dist/styles/print.css': [
@@ -107,10 +107,10 @@ module.exports = function(grunt) {
                     'frontend/company/companyService.js',
                     'frontend/projects/projectsController.js',
                     'frontend/projects/projectsService.js',
-                    'frontend/timelog/timelogController.js',
-                    'frontend/timelog/timelogService.js',
                     'frontend/timesheet/timesheetController.js',
                     'frontend/timesheet/timesheetService.js',
+                    'frontend/calendar/calendarController.js',
+                    'frontend/calendar/calendarService.js',
                     'frontend/report/reportController.js',
                     'frontend/report/reportService.js'
                 ],
@@ -172,7 +172,7 @@ module.exports = function(grunt) {
 
                         return url.replace('dist/', '');
                     },
-                    module: 'mifortTimelog',
+                    module: 'mifortTimesheet',
                     htmlmin: {
                         collapseBooleanAttributes: false, // Otherwise 'sortable' attribute values are deleted
                         collapseWhitespace: true,
