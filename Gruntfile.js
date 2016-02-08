@@ -295,7 +295,7 @@ module.exports = function(grunt) {
     });
 
     var tasks = [];
-    if(process.env.GRUNT_ENV !== 'production') {
+    if(process.env.GRUNT_ENV === 'production') {
         tasks = [
             'clean:build',
             'copy:build',
