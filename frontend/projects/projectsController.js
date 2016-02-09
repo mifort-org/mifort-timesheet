@@ -48,7 +48,7 @@ angular.module('mifortTimesheet.projects', ['ngRoute'])
 
                     $scope.projects.forEach(function(project) {
                         projectsService.getAssignedEmployers(project._id).success(function(assignedEmployers) {
-                            project.assignedEmployers = assignedEmployers;
+                            project.assignedEmployers = assignedEmployers || [];
                             project.isCollapsed = false;
                             project.projectEdit = false;
                         });
@@ -109,6 +109,7 @@ angular.module('mifortTimesheet.projects', ['ngRoute'])
 
                 $scope.projects.push(newProject);
                 projectsService.saveOrCreateProject(newProject).success(function(project) {
+                    project.assignedEmployers = [];
                     $scope.projects[$scope.projects.length - 1] = project;
                     Notification.success('Changes saved');
                 });

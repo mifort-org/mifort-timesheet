@@ -28,14 +28,16 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
     .controller('timesheetController', ['$scope', 'timesheetService', 'calendarService', 'preferences', 'loginService', '$timeout', 'Notification',
         function($scope, timesheetService, calendarService, preferences, loginService, $timeout, Notification) {
             var user;
+
             $scope.projects = [];
             $scope.isCollapsed = false;
             $scope.timesheetKeys = timesheetService.getTimesheetKeys();
 
             loginService.getUser().success(function(loggedUser) {
                 if(loggedUser){
-                    var uniqueProjectAssignments = [];
-                    var loadedProjects = 0;
+                    var uniqueProjectAssignments = [],
+                        loadedProjects = 0;
+
                     user = loggedUser;
                     $scope.userName = user.displayName;
 
@@ -49,7 +51,8 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                         timesheetService.getProject(assignment).success(function(project) {
                             if(project && project.active){
                                 project.assignments = _.where(user.assignments, {projectId: project._id});
-                                $scope.projects.push(project);
+                                //$scope.projects.push(project);
+                                $scope.projects.splice(index, 0, project);
                             }
 
                             loadedProjects++;
