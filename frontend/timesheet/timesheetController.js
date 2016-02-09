@@ -69,6 +69,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
 
                     project.currentPeriodIndex = 0;
 
+                    //scroll into cuttent week
                     project.periods.forEach(function(period, periodIndex) {
                         var momentStart = moment(new Date(period.start)),
                             momentEnd = moment(new Date(period.end));
@@ -226,12 +227,6 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                                         return !log._id;
                                     });
 
-                                //data.timesheet.map(function(logFromServer){
-                                //    delete logFromServer.comment;
-                                //    delete logFromServer.role;
-                                //    delete logFromServer.time;
-                                //});
-
                                 if(noIdLog){
                                     angular.extend(periodTimesheet, data.timesheet);
                                 }
@@ -264,6 +259,15 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                 newRow.role = log.role;
                 newRow.isFirstDayRecord = false;
                 newRow.position = maxPosition + 1;
+
+                //angular.extend(newRow, {
+                //    date: log.date,
+                //    userName: log.userName,
+                //    color: log.color,
+                //    role: log.role,
+                //    isFirstDayRecord: false,
+                //    position: maxPosition + 1
+                //});
 
                 currentPeriod.splice(dayPeriodIndex + sameDateDays.length, 0, newRow);
             };
