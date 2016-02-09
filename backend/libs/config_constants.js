@@ -18,7 +18,7 @@
 
  //Default roles
  exports.DEFAULT_AVAILABLE_POSITIONS = [
-     'СEO',
+     'CEO',
      'CTO',
      'Designer',
      'Developer',
