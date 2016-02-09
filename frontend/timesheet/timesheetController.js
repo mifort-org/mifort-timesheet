@@ -338,4 +338,10 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
             $scope.isToday = function(date) {
                 return moment(new Date(date)).isSame(new Date(), 'day');
             };
+
+            $scope.isLastTodaysRecord = function(timesheet, index) {
+                if(timesheet[index + 1]){
+                    return timesheet[index].date != timesheet[index + 1].date;
+                }
+            };
         }]);

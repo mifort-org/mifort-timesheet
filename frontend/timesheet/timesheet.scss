@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-
 @mixin hide-control-border() {
     background: transparent;
     border: 0;
@@ -57,9 +56,9 @@
         }
 
         td{
+            position: relative;
             padding: 0;
             line-height: 21px;
-
 
             &:nth-child(3){
                 padding: 2px;
@@ -70,7 +69,7 @@
                 background-position: right 20px top -300px;
             }
 
-            .blank-dropdown.open a {
+            .blank-dropdown.open a{
                 background-position: right 20px top -1501px;
             }
         }
@@ -82,7 +81,6 @@
         }
     }
 }
-
 
 .timesheet-controls{
     position: absolute;
@@ -132,7 +130,6 @@
         }
     }
 }
-
 
 .add-timesheet,
 .remove-timesheet{
@@ -215,7 +212,33 @@
     color: #999;
 }
 
-.is-today{
-    outline: 1px #3eb5f1 solid;
+.is-today td:first-child:before{
+    position: absolute;
+    left: -1px;
+    top: -1px;
+    bottom: -1px;
+    content: ' ';
+    border-left: 1px #3eb5f1 solid;
+}
+
+.is-today td:last-child:before{
+    position: absolute;
+    right: -1px;
+    top: -1px;
+    bottom: -1px;
+    content: ' ';
+    border-right: 1px #3eb5f1 solid;
+}
+
+.is-today:first-child td:after{
+    position: absolute;
+    left: -1px;
+    right: -1px;
+    top: -1px;
+    content: ' ';
+    border-top: 1px #3eb5f1 solid;
+}
+
+.is-today.is-last-todays-record{
     border-bottom: 2px #00c2f1 solid;
 }
