@@ -12,7 +12,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  * @author Andrew Voitov
  */
 
@@ -24,16 +24,16 @@ var log = require('./logger');
 var users = require('../user');
 var registration = require('./registration');
 var authorization = require('./authorization');
- 
-var GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || "833601973800-a3itkus9nvoo1k92avt0na4evge44fut.apps.googleusercontent.com";
-var GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET || "9LUsqy6tU7PIohpWQyYoIKbH";
+
+var GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || "YOUR_GOOGLE_CLIENT_ID";
+var GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET || "YOUR_GOOGLE_CLIENT_SECRET";
 
 var loginRedirect = '/';
 
 passport.serializeUser(function(user, done)  {
     done(null, user._id);
 });
- 
+
 passport.deserializeUser(function(id, done) {
     if(ObjectID.isValid(id)) {
         users.findById(new ObjectID(id), function(error, user) {
@@ -69,7 +69,7 @@ passport.use(new GoogleStrategy({
                                 log.info('Login %s: user is updated!', user.displayName);
                             }
                         });
-                        return done(null, user); 
+                        return done(null, user);
                     } else {
                         var user = {
                             email: email,
@@ -86,8 +86,8 @@ passport.use(new GoogleStrategy({
 ));
 
 exports.ensureAuthenticated = function (req, res, next) {
-    if (req.isAuthenticated()) { 
-        return next(); 
+    if (req.isAuthenticated()) {
+        return next();
     }
     res.status(401).json({msg: 'You aren’t authenticated!'});
 };
@@ -97,14 +97,14 @@ exports.init = function(app) {
     app.use(passport.session());
 
     app.get('/login', function (req, res, next) {
-        passport.authenticate('google', 
+        passport.authenticate('google',
             {
                 scope: ['https://www.googleapis.com/auth/userinfo.email',
                       'https://www.googleapis.com/auth/userinfo.profile']
             })(req, res, next);
     });
 
-    app.get('/oauth2callback', 
+    app.get('/oauth2callback',
         passport.authenticate('google', { failureRedirect: loginRedirect }),
             function(req, res) {
                 res.redirect(loginRedirect);
@@ -125,7 +125,7 @@ function logout(req, res) {
 function createUser(user, done) {
     registration.createUser(user, function(err, savedUser) {
         if(err) {
-            return done(err, false); 
+            return done(err, false);
         } else {
             return done(null, savedUser);
         }
