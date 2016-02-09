@@ -118,7 +118,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                 project.periods[periodIndex].userTimesheets = [];
 
                 timesheetService.getTimesheet(user._id, project._id, startDate, endDate).success(function(dataTimesheet) {
-                    project.periods[periodIndex].userTimesheets.push.apply(project.periods[periodIndex].userTimesheets, dataTimesheet.timesheet);
+                    project.periods[periodIndex].userTimesheets.push.apply(project.periods[periodIndex].userTimesheets, dataTimesheet.timelog);
                 }).then(function() {
                     var projectIndex = _.findIndex($scope.projects, {_id: project._id});
 
