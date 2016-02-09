@@ -159,4 +159,8 @@
   font-size: 1.4rem;
   color: #999; }
 
-/*# sourceMappingURL=timelog.css.map */
+.is-today {
+  outline: 1px #3eb5f1 solid;
+  border-bottom: 2px #00c2f1 solid; }
+
+/*# sourceMappingURL=timesheet.css.map */

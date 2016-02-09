@@ -330,5 +330,9 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
 
             $scope.getWeekDay = function(date) {
                 return moment(new Date(date)).format("dddd");
-            }
+            };
+
+            $scope.isToday = function(date) {
+                return moment(new Date(date)).isSame(new Date(), 'day');
+            };
         }]);
