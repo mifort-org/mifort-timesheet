@@ -211,4 +211,26 @@
   padding-right: 20px;
   line-height: 23px; }
 
+.aggregation-wrapper {
+  font-size: 1.6rem;
+  background: #fff;
+  border-bottom: 1px #dcdcdc solid; }
+  .aggregation-wrapper span {
+    display: inline-block;
+    margin: 20px 27px;
+    color: #8d8d8d; }
+  .aggregation-wrapper ul {
+    display: inline-block;
+    margin-bottom: -1px; }
+    .aggregation-wrapper ul li {
+      display: inline-block; }
+    .aggregation-wrapper ul a {
+      padding: 15px;
+      color: #000;
+      text-decoration: none; }
+      .aggregation-wrapper ul a:hover {
+        border-bottom: 3px #8cdafe solid; }
+      .aggregation-wrapper ul a.active {
+        border-bottom: 3px #19b5fe solid; }
+
 /*# sourceMappingURL=report.css.map */

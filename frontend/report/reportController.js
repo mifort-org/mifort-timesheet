@@ -81,6 +81,64 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                     }
                 };
 
+            $scope.reportSettings = {
+                companyId: companyId,
+                sort: {
+                    field: 'date',
+                    asc: true
+                },
+                filters: [],
+                pageSize: 10,
+                page: 1
+            };
+
+            $scope.reports = [
+                {
+                    title: 'Log',
+                    active: true,
+                    setSettings: function() {
+                        $scope.reportSettings.groupBy = [];
+                        $scope.reportSettings.isCommentNeeded  = false;
+                    }
+                },
+                {
+                    title: 'Project total',
+                    active: false,
+                    setSettings: function() {
+                        $scope.reportSettings.groupBy = ['projectName'];
+                        $scope.reportSettings.isCommentNeeded  = false;
+                    }
+                },
+                {
+                    title: 'Project + User total',
+                    active: false,
+                    setSettings: function() {
+                        $scope.reportSettings.groupBy = ['userName', 'projectName'];
+                        $scope.reportSettings.isCommentNeeded  = true;
+                    }
+                },
+                {
+                    title: 'User',
+                    active: false,
+                    setSettings: function() {
+                        $scope.reportSettings.groupBy = ['userName'];
+                        $scope.reportSettings.isCommentNeeded  = true;
+                    }
+                }
+            ];
+
+            $scope.changeActiveReport = function(activeIndex) {
+                $scope.reports.map(function(report) {
+                    report.active = false;
+
+                    return report;
+                });
+
+                $scope.reports[activeIndex].active = true;
+                $scope.reports[activeIndex].setSettings();
+                $scope.getReport();
+            };
+
             $scope.ranges = {
                 'Today': [moment(), moment()],
                 //'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
@@ -93,20 +151,6 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
             $scope.perPage = [10, 20, 50, 100];
             $scope.totalCount = 0;
             $scope.projects = [];
-
-            $scope.reportSettings = {
-                companyId: companyId,
-                sort: {
-                    field: 'date',
-                    asc: true
-                },
-                filters: [],
-                pageSize: 10,
-                page: 1
-            };
-
-            $scope.reportSettings.groupBy = ['userName', 'projectName'];
-            $scope.reportSettings.isCommentNeeded  = true;
 
             $scope.timesheetGridOptions = {
                 ranges: $scope.ranges,
@@ -192,6 +236,8 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                     $scope.reportData = data;
 
                     //add columns to grid
+                    $scope.timesheetGridOptions.columnDefs = [];
+                    
                     for(var column in data[0]){
                         if(columns[column]){
                             $scope.timesheetGridOptions.columnDefs.push(columns[column]);

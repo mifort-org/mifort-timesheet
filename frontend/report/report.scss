@@ -230,8 +230,6 @@
         }
     }
 
-
-
     .pagination a{
         display: inline-block;
         width: 25px;
@@ -300,4 +298,39 @@
     font-weight: 100;
     padding-right: 20px;
     line-height: 23px;
+}
+
+.aggregation-wrapper{
+    font-size: 1.6rem;
+    background: #fff;
+    border-bottom: 1px #dcdcdc solid;
+
+    span{
+        display: inline-block;
+        margin: 20px 27px;
+        color: #8d8d8d;
+    }
+
+    ul{
+        display: inline-block;
+        margin-bottom: -1px;
+
+        li{
+            display: inline-block;
+        }
+
+        a{
+            padding: 15px;
+            color: #000;
+            text-decoration: none;
+            &:hover{
+                border-bottom: 3px #8cdafe solid;
+            }
+            &.active{
+                border-bottom: 3px #19b5fe solid;
+            }
+        }
+    }
+
+
 }
