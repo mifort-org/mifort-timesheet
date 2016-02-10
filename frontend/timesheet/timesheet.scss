@@ -230,7 +230,7 @@
     border-right: 1px #3eb5f1 solid;
 }
 
-.is-today:first-child td:after{
+.is-today.is-first-day-log td:after{
     position: absolute;
     left: -1px;
     right: -1px;

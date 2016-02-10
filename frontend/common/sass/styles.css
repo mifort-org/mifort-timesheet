@@ -232,10 +232,10 @@ input[type=number]::-webkit-outer-spin-button {
 .periods > tbody > tr > td:active {
   border-color: #3eb5f1; }
 
-.table-bordered > tbody > tr > .is-not-first-day-log {
+.table-bordered > tbody > tr > .is-not-first-day-log td {
   border: 0; }
 
-.table-bordered > tbody > tr > .is-first-day-log {
+.table-bordered > tbody > tr > .is-first-day-log td {
   border-bottom: 0; }
 
 .page-loading {

@@ -41,9 +41,12 @@
             <tr ng-if="project.currentPeriodIndex >= 0"
                 ng-repeat="log in project.periods[project.currentPeriodIndex].timesheet track by $index"
                 ng-style="{background: log.color}"
-                ng-class="{'is-today': isToday(log.date), 'is-last-todays-record': isLastTodaysRecord(project.periods[project.currentPeriodIndex].timesheet, $index)}">
+                ng-class="{'is-today': isToday(log.date),
+                           'is-last-todays-record': isLastTodaysRecord(project.periods[project.currentPeriodIndex].timesheet, $index),
+                           'is-first-day-log': log.isFirstDayRecord,
+                           'is-not-first-day-log': !log.isFirstDayRecord}">
 
-                <td ng-class="log.isFirstDayRecord ? 'is-first-day-log' : 'is-not-first-day-log'">
+                <td>
                     <span class="timesheet-data">
                         <a href="" ng-if="log.isFirstDayRecord" class="add-timesheet" ng-click="addLog(log, project, project.currentPeriodIndex)">+</a>
 
