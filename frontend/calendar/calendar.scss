@@ -298,6 +298,13 @@
         text-align: left;
         background: #eaeff7;
         border-color: #fff;
+
+        &:first-child{
+            border-left-color: #eaeff7;
+        }
+        &:last-child{
+            border-right-color: #eaeff7;
+        }
     }
 
     .popover{
@@ -320,6 +327,7 @@
 
     tr{
         border-bottom: 1px #eaeff7 solid;
+        background: #fff;
 
         &:first-child td:hover{
             border-top: 1px #eaeff7 solid;

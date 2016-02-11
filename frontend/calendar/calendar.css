@@ -223,6 +223,10 @@
     text-align: left;
     background: #eaeff7;
     border-color: #fff; }
+    .periods.table > thead:first-child > tr:first-child > th:first-child {
+      border-left-color: #eaeff7; }
+    .periods.table > thead:first-child > tr:first-child > th:last-child {
+      border-right-color: #eaeff7; }
   .periods .popover {
     min-width: 200px; }
   .periods > tbody > tr > td {
@@ -236,7 +240,8 @@
     text-align: center;
     margin: 0 auto; }
   .periods tr {
-    border-bottom: 1px #eaeff7 solid; }
+    border-bottom: 1px #eaeff7 solid;
+    background: #fff; }
     .periods tr:first-child td:hover {
       border-top: 1px #eaeff7 solid; }
   .periods td:hover {
