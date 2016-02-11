@@ -237,7 +237,7 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
 
                     //add columns to grid
                     $scope.timesheetGridOptions.columnDefs = [];
-                    
+
                     for(var column in data[0]){
                         if(columns[column]){
                             $scope.timesheetGridOptions.columnDefs.push(columns[column]);
