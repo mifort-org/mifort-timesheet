@@ -51,7 +51,7 @@
                         <a href="" ng-if="log.isFirstDayRecord" class="add-timesheet" ng-click="addLog(log, project, project.currentPeriodIndex)">+</a>
 
                         <span ng-if="log.isFirstDayRecord">
-                            {{::getWeekDay(log.date)}}
+                            {{getWeekDay(log.date)}}
                             <span class="log-date">{{log.date}}</span>
                         </span>
 
