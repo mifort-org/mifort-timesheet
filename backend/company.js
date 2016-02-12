@@ -75,6 +75,9 @@ exports.restCreateCompany = function(req, res, next) {
 exports.restUpdateCompany = function(req, res, next) {
     var company = req.body;
     log.debug('-REST call: Update company. Company id: %s', company._id.toHexString());
+    if(!company.availablePositions) {
+        company.availablePositions = constants.DEFAULT_AVAILABLE_POSITIONS;
+    }
     save(company, function(err, savedCompany) {
         if(err) {
             next(err);
