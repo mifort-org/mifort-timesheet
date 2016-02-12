@@ -139,6 +139,10 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                 $scope.getReport();
             };
 
+            $scope.logReportIsActive = function() {
+                return _.findWhere($scope.reports, {title: 'Log', active: true});
+            };
+
             $scope.ranges = {
                 'Today': [moment(), moment()],
                 //'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
@@ -146,7 +150,6 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                 'Last 30 days': [moment().subtract(30, 'days'), moment()],
                 'This month': [moment().startOf('month'), moment().endOf('month')]
             };
-
             $scope.reportColumns = ['Data', 'User', 'Project', 'Assignment', 'Time', 'Action'];
             $scope.perPage = [10, 20, 50, 100];
             $scope.totalCount = 0;
@@ -236,11 +239,13 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                     $scope.reportData = data;
 
                     //add columns to grid
-                    $scope.timesheetGridOptions.columnDefs = [];
+                    if(data.length){
+                        $scope.timesheetGridOptions.columnDefs = [];
 
-                    for(var column in data[0]){
-                        if(columns[column]){
-                            $scope.timesheetGridOptions.columnDefs.push(columns[column]);
+                        for(var column in data[0]){
+                            if(columns[column]){
+                                $scope.timesheetGridOptions.columnDefs.push(columns[column]);
+                            }
                         }
                     }
 

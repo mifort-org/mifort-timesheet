@@ -62,6 +62,8 @@
           padding-top: 0; }
         .company-wrapper table .company-roles tr:last-child {
           border-bottom: 0; }
+        .company-wrapper table .company-roles tr:first-child {
+          border-bottom: 1px #ddd solid; }
   .company-wrapper label,
   .company-wrapper .employee-role {
     font-weight: 600;

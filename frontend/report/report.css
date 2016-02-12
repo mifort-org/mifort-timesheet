@@ -74,6 +74,9 @@
   border-bottom: 0; }
 
 .date-range-picker {
+  display: inline-block; }
+
+.date-range-column-picker {
   position: absolute;
   top: -5px;
   left: -5px;

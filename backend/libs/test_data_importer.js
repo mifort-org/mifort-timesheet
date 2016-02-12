@@ -83,16 +83,19 @@ var company = {
     ],
     dayTypes: [
         {
+            id: 1,
             name: 'Weekend',
             time: 0,
             color: '#c5e9fb'
         },
         {
+            id: 2,
             name: 'Corporate',
             time: 0,
             color: '#f3cce1'
         },
         {
+            id: 3,
             name: 'Holiday',
             time: 0,
             color: '#fff9a1'

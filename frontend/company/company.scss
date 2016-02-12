@@ -87,6 +87,9 @@
                 &:last-child{
                     border-bottom: 0;
                 }
+                &:first-child{
+                    border-bottom: 1px #ddd solid;
+                }
             }
         }
     }

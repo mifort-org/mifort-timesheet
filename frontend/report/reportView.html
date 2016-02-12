@@ -71,7 +71,18 @@
 </div>
 
 <div class="report-wrapper">
-    <div class="gridStyle" id="step1" ui-grid="timesheetGridOptions" ui-grid-auto-resize ng-style="gridHeight" ui-grid-resize-columns></div>
+    <div class="form-group" ng-if="!logReportIsActive()">
+        <label for="">Aggregation period:</label>
+        <div report-date-picker class="date-range-picker"></div>
+    </div>
+
+    <div id="step1"
+         class="gridStyle"
+         ui-grid="timesheetGridOptions"
+         ui-grid-auto-resize ng-style="gridHeight"
+         ui-grid-resize-columns>
+    </div>
+
     <div class="no-data" ng-show="!reportData.length">No timesheets to show</div>
 </div>
 
@@ -79,7 +90,6 @@
     <div>{{dynamicPopover.content}}</div>
 
     <input type="text" ng-model="filtersFilter"/>
-
 
     <div ng-repeat="filterValue in dynamicPopover.projectFilter.value | filter:{isChecked : true}">
         <hr ng-if="$first"/>
@@ -92,7 +102,7 @@
     <hr/>
 
     <!--angular bootstrap popover unintentional close solution-->
-    <div ng-repeat="n in range(dynamicPopover.projectFilter.value.length) track by $index">
+    <div ng-repeat="n in dynamicPopover.projectFilter.value track by $index">
         <input type="checkbox" ng-model="dynamicPopover.projectFilter.value[$index].isChecked"/>
 
         {{dynamicPopover.projectFilter.value[$index].name.role || dynamicPopover.projectFilter.value[$index].name}}

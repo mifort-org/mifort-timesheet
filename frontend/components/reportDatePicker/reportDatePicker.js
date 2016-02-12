@@ -17,30 +17,32 @@
 'use strict';
 
 angular.module('mifortTimesheet')
-    .directive('reportDatePicker', function () {
+    .directive('reportDatePicker', function() {
         return {
             scope: true,
-            link: function (scope) {
+            link: function(scope) {
                 scope.$watch('dates', function(newValue, oldValue) {
                     if(newValue && newValue != oldValue){
                         var dateFilter,
-                            dateFilterIndex = _.findIndex(scope.grid.options.reportFilters, function(reportFilter) {
-                            return reportFilter.field == 'date';
-                        });
+                            gridOptions = scope.timesheetGridOptions || scope.grid.options,
+                            dateFilterIndex = _.findIndex(gridOptions.reportFilters, function(reportFilter) {
+                                return reportFilter.field == 'date';
+                            });
 
                         if(dateFilterIndex < 0){
-                            dateFilterIndex = scope.grid.options.reportFilters.length;
+                            dateFilterIndex = gridOptions.reportFilters.length;
                             dateFilter = {
                                 "field": "date"
                             };
 
-                            scope.grid.options.reportFilters.push(dateFilter);
+                            gridOptions.reportFilters.push(dateFilter);
                         }
 
-                        scope.grid.options.reportFilters[dateFilterIndex].start = moment(new Date(newValue.startDate)).format('MM/DD/YYYY');
-                        scope.grid.options.reportFilters[dateFilterIndex].end = moment(new Date(newValue.endDate)).format('MM/DD/YYYY');
+                        gridOptions.reportFilters[dateFilterIndex].start = moment(new Date(newValue.startDate)).format('MM/DD/YYYY');
+                        gridOptions.reportFilters[dateFilterIndex].end = moment(new Date(newValue.endDate)).format('MM/DD/YYYY');
                     }
-                })},
+                })
+            },
             templateUrl: 'components/reportDatePicker/reportDatePicker.html'
         };
     });
