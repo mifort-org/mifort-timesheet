@@ -71,7 +71,8 @@ module.exports = function(grunt) {
                         'frontend/bower_components/angular-ui-grid/ui-grid.min.css',
                         'frontend/bower_components/angular-ui-notification/dist/angular-ui-notification.min.css',
                         'frontend/bower_components/bootstrap/dist/css/bootstrap.min.css',
-                        'frontend/bower_components/bootstrap-daterangepicker/daterangepicker-bs3.css'
+                        'frontend/bower_components/bootstrap-daterangepicker/daterangepicker-bs3.css',
+                        'frontend/bower_components/ui-select/dist/select.min.css'
                     ],
                     'dist/styles/styles.css': [
                         'frontend/common/sass/styles.css',
