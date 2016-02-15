@@ -42,6 +42,13 @@ module.exports = function(grunt) {
                             '*.html'
                         ],
                         dest: 'dist'
+                    },
+                    {
+                        expand: true,
+                        cwd: 'frontend',
+                        flatten: true,
+                        src: 'bower_components/bootstrap/dist/fonts/*',
+                        dest: 'dist/fonts'
                     }
                 ]
             },
