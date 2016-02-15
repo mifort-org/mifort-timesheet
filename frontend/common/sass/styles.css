@@ -276,7 +276,7 @@ input[type=number]::-webkit-outer-spin-button {
   .blank-dropdown.open {
     border-color: #a0a0a0; }
     .blank-dropdown.open a {
-      padding: 10px 19px 9px;
+      padding: 8px 19px;
       background-position: right 20px top -1504px; }
   .blank-dropdown ul {
     left: -1px;

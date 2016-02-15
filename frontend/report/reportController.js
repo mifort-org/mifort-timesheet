@@ -76,6 +76,7 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                         enableColumnResizing: true,
                         enableColumnMenu: false,
                         enableSorting: false,
+                        enableFiltering: false,
                         filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" col-name="time" col-title="Comments"></span></div>',
                         cellTemplate: '<div class="ui-grid-cell-contents">{{row.entity.comments.join(", ")}}</div>'
                     }
@@ -139,9 +140,17 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                 $scope.getReport();
             };
 
-            $scope.logReportIsActive = function() {
-                return _.findWhere($scope.reports, {title: 'Log', active: true});
-            };
+            //$scope.logReportIsActive = function() {
+            //    var logReportIsActive = _.findWhere($scope.reports, {title: 'Log', active: true}),
+            //        dateFilterIndex;
+            //
+            //    if(logReportIsActive){
+            //        dateFilterIndex = _.findIndex($scope.reportSettings.filters, {field: 'date'});
+            //        $scope.reportSettings.filters.splice(dateFilterIndex, 1);
+            //    }
+            //
+            //    return logReportIsActive;
+            //};
 
             $scope.ranges = {
                 'Today': [moment(), moment()],
@@ -173,7 +182,6 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                 }
             };
 
-
             $scope.sortChanged = function(grid, sortColumns) {
                 $scope.reportSettings.page = 1;
 
@@ -201,7 +209,6 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
             };
 
             reportService.getFilters(companyId).success(function(data) {
-                $scope.filtersSettings = data;
                 $scope.timesheetGridOptions.reportFilters = data;
             });
 
@@ -330,17 +337,6 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                     $scope.downloadCsv();
                 }
             });
-
-            //$scope.dateFilterChanged = function(dates) {
-            //    var dateFilter = {
-            //        "field": "date",
-            //        "start": moment(new Date(dates.startDate)).format('MM/DD/YYYY'),
-            //        "end": moment(new Date(dates.endDate)).format('MM/DD/YYYY')
-            //    };
-            //
-            //    $scope.reportSettings.filters.push(dateFilter);
-            //    $scope.getReport();
-            //};
 
             $scope.showOriginalPage = function(pageNumber) {
                 if($scope.reportSettings.page + 2 >= pageNumber &&

@@ -71,8 +71,10 @@
 </div>
 
 <div class="report-wrapper">
-    <div class="form-group" ng-if="!logReportIsActive()">
-        <label for="">Aggregation period:</label>
+    <div class="form-group">
+        <!--<div class="form-group" ng-if="!logReportIsActive()">-->
+        <label for="">Aggregation period</label>
+
         <div report-date-picker class="date-range-picker"></div>
     </div>
 
@@ -91,20 +93,23 @@
 
     <input type="text" ng-model="filtersFilter"/>
 
-    <div ng-repeat="filterValue in dynamicPopover.projectFilter.value | filter:{isChecked : true}">
-        <hr ng-if="$first"/>
+    <!--angular bootstrap popover unintentional close solution-->
+    <div ng-repeat="n in range(dynamicPopover.projectFilter.value.length) track by $index">
+        <hr ng-if="$first && hasFilter()"/>
 
-        <input type="checkbox" ng-model="filterValue.isChecked"/>
+        <div ng-show="dynamicPopover.projectFilter.value[$index].isChecked">
+            <input type="checkbox" ng-model="dynamicPopover.projectFilter.value[$index].isChecked"/>
 
-        {{filterValue.name.role || filterValue.name}}
+            {{dynamicPopover.projectFilter.value[$index].name.role || dynamicPopover.projectFilter.value[$index].name}}
+        </div>
     </div>
-
     <hr/>
 
     <!--angular bootstrap popover unintentional close solution-->
     <div ng-repeat="n in dynamicPopover.projectFilter.value track by $index">
         <input type="checkbox" ng-model="dynamicPopover.projectFilter.value[$index].isChecked"/>
 
+        {{dynamicPopover.projectFilter.value.length}}
         {{dynamicPopover.projectFilter.value[$index].name.role || dynamicPopover.projectFilter.value[$index].name}}
     </div>
 </script>
