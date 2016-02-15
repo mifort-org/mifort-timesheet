@@ -27,7 +27,8 @@
   background: #fff; }
 
 .calendar-controls-wrapper {
-  float: right; }
+  float: right;
+  margin-bottom: 60px; }
 
 .calendar-controls {
   float: right;
