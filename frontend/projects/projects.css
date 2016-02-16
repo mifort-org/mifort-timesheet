@@ -96,4 +96,9 @@
   .remove-project:hover {
     opacity: 0.8; }
 
+.no-assignments {
+  padding: 20px;
+  font-size: 1.6rem;
+  text-align: center; }
+
 /*# sourceMappingURL=projects.css.map */

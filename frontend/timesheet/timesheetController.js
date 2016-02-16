@@ -39,7 +39,6 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                         loadedProjects = 0;
 
                     user = loggedUser;
-                    $scope.userName = user.displayName;
 
                     user.assignments.forEach(function(assignment) {
                         uniqueProjectAssignments.push(assignment.projectId);
@@ -47,6 +46,10 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                     uniqueProjectAssignments = _.uniq(uniqueProjectAssignments);
 
                     //get timesheets
+                    if(!uniqueProjectAssignments.length){
+                        $scope.noAssignments = true;
+                    }
+
                     uniqueProjectAssignments.forEach(function(assignment, index) {
                         timesheetService.getProject(assignment).success(function(project) {
                             if(project && project.active){
@@ -206,7 +209,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                     dayToPush.date = angular.copy(startDate).add(i, 'days').format("MM/DD/YYYY");
                     dayToPush.role = project.assignments[0].role;
                     dayToPush.isFirstDayRecord = true;
-                    dayToPush.userName = $scope.userName;
+                    dayToPush.userName = user.displayName;
 
                     project.periods[periodIndex].timesheet.push(dayToPush);
                 }
