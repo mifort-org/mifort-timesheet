@@ -35,6 +35,7 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                         field: 'date',
                         enableColumnResizing: true,
                         enableColumnMenu: false,
+                        enableFiltering: false,
                         filterHeaderTemplate: '<div class="ui-grid-filter-container"><span report-date-picker id="step2" class="report-filter"></span></div>'
                     },
                     userName: {

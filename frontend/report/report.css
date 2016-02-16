@@ -15,13 +15,15 @@
  */
 .report-wrapper {
   background: #fff;
-  padding: 30px 27px;
+  padding: 25px 27px 30px 27px;
   font-size: 1.6rem; }
   .report-wrapper .popover {
     border-color: #a0a0a0;
     box-shadow: none; }
     .report-wrapper .popover.bottom > .arrow {
       border-bottom-color: #555; }
+  .report-wrapper .form-group {
+    margin-bottom: 25px; }
 
 .report-filter {
   position: relative;
@@ -75,6 +77,9 @@
 
 .date-range-picker {
   display: inline-block; }
+  .date-range-picker input {
+    margin-left: 10px;
+    padding: 1px 5px; }
 
 .date-range-column-picker {
   position: absolute;
@@ -95,11 +100,11 @@
     margin: 0;
     padding: 6px 8px; }
   .daterangepicker.show-calendar .ranges {
+    width: 185px;
     border-right: 1px #a0a0a0 solid; }
   .daterangepicker .ranges {
-    width: 276px; }
+    width: 184px; }
     .daterangepicker .ranges li {
-      max-width: 125px;
       margin: 7px 7px 8px;
       padding: 5px;
       font-size: 1.4rem;
@@ -111,19 +116,27 @@
       .daterangepicker .ranges li:hover, .daterangepicker .ranges li.active {
         background: #19b5fe;
         border-color: #e8e8e8; }
-  .daterangepicker .range_inputs {
-    padding-left: 8px; }
-    .daterangepicker .range_inputs label,
-    .daterangepicker .range_inputs .input-mini {
-      display: inline;
-      padding-right: 7px;
-      vertical-align: baseline; }
-    .daterangepicker .range_inputs .input-mini {
-      width: 88px;
-      color: #000;
-      font-size: 1.4rem;
-      border-color: #e8e8e8;
-      border-radius: 0; }
+    .daterangepicker .ranges .range_inputs {
+      padding-left: 8px; }
+      .daterangepicker .ranges .range_inputs div.daterangepicker_start_input,
+      .daterangepicker .ranges .range_inputs div.daterangepicker_end_input {
+        clear: left;
+        padding: 0; }
+      .daterangepicker .ranges .range_inputs label,
+      .daterangepicker .ranges .range_inputs .input-mini {
+        display: inline-block;
+        padding-right: 7px;
+        vertical-align: baseline; }
+      .daterangepicker .ranges .range_inputs label {
+        width: 40px;
+        padding-right: 10px; }
+      .daterangepicker .ranges .range_inputs .input-mini {
+        width: 113px;
+        color: #000;
+        font-size: 1.4rem;
+        border-color: #e8e8e8;
+        border-radius: 0;
+        text-align: center; }
   .daterangepicker .applyBtn,
   .daterangepicker .cancelBtn {
     display: none;
@@ -134,9 +147,13 @@
   .daterangepicker .calendar-date {
     border-color: #a0a0a0;
     border-radius: 0; }
+  .daterangepicker .calendar th {
+    padding-bottom: 8px; }
   .daterangepicker .calendar-date {
+    height: 270px;
     padding: 10px;
-    font-weight: 100; }
+    font-weight: 100;
+    border-bottom: 0; }
     .daterangepicker .calendar-date thead tr:last-child th {
       font-size: 1.2rem;
       border-bottom: 1px #e8e8e8 solid; }

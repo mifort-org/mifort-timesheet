@@ -16,7 +16,7 @@
 
 .report-wrapper{
     background: #fff;
-    padding: 30px 27px;
+    padding: 25px 27px 30px 27px;
     font-size: 1.6rem;
 
     .popover{
@@ -25,6 +25,10 @@
         &.bottom > .arrow{
             border-bottom-color: #555;
         }
+    }
+
+    .form-group{
+        margin-bottom: 25px;
     }
 }
 
@@ -99,6 +103,10 @@
 
 .date-range-picker{
     display: inline-block;
+    input{
+        margin-left: 10px;
+        padding: 1px 5px;
+    }
 }
 
 .date-range-column-picker{
@@ -126,13 +134,13 @@
     }
 
     &.show-calendar .ranges{
+        width: 185px;
         border-right: 1px #a0a0a0 solid;
     }
     .ranges{
-        width: 276px;
+        width: 184px;
 
         li{
-            max-width: 125px;
             margin: 7px 7px 8px;
             padding: 5px;
             font-size: 1.4rem;
@@ -148,23 +156,36 @@
                 border-color: #e8e8e8;
             }
         }
-    }
 
-    .range_inputs{
-        padding-left: 8px;
+        .range_inputs{
+            padding-left: 8px;
 
-        label,
-        .input-mini{
-            display: inline;
-            padding-right: 7px;
-            vertical-align: baseline;
-        }
-        .input-mini{
-            width: 88px;
-            color: #000;
-            font-size: 1.4rem;
-            border-color: #e8e8e8;
-            border-radius: 0;
+            div.daterangepicker_start_input,
+            div.daterangepicker_end_input, {
+                clear: left;
+                padding: 0;
+            }
+
+            label,
+            .input-mini{
+                display: inline-block;
+                padding-right: 7px;
+                vertical-align: baseline;
+            }
+
+            label{
+                width: 40px;
+                padding-right: 10px;
+            }
+
+            .input-mini{
+                width: 113px;
+                color: #000;
+                font-size: 1.4rem;
+                border-color: #e8e8e8;
+                border-radius: 0;
+                text-align: center;
+            }
         }
     }
 
@@ -178,21 +199,27 @@
     &.opensright .calendar{
         margin: -1px;
     }
+
     .calendar-date{
         border-color: #a0a0a0;
         border-radius: 0;
+    }
 
+    .calendar th{
+        padding-bottom: 8px;
     }
 
     .calendar-date{
+        height: 270px;
         padding: 10px;
         font-weight: 100;
+        border-bottom: 0;
 
         thead tr:last-child th{
             font-size: 1.2rem;
             border-bottom: 1px #e8e8e8 solid;
         }
-        
+
         td{
             padding: 6px 4px 6px 8px;
             text-align: right;
@@ -335,6 +362,5 @@
             }
         }
     }
-
 
 }
