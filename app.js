@@ -25,11 +25,7 @@ var expressValidator = require('express-validator');
 var compression = require('compression');
 
 var project = require('./backend/project');
-var timelog = require('./backend/timelog');
-var user = require('./backend/user');
-var company = require('./backend/company');
-var report = require('./backend/report');
-var admin = require('./backend/admin')
+var router = require('./backend/router');
 
 var authentication = require('./backend/libs/authentication');
 var authorization = require('./backend/libs/authorization');
@@ -37,8 +33,7 @@ var util = require('./backend/libs/utils');
 var validators = require('./backend/libs/validators');
 var log = require('./backend/libs/logger');
 var errorHandler = require('./backend/libs/error_handler');
-var dbSettings = require('./backend/libs/mongodb_settings');
-var mail = require('./backend/libs/mail');
+var db = require('./backend/libs/mongodb_settings');
 
 var app = express();
 app.set('port', process.env.PORT || 1313);
@@ -75,7 +70,7 @@ app.use(session(
     resave: false,
     rolling: true,
     saveUninitialized: true,
-    store: new MongoStore({url: dbSettings.sessionMongoUrl})})
+    store: new MongoStore({url: db.sessionMongoUrl})})
 );
 //last step: init auth
 authentication.init(app);
@@ -85,112 +80,20 @@ app.use('/', function(req, res, next){
     authentication.ensureAuthenticated(req, res, next);
 });
 
-//project
-app.post('/project',
-        validators.validateSaveProject,
-        authorization.authorizeSaveProject,
-        project.restSave);
-app.get('/project/:projectId',
-        validators.validateGetProjectById,
-        authorization.authorizeGetProjectById,
-        project.restGetById);
+//routing
+app.use('/project', router.projectRouter);
+//remove after rename
 app.get('/projects',
         validators.validateGetProjectByCompanyId,
         authorization.authorizeGetProjectsByCompanyId,
         project.restGetByCompanyId);
-app.get('/project/deactivate/:projectId',
-        validators.validateDeactivateProject,
-        authorization.authorizeDeactivateProject,
-        project.restDeactivateProject);
+app.use('/timelog', router.timesheetRouter);
+app.use('/user', router.userRouter);
+app.use('/company', router.companyRouter);
+app.use('/report', router.reportRouter);
+app.use('/admin', router.adminRouter);
 
-//timelog
-app.post('/timelog',
-        validators.validateSaveTimelog,
-        authorization.authorizeSaveTimelog,
-        timelog.restSave);
-app.get('/timelog/:userId',
-        validators.validateGetTimelogByDates,
-        authorization.authorizeGetTimelog,
-        timelog.restGetByDates);
-app.delete('/timelog/:timelogId',
-        validators.validateDeleteTimelog,
-        authorization.authorizeDeleteTimelog,
-        timelog.restDelete);
-
-//user
-app.get('/user',
-        user.restGetCurrent);
-app.get('/user/project/:projectId',
-        validators.validateGetUserByProjectId,
-        authorization.authorizeGetUsersByProjectId,
-        user.restGetByProjectId);
-app.get('/user/company/:companyId',
-        validators.validateGetUserByCompanyId,
-        authorization.authorizeGetUsersByCompanyId,
-        user.restGetByCompanyId);
-app.post('/user/assignment/:projectId',
-        validators.validateReplaceAssignment,
-        authorization.authorizeAddAssignment,
-        user.restReplaceAssignments);
-app.post('/user/update-role',
-        validators.validateUpdateRole,
-        authorization.authorizaUpdateRole,
-        user.restUpdateUserRole);
-app.delete('/user/:userId',
-        validators.validateDeleteUser,
-        authorization.authorizeDeleteUser,
-        user.restDeleteUser);
-app.put('/user',
-        validators.validateAddNewUser,
-        authorization.authorizeAddNewUser,
-        user.restAddNewUser);
-
-//company
-app.post('/company',
-        validators.validateUpdateCompany,
-        authorization.authorizeUpdateCompany,
-        company.restUpdateCompany);
-app.put('/company',
-        validators.validateCreateCompany,
-        authorization.authorizeCreateCompany,
-        company.restCreateCompany);
-app.get('/company/:companyId',
-        validators.validateGetCompanyById,
-        authorization.authorizeGetCompanyById,
-        company.restFindById);
-
-//report
-app.get('/report/filters/:companyId',
-        validators.validateGetFilters,
-        authorization.authorizeGetFilters,
-        report.restGetFilterValues);
-app.post('/report/common',
-        validators.validateCommonReport,
-        authorization.authorizeCommonReport,
-        report.restCommonReport);
-app.post('/report/common/download',
-        validators.validateDowloadCommonReport,
-        authorization.authorizeCommonReport,
-        report.restCommonReportCSV);
-//aggregation reports
-app.post('/report/aggregation',
-        validators.validateAggregationReport,
-        authorization.authorizeCommonReport,
-        report.restAggregationReport);
-app.post('/report/aggregation/download',
-        validators.validateDownloadAggregationReport,
-        authorization.authorizeCommonReport,
-        report.restAggregationReportCSV);
-
-app.get('/report/download/:fileName',
-        validators.validateGetDownloadReport,
-        report.restDownloadFile);
-
-//Admin part
-app.get('/admin/log/:fileName',
-        validators.validateDownloadLogs,
-        authorization.authorizeDownloadLogs,
-        admin.restDownloadLog);
+app.use('/api/v1', router.versionRouter);
 
 log.info('REST API is ready!');
 
@@ -199,6 +102,7 @@ app.use(errorHandler);
 log.info('Error handler is initialized!');
 
 //email send example
+//var mail = require('./backend/libs/mail');
 //mail.sendInvite('andreivoitau@gmail.com', 'blablabla');
 
 //run application

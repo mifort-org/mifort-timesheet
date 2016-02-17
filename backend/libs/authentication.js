@@ -96,7 +96,16 @@ exports.init = function(app) {
     app.use(passport.initialize());
     app.use(passport.session());
 
+    //remove after refactoring
     app.get('/login', function (req, res, next) {
+        passport.authenticate('google',
+            {
+                scope: ['https://www.googleapis.com/auth/userinfo.email',
+                      'https://www.googleapis.com/auth/userinfo.profile']
+            })(req, res, next);
+    });
+
+    app.get('/googlelogin', function (req, res, next) {
         passport.authenticate('google',
             {
                 scope: ['https://www.googleapis.com/auth/userinfo.email',
