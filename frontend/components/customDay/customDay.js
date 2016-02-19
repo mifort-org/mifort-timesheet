@@ -151,7 +151,6 @@ angular.module('mifortTimesheet')
                             selector + ":before{border-bottom-color: " + hexagonColor + ";}" +
                             "</style>");
                     });
-
                 }
 
                 addHexagonsListener();
@@ -168,7 +167,8 @@ angular.module('mifortTimesheet')
                     scope.company.dayTypes.push({
                         name: 'New Day',
                         workload: 8,
-                        color: '#fff'
+                        color: '#fff',
+                        id: 111
                     });
 
                     addHexagonsListener();
