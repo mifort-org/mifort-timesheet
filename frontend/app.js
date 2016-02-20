@@ -117,6 +117,7 @@ angular.module('mifortTimesheet', [
             });
 
             $scope.startIntro = function() {
+                $rootScope.introIsActive = true;
                 notifyingService.notify('startIntro');
             };
 

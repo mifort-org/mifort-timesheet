@@ -53,7 +53,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,600,400italic,600italic,700,700italic&subset=cyrillic-ext,latin">
 </head>
 
-<body>
+<body ng-class="{'intro-active': introIsActive}">
 
 <div class="page-loading" ng-if="!isNotLoggedIn && !isLoggedIn">
     <img src="common/images/animation-wait.gif" alt=""/>

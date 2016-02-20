@@ -138,6 +138,9 @@ input[type=number]::-webkit-outer-spin-button {
   border-left: 1px #f2f4f7 solid;
   overflow-y: auto; }
 
+.intro-active .main-container {
+  overflow: hidden; }
+
 .main-controls {
   height: 100px;
   padding: 0 25px;

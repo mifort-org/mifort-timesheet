@@ -240,7 +240,7 @@ angular.module('mifortTimesheet.calendar', ['ngRoute'])
                     "<p>You can create and edit the periods of Company. All periods splitters are marked on Calendar with blue vertical lines. " +
                     "Clicking on period splitter will remove it and merge two periods between it. Click on border of any two days will create the period " +
                     "splitter and split the current period in two.</p>",
-                    position: 'bottom'
+                    position: 'right'
                 },
                 {
                     element: '#step2',
@@ -404,7 +404,9 @@ angular.module('mifortTimesheet.calendar', ['ngRoute'])
                 if(dayId){
                     var dayType = _.findWhere($scope.company.dayTypes, {id: dayId});
 
-                    return dayType.color;
+                    if(dayType){
+                        return dayType.color;
+                    }
                 }
             };
 

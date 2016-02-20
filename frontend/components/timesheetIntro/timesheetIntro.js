@@ -17,7 +17,7 @@
 'use strict';
 
 angular.module('mifortTimesheet')
-    .directive('timesheetIntro', ['notifyingService', '$timeout', function(notifyingService, $timeout) {
+    .directive('timesheetIntro', ['notifyingService', '$timeout', '$rootScope', function(notifyingService, $timeout, $rootScope) {
         return {
             scope: true,
             link: function(scope, element, attributes) {
@@ -35,6 +35,10 @@ angular.module('mifortTimesheet')
                     };
                     notifyingService.subscribe('startIntro', scope.startIntro, scope);
                 });
+
+                scope.introExit = function () {
+                    $rootScope.introIsActive = false;
+                };
             },
             templateUrl: 'components/timesheetIntro/timesheetIntro.html'
         }

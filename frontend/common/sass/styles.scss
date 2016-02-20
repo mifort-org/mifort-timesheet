@@ -170,6 +170,10 @@ input[type=number]::-webkit-outer-spin-button{
     overflow-y: auto;
 }
 
+.intro-active .main-container{
+    overflow: hidden;
+}
+
 .main-controls{
     height: 100px;
     padding: 0 25px;
