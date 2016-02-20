@@ -104,13 +104,13 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                     element: '#step3',
                     intro: "<p>Table of logs has four columns:" +
                     "<ul class=\"dotted" +
-                    "gn\"><li>Date - is not editable but user can add several logs to the current date by pressing the blue plus icon next to Date field." +
+                    "gn\"><li>Date - is not editable but you can add several logs to the current date by pressing the blue plus icon next to Date field." +
                     "New row for log created for current date will have the red minus icon that will delete the log on click</li>" +
-                    "<li>Role - dropdown with roles in which this particular user assigned to the project. If it is only one role it is selected by default and disabled." +
+                    "<li>Role - dropdown with your roles of this project. If it is only one role it is selected by default." +
                     "There is no possibility to log time with empty role.</li>" +
-                    "<li>Time - numeric input where user have to log time that he spent." +
-                    "Empty input shows placeholder with minimum of user workload (personal workload how much time this person works per day) and project assignment workload.</li>" +
-                    "<li>Comment - textarea where user writes detailed description of tasks which he is done at logged time.</li></ul>" +
+                    "<li>Time - numeric input where you log." +
+                    "Empty input shows placeholder with minimum of your workload (personal workload how much time this person works per day) and project assignment workload.</li>" +
+                    "<li>Comment - input where you write detailed description of tasks which you done at logged time.</li></ul>" +
                     "<p>Each day will may have a background color and workload according to Timesheet Calendar option created by Owner/HR/Manager. </p>",
                     position: 'bottom'
                 }

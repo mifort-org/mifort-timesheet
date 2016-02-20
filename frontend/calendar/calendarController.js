@@ -233,7 +233,7 @@ angular.module('mifortTimesheet.calendar', ['ngRoute'])
             $scope.IntroSteps = [
                 {
                     element: '#step1',
-                    intro: "<p>In this section you could see the list of months with tables containing all month\'s days splitted by rows by month weeks. " +
+                    intro: "<p>In this section you could see the list of months." +
                     "Each day contain the date and the default workload of this day.</p>" +
                     "<p>By default all weekend days are colored with light blue color.</p>" +
                     "<p>You can change the workload and color of each day by clicking on this day and choosing from the collection of Day Types.</p>" +
@@ -255,8 +255,7 @@ angular.module('mifortTimesheet.calendar', ['ngRoute'])
                     "<p>Click on existed Day Type Name will change it\'s name. </p>" +
                     "<p>Click on workload will change the workload of current Day Type. </p>" +
                     "<p>Click inside existed Day Type Hexagon will allow you to select the color for edited Day Type." +
-                    "Changing the Color of Day Type will change all days of this type in Calendar and all Timesheet days for chosen Day Type in calendar. </p>" +
-                    "<p>Click on red cross next to each Day Type in controls panel will remove this Day Type from list and remove all days of this type from Calendar and Timesheets.</p>",
+                    "Changing the Color of Day Type will change all days of this type in Calendar and all Timesheet days for chosen Day Type in calendar. </p>",
                     position: 'left'
                 }
             ];

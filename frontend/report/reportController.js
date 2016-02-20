@@ -272,28 +272,23 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                 {
                     element: '#step1',
                     intro: "<p>This is a table of all logs among the application. Each column could be sorted by clicking on column name " +
-                    "and each of them has filter that could be opened on the filter button next to column name.</p>",
-                    position: 'bottom'
-                },
-                {
-                    element: '#step2',
-                    intro: "<p>Date column keeps all logs dates and could be filtered by choosing the period from the list or period or by custom period chosen from calendar.</p>" +
+                    "and each of them has filter that could be opened on the filter button next to column name.</p>" +
                     "<p>User, Project and Assignment columns has dropdown filter with the quick search field and checkboxes to choose the filtered options.</p>",
                     position: 'bottom'
                 },
                 {
-                    element: '#step3',
-                    intro: "<p>In Report controls section you could choose for how many records you want to see on page.</p>",
+                    element: '#step2',
+                    intro: "<p>Switch tabs to change the column to be aggregated.</p>",
                     position: 'bottom'
                 },
                 {
-                    element: '#step4',
-                    intro: "<p>You could also switch pages.</p>",
-                    position: 'left'
+                    element: '#step3',
+                    intro: "<p>Use aggregation field to set the period of time to show.</p>",
+                    position: 'bottom'
                 },
                 {
                     element: '#print',
-                    intro: "<p>You could print or export the report by pressing the top panel buttons Print/CSV/PDF.</p>",
+                    intro: "<p>You could print or export the report by pressing the top panel buttons Print/CSV.</p>",
                     position: 'left'
                 }
             ];

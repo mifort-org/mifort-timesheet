@@ -74,7 +74,7 @@
 }
 
 .ui-grid-cell-contents{
-    padding: 9px 32px 11px 12px;
+    padding: 9px 12px 11px 12px;
 }
 
 .ui-grid-row{
@@ -364,5 +364,8 @@
             }
         }
     }
+}
 
+.aggregation-controls-wrapper{
+    display: inline-block;
 }

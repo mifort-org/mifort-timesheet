@@ -52,9 +52,9 @@ angular.module('mifortTimesheet.company', ['ngRoute'])
                 $scope.IntroSteps.push({
                     element: '#step4',
                     intro: "<p>Table with all invited employees and roles.</p>" +
-                    "<p><strong>Name</strong> column will show employee\'s Name if he already logged in and shared google account data, otherwise his email will be shown instead of name.</p>" +
-                    "<p><strong>Role</strong> column will show the assigned role of employee. Company owner can change employee's roles and remove an employee from company.</p>" +
-                    "<p>Pressing the Continue button will save all data and redirect to Projects page.</p>",
+                    "<p><strong>Name</strong> column shows employee\'s Name if he already logged in and shared google account data, otherwise his email will be shown instead of name.</p>" +
+                    "<p><strong>Role</strong> column shows the assigned role of employee. Company owner can change employee's roles and remove an employee from company.</p>" +
+                    "<p>Pressing the Continue button saves all data and redirect to Projects page.</p>",
                     position: 'top'
                 })
             });

@@ -54,7 +54,7 @@
     border-color: #eaeff7; }
 
 .ui-grid-cell-contents {
-  padding: 9px 32px 11px 12px; }
+  padding: 9px 12px 11px 12px; }
 
 .ui-grid-row {
   border-bottom: 1px #eaeff7 solid; }
@@ -254,5 +254,8 @@
         border-bottom: 3px #8cdafe solid; }
       .aggregation-wrapper .aggregation-options a.active {
         border-bottom: 3px #19b5fe solid; }
+
+.aggregation-controls-wrapper {
+  display: inline-block; }
 
 /*# sourceMappingURL=report.css.map */

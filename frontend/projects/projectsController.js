@@ -64,7 +64,7 @@ angular.module('mifortTimesheet.projects', ['ngRoute'])
                     "<ul class=\"dotted-list\"><li><strong>Assignment</strong> - contains the dropdown list with all possible assignments for current company (i.e. Developer, QA, Manager, Team Lead etc.). </li>" +
                     "<li><strong>Workload</strong> - set\'s the employee\'s default workload for the current project. </li>" +
                     "<li><strong>Person</strong> - contains the search/dropdown with all company\'s employees. Each assigned employee could be deassigned by pressing the red cross button next to that employees table row. " +
-                    "Each employee could be assigned on any project any number of times under any roles.</li></ul>",
+                    "Each employee could be assigned on any project any number of times with any roles.</li></ul>",
                     position: 'bottom'
                 },
                 {
@@ -75,12 +75,12 @@ angular.module('mifortTimesheet.projects', ['ngRoute'])
                 {
                     element: '#step3',
                     intro: "<p>Pressing the cross button will close and archive the project and make it inactive." +
-                    "Assigned users will be unassigned and will not be able to log time on this project.</p>",
+                    "IntroSteps and user will not be able to log time on this project.</p>",
                     position: 'left'
                 },
                 {
                     element: '#step4',
-                    intro: "<p>Click on the Project Name will allow the user to change it.</p>" +
+                    intro: "<p>Click on the Project Name will allow you to change it.</p>" +
                     "<p>Pressing the arrow icon will minimize or maximize the project.</p>",
                     position: 'right'
                 }

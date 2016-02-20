@@ -15,7 +15,7 @@
 -->
 
 
-<div class="aggregation-wrapper">
+<div id="step2" class="aggregation-wrapper">
     <span class="aggregation-label">Aggregation by:</span>
 
     <ul class="aggregation-options">
@@ -27,14 +27,15 @@
 
 <div class="report-wrapper">
     <div class="form-group clearfix">
-        <label for="">Aggregation period</label>
+        <span id="step3" class="aggregation-controls-wrapper">
+            <label for="">Aggregation period</label>
 
-        <div report-date-picker class="date-range-picker"></div>
-
+            <div report-date-picker class="date-range-picker"></div>
+        </span>
         <div class="report-controls clearfix">
             <div timesheet-intro></div>
 
-            <div class="per-page-wrapper" id="step3">
+            <div class="per-page-wrapper">
                 <label for="simple-dropdown" class="per-page-label">Show</label>
 
                 <span class="blank-dropdown blank-dropdown-small form-control per-page" uib-dropdown on-toggle="toggled(open)">
@@ -52,7 +53,7 @@
                 <span class="per-page-after">on page</span>
             </div>
 
-            <div class="pagination" id="step4">
+            <div class="pagination">
                 <span class="page-range">{{reportSettings.pageSize * (reportSettings.page - 1) + 1}} - {{reportSettings.pageSize * reportSettings.page}} of {{totalCount}}</span>
 
                 <a href="" class="prev-page" ng-class="{'disabled': reportSettings.page >= totalCount/reportSettings.pageSize}" ng-click="nextPage()">Next</a>
