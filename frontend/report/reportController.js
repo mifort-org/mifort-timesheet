@@ -112,18 +112,18 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                     }
                 },
                 {
-                    title: 'Project + User total',
-                    active: false,
-                    setSettings: function() {
-                        $scope.reportSettings.groupBy = ['userName', 'projectName'];
-                        $scope.reportSettings.isCommentNeeded  = true;
-                    }
-                },
-                {
                     title: 'User',
                     active: false,
                     setSettings: function() {
                         $scope.reportSettings.groupBy = ['userName'];
+                        $scope.reportSettings.isCommentNeeded  = true;
+                    }
+                },
+                {
+                    title: 'Project + User total',
+                    active: false,
+                    setSettings: function() {
+                        $scope.reportSettings.groupBy = ['userName', 'projectName'];
                         $scope.reportSettings.isCommentNeeded  = true;
                     }
                 }
