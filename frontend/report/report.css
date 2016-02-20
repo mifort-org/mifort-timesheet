@@ -78,8 +78,11 @@
 .date-range-picker {
   display: inline-block; }
   .date-range-picker input {
+    height: 34px;
     margin-left: 10px;
-    padding: 1px 5px; }
+    padding: 1px 5px;
+    line-height: 34px;
+    border: 1px #eaeff7 solid; }
 
 .date-range-column-picker {
   position: absolute;
@@ -174,9 +177,7 @@
   text-align: center; }
 
 .report-controls {
-  background: #fff;
-  padding: 0 27px;
-  margin-bottom: 30px;
+  float: right;
   font-size: 1.4rem; }
   .report-controls .pagination ul {
     float: right; }
@@ -213,11 +214,12 @@
 
 .pagination {
   float: right;
-  text-align: right; }
+  text-align: right;
+  margin: 8px 0; }
 
 .per-page-wrapper {
   display: inline-block;
-  padding: 13px 0; }
+  padding: 0 25px; }
   .per-page-wrapper .per-page-label {
     display: inline-block; }
   .per-page-wrapper .per-page {
@@ -235,22 +237,22 @@
   font-size: 1.6rem;
   background: #fff;
   border-bottom: 1px #dcdcdc solid; }
-  .aggregation-wrapper span {
+  .aggregation-wrapper .aggregation-label {
     display: inline-block;
     margin: 20px 27px;
     color: #8d8d8d; }
-  .aggregation-wrapper ul {
+  .aggregation-wrapper .aggregation-options {
     display: inline-block;
     margin-bottom: -1px; }
-    .aggregation-wrapper ul li {
+    .aggregation-wrapper .aggregation-options li {
       display: inline-block; }
-    .aggregation-wrapper ul a {
+    .aggregation-wrapper .aggregation-options a {
       padding: 15px;
       color: #000;
       text-decoration: none; }
-      .aggregation-wrapper ul a:hover {
+      .aggregation-wrapper .aggregation-options a:hover {
         border-bottom: 3px #8cdafe solid; }
-      .aggregation-wrapper ul a.active {
+      .aggregation-wrapper .aggregation-options a.active {
         border-bottom: 3px #19b5fe solid; }
 
 /*# sourceMappingURL=report.css.map */

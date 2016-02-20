@@ -104,8 +104,11 @@
 .date-range-picker{
     display: inline-block;
     input{
+        height: 34px;
         margin-left: 10px;
         padding: 1px 5px;
+        line-height: 34px;
+        border: 1px #eaeff7 solid;
     }
 }
 
@@ -248,9 +251,7 @@
 }
 
 .report-controls{
-    background: #fff;
-    padding: 0 27px;
-    margin-bottom: 30px;
+    float: right;
     font-size: 1.4rem;
 
     .pagination ul{
@@ -307,11 +308,12 @@
 .pagination{
     float: right;
     text-align: right;
+    margin: 8px 0;
 }
 
 .per-page-wrapper{
     display: inline-block;
-    padding: 13px 0;
+    padding: 0 25px;
 
     .per-page-label{
         display: inline-block;
@@ -336,13 +338,13 @@
     background: #fff;
     border-bottom: 1px #dcdcdc solid;
 
-    span{
+    .aggregation-label{
         display: inline-block;
         margin: 20px 27px;
         color: #8d8d8d;
     }
 
-    ul{
+    .aggregation-options{
         display: inline-block;
         margin-bottom: -1px;
 
