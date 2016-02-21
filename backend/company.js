@@ -78,6 +78,7 @@ exports.restUpdateCompany = function(req, res, next) {
     if(!company.availablePositions) {
         company.availablePositions = constants.DEFAULT_AVAILABLE_POSITIONS;
     }
+    addIdToDayTypes(company);
     save(company, function(err, savedCompany) {
         if(err) {
             next(err);
@@ -170,6 +171,25 @@ function createUsersByEmails(company) {
                 }
             });
 
+        })
+    }
+}
+
+function addIdToDayTypes(company) {
+    if(company.dayTypes) {
+        var ids = company.dayTypes.map(function(dayType) {
+            if(dayType.id) {
+                return dayType.id;
+            } else {
+                return 0;
+            }
+        });
+        var maxId = Math.max.apply(null, ids);
+        company.dayTypes.forEach(function(dayType) {
+            if(!dayType.id) {
+                maxId = maxId + 1;
+                dayType.id = maxId;
+            }
         })
     }
 }
