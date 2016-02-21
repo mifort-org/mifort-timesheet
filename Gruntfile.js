@@ -49,6 +49,15 @@ module.exports = function(grunt) {
                         flatten: true,
                         src: 'bower_components/bootstrap/dist/fonts/*',
                         dest: 'dist/fonts'
+                    },
+                    {
+                        expand: true,
+                        cwd: 'frontend',
+                        flatten: true,
+                        src: [
+                            'bower_components/angular-ui-grid/*.woff',
+                            'bower_components/angular-ui-grid/*.ttf'],
+                        dest: 'dist/styles'
                     }
                 ]
             },
