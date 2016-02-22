@@ -61,7 +61,11 @@ angular.module('mifortTimesheet')
                     else{
                         return day.time;
                     }
-                }
+                };
+
+                scope.isToday = function(day) {
+                    return moment(new Date(day.date)).isSame(new Date(), 'day');
+                };
             },
             templateUrl: 'components/tableCell/tableCell.html'
         };

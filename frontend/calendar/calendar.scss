@@ -513,3 +513,17 @@
         }
     }
 }
+
+.calendar-today{
+    position: relative;
+    left: -2px;
+    top: -2px;
+    display: inline-block;
+    height: 28px;
+    width: 28px;
+    padding: 1px;
+    color: #fff;
+    text-align: center;
+    background: #3eb5f1;
+    border-radius: 50%;
+}

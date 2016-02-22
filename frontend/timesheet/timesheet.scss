@@ -214,31 +214,9 @@
 
 .is-today td:first-child:before{
     position: absolute;
-    left: -1px;
+    left: 1px;
     top: -1px;
     bottom: -1px;
     content: ' ';
-    border-left: 1px #3eb5f1 solid;
-}
-
-.is-today td:last-child:before{
-    position: absolute;
-    right: -1px;
-    top: -1px;
-    bottom: -1px;
-    content: ' ';
-    border-right: 1px #3eb5f1 solid;
-}
-
-.is-today.is-first-day-log td:after{
-    position: absolute;
-    left: -1px;
-    right: -1px;
-    top: -1px;
-    content: ' ';
-    border-top: 1px #3eb5f1 solid;
-}
-
-.is-today.is-last-todays-record{
-    border-bottom: 2px #00c2f1 solid;
+    border-left: 3px #3eb5f1 solid;
 }
