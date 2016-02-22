@@ -15,7 +15,7 @@
 -->
 
 <div class="calendar-data" ng-class="::{'disabled-day-data': day.disabled}">
-    <span class="calendar-time" ng-bind="getDayTime(day)"></span>
+    <span class="calendar-time">{{getDayTime(day)}}</span>
 
     <span class="calendar-hours-label">hours</span>
 </div>

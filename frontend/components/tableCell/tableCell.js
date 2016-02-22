@@ -51,15 +51,15 @@ angular.module('mifortTimesheet')
                 });
 
                 scope.getDayTime = function(day) {
-                    if(!day.dayId){
-                        return day.time;
-                    }
-                    else{
+                    if(day.dayId){
                         var currentDayDayType = _.findWhere(scope.company.dayTypes, {id: day.dayId});
 
                         if(currentDayDayType){
                             return currentDayDayType.time;
                         }
+                    }
+                    else{
+                        return day.time;
                     }
                 }
             },

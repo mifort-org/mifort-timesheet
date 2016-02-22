@@ -28,7 +28,7 @@ var company = {
     "template": {
         "date": "",
         "role": "",
-        "time": 4,
+        "time": 8,
         "comment": ""
     },
     "periods" : [

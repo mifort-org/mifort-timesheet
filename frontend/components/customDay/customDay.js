@@ -166,9 +166,8 @@ angular.module('mifortTimesheet')
                 scope.addCustomDay = function() {
                     scope.company.dayTypes.push({
                         name: 'New Day',
-                        workload: 8,
-                        color: '#fff',
-                        id: 111
+                        time: 8,
+                        color: '#fff'
                     });
 
                     addHexagonsListener();

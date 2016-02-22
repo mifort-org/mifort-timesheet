@@ -377,7 +377,9 @@ angular.module('mifortTimesheet.calendar', ['ngRoute'])
 
                 applyDefaultValues();
 
-                calendarService.saveCompany($scope.company);
+                calendarService.saveCompany($scope.company).success(function(data) {
+                    $scope.company.dayTypes = data.dayTypes;
+                });
             };
 
             $scope.GenerateMoreDays = function() {
@@ -417,6 +419,22 @@ angular.module('mifortTimesheet.calendar', ['ngRoute'])
                 var customDayIndex = _.findIndex($scope.company.dayTypes, customDay);
 
                 $scope.company.dayTypes.splice(customDayIndex, 1);
+
+                //remove assigned dayTypes
+                $scope.company.defaultValues.forEach(function(defaultValue, index) {
+                    if(defaultValue.dayId == customDay.id){
+                        $scope.company.defaultValues.splice(index, 1)
+                    }
+                });
+
+                //revert to default values
+                $scope.calendar.map(function(day) {
+                    if(day.dayId == customDay.id){
+                        day.time = 8;
+                        delete day.dayId;
+                    }
+                    return day
+                });
 
                 calendarService.saveCompany($scope.company);
             };
