@@ -147,7 +147,9 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                         sameDateDays = _.where(period.timesheet, {date: moment(new Date(day.date)).format("MM/DD/YYYY")});
                         lastDayWithSameDate = _.findIndex(period.timesheet, {_id: sameDateDays[sameDateDays.length - 1]._id});
 
+                        //reset client saved data
                         delete day.color;
+                        day.timePlaceholder = sameDateDays[0].timePlaceholder;
 
                         //if current iterated log is not the first for this date to push
                         if(project.periods[periodIndex].timesheet[index - 1] && project.periods[periodIndex].timesheet[index - 1].date == day.date){
@@ -183,6 +185,13 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
 
                                 existedDay.color = assignedDayType.color;
                                 existedDay.placeholder = assignedDayType.name;
+
+                                if(!existedDay.timePlaceholder){
+                                    existedDay.timePlaceholder = assignedDayType.time;
+                                }
+                                if(assignedDayType.time < existedDay.timePlaceholder){
+                                    existedDay.timePlaceholder = assignedDayType.time;
+                                }
                             });
                         }
                     });
@@ -192,7 +201,10 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
             function generateDaysTemplates(project, periodIndex) {
                 var startDate = moment(new Date(project.periods[periodIndex].start)),
                     endDate = moment(new Date(project.periods[periodIndex].end)),
-                    daysToGenerate = endDate.diff(startDate, 'days');
+                    daysToGenerate = endDate.diff(startDate, 'days'),
+                    userRole = project.assignments[0].role,
+                    assignment = _.findWhere(project.assignments, {role: userRole, projectId: project._id}),
+                    timePlaceholder = 8;
 
                 for(var i = 0; i < daysToGenerate + 1; i++){
                     var dayToPush;
@@ -205,9 +217,14 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
 
                     dayToPush = _.clone(project.template);
                     dayToPush.date = angular.copy(startDate).add(i, 'days').format("MM/DD/YYYY");
-                    dayToPush.role = project.assignments[0].role;
+                    dayToPush.role = userRole;
                     dayToPush.isFirstDayRecord = true;
                     dayToPush.userName = user.displayName;
+
+                    if(assignment){
+                        timePlaceholder = assignment.workload;
+                    }
+                    dayToPush.timePlaceholder = timePlaceholder;
 
                     project.periods[periodIndex].timesheet.push(dayToPush);
                 }
@@ -260,6 +277,8 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                 newRow.date = log.date;
                 newRow.userName = log.userName;
                 newRow.color = log.color;
+                newRow.placeholder = log.placeholder;
+                newRow.timePlaceholder = log.timePlaceholder;
                 newRow.role = log.role;
                 newRow.isFirstDayRecord = false;
                 newRow.position = maxPosition + 1;
@@ -305,17 +324,6 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                         initPeriod(project, project.currentPeriodIndex);
                     }
                 }
-            };
-
-            $scope.getTimePlaceholder = function(log, project) {
-                var timePlaceholder = 8,
-                    assignment = _.findWhere(project.assignments, {role: log.role, projectId: log.projectId});
-
-                if(assignment){
-                    timePlaceholder = assignment.workload;
-                }
-
-                return timePlaceholder;
             };
 
             $scope.status = {
