@@ -92,7 +92,7 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                 companyId: companyId,
                 sort: {
                     field: 'date',
-                    asc: true
+                    asc: false
                 },
                 filters: [],
                 pageSize: 10,
