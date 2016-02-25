@@ -169,7 +169,6 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                             angular.extend(period.timesheet[timesheetDayIndex], day);
                         }
                     }
-
                 });
             }
 
@@ -180,11 +179,10 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
 
                         if(existedDays.length && day.dayId){
                             existedDays.forEach(function(existedDay) {
-                                existedDay.color = _.findWhere(project.dayTypes, {id: day.dayId}).color;
+                                var assignedDayType = _.findWhere(project.dayTypes, {id: day.dayId});
 
-                                if(!existedDay.comment){
-                                    existedDay.comment = day.comment;
-                                }
+                                existedDay.color = assignedDayType.color;
+                                existedDay.placeholder = assignedDayType.name;
                             });
                         }
                     });
