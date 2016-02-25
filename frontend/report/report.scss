@@ -73,8 +73,12 @@
     }
 }
 
-.ui-grid-cell-contents{
+.ui-grid-header-cell .ui-grid-cell-contents{
     padding: 9px 12px 11px 12px;
+}
+
+.ui-grid-cell-contents{
+    padding: 7px 5px 5px;
 }
 
 .ui-grid-row{
@@ -368,4 +372,27 @@
 
 .aggregation-controls-wrapper{
     display: inline-block;
+}
+
+.aggreagated-comment{
+    padding: 0;
+    color: #000;
+}
+
+.aggregated-comments{
+    display: block;
+    padding: 0;
+    text-decoration: none;
+
+    &:hover{
+        text-decoration: none;
+
+        .aggreagated-comment{
+            border-bottom: 1px dashed #000;
+        }
+    }
+}
+
+.aggregated-comments:hover{
+    //position: absolute;
 }

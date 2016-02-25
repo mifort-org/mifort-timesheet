@@ -53,8 +53,11 @@
     background: #fff;
     border-color: #eaeff7; }
 
-.ui-grid-cell-contents {
+.ui-grid-header-cell .ui-grid-cell-contents {
   padding: 9px 12px 11px 12px; }
+
+.ui-grid-cell-contents {
+  padding: 7px 5px 5px; }
 
 .ui-grid-row {
   border-bottom: 1px #eaeff7 solid; }
@@ -257,5 +260,18 @@
 
 .aggregation-controls-wrapper {
   display: inline-block; }
+
+.aggreagated-comment {
+  padding: 0;
+  color: #000; }
+
+.aggregated-comments {
+  display: block;
+  padding: 0;
+  text-decoration: none; }
+  .aggregated-comments:hover {
+    text-decoration: none; }
+    .aggregated-comments:hover .aggreagated-comment {
+      border-bottom: 1px dashed #000; }
 
 /*# sourceMappingURL=report.css.map */

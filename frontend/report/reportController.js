@@ -70,7 +70,8 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                         enableColumnMenu: false,
                         enableSorting: false,
                         enableFiltering: false,
-                        filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" col-name="time" col-title="Comment"></span></div>'
+                        filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" col-name="time" col-title="Comment"></span></div>',
+                        cellTemplate: '<span cutted-comment></span>'
                     },
                     comments: {
                         field: 'comments',
@@ -79,9 +80,13 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                         enableSorting: false,
                         enableFiltering: false,
                         filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" col-name="time" col-title="Comments"></span></div>',
-                        cellTemplate: '<div class="ui-grid-cell-contents">{{row.entity.comments.join(", ")}}</div>'
+                        cellTemplate: '<span cutted-comment></span>'
                     }
                 };
+
+            $scope.getAggregatedComments = function(comments) {
+                return comments.join(", ")
+            };
 
             $scope.reportSettings = {
                 companyId: companyId,
@@ -100,7 +105,7 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                     active: true,
                     setSettings: function() {
                         $scope.reportSettings.groupBy = [];
-                        $scope.reportSettings.isCommentNeeded  = false;
+                        $scope.reportSettings.isCommentNeeded = false;
                     }
                 },
                 {
@@ -108,7 +113,7 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                     active: false,
                     setSettings: function() {
                         $scope.reportSettings.groupBy = ['projectName'];
-                        $scope.reportSettings.isCommentNeeded  = false;
+                        $scope.reportSettings.isCommentNeeded = false;
                     }
                 },
                 {
@@ -116,7 +121,7 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                     active: false,
                     setSettings: function() {
                         $scope.reportSettings.groupBy = ['userName'];
-                        $scope.reportSettings.isCommentNeeded  = true;
+                        $scope.reportSettings.isCommentNeeded = true;
                     }
                 },
                 {
@@ -124,7 +129,7 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                     active: false,
                     setSettings: function() {
                         $scope.reportSettings.groupBy = ['userName', 'projectName'];
-                        $scope.reportSettings.isCommentNeeded  = true;
+                        $scope.reportSettings.isCommentNeeded = true;
                     }
                 }
             ];
