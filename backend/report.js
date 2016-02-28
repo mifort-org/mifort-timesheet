@@ -214,7 +214,7 @@ exports.restAggregationReportCSV = function(req, res, next) {
         }
         createCSVFile(aggregationStream, aggregationColumns, function(fileName) {
             res.json({url: '/report/download/' + fileName});
-            log.debug('-REST call: aggregation report download CSV. Company id: %s',
+            log.debug('-REST result: aggregation report download CSV. Company id: %s',
                 filterObj.companyId.toHexString());
         });
     });
