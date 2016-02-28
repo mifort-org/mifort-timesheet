@@ -17,7 +17,7 @@
     "ejs": "^2.3.4",
     "express": "^4.13.3",
     "express-session": "^1.11.3",
-    "express-validator": "^2.17.1",
+    "express-validator": "^2.19.1",
     "moment": "^2.11.2",
     "mongodb": "^2.0.34",
     "passport": "^0.3.0",
