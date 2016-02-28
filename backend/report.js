@@ -200,12 +200,18 @@ exports.restAggregationReportCSV = function(req, res, next) {
                     if(doc.date) {
                         doc.date = utils.formatDate(doc.date);
                     }
+                    if(doc.comments && Array.isArray(doc.comments)) {
+                        doc.comments = doc.comments.join();
+                    }
                     return doc;
                 }
             });
 
         var aggregationColumns = filterObj.groupBy;
         aggregationColumns.push('time');
+        if(filterObj.isCommentNeeded) {
+            aggregationColumns.push('comments');
+        }
         createCSVFile(aggregationStream, aggregationColumns, function(fileName) {
             res.json({url: '/report/download/' + fileName});
             log.debug('-REST call: aggregation report download CSV. Company id: %s',
