@@ -15,10 +15,10 @@
 -->
 
 <div class="ui-grid-cell-contents">
-    <span ng-show="::!isNotFitsTheCell(row.entity.comment || row.entity.comments)" class="ui-grid-cell-contents aggreagated-comment">{{row.entity.comment || row.entity.comments.join(", ")}}</span>
+    <span ng-show="!isNotFitsTheCell" class="ui-grid-cell-contents aggreagated-comment">{{row.entity.comment || row.entity.comments.join(", ")}}</span>
 
     <a href=""
-       ng-show="::isNotFitsTheCell(row.entity.comment || row.entity.comments)"
+       ng-show="isNotFitsTheCell"
        uib-popover="{{row.entity.comment || grid.appScope.getAggregatedComments(row.entity.comments)}}"
        popover-placement="top"
        popover-append-to-body="true"

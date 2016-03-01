@@ -25,14 +25,15 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
         });
     }])
 
-    .controller('reportController', ['$scope', 'reportService', 'preferences', 'uiGridConstants', 'topPanelService',
-        function($scope, reportService, preferences, uiGridConstants, topPanelService) {
+    .controller('reportController', ['$scope', 'reportService', 'preferences', 'uiGridConstants', 'topPanelService', '$timeout',
+        function($scope, reportService, preferences, uiGridConstants, topPanelService, $timeout) {
             var companyId = preferences.get('user').companyId,
                 headerHeight = 38,
                 maxVisiblePages = 5,
                 columns = {
                     date: {
                         field: 'date',
+                        width: 100,
                         enableColumnResizing: true,
                         enableColumnMenu: false,
                         enableFiltering: false,
@@ -40,6 +41,7 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                     },
                     userName: {
                         field: 'userName',
+                        width: 150,
                         enableColumnResizing: true,
                         enableColumnMenu: false,
                         filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" col-name="userName" col-title="User Name"></span></div>'
@@ -52,6 +54,7 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                     },
                     role: {
                         field: 'role',
+                        width: 90,
                         enableColumnResizing: true,
                         enableColumnMenu: false,
                         cellTemplate: '<div class="ui-grid-cell-contents">{{row.entity.role}}</div>',
@@ -59,6 +62,7 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                     },
                     time: {
                         field: 'time',
+                        width: 80,
                         enableColumnResizing: true,
                         enableColumnMenu: false,
                         enableFiltering: false,
@@ -150,18 +154,6 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                 $scope.reports[activeIndex].setSettings();
                 $scope.getReport();
             };
-
-            //$scope.logReportIsActive = function() {
-            //    var logReportIsActive = _.findWhere($scope.reports, {title: 'Log', active: true}),
-            //        dateFilterIndex;
-            //
-            //    if(logReportIsActive){
-            //        dateFilterIndex = _.findIndex($scope.reportSettings.filters, {field: 'date'});
-            //        $scope.reportSettings.filters.splice(dateFilterIndex, 1);
-            //    }
-            //
-            //    return logReportIsActive;
-            //};
 
             $scope.ranges = {
                 'Today': [moment(), moment()],
@@ -275,6 +267,9 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                         $scope.totalCount = headers()['x-total-count'];
                         $scope.totalPages = Math.ceil($scope.totalCount / $scope.reportSettings.pageSize);
                     }
+                }).finally(function() {
+                    //call the directive 'cuttedComment' to reRender comments
+                    $scope.$broadcast('reRrenderComments');
                 });
             };
 

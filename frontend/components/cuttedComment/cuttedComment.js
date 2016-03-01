@@ -17,16 +17,24 @@
 'use strict';
 
 angular.module('mifortTimesheet')
-    .directive('cuttedComment', function () {
+    .directive('cuttedComment', function ($timeout) {
         return {
             scope: true,
             link: function (scope, element, attrs) {
                 var comment = element.find('span.aggreagated-comment'),
                     parent = element.parent('.ui-grid-cell');
 
-                scope.isNotFitsTheCell = function() {
-                    return comment.outerWidth() > parent.outerWidth();
-                }
+                scope.isNotFitsTheCell = false;
+
+                scope.measureCell = function() {
+                    scope.isNotFitsTheCell = comment.outerWidth() > parent.outerWidth();
+                };
+
+                scope.$on('reRrenderComments', function() {
+                    $timeout(function() {
+                        scope.measureCell();
+                    });
+                });
             },
             templateUrl: 'components/cuttedComment/cuttedComment.html'
         };
