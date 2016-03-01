@@ -249,10 +249,11 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                                     });
 
                                 if(noIdLog){
-                                    angular.extend(periodTimesheet, data.timesheet);
+                                    angular.extend(periodTimesheet, data.timelog);
                                 }
-
-                                Notification.success('Changes saved');
+                                else{
+                                    Notification.success('Changes saved');
+                                }
                             });
                         }, 500);
                     }
