@@ -20,19 +20,23 @@ angular.module('mifortTimesheet.report').factory('reportService',
     ['$http', function($http) {
         return {
             getFilters: function(companyId) {
-                return $http.get('report/filters/' + companyId);
+                return $http.get('api/v1/report/filters/' + companyId);
             },
             getReport: function(reportSettings) {
                 if(reportSettings.groupBy && reportSettings.groupBy.length){
-                    return $http.post('report/aggregation', reportSettings);
+                    return $http.post('api/v1/report/aggregation', reportSettings);
                 }
                 else{
-                    return $http.post('report/common/', reportSettings);
+                    return $http.post('api/v1/report/common', reportSettings);
                 }
             },
             downloadCsv: function(reportSettings) {
-                return $http.post('report/common/download/', reportSettings);
+                return $http.post('api/v1/report/common/download', reportSettings);
+            },
+            downloadAggregationCsv: function(reportSettings) {
+                return $http.post('api/v1/report/aggregation/download', reportSettings);
             }
+
         }
     }
     ]);

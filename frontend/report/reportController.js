@@ -322,9 +322,16 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
             };
 
             $scope.downloadCsv = function() {
-                reportService.downloadCsv($scope.reportSettings).success(function(data) {
-                    window.location = data.url;
-                });
+                if($scope.reportSettings.groupBy && $scope.reportSettings.groupBy.length){
+                    reportService.downloadAggregationCsv($scope.reportSettings).success(function(data) {
+                        window.location = data.url;
+                    });
+                }
+                else{
+                    reportService.downloadCsv($scope.reportSettings).success(function(data) {
+                        window.location = data.url;
+                    });
+                }
             };
 
             $scope.perPageChanged = function(perPage) {
