@@ -25,6 +25,6 @@
        popover-trigger="outsideClick"
        data-toggle="popover"
        class="ui-grid-cell-contents aggregated-comments">
-        <div class="ui-grid-cell-contents aggreagated-comment">{{row.entity.comment || row.entity.comments.join(", ")}}</div>
+        <div class="ui-grid-cell-contents aggreagated-comment">{{row.entity.comment || grid.appScope.getAggregatedComments(row.entity.comments)}}</div>
     </a>
 </div>

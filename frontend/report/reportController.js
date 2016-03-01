@@ -85,7 +85,12 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                 };
 
             $scope.getAggregatedComments = function(comments) {
-                return comments.join(", ")
+                if(comments && comments.length){
+                    //remove empty comments
+                    var cleanComments = comments.filter(function(e){ return e.replace(/(\r\n|\n|\r)/gm,"")});
+
+                    return cleanComments.join(", ")
+                }
             };
 
             $scope.reportSettings = {

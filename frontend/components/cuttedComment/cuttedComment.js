@@ -25,9 +25,7 @@ angular.module('mifortTimesheet')
                     parent = element.parent('.ui-grid-cell');
 
                 scope.isNotFitsTheCell = function() {
-                        if(comment.outerWidth() > parent.outerWidth()){
-                            return true;
-                        }
+                    return comment.outerWidth() > parent.outerWidth();
                 }
             },
             templateUrl: 'components/cuttedComment/cuttedComment.html'
