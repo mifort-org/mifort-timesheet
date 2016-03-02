@@ -45,14 +45,14 @@ projectRouter.post('/',
         validators.validateSaveProject,
         authorization.authorizeSaveProject,
         project.restSave);
-projectRouter.get('/:projectId',
-        validators.validateGetProjectById,
-        authorization.authorizeGetProjectById,
-        project.restGetById);
 projectRouter.get('/list',  // project list!!!!!!!!!!!!
         validators.validateGetProjectByCompanyId,
         authorization.authorizeGetProjectsByCompanyId,
         project.restGetByCompanyId);
+projectRouter.get('/:projectId',
+        validators.validateGetProjectById,
+        authorization.authorizeGetProjectById,
+        project.restGetById);
 projectRouter.get('/deactivate/:projectId',
         validators.validateDeactivateProject,
         authorization.authorizeDeactivateProject,
