@@ -95,6 +95,11 @@ app.use('/admin', router.adminRouter);
 
 app.use('/api/v1', router.versionRouter);
 
+//Angular html5Mode support. Shoud be the last string
+app.get('/*', function(req, res, next) {
+    res.sendFile('frontend/index.html', { root: __dirname });
+});
+
 log.info('REST API is ready!');
 
 // default error handler
