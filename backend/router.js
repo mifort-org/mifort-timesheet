@@ -88,7 +88,6 @@ userRouter.put('/',
         validators.validateAddNewUser,
         authorization.authorizeAddNewUser,
         user.restAddNewUser);
-exports.userRouter = userRouter;
 
 //company
 var company = require('./company');
@@ -105,7 +104,6 @@ companyRouter.get('/:companyId',
         validators.validateGetCompanyById,
         authorization.authorizeGetCompanyById,
         company.restFindById);
-exports.companyRouter = companyRouter;
 
 //report
 var report = require('./report');
@@ -134,7 +132,6 @@ reportRouter.post('/aggregation/download',
 reportRouter.get('/download/:fileName',
         validators.validateGetDownloadReport,
         report.restDownloadFile);
-exports.reportRouter = reportRouter;
 
 //Admin part
 var admin = require('./admin');
@@ -143,7 +140,6 @@ adminRouter.get('/log/:fileName',
         validators.validateDownloadLogs,
         authorization.authorizeDownloadLogs,
         admin.restDownloadLog);
-exports.adminRouter = adminRouter;
 
 //main router
 var versionRouter = express.Router();

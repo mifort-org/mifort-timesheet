@@ -262,12 +262,22 @@ exports.validateDownloadLogs = function(req, res, next) {
 };
 
 //Custom validators for express-validator
-exports.isArray = function(value) {
-    return Array.isArray(value);
+exports.config = {
+    customValidators: {
+        isTimelog: timelogs,
+        isArray: isArray,
+        isAssignments: isAssignments,
+        isEmails: isEmails,
+        isFilters: isFilters,
+        isString: isString,
+        isGroupBy: isGroupBy
+    }
 };
 
+//Private part
+
 // should be refactored
-exports.timelogs = function(values) {
+function timelogs(values) {
     if(Array.isArray(values)) {
         return values.every(function(val){
             var isValid = true;
@@ -296,10 +306,13 @@ exports.timelogs = function(values) {
         });
     }
     return false;
-};
+}
 
+function isArray(value) {
+    return Array.isArray(value);
+}
 
-exports.isAssignments = function(values, projectId) {
+function isAssignments(values, projectId) {
     if(!values.length) { // if array is empty
         return true;
     }
@@ -313,9 +326,9 @@ exports.isAssignments = function(values, projectId) {
         });
     }
     return false;
-};
+}
 
-exports.isEmails = function(values) {
+function isEmails(values) {
     if(Array.isArray(values)) {
         return values.every(function(val) {
             return validator.isEmail(val);
@@ -323,9 +336,9 @@ exports.isEmails = function(values) {
     }
 
     return false;
-};
+}
 
-exports.isFilters = function(filters) {
+function isFilters(filters) {
     if(filters && !filters.length) { // if array is empty
         return true;
     }
@@ -342,23 +355,22 @@ exports.isFilters = function(filters) {
     }
 
     return false;
-};
+}
 
-exports.isString = function(obj) {
+function isString(obj) {
     return typeof obj === 'string';
-};
+}
 
-exports.isGroupBy = function(values) {
+function isGroupBy(values) {
     if(Array.isArray(values)) {
         return values.every(function(val) {
-            return exports.isString(val);
+            return isString(val);
         });
     }
 
     return false;
-};
+}
 
-//Private part
 function returnErrors(req, res, next) {
     var errors = req.validationErrors(true);
     if(errors) {

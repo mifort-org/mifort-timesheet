@@ -235,7 +235,7 @@ function updateProjectName(userDbCollection, findedUsers, project) {
                     userDbCollection.update({ _id: user._id },
                                  { $push: { assignments: { $each: newAssignments } }},
                         function(err, updatedUser){
-                            log.info('User assignment project name was updated: %s', user._id);
+                            log.info('User assignment project name was updated: %s', user._id.toHexString());
                         });
                 }
             });
