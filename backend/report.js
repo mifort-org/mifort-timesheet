@@ -34,6 +34,8 @@ var REPORT_COLUMNS = {
     time: 'Time'
 };
 
+var reportDownloadUrlPrefix = '/api/v1/report/download/'; // /api/v1 prefix shoulв be shared
+
 //Rest API
 exports.restCommonReport = function(req, res, next) {
     var filterObj = req.body;
@@ -94,7 +96,7 @@ exports.restCommonReportCSV = function(req, res, next) {
         createCSVFile(cursorStream, REPORT_COLUMNS, function(fileName) {
             log.debug('-REST Result: Download common report. CSV file is generated. Company id: %s',
                 filterObj.companyId.toHexString());
-            res.json({url: '/report/download/' + fileName});
+            res.json({url: reportDownloadUrlPrefix + fileName});
         });
     });
 };
@@ -215,7 +217,7 @@ exports.restAggregationReportCSV = function(req, res, next) {
             aggregationColumns.push('comments');
         }
         createCSVFile(aggregationStream, aggregationColumns, function(fileName) {
-            res.json({url: '/report/download/' + fileName});
+            res.json({url: reportDownloadUrlPrefix + fileName}); //version is hardcoded. Shoud be shared
             log.debug('-REST result: aggregation report download CSV. Company id: %s',
                 filterObj.companyId.toHexString());
         });
