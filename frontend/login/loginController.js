@@ -46,6 +46,10 @@ angular.module('mifortTimesheet.login', ['ngRoute'])
             $rootScope.isNotLoggedIn = true;
         });
 
+        $scope.googleLogin = function(){
+            window.location ='/googlelogin';
+        };
+
         $scope.login = function () {
             $location.path('/timesheet');
             $rootScope.isLoggedIn = true;

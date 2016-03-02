@@ -57,7 +57,7 @@ angular.module('mifortTimesheet', [
             };
         });
 
-        //$locationProvider.html5Mode(true);
+        $locationProvider.html5Mode(true);
     }])
 
     .config(function(NotificationProvider) {
