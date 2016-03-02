@@ -15,7 +15,7 @@
 -->
 
 <div class="ui-grid-cell-contents">
-    <span ng-show="!isNotFitsTheCell" class="ui-grid-cell-contents aggreagated-comment">{{row.entity.comment || row.entity.comments.join(", ")}}</span>
+    <span ng-show="!isNotFitsTheCell" class="ui-grid-cell-contents aggreagated-comment">{{row.entity.comment || grid.appScope.getAggregatedComments(row.entity.comments)}}</span>
 
     <a href=""
        ng-show="isNotFitsTheCell"
