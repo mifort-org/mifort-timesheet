@@ -364,7 +364,7 @@ function isString(obj) {
 function isGroupBy(values) {
     if(Array.isArray(values)) {
         return values.every(function(val) {
-            return exports.isString(val);
+            return isString(val);
         });
     }
 

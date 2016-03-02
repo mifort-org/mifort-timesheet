@@ -201,7 +201,9 @@ exports.restAggregationReportCSV = function(req, res, next) {
                         doc.date = utils.formatDate(doc.date);
                     }
                     if(doc.comments && Array.isArray(doc.comments)) {
-                        doc.comments = doc.comments.join();
+                        doc.comments = doc.comments.filter(function (comment) {
+                            return !!comment;
+                        }).join();
                     }
                     return doc;
                 }
