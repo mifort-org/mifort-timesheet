@@ -24,11 +24,8 @@ var MongoStore = require('connect-mongo')(session);
 var expressValidator = require('express-validator');
 var compression = require('compression');
 
-var project = require('./backend/project');
 var router = require('./backend/router');
-
 var authentication = require('./backend/libs/authentication');
-var authorization = require('./backend/libs/authorization');
 var util = require('./backend/libs/utils');
 var validators = require('./backend/libs/validators');
 var log = require('./backend/libs/logger');
@@ -51,17 +48,7 @@ app.use(express.static('frontend'));
 app.use(bodyParser.json({reviver:util.jsonParse}));
 log.info('Static resources are initialized!');
 
-app.use(expressValidator({
-    customValidators: {
-        isTimelog: validators.timelogs,
-        isArray: validators.isArray,
-        isAssignments: validators.isAssignments,
-        isEmails: validators.isEmails,
-        isFilters: validators.isFilters,
-        isString: validators.isString,
-        isGroupBy: validators.isGroupBy
-    }
-}));
+app.use(expressValidator(validators.config));
 
 app.use(session(
     { secret: 'homogen cat' ,
@@ -81,18 +68,6 @@ app.use('/', function(req, res, next){
 });
 
 //routing
-app.use('/project', router.projectRouter);
-//remove after rename
-app.get('/projects',
-        validators.validateGetProjectByCompanyId,
-        authorization.authorizeGetProjectsByCompanyId,
-        project.restGetByCompanyId);
-app.use('/timelog', router.timesheetRouter);
-app.use('/user', router.userRouter);
-app.use('/company', router.companyRouter);
-app.use('/report', router.reportRouter);
-app.use('/admin', router.adminRouter);
-
 app.use('/api/v1', router.versionRouter);
 
 //Angular html5Mode support. Shoud be the HTTP call
