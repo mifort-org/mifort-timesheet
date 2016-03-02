@@ -17,10 +17,10 @@
 'use strict';
 
 angular.module('mifortTimesheet.login').factory('loginService',
-    ['$http', function ($http) {
+    ['$http', function($http) {
         return {
-            getUser: function () {
-                return $http.get('user');
+            getUser: function() {
+                return $http.get('api/v1/user');
             }
         };
     }

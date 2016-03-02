@@ -17,21 +17,21 @@
 'use strict';
 
 angular.module('mifortTimesheet.calendar').factory('calendarService',
-    ['$http', function ($http) {
+    ['$http', function($http) {
         return {
-            getCompany: function (companyId) {
-                return $http.get('company/' + companyId);
+            getCompany: function(companyId) {
+                return $http.get('api/v1/company/' + companyId);
             },
-            saveCompany: function (parameters) {
-                return $http.post('company', parameters);
+            saveCompany: function(parameters) {
+                return $http.post('api/v1/company', parameters);
             },
-            getPeriodSettings: function () {
+            getPeriodSettings: function() {
                 return [
                     {periodName: 'Week'},
                     {periodName: 'Month'}
                 ]
             },
-            getWeekDays: function () {
+            getWeekDays: function() {
                 return ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
             }
         };

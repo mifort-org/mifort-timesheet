@@ -17,18 +17,18 @@
 'use strict';
 
 angular.module('mifortTimesheet.timesheet').factory('timesheetService',
-    ['$http', function ($http) {
+    ['$http', function($http) {
         return {
-            getProject: function (projectId) {
-                return $http.get('project/' + projectId);
+            getProject: function(projectId) {
+                return $http.get('api/v1/project/' + projectId);
             },
-            getTimesheet: function (userId, projectId, startDate, endDate) {
-                return $http.get('timelog/' + userId + '?projectId=' + projectId + '&startDate=' + startDate+ '&endDate=' + endDate);
+            getTimesheet: function(userId, projectId, startDate, endDate) {
+                return $http.get('api/v1/timesheet/' + userId + '?projectId=' + projectId + '&startDate=' + startDate + '&endDate=' + endDate);
             },
-            removeTimesheet: function (log) {
-                return $http.delete('timelog/' + log._id);
+            removeTimesheet: function(log) {
+                return $http.delete('api/v1/timesheet/' + log._id);
             },
-            getTimesheetKeys: function () {
+            getTimesheetKeys: function() {
                 return {
                     'date': 'Date',
                     'role': 'Role',
@@ -36,8 +36,8 @@ angular.module('mifortTimesheet.timesheet').factory('timesheetService',
                     'comment': 'Comment'
                 }
             },
-            updateTimesheet: function (userId, timetog) {
-                return $http.post('timelog', {'timelog': timetog});
+            updateTimesheet: function(userId, timetog) {
+                return $http.post('api/v1/timesheet', {'timelog': timetog});
             }
         }
     }

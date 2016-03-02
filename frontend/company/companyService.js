@@ -17,25 +17,25 @@
 'use strict';
 
 angular.module('mifortTimesheet.company').factory('companyService',
-    ['$http', function ($http) {
+    ['$http', function($http) {
         return {
-            createCompany: function (company) {
-                return $http.put('company', company);
+            createCompany: function(company) {
+                return $http.put('api/v1/company', company);
             },
             getCompany: function(companyId) {
-                return $http.get('company/' + companyId);
+                return $http.get('api/v1/company/' + companyId);
             },
             getCompanyEmployees: function(companyId) {
-                return $http.get('user/company/' + companyId);
+                return $http.get('api/v1/user/company/' + companyId);
             },
             changeRole: function(employee) {
-                return $http.post('user/update-role/', employee);
+                return $http.post('api/v1/user/update-role/', employee);
             },
             removeEmployee: function(employeeId) {
-                return $http.delete('user/' + employeeId);
+                return $http.delete('api/v1/user/' + employeeId);
             },
             saveCompany: function(company) {
-                return $http.post('company', company);
+                return $http.post('api/v1/company', company);
             }
         }
     }

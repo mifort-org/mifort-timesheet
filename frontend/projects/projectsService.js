@@ -20,22 +20,22 @@ angular.module('mifortTimesheet.projects').factory('projectsService',
     ['$http', function($http) {
         return {
             saveAssignment: function(projectId, user) {
-                return $http.post('user/assignment/' + projectId, user);
+                return $http.post('api/v1/user/assignment/' + projectId, user);
             },
             saveOrCreateProject: function(project) {
-                return $http.post('project/', project);
+                return $http.post('api/v1/project/', project);
             },
             getProjects: function(companyId) {
-                return $http.get('projects?companyId=' + companyId);
+                return $http.get('api/v1/project/list?companyId=' + companyId);
             },
             getAssignedEmployers: function(projectId) {
-                return $http.get('/user/project/' + projectId);
+                return $http.get('api/v1/user/project/' + projectId);
             },
             getCompanyEmployers: function(companyId) {
-                return $http.get('/user/company/' + companyId);
+                return $http.get('api/v1/user/company/' + companyId);
             },
             removeProject: function(projectId) {
-                return $http.get('/project/deactivate/' + projectId);
+                return $http.get('api/v1/project/deactivate/' + projectId);
             }
         }
     }
