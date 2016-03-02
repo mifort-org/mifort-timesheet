@@ -70,7 +70,7 @@ app.use('/', function(req, res, next){
 //routing
 app.use('/api/v1', router.versionRouter);
 
-//Angular html5Mode support. Shoud be the HTTP call
+//Angular html5Mode support. Shoud be the last HTTP call
 app.get('/*', function(req, res, next) {
     res.sendFile('frontend/index.html', { root: __dirname });
 });
