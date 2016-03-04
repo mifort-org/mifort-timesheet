@@ -144,6 +144,8 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
             ];
 
             $scope.changeActiveReport = function(activeIndex) {
+                $scope.reportSettings.page = 1;
+
                 $scope.reports.map(function(report) {
                     report.active = false;
 
