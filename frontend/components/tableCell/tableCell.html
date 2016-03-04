@@ -31,7 +31,7 @@
    popover-trigger="outsideClick"
    data-toggle="popover">
     <!--{{$parent.$parent.$index}}<br/>-->
-    <span ng-class="{'calendar-today': isToday(day)}">{{::day.date.slice(3, 5)}}</span>
+    <span ng-class="::{'calendar-today': isToday(day)}">{{::day.date.slice(3, 5)}}</span>
 </a>
 <!--{{day.dayId}}-->
 <div class="end-splitter"></div>

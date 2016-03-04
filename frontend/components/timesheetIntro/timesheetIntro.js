@@ -33,7 +33,10 @@ angular.module('mifortTimesheet')
                         skipLabel: '&times;',
                         doneLabel: '&times;'
                     };
-                    notifyingService.subscribe('startIntro', scope.startIntro, scope);
+                    notifyingService.subscribe('startIntro', function() {
+                        $('.main-container').animate({ scrollTop: 0 }, 400);
+                        scope.startIntro();
+                    }, scope);
                 });
 
                 scope.introExit = function () {
