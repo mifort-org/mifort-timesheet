@@ -179,7 +179,7 @@ function createProject(project, res, next){
         project.createdOn = currentDate;
         project.updatedOn = currentDate;
         project.active = true;
-        project.availablePositions = company.DEFAULT_AVAILABLE_POSITIONS;
+        project.availablePositions = company.availablePositions;
 
         projects.insertOne(project, {safe: true},
             function(err, result) {
