@@ -49,9 +49,12 @@ angular.module('mifortTimesheet.calendar', ['ngRoute'])
             };
 
             $scope.init = function() {
+                var currentMonth = moment(new Date()).get('month');
+
                 generateCalendar();
                 initWatchers();
-                $location.hash('month-2');
+
+                $location.hash('month-' + currentMonth);
                 $anchorScroll();
             };
 
