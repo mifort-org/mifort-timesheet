@@ -57,7 +57,10 @@ angular.module('mifortTimesheet', [
             };
         });
 
-        $locationProvider.html5Mode(true);
+        $locationProvider.html5Mode({
+            enabled: true,
+            requireBase: false
+        });
     }])
 
     .config(function(NotificationProvider) {

@@ -75,7 +75,7 @@
 </div>
 
 <div class="calendar-container" ng-repeat="year in splittedCalendar track by $index">
-    <div class="calendar-wrapper" ng-if="month" ng-repeat="month in year track by $index">
+    <div class="calendar-wrapper" id="month-{{$index}}" ng-if="month" ng-repeat="month in year track by $index">
         <div class="calendar-header">{{::getMonthName(month)}}</div>
         <div class="periods-wrapper">
             <table class="periods table table-bordered" id="{{::$first ? 'step1' : ''}}">

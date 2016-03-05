@@ -25,8 +25,8 @@ angular.module('mifortTimesheet.calendar', ['ngRoute'])
         });
     }])
 
-    .controller('calendarController', ['$scope', '$filter', 'calendarService', 'moment', 'preferences', 'Notification',
-        function($scope, $filter, calendarService, moment, preferences, Notification) {
+    .controller('calendarController', ['$scope', '$filter', 'calendarService', 'moment', 'preferences', 'Notification', '$anchorScroll', '$location',
+        function($scope, $filter, calendarService, moment, preferences, Notification, $anchorScroll, $location) {
             $scope.daySettingsPopover = {
                 templateUrl: 'daySettimgs.html'
             };
@@ -51,6 +51,8 @@ angular.module('mifortTimesheet.calendar', ['ngRoute'])
             $scope.init = function() {
                 generateCalendar();
                 initWatchers();
+                $location.hash('month-2');
+                $anchorScroll();
             };
 
             function generateCalendar() {

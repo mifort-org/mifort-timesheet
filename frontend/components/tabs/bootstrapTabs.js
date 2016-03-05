@@ -55,12 +55,6 @@ angular.module('mifortTimesheet')
                         active: false,
                         available: true
                     }
-                    //{
-                    //    title: 'Company create',
-                    //    url: 'company-create',
-                    //    active: false,
-                    //    available: false
-                    //}
                 ];
 
                 changeActiveTab(currentLocation);
@@ -72,6 +66,7 @@ angular.module('mifortTimesheet')
                 });
 
                 scope.changeTab = function (tab) {
+                    $location.url($location.path());
                     $location.path('/' + tab.url);
                 };
 
