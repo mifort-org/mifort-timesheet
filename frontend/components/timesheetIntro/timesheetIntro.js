@@ -28,10 +28,10 @@ angular.module('mifortTimesheet')
                         showBullets: true,
                         exitOnOverlayClick: true,
                         exitOnEsc: true,
-                        nextLabel: '',
-                        prevLabel: '',
-                        skipLabel: '&times;',
-                        doneLabel: '&times;'
+                        nextLabel: 'Next',
+                        prevLabel: 'Prev',
+                        skipLabel: 'Skip',
+                        doneLabel: 'Skip'
                     };
                     notifyingService.subscribe('startIntro', function() {
                         $('.main-container').animate({ scrollTop: 0 }, 400);
