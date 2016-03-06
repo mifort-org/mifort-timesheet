@@ -17,6 +17,10 @@
   float: left;
   clear: left; }
 
+@media screen and (min-width: 1830px) {
+  .calendar-wrapper {
+    float: none;
+    display: inline-block; } }
 .calendar-wrapper {
   float: left;
   clear: left;
@@ -26,6 +30,10 @@
   padding: 36px 27px;
   background: #fff; }
 
+@media screen and (min-width: 1830px) and (max-width: 2050px) {
+  .calendar-wrapper {
+    float: none;
+    display: inline-block; } }
 .calendar-controls-wrapper {
   position: fixed;
   right: 70px;
