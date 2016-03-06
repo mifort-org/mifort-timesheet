@@ -75,11 +75,19 @@ angular.module('mifortTimesheet.calendar', ['ngRoute'])
 
                 $scope.company.periods.forEach(function(period) {
                     if(period.start){
-                        _.findWhere($scope.calendar, {date: moment(new Date(period.start)).format('MM/DD/YYYY')}).isPeriodStartDate = true;
+                        var periodStartDay = _.findWhere($scope.calendar, {date: moment(new Date(period.start)).format('MM/DD/YYYY')});
+
+                        if(periodStartDay){
+                            periodStartDay.isPeriodStartDate = true;
+                        }
                     }
 
                     if(period.end){
-                        _.findWhere($scope.calendar, {date: moment(new Date(period.end)).format('MM/DD/YYYY')}).isPeriodEndDate = true;
+                        var periodEndDay = _.findWhere($scope.calendar, {date: moment(new Date(period.end)).format('MM/DD/YYYY')});
+
+                        if(periodEndDay){
+                            periodEndDay.isPeriodEndDate = true;
+                        }
                     }
                 });
 
