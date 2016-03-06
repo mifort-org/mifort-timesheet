@@ -227,11 +227,11 @@ angular.module('mifortTimesheet.calendar', ['ngRoute'])
                         else if(changedDay){
                             $scope.company.defaultValues.push({date: changedDay.date, dayId: changedDay.dayId});
                         }
-                    }
 
-                    calendarService.saveCompany($scope.company).success(function() {
-                        Notification.success('Changes saved');
-                    });
+                        calendarService.saveCompany($scope.company).success(function() {
+                            Notification.success('Changes saved');
+                        });
+                    }
                 }, true);
             }
 
