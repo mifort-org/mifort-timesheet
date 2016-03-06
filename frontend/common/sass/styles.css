@@ -174,11 +174,11 @@ input[type=number]::-webkit-outer-spin-button {
 .main-controls .profile {
   background-position: -2px -526px; }
 
-.primary-button {
-  display: block;
-  width: 140px;
+.primary-button,
+.secondary-button {
+  display: inline-block;
+  width: 105px;
   height: 36px;
-  margin: 0 auto;
   color: #fff;
   font-size: 1.8rem;
   font-weight: 300;
@@ -188,20 +188,30 @@ input[type=number]::-webkit-outer-spin-button {
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
   border-radius: 2px;
+  vertical-align: top;
   outline: 0; }
-  .primary-button:active {
+  .primary-button:active,
+  .secondary-button:active {
     height: 32px;
     margin-top: 4px;
     border-bottom-width: 1px; }
-  .primary-button.large-button {
+  .primary-button.large-button,
+  .secondary-button.large-button {
     width: 226px;
     height: 46px;
     font-size: 24px;
     font-weight: 400; }
-    .primary-button.large-button:active {
+    .primary-button.large-button:active,
+    .secondary-button.large-button:active {
       height: 42px;
       margin-top: 4px;
       border-bottom-width: 1px; }
+
+.secondary-button {
+  color: #000;
+  background: #fff;
+  border: 1px #e8e8e8 solid;
+  border-bottom: 5px #e8e8e8 solid; }
 
 .collapse-wrapper {
   background: #fff;

@@ -265,7 +265,7 @@ angular.module('mifortTimesheet.calendar', ['ngRoute'])
                 }
             ];
 
-            $scope.splitCalendar = function(period, splitStartDate) {
+            $scope.splitCalendar = function(shouldBeSplitted, period, splitStartDate) {
                 if(period.periodName == 'month' && splitStartDate.getDate() > 28){
                     alert('Please choose the correct date for split');
                     return;
@@ -282,10 +282,10 @@ angular.module('mifortTimesheet.calendar', ['ngRoute'])
 
                                 if(day.date && moment(new Date(day.date)) >= moment(new Date(splitStartDate))){
                                     if(currentDateWeekDay == startWeekDay){
-                                        day.isPeriodStartDate = true;
+                                        day.isPeriodStartDate = shouldBeSplitted;
                                     }
                                     else if(currentDateWeekDay == endWeekDay){
-                                        day.isPeriodEndDate = true;
+                                        day.isPeriodEndDate = shouldBeSplitted;
                                     }
                                 }
                             }
@@ -304,10 +304,10 @@ angular.module('mifortTimesheet.calendar', ['ngRoute'])
                                 endDateDay = startDateDay - 1 || new Date(moment(new Date(day.date)).endOf('month').format('MMMM YYYY')).getDate();
 
                                 if(currentDateDay == startDateDay){
-                                    day.isPeriodStartDate = true;
+                                    day.isPeriodStartDate = shouldBeSplitted;
                                 }
                                 else if(currentDateDay == endDateDay){
-                                    day.isPeriodEndDate = true;
+                                    day.isPeriodEndDate = shouldBeSplitted;
                                 }
                             }
                         });

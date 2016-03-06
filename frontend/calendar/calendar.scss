@@ -20,7 +20,7 @@
 }
 
 @media screen and (min-width: 1830px) {
-    .calendar-wrapper {
+    .calendar-wrapper{
         float: none;
         display: inline-block;
     }
@@ -37,12 +37,11 @@
 }
 
 @media screen and (min-width: 1830px) and (max-width: 2050px) {
-    .calendar-wrapper {
+    .calendar-wrapper{
         float: none;
         display: inline-block;
     }
 }
-
 
 .calendar-controls-wrapper{
     position: fixed;
@@ -53,7 +52,7 @@
 }
 
 @media screen and (max-width: 1280px) {
-    .calendar-controls-wrapper {
+    .calendar-controls-wrapper{
         position: static;
         float: left;
     }
@@ -89,6 +88,15 @@
     .calendar-control button{
         border-radius: 0;
         border-left: 0;
+    }
+
+    .split-buttons-wrapper{
+        text-align: center;
+
+        button{
+            margin-left: 10px;
+            margin-right: 10px;
+        }
     }
 }
 

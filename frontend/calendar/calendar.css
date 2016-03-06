@@ -68,6 +68,11 @@
   .calendar-controls .calendar-control button {
     border-radius: 0;
     border-left: 0; }
+  .calendar-controls .split-buttons-wrapper {
+    text-align: center; }
+    .calendar-controls .split-buttons-wrapper button {
+      margin-left: 10px;
+      margin-right: 10px; }
 
 .calendar-hours {
   float: left;

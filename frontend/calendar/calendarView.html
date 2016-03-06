@@ -60,9 +60,15 @@
             </div>
         </div>
 
-        <button type="button" class="primary-button" ng-click="splitCalendar(selectedPeriod, startDate)">
-            Split
-        </button>
+        <div class="clearfix split-buttons-wrapper">
+            <button type="button" class="secondary-button" ng-click="splitCalendar(false, selectedPeriod, startDate)">
+                Undo
+            </button>
+
+            <button type="button" class="primary-button" ng-click="splitCalendar(true, selectedPeriod, startDate)">
+                Split
+            </button>
+        </div>
     </div>
 
     <div id="step3" class="calendar-controls">

@@ -221,11 +221,11 @@ input[type=number]::-webkit-outer-spin-button{
     }
 }
 
-.primary-button{
-    display: block;
-    width: 140px;
+.primary-button,
+.secondary-button{
+    display: inline-block;
+    width: 105px;
     height: 36px;
-    margin: 0 auto;
     color: #fff;
     font-size: 1.8rem;
     font-weight: 300;
@@ -235,6 +235,7 @@ input[type=number]::-webkit-outer-spin-button{
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
     border-radius: 2px;
+    vertical-align: top;
     outline: 0;
 
     &:active{
@@ -255,6 +256,13 @@ input[type=number]::-webkit-outer-spin-button{
             border-bottom-width: 1px;
         }
     }
+}
+
+.secondary-button{
+    color: #000;
+    background: #fff;
+    border: 1px #e8e8e8 solid;
+    border-bottom: 5px #e8e8e8 solid;
 }
 
 .collapse-wrapper{
