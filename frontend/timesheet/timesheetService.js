@@ -36,7 +36,7 @@ angular.module('mifortTimesheet.timesheet').factory('timesheetService',
                     'comment': 'Comment'
                 }
             },
-            updateTimesheet: function(userId, timetog) {
+            updateTimesheet: function(userId, timesheet) {
                 return $http.post('api/v1/timesheet', {'timesheet': timesheet});
             }
         }
