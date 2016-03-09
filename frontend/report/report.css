@@ -217,8 +217,10 @@
     text-align: center; }
 
 @media screen and (max-width: 1270px) {
-  .report-controls {
-    float: left; } }
+  .report-controls,
+  .aggregation-controls-wrapper {
+    float: left;
+    clear: both; } }
 .pagination {
   float: right;
   text-align: right;

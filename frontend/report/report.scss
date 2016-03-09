@@ -311,8 +311,10 @@
 }
 
 @media screen and (max-width: 1270px) {
-    .report-controls{
+    .report-controls,
+    .aggregation-controls-wrapper{
         float: left;
+        clear: both;
     }
 }
 
