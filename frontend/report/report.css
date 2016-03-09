@@ -23,7 +23,7 @@
     .report-wrapper .popover.bottom > .arrow {
       border-bottom-color: #555; }
   .report-wrapper .form-group {
-    margin-bottom: 25px; }
+    margin-bottom: 0; }
 
 .report-filter {
   position: relative;
@@ -181,6 +181,7 @@
 
 .report-controls {
   float: right;
+  margin-bottom: 22px;
   font-size: 1.4rem; }
   .report-controls .pagination ul {
     float: right; }
@@ -215,6 +216,9 @@
     padding: 4px 2px;
     text-align: center; }
 
+@media screen and (max-width: 1270px) {
+  .report-controls {
+    float: left; } }
 .pagination {
   float: right;
   text-align: right;
@@ -222,7 +226,7 @@
 
 .per-page-wrapper {
   display: inline-block;
-  padding: 0 25px; }
+  padding: 0 25px 0 0; }
   .per-page-wrapper .per-page-label {
     display: inline-block; }
   .per-page-wrapper .per-page {
@@ -259,7 +263,8 @@
         border-bottom: 3px #19b5fe solid; }
 
 .aggregation-controls-wrapper {
-  display: inline-block; }
+  display: inline-block;
+  margin: 0 25px 22px 0; }
 
 .aggreagated-comment {
   padding: 0;
