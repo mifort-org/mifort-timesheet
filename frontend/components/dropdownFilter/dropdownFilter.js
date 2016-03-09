@@ -29,9 +29,14 @@ angular.module('mifortTimesheet')
                     projectFilter: _.find(scope.grid.options.reportFilters, function(filter) {
                         if(filter.field == attrs.colName){
                             filter.value = filter.value.map(function(filterValue) {
-                                return {
-                                    name: filterValue,
-                                    isChecked: false
+                                if(filterValue.name){
+                                    return filterValue;
+                                }
+                                else{
+                                    return {
+                                        name: filterValue,
+                                        isChecked: false
+                                    }
                                 }
                             });
 

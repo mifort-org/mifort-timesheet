@@ -30,7 +30,7 @@ angular.module('mifortTimesheet')
                     scope.isNotFitsTheCell = comment.outerWidth() > parent.outerWidth();
                 };
 
-                scope.$on('reRrenderComments', function() {
+                scope.$on('activeReportChanged', function() {
                     $timeout(function() {
                         scope.measureCell();
                     });

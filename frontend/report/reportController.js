@@ -271,7 +271,7 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                     }
                 }).finally(function() {
                     //call the directive 'cuttedComment' to reRender comments
-                    $scope.$broadcast('reRrenderComments');
+                    $scope.$broadcast('activeReportChanged');
                 });
             };
 
