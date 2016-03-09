@@ -103,9 +103,9 @@ exports.authorizeDeactivateProject = function(req, res, next) {
     });
 };
 
-//Timelog
-exports.authorizeSaveTimelog = function(req, res, next) {
-    var timelogs = req.body.timelog;
+//Timesheet
+exports.authorizeSaveTimesheet = function(req, res, next) {
+    var timelogs = req.body.timesheet;
     var user = req.user;
     if(timelogs) {
         var isYourTimelog = timelogs.every(function(log) {
@@ -131,7 +131,7 @@ exports.authorizeSaveTimelog = function(req, res, next) {
     }
 };
 
-exports.authorizeGetTimelog = function(req, res, next) {
+exports.authorizeGetTimesheet = function(req, res, next) {
     var user = req.user;
     var userId = utils.getUserId(req);
 
@@ -149,7 +149,7 @@ exports.authorizeGetTimelog = function(req, res, next) {
         });
 };
 
-exports.authorizeDeleteTimelog = function(req, res, next) {
+exports.authorizeDeleteTimesheet = function(req, res, next) {
     var user = req.user;
     var timelogId = utils.getTimelogId(req);
 

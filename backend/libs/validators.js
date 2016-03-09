@@ -166,8 +166,8 @@ exports.validateGetCompanyById = function(req, res, next) {
     returnErrors(req, res, next);
 };
 
-//Timelog Rest API validation
-exports.validateGetTimelogByDates = function(req, res, next) {
+//Timesheet Rest API validation
+exports.validateGetTimesheetByDates = function(req, res, next) {
     req.checkParams(reqParams.userIdParam,
         util.format(invalidFormatMessageTemplate, reqParams.userIdParam))
             .notEmpty().isMongoId();
@@ -187,21 +187,21 @@ exports.validateGetTimelogByDates = function(req, res, next) {
     returnErrors(req, res, next);
 };
 
-exports.validateDeleteTimelog = function(req, res, next) {
+exports.validateDeleteTimesheet = function(req, res, next) {
     req.checkParams(reqParams.timelogIdParam, util.format(invalidFormatMessageTemplate, reqParams.timelogIdParam))
             .notEmpty().isMongoId();
 
     returnErrors(req, res, next);
 };
 
-exports.validateSaveTimelog = function(req, res, next) {
+exports.validateSaveTimesheet = function(req, res, next) {
     var timelogs = req.body;
     if(!timelogs) {
         res.status(emptyBody.code).json({msg: emptyBody.message});
         return;
     }
-    req.checkBody('timelog', 'Required fields: date, userId, projectId, projectName, userName')
-        .isTimelog();
+    req.checkBody('timesheet', 'Required fields: date, userId, projectId, projectName, userName')
+        .isTimesheet();
 
     returnErrors(req, res, next);
 };
@@ -264,7 +264,7 @@ exports.validateDownloadLogs = function(req, res, next) {
 //Custom validators for express-validator
 exports.config = {
     customValidators: {
-        isTimelog: timelogs,
+        isTimesheet: isTimesheet,
         isArray: isArray,
         isAssignments: isAssignments,
         isEmails: isEmails,
@@ -277,7 +277,7 @@ exports.config = {
 //Private part
 
 // should be refactored
-function timelogs(values) {
+function isTimesheet(values) {
     if(Array.isArray(values)) {
         return values.every(function(val){
             var isValid = true;

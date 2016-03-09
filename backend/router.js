@@ -24,16 +24,16 @@ var validators = require('./libs/validators');
 var timelog = require('./timelog');
 var timesheetRouter = express.Router();
 timesheetRouter.post('/',
-        validators.validateSaveTimelog,
-        authorization.authorizeSaveTimelog,
+        validators.validateSaveTimesheet,
+        authorization.authorizeSaveTimesheet,
         timelog.restSave);
 timesheetRouter.get('/:userId',
-        validators.validateGetTimelogByDates,
-        authorization.authorizeGetTimelog,
+        validators.validateGetTimesheetByDates,
+        authorization.authorizeGetTimesheet,
         timelog.restGetByDates);
 timesheetRouter.delete('/:timelogId',
-        validators.validateDeleteTimelog,
-        authorization.authorizeDeleteTimelog,
+        validators.validateDeleteTimesheet,
+        authorization.authorizeDeleteTimesheet,
         timelog.restDelete);
 
 exports.timesheetRouter = timesheetRouter;
