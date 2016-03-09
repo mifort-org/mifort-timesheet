@@ -116,7 +116,6 @@ module.exports = function(grunt) {
                     'frontend/components/preferences/preferences.js',
                     'frontend/components/preferences/preferencesService.js',
                     'frontend/components/customDay/customDay.js',
-                    'frontend/components/filters/getByProperty.js',
                     'frontend/components/filters/propsFilter.js',
                     'frontend/components/dropdownFilter/dropdownFilter.js',
                     'frontend/components/reportDatePicker/reportDatePicker.js',
