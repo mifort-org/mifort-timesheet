@@ -318,7 +318,6 @@
     }
 }
 
-
 .pagination{
     float: right;
     text-align: right;
@@ -404,6 +403,9 @@
     }
 }
 
-.aggregated-comments:hover{
-    //position: absolute;
+//IE measurement
+.ui-grid-cell-contents .aggregated-comment-measure{
+    position: absolute;
+    display: block !important;
+    visibility: hidden;
 }

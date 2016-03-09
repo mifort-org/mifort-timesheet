@@ -27,7 +27,13 @@ angular.module('mifortTimesheet')
                 scope.isNotFitsTheCell = false;
 
                 scope.measureCell = function() {
-                    scope.isNotFitsTheCell = comment.outerWidth() > parent.outerWidth();
+                    //IE-related measurement
+                    comment.addClass('aggregated-comment-measure');
+
+                    $timeout(function() {
+                        scope.isNotFitsTheCell = comment.outerWidth() > parent.outerWidth() - 20; //padding
+                        comment.removeClass('aggregated-comment-measure');
+                    });
                 };
 
                 scope.$on('activeReportChanged', function() {

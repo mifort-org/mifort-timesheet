@@ -281,4 +281,9 @@
     .aggregated-comments:hover .aggreagated-comment {
       border-bottom: 1px dashed #000; }
 
+.ui-grid-cell-contents .aggregated-comment-measure {
+  position: absolute;
+  display: block !important;
+  visibility: hidden; }
+
 /*# sourceMappingURL=report.css.map */
