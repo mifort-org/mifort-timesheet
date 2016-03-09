@@ -26,7 +26,7 @@ exports.restSave = function(req, res, next) {
     var batch = timelogCollection.initializeUnorderedBulkOp({useLegacyOps: true});
 
     var ids = [];
-    var timelogs = req.body.timelog;
+    var timelogs = req.body.timesheet;
 
     log.debug('-REST call: Save timelog. Number of timelog items: %d', timelogs.length);
 
@@ -105,5 +105,5 @@ function returnTimelogArray(err, res, timelogs, next) {
         next(err);
         return;
     }
-    res.json({timelog: timelogs});
+    res.json({timesheet: timelogs});
 }
