@@ -19,6 +19,7 @@
 var passport = require('passport');
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var ObjectID = require('mongodb').ObjectID;
+var path = require('path');
 var log = require('./logger');
 
 var users = require('../user');
@@ -96,7 +97,9 @@ exports.init = function(app) {
     app.use(passport.initialize());
     app.use(passport.session());
 
-
+    app.get('/login', function(req, res, next) {
+        res.sendFile('index.html', { root: path.join(__dirname, '../../frontend')});
+    });
 
     app.get('/googlelogin', function (req, res, next) {
         passport.authenticate('google',
