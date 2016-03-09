@@ -25,6 +25,7 @@
     .timesheet .table td:first-child,
     .timesheet .table th:first-child {
       width: 170px;
+      min-width: 170px;
       padding: 4px 10px; }
     .timesheet .table th:first-child {
       padding-left: 50px;
@@ -162,7 +163,7 @@
 
 .is-today td:first-child:before {
   position: absolute;
-  left: 1px;
+  left: 0;
   top: -1px;
   bottom: -1px;
   content: ' ';

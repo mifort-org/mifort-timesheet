@@ -37,7 +37,7 @@ angular.module('mifortTimesheet.timesheet').factory('timesheetService',
                 }
             },
             updateTimesheet: function(userId, timetog) {
-                return $http.post('api/v1/timesheet', {'timelog': timetog});
+                return $http.post('api/v1/timesheet', {'timesheet': timesheet});
             }
         }
     }
