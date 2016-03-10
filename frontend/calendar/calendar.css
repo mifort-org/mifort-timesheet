@@ -35,7 +35,6 @@
     float: none;
     display: inline-block; } }
 .calendar-controls-wrapper {
-  position: fixed;
   right: 70px;
   z-index: 1;
   float: right;
@@ -43,7 +42,6 @@
 
 @media screen and (max-width: 1280px) {
   .calendar-controls-wrapper {
-    position: static;
     float: left; } }
 .calendar-controls {
   float: right;
