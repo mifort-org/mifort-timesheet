@@ -54,7 +54,7 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                     },
                     role: {
                         field: 'role',
-                        width: 90,
+                        width: 140,
                         enableColumnResizing: true,
                         enableColumnMenu: false,
                         cellTemplate: '<div class="ui-grid-cell-contents">{{row.entity.role}}</div>',

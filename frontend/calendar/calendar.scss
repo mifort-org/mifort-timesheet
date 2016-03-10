@@ -125,12 +125,7 @@
             width: 100px;
             font-weight: 500;
             text-align: left;
-            color: #7f7f7f;
             cursor: pointer;
-
-            &:hover{
-                color: #000;
-            }
         }
 
         dt{
@@ -334,10 +329,10 @@
         border-color: #fff;
 
         &:first-child{
-            border-left-color: #eaeff7;
+            border-left-color: #e0e4ec;
         }
         &:last-child{
-            border-right-color: #eaeff7;
+            border-right-color: #e0e4ec;
         }
     }
 
@@ -360,11 +355,11 @@
     }
 
     tr{
-        border-bottom: 1px #eaeff7 solid;
+        border-bottom: 1px #e0e4ec solid;
         background: #fff;
 
         &:first-child td:hover{
-            border-top: 1px #eaeff7 solid;
+            border-top: 1px #e0e4ec solid;
         }
     }
 
@@ -374,7 +369,7 @@
             box-shadow: 0 0 0 1px #3eb5f1 inset;
         }
         &:first-child:hover{
-            border-left: 1px #eaeff7 solid;
+            border-left: 1px #e0e4ec solid;
 
         }
     }

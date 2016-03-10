@@ -261,8 +261,8 @@ input[type=number]::-webkit-outer-spin-button{
 .secondary-button{
     color: #000;
     background: #fff;
-    border: 1px #e8e8e8 solid;
-    border-bottom: 5px #e8e8e8 solid;
+    border: 1px #d1d5dc solid;
+    border-bottom: 5px #d1d5dc solid;
 }
 
 .collapse-wrapper{
@@ -286,12 +286,12 @@ input[type=number]::-webkit-outer-spin-button{
 }
 
 .table-bordered{
-    border-color: #eaeff7;
+    border-color: #e0e4ec;
 }
 
 .table-bordered > tbody > tr > td,
 .table-bordered > thead > tr > th{
-    border-color: #eaeff7;
+    border-color: #e0e4ec;
     border-bottom-width: 1px;
     vertical-align: middle;
 }

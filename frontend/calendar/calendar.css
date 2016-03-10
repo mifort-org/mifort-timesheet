@@ -96,11 +96,7 @@
       width: 100px;
       font-weight: 500;
       text-align: left;
-      color: #7f7f7f;
       cursor: pointer; }
-      .custom-days-wrapper dl dt:hover,
-      .custom-days-wrapper dl dd:hover {
-        color: #000; }
     .custom-days-wrapper dl dt {
       margin-top: 21.5px;
       margin-bottom: 4px;
@@ -245,9 +241,9 @@
     background: #eaeff7;
     border-color: #fff; }
     .periods.table > thead:first-child > tr:first-child > th:first-child {
-      border-left-color: #eaeff7; }
+      border-left-color: #e0e4ec; }
     .periods.table > thead:first-child > tr:first-child > th:last-child {
-      border-right-color: #eaeff7; }
+      border-right-color: #e0e4ec; }
   .periods .popover {
     min-width: 200px; }
   .periods > tbody > tr > td {
@@ -261,15 +257,15 @@
     text-align: center;
     margin: 0 auto; }
   .periods tr {
-    border-bottom: 1px #eaeff7 solid;
+    border-bottom: 1px #e0e4ec solid;
     background: #fff; }
     .periods tr:first-child td:hover {
-      border-top: 1px #eaeff7 solid; }
+      border-top: 1px #e0e4ec solid; }
   .periods td:hover {
     border: 0;
     box-shadow: 0 0 0 1px #3eb5f1 inset; }
   .periods td:first-child:hover {
-    border-left: 1px #eaeff7 solid; }
+    border-left: 1px #e0e4ec solid; }
 
 .calendar-day {
   position: relative;
