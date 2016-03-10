@@ -1,0 +1,53 @@
+<!--
+  Copyright 2015 mifort.org
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<svg class="clip-svg">
+    <defs>
+        <clipPath id="polygon-clip-hexagon" clipPathUnits="objectBoundingBox">
+            <polygon points="0.5 0, 0.95 0.27, 0.95 0.7, 0.5 0.95, 0.05 0.7, 0.05 0.27"
+                     style="fill:lime;stroke:purple;stroke-width:1"/>
+
+        </clipPath>
+    </defs>
+</svg>
+
+<div class="employee-card" ng-repeat="employee in employees track by $index">
+    <div class="authentication-type"></div>
+
+    <svg class="employee-image-border">
+        <polygon class="hex" points="65 1, 124.5 37, 124.5 97, 65 131, 5 97, 5 37"
+                 style="fill: transparent; stroke: #c5c5c5; stroke-width: 6"></polygon>
+    </svg>
+    <!--#dedede-->
+    <svg class="employee-image-border">
+        <polygon class="hex" points="65 1, 124.5 37, 124.5 97, 65 131, 5 97, 5 37"
+                 style="fill: #fff; stroke: #fff; stroke-width: 3"></polygon>
+    </svg>
+
+    <div class="polygon-each-img-wrap">
+        <img src="https://lh3.googleusercontent.com/-I98m9-HIFYU/VkMSObhwQKI/AAAAAAAACcs/mIB5hjYamXw/w140-h140-p/79242e83d387663e65a338845646b629.png" alt="demo-clip-heptagon" class="polygon-clip-hexagon">
+    </div>
+
+    <h2>{{employee.displayName}}</h2>
+
+    <p ng-if="employee.displayName !== employee.email">{{employee.email}}</p>
+
+    <p>{{employee.role}}</p>
+
+    <p ng-if="::employee.workload">Workload: {{employee.workload}}</p>
+</div>
+
+<!--{{employees}}-->

@@ -36,7 +36,8 @@ angular.module('mifortTimesheet', [
     'mifortTimesheet.projects',
     'mifortTimesheet.timesheet',
     'mifortTimesheet.calendar',
-    'mifortTimesheet.report'
+    'mifortTimesheet.report',
+    'mifortTimesheet.employees'
 ])
     .config(['$routeProvider', '$httpProvider', '$locationProvider', function($routeProvider, $httpProvider, $locationProvider) {
         $routeProvider.otherwise({redirectTo: '/login'});

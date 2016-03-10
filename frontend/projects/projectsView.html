@@ -69,7 +69,7 @@
                         </a>
 
                         <ul uib-dropdown-menu aria-labelledby="simple-dropdown">
-                            <li ng-repeat="availablePosition in availablePositions">
+                            <li ng-repeat="availablePosition in availablePositions track by $index">
                                 <a href ng-click="changeRole(project, assignedEmployee, assignment, availablePosition)">{{availablePosition}}</a>
                             </li>
                         </ul>

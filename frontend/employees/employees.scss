@@ -1,0 +1,90 @@
+/*!
+ * Copyright 2015 mifort.org
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+.employee-card{
+    position: relative;
+    display: inline-block;
+    width: 320px;
+    padding: 30px;
+    margin: 0 15px 30px 15px;
+    font-size: 1.8rem;
+    font-weight: 300;
+    text-align: center;
+    background: #fff;
+    vertical-align: top;
+
+    .authentication-type{
+        position: absolute;
+        top: 30px;
+        right: 30px;
+        width: 25px;
+        height: 25px;
+        background: url("../common/images/icons.png") 2px -1700px;
+    }
+
+    h2{
+        padding-top: 12px;
+        padding-bottom: 12px;
+        font-size: 2.4rem;
+        font-weight: 300;
+    }
+
+    p{
+        padding-bottom: 12px;
+        color: #a3a3a3;
+    }
+}
+
+.clip-svg{
+    width: 0;
+    height: 0;
+}
+
+.employee-image-border,
+.employee-image-subborder{
+    position: absolute;
+    z-index: 2;
+    left: 50%;
+    margin-left: -57px;
+    //margin-top: -1px;
+    padding-top: 2px;
+}
+
+.employee-image-subborder{
+    z-index: 2;
+}
+
+.polygon-each-img-wrap img {
+    width: 132px;
+}
+
+.polygon-each-img-wrap {
+    position: relative;
+    z-index: 3;
+    width: 116px;
+    height: 132px;
+    margin: 3px auto;
+    text-align: center;
+    -webkit-clip-path: polygon(50% 0%, 95% 27%, 95% 70%, 50% 95%, 5% 70%, 5% 27%);
+    clip-path: polygon(50% 0%, 95% 27%, 95% 70%, 50% 95%, 5% 70%, 5% 27%);
+
+    -webkit-clip-path: polygon(50% 0%, 95% 27%, 95% 70%, 50% 95%, 5% 70%, 5% 27%);
+    clip-path: polygon(50% 0%, 95% 27%, 95% 70%, 50% 95%, 5% 70%, 5% 27%);
+    -webkit-clip-path: url("#polygon-clip-hexagon");
+    clip-path: url("#polygon-clip-hexagon");
+}
+
+
