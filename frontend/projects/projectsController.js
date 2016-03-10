@@ -54,6 +54,9 @@ angular.module('mifortTimesheet.projects', ['ngRoute'])
                         });
                     });
                 }
+                else{
+                    $scope.projects = [];
+                }
             });
 
             $scope.IntroSteps = [
