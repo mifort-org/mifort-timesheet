@@ -54,19 +54,20 @@
   position: absolute;
   z-index: 2;
   left: 50%;
-  margin-left: -57px;
+  margin-left: -65px;
   padding-top: 2px; }
 
 .employee-image-subborder {
   z-index: 2; }
 
 .polygon-each-img-wrap img {
-  width: 132px; }
+  width: 132px;
+  height: 132px; }
 
 .polygon-each-img-wrap {
   position: relative;
   z-index: 3;
-  width: 116px;
+  width: 132px;
   height: 132px;
   margin: 3px auto;
   text-align: center;
@@ -81,5 +82,16 @@
   border: 1px #e8e8e8 solid;
   border-left: 0;
   border-right: 0; }
+
+.employee-initials {
+  height: 136px;
+  display: table-cell;
+  width: 132px;
+  padding-bottom: 8px;
+  color: #19b5fe;
+  font-size: 5.4rem;
+  font-weight: 500;
+  vertical-align: middle;
+  background: #f3f3f3; }
 
 /*# sourceMappingURL=employees.css.map */

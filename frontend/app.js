@@ -31,6 +31,8 @@ angular.module('mifortTimesheet', [
     'ngBootstrap',
     'ui-notification',
     'angular-intro',
+    'angular.filter',
+
     'mifortTimesheet.login',
     'mifortTimesheet.company',
     'mifortTimesheet.projects',

@@ -37,9 +37,13 @@
     </svg>
 
     <div class="polygon-each-img-wrap">
-        <img src="https://lh3.googleusercontent.com/-I98m9-HIFYU/VkMSObhwQKI/AAAAAAAACcs/mIB5hjYamXw/w140-h140-p/79242e83d387663e65a338845646b629.png"
-             alt="demo-clip-heptagon"
+        <img ng-if="employee.photo"
+             src="{{employee.photo}}"
+             alt="no photo"
              class="polygon-clip-hexagon">
+
+        <span ng-if="!employee.photo" class="employee-initials">{{getInitials(employee.displayName)}}</span>
+        <!--!employee.photo && employee.displayName !== employee.email-->
     </div>
 
     <h2>{{employee.displayName}}</h2>
@@ -49,10 +53,19 @@
     <p>{{employee.role}}</p>
 
     <p class="employee-assignments">
-        assignment
+        <span ng-repeat="groupedAssignment in employee.assignments | groupBy: 'projectId'">
+            <span class="btn btn-default" ng-click="groupedAssignment.isCollapsed = !groupedAssignment.isCollapsed">{{groupedAssignment[0].projectName}}</span>
+
+            <span uib-collapse="groupedAssignment.isCollapsed">
+                <span ng-repeat="assignment in groupedAssignment">
+                    {{assignment.role}}
+                    <br/>
+                </span>
+            </span>
+
+            <br/>
+        </span>
     </p>
 
     <p class="employee-workload" ng-if="::employee.workload">Workload: <span>{{employee.workload}}h</span></p>
 </div>
-
-{{employees[0]}}

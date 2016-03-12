@@ -157,7 +157,8 @@ module.exports = function(grunt) {
                     'frontend/bower_components/ui-select/dist/select.min.js',
                     'frontend/bower_components/angular-sanitize/angular-sanitize.min.js',
                     'frontend/bower_components/intro.js/minified/intro.min.js',
-                    'frontend/bower_components/angular-intro.js/build/angular-intro.min.js'
+                    'frontend/bower_components/angular-intro.js/build/angular-intro.min.js',
+                    'frontend/bower_components/angular-filter/dist/angular-filter.min.js'
                 ],
                 dest: 'dist/scripts/vendors.js'
             }
