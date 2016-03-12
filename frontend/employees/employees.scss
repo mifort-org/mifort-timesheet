@@ -43,8 +43,17 @@
     }
 
     p{
-        padding-bottom: 12px;
+        margin-bottom: 12px;
         color: #a3a3a3;
+    }
+
+    .employee-workload{
+        text-align: right;
+
+        span{
+            color: #19b5fe;
+            font-size: 2.4rem;
+        }
     }
 }
 
@@ -87,4 +96,8 @@
     clip-path: url("#polygon-clip-hexagon");
 }
 
-
+.employee-assignments{
+    border: 1px #e8e8e8 solid;
+    border-left: 0;
+    border-right: 0;
+}

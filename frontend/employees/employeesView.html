@@ -19,7 +19,6 @@
         <clipPath id="polygon-clip-hexagon" clipPathUnits="objectBoundingBox">
             <polygon points="0.5 0, 0.95 0.27, 0.95 0.7, 0.5 0.95, 0.05 0.7, 0.05 0.27"
                      style="fill:lime;stroke:purple;stroke-width:1"/>
-
         </clipPath>
     </defs>
 </svg>
@@ -31,14 +30,16 @@
         <polygon class="hex" points="65 1, 124.5 37, 124.5 97, 65 131, 5 97, 5 37"
                  style="fill: transparent; stroke: #c5c5c5; stroke-width: 6"></polygon>
     </svg>
-    <!--#dedede-->
+
     <svg class="employee-image-border">
         <polygon class="hex" points="65 1, 124.5 37, 124.5 97, 65 131, 5 97, 5 37"
                  style="fill: #fff; stroke: #fff; stroke-width: 3"></polygon>
     </svg>
 
     <div class="polygon-each-img-wrap">
-        <img src="https://lh3.googleusercontent.com/-I98m9-HIFYU/VkMSObhwQKI/AAAAAAAACcs/mIB5hjYamXw/w140-h140-p/79242e83d387663e65a338845646b629.png" alt="demo-clip-heptagon" class="polygon-clip-hexagon">
+        <img src="https://lh3.googleusercontent.com/-I98m9-HIFYU/VkMSObhwQKI/AAAAAAAACcs/mIB5hjYamXw/w140-h140-p/79242e83d387663e65a338845646b629.png"
+             alt="demo-clip-heptagon"
+             class="polygon-clip-hexagon">
     </div>
 
     <h2>{{employee.displayName}}</h2>
@@ -47,7 +48,11 @@
 
     <p>{{employee.role}}</p>
 
-    <p ng-if="::employee.workload">Workload: {{employee.workload}}</p>
+    <p class="employee-assignments">
+        assignment
+    </p>
+
+    <p class="employee-workload" ng-if="::employee.workload">Workload: <span>{{employee.workload}}h</span></p>
 </div>
 
-<!--{{employees}}-->
+{{employees[0]}}
