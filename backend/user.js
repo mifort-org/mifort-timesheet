@@ -65,7 +65,9 @@ exports.restGetByCompanyId = function(req, res, next) {
                {workload: 1,
                 displayName: 1,
                 role: 1,
-                email: 1})
+                email: 1,
+                assignments: 1,
+                'external.photos':1})
         .toArray(function(err, companyUsers) {
             if(err) {
                 err.code = 404;
