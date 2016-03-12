@@ -63,7 +63,7 @@ app.use(session(
 authentication.init(app);
 
 //add auth.ensureAuthenticated for each Rest API
-app.use('/', function(req, res, next){
+app.use('/api', function(req, res, next){
     authentication.ensureAuthenticated(req, res, next);
 });
 
