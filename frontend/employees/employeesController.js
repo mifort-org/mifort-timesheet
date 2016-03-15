@@ -44,4 +44,14 @@ angular.module('mifortTimesheet.employees', ['ngRoute'])
                 initials = (initials.shift() + initials.pop()).toUpperCase();
                  return initials;
             };
+
+            $scope.calculateWorkload = function(employee) {
+                var totalWorkload = 0;
+
+                employee.assignments.forEach(function(assignment) {
+                    totalWorkload += +assignment.workload;
+                });
+
+                return totalWorkload;
+            }
         }]);

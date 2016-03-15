@@ -73,5 +73,8 @@
         </span>
     </p>
 
-    <p class="employee-workload-container" ng-if="::employee.workload">Workload: <span class="employee-workload">{{employee.workload}}h</span></p>
+    <p class="employee-workload-container" ng-if="::employee.workload">
+        Workload:
+        <span class="employee-workload">{{calculateWorkload(employee)}}/{{employee.workload}}h</span>
+    </p>
 </div>
