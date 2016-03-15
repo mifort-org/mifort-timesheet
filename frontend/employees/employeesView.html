@@ -52,13 +52,19 @@
 
     <p>{{employee.role}}</p>
 
-    <p class="employee-assignments">
-        <span ng-repeat="groupedAssignment in employee.assignments | groupBy: 'projectId'">
-            <span class="btn btn-default" ng-click="groupedAssignment.isCollapsed = !groupedAssignment.isCollapsed">{{groupedAssignment[0].projectName}}</span>
+    <p class="employee-assignments" ng-if="employee.assignments.length">
+        <span ng-repeat="groupedAssignment in employee.assignments | groupBy: 'projectId'" class="employee-assignment">
+            <a href=""
+               class="collapse-item"
+               ng-class="{'collapsed': !employee.assignments[$index].isCollapsed}"
+                  ng-click="employee.assignments[$index].isCollapsed = !employee.assignments[$index].isCollapsed">
+                {{groupedAssignment[0].projectName}}
+            </a>
 
-            <span uib-collapse="groupedAssignment.isCollapsed">
+            <span uib-collapse="!employee.assignments[$index].isCollapsed" class="assignment-roles">
                 <span ng-repeat="assignment in groupedAssignment">
                     {{assignment.role}}
+                    <span ng-if="assignment.workload" class="pull-right employee-workload">{{assignment.workload}}h</span>
                     <br/>
                 </span>
             </span>
@@ -67,5 +73,5 @@
         </span>
     </p>
 
-    <p class="employee-workload" ng-if="::employee.workload">Workload: <span>{{employee.workload}}h</span></p>
+    <p class="employee-workload-container" ng-if="::employee.workload">Workload: <span class="employee-workload">{{employee.workload}}h</span></p>
 </div>

@@ -47,14 +47,15 @@
         color: #a3a3a3;
     }
 
-    .employee-workload{
+    .employee-workload-container{
         text-align: right;
-
-        span{
-            color: #19b5fe;
-            font-size: 2.4rem;
-        }
+        color: #000;
     }
+}
+
+.employee-workload{
+    color: #19b5fe;
+    font-size: 2.4rem;
 }
 
 .clip-svg{
@@ -97,9 +98,39 @@
 }
 
 .employee-assignments{
+    padding: 12px 0;
+    text-align: left;
     border: 1px #e8e8e8 solid;
     border-left: 0;
     border-right: 0;
+
+    .employee-assignment{
+        display: block;
+    }
+
+    a{
+        color: #000;
+        text-decoration: none;
+
+        &.collapse-item{
+            background-position: -25px -308px no-repeat;
+
+            &.collapsed{
+                background-position: -12px -630px;
+            }
+        }
+    }
+
+    .assignment-roles{
+        color: #000;
+        margin: 10px 0 0 20px;
+        padding-left: 10px;
+        border-left: 1px #e8e8e8 solid;
+    }
+
+    .employee-workload{
+        font-size: 2rem;
+    }
 }
 
 .employee-initials{

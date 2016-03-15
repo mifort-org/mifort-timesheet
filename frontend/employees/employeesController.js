@@ -29,14 +29,14 @@ angular.module('mifortTimesheet.employees', ['ngRoute'])
         function($scope, employeesService, preferences) {
             var companyId = preferences.get('user').companyId;
 
-            employeesService.getCompanyEmployers(companyId).success(function(data) {
-                data.forEach(function(employee) {
+            employeesService.getCompanyEmployers(companyId).success(function(employees) {
+                employees.forEach(function(employee) {
                     if(employee.external && employee.external.photos.length){
                         employee.photo = employee.external.photos[0].value.split("?")[0] + '?sz=132';
                     }
                 });
 
-                $scope.employees = data;
+                $scope.employees = employees;
             });
 
             $scope.getInitials = function(name) {
