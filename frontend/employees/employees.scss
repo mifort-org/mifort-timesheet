@@ -100,7 +100,7 @@
     z-index: 2;
 }
 
-.polygon-each-img-wrap img{
+.polygon-each-img-wrap .polygon-clip-hexagon{
     width: 132px;
     height: 132px;
 }
@@ -173,4 +173,8 @@
     display: flex;
     padding-top: 10px;
     justify-content: space-around;
+}
+
+.employee-search-lens{
+    padding-top: 8px;
 }
