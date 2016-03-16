@@ -53,5 +53,22 @@ angular.module('mifortTimesheet.employees', ['ngRoute'])
                 });
 
                 return totalWorkload;
-            }
+            };
+
+            $scope.searchEmployees = function(employeeSearch) {
+                //delete fields from filter so angular will use it's native search correctly(so it won't leave the empty search properties)
+                for(var field in employeeSearch){
+                    if(!employeeSearch[field].length
+                        && (!angular.isObject(employeeSearch[field]) || employeeSearch[field].projectName === '' || employeeSearch[field].role === '')){
+                        delete employeeSearch[field];
+                    }
+                }
+
+                $scope.activeSearch = angular.copy(employeeSearch);
+            };
+
+            $scope.clearSearch = function() {
+                $scope.employeeSearch = {};
+                $scope.activeSearch = {};
+            };
         }]);

@@ -23,7 +23,55 @@
     </defs>
 </svg>
 
-<div class="employee-card" ng-repeat="employee in employees track by $index">
+
+<div class="employee-card employee-search">
+    <svg class="employee-image-border">
+        <polygon class="hex" points="65 1, 124.5 37, 124.5 97, 65 131, 5 97, 5 37"
+                 style="fill: transparent; stroke: #c5c5c5; stroke-width: 6"></polygon>
+    </svg>
+
+    <svg class="employee-image-border">
+        <polygon class="hex" points="65 1, 124.5 37, 124.5 97, 65 131, 5 97, 5 37"
+                 style="fill: #fff; stroke: #fff; stroke-width: 3"></polygon>
+    </svg>
+
+    <div class="polygon-each-img-wrap">
+        <span class="employee-initials">?</span>
+    </div>
+
+    <h2>
+        <input type="text" ng-model="employeeSearch.displayName" placeholder="Name"/>
+    </h2>
+
+    <p>
+        <input type="text" ng-model="employeeSearch.email" placeholder="Email"/>
+    </p>
+
+    <p>
+        <input type="text" ng-model="employeeSearch.role" placeholder="Position"/>
+    </p>
+
+    <p>
+        <input type="text" ng-model="employeeSearch.assignments.projectName" placeholder="Project"/>
+    </p>
+
+    <p>
+        <input type="text" ng-model="employeeSearch.assignments.role" placeholder="Role"/>
+    </p>
+
+    <p class="employee-search-controls">
+        <button type="button" class="secondary-button" ng-click="clearSearch()">
+            Clear Search
+        </button>
+
+        <button type="button" class="primary-button" ng-click="searchEmployees(employeeSearch)">
+            Search
+        </button>
+    </p>
+</div>
+
+
+<div class="employee-card" ng-repeat="employee in employees | filter:activeSearch track by $index">
     <div class="authentication-type"></div>
 
     <svg class="employee-image-border">
@@ -43,7 +91,6 @@
              class="polygon-clip-hexagon">
 
         <span ng-if="!employee.photo" class="employee-initials">{{getInitials(employee.displayName)}}</span>
-        <!--!employee.photo && employee.displayName !== employee.email-->
     </div>
 
     <h2>{{employee.displayName}}</h2>
@@ -57,7 +104,7 @@
             <a href=""
                class="collapse-item"
                ng-class="{'collapsed': !employee.assignments[$index].isCollapsed}"
-                  ng-click="employee.assignments[$index].isCollapsed = !employee.assignments[$index].isCollapsed">
+               ng-click="employee.assignments[$index].isCollapsed = !employee.assignments[$index].isCollapsed">
                 {{groupedAssignment[0].projectName}}
             </a>
 

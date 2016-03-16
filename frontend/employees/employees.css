@@ -24,13 +24,6 @@
   text-align: center;
   background: #fff;
   vertical-align: top; }
-  .employee-card .authentication-type {
-    position: absolute;
-    top: 30px;
-    right: 30px;
-    width: 25px;
-    height: 25px;
-    background: url("../common/images/icons.png") 2px -1700px; }
   .employee-card h2 {
     padding-top: 12px;
     padding-bottom: 12px;
@@ -39,9 +32,26 @@
   .employee-card p {
     margin-bottom: 12px;
     color: #a3a3a3; }
+  .employee-card input {
+    width: 100%;
+    text-align: center;
+    border: 0;
+    border-bottom: 1px #e8e8e8 solid;
+    outline: none; }
+  .employee-card .authentication-type {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    width: 25px;
+    height: 25px;
+    background: url("../common/images/icons.png") 2px -1700px; }
   .employee-card .employee-workload-container {
+    margin-bottom: 0;
     text-align: right;
     color: #000; }
+
+.employee-search .employee-assignments {
+  border: 0; }
 
 .employee-workload {
   color: #19b5fe;
@@ -56,6 +66,7 @@
   position: absolute;
   z-index: 2;
   left: 50%;
+  width: 132px;
   margin-left: -65px;
   padding-top: 2px; }
 
@@ -113,5 +124,10 @@
   font-weight: 500;
   vertical-align: middle;
   background: #f3f3f3; }
+
+.employee-search-controls {
+  display: flex;
+  padding-top: 10px;
+  justify-content: space-around; }
 
 /*# sourceMappingURL=employees.css.map */
