@@ -40,22 +40,27 @@
     </div>
 
     <h2>
+        <label ng-class="{'hidden-label': !employeeSearch.displayName}" for="">Name</label>
         <input type="text" ng-model="employeeSearch.displayName" placeholder="Name"/>
     </h2>
 
     <p>
+        <label ng-class="{'hidden-label': !employeeSearch.email}" for="">Email</label>
         <input type="text" ng-model="employeeSearch.email" placeholder="Email"/>
     </p>
 
     <p>
+        <label ng-class="{'hidden-label': !employeeSearch.role}" for="">Position</label>
         <input type="text" ng-model="employeeSearch.role" placeholder="Position"/>
     </p>
 
     <p>
+        <label ng-class="{'hidden-label': !employeeSearch.assignments.projectName}" for="">Project</label>
         <input type="text" ng-model="employeeSearch.assignments.projectName" placeholder="Project"/>
     </p>
 
     <p>
+        <label ng-class="{'hidden-label': !employeeSearch.assignments.role}" for="">Role</label>
         <input type="text" ng-model="employeeSearch.assignments.role" placeholder="Role"/>
     </p>
 

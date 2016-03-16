@@ -32,8 +32,14 @@
   .employee-card p {
     margin-bottom: 12px;
     color: #a3a3a3; }
+  .employee-card label {
+    font-size: 1.2rem;
+    color: #19b5fe; }
+    .employee-card label.hidden-label {
+      visibility: hidden; }
   .employee-card input {
     width: 100%;
+    color: #000;
     text-align: center;
     border: 0;
     border-bottom: 1px #e8e8e8 solid;
