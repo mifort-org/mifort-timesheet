@@ -27,8 +27,7 @@
     vertical-align: top;
 
     h2{
-        padding-top: 12px;
-        padding-bottom: 12px;
+        padding: 12px 0;
         font-size: 2.4rem;
         font-weight: 300;
     }
@@ -72,9 +71,20 @@
     }
 }
 
-.employee-search .employee-assignments{
-    border: 0;
+.employee-search{
+    .employee-assignments{
+        border: 0;
+    }
+
+    h2{
+        padding-bottom: 8px;
+    }
+    
+    p{
+        margin-bottom: 8px;
+    }
 }
+
 
 .employee-workload{
     color: #19b5fe;
