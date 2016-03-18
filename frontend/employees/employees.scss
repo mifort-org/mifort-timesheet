@@ -143,14 +143,16 @@
     }
 
     a{
+        display: inline-block;
+        width: 100%;
         color: #000;
         text-decoration: none;
 
         &.collapse-item{
-            background-position: -25px -308px no-repeat;
+            background-position: -25px -313px;
 
             &.collapsed{
-                background-position: -12px -630px;
+                background-position: -12px -633px;
             }
         }
     }

@@ -109,12 +109,14 @@
   .employee-assignments .employee-assignment {
     display: block; }
   .employee-assignments a {
+    display: inline-block;
+    width: 100%;
     color: #000;
     text-decoration: none; }
     .employee-assignments a.collapse-item {
-      background-position: -25px -308px no-repeat; }
+      background-position: -25px -313px; }
       .employee-assignments a.collapse-item.collapsed {
-        background-position: -12px -630px; }
+        background-position: -12px -633px; }
   .employee-assignments .assignment-roles {
     color: #000;
     margin: 10px 0 0 20px;
