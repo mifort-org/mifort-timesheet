@@ -385,7 +385,9 @@ input[type=number]::-webkit-outer-spin-button{
     ul{
         left: -1px;
         right: -1px;
+        overflow-y: auto;
         min-width: 50px;
+        max-height: 200px;
         margin: 0;
         padding: 0;
         font-size: inherit;

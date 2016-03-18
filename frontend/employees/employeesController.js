@@ -48,9 +48,11 @@ angular.module('mifortTimesheet.employees', ['ngRoute'])
             $scope.calculateWorkload = function(employee) {
                 var totalWorkload = 0;
 
-                employee.assignments.forEach(function(assignment) {
-                    totalWorkload += +assignment.workload;
-                });
+                if(employee.assignments){
+                    employee.assignments.forEach(function(assignment) {
+                        totalWorkload += +assignment.workload;
+                    });
+                }
 
                 return totalWorkload;
             };
