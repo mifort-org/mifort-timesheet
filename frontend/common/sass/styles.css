@@ -166,16 +166,32 @@ input[type=number]::-webkit-outer-spin-button {
     background-position: -7px -267px;
     width: 25px; }
 
-.main-controls .info,
-.main-controls .profile,
-.main-controls .logout {
+.main-controls .print-icon,
+.main-controls .pdf-icon,
+.main-controls .csv-icon,
+.main-controls .project-icon,
+.main-controls .info-icon,
+.main-controls .profile-icon,
+.main-controls .logout-icon {
   padding: 2px 4px 2px 36px;
   margin-right: 16px;
-  background: url("../images/icons.png") -2px -471px no-repeat; }
-.main-controls .logout {
-  background-position: -2px -587px; }
-.main-controls .profile {
-  background-position: -2px -526px; }
+  background: url("../images/icons.png") 0 -471px no-repeat; }
+.main-controls .print-icon {
+  background-position: 0 -2080px; }
+.main-controls .pdf-icon {
+  background-position: 0 -2000px; }
+.main-controls .csv-icon {
+  background-position: 0 -2160px; }
+.main-controls .project-icon {
+  background-position: 0 -1840px; }
+.main-controls .info-icon {
+  background-position: 0 -471px; }
+.main-controls .profile-icon {
+  background-position: 0 -526px; }
+.main-controls .logout-icon {
+  background-position: 0 -526px; }
+.main-controls .logout-icon {
+  background-position: 0 -587px; }
 
 .primary-button,
 .secondary-button {

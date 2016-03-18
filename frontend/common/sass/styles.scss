@@ -208,20 +208,41 @@ input[type=number]::-webkit-outer-spin-button{
 }
 
 .main-controls{
-    .info,
-    .profile,
-    .logout{
+    .print-icon,
+    .pdf-icon,
+    .csv-icon,
+    .project-icon,
+    .info-icon,
+    .profile-icon,
+    .logout-icon{
         padding: 2px 4px 2px 36px;
         margin-right: 16px;
-        background: url("../images/icons.png") -2px -471px no-repeat;
+        background: url("../images/icons.png") 0 -471px no-repeat;
     }
 
-    .logout{
-        background-position: -2px -587px;
+    .print-icon{
+        background-position: 0 -2080px;
     }
-
-    .profile{
-        background-position: -2px -526px;
+    .pdf-icon{
+        background-position: 0 -2000px;
+    }
+    .csv-icon{
+        background-position: 0 -2160px;
+    }
+    .project-icon{
+        background-position: 0 -1840px;
+    }
+    .info-icon{
+        background-position: 0 -471px;
+    }
+    .profile-icon{
+        background-position: 0 -526px;
+    }
+    .logout-icon{
+        background-position: 0 -526px;
+    }
+    .logout-icon{
+        background-position: 0 -587px;
     }
 }
 

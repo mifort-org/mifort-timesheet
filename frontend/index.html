@@ -67,13 +67,13 @@
     </a>
 
     <!--TODO: to array of objects-->
-    <a href="javascript:window.print()" ng-if="isVisible('print') && isLoggedIn" class="info" id="print">Print</a>
-    <a href="" ng-click="openLink('pdf')" ng-if="isVisible('pdf') && isLoggedIn" class="info">PDF</a>
-    <a href="" ng-click="openLink('csv')" ng-if="isVisible('csv') && isLoggedIn" class="info">CSV</a>
-    <a href="" ng-click="openLink('project')" ng-if="isVisible('project') && isLoggedIn" class="info">Add Project</a>
-    <a href="" ng-click="startIntro()" ng-if="isLoggedIn" class="info" >Info</a>
-    <a href="" ng-click="openLink('profile')" ng-if="isVisible('profile')" class="profile">Profile</a>
-    <a href="" class="logout" ng-click="logout()">Logout</a>
+    <a href="javascript:window.print()" ng-if="isVisible('print') && isLoggedIn" class="print-icon" id="print">Print</a>
+    <a href="" ng-click="openLink('pdf')" ng-if="isVisible('pdf') && isLoggedIn" class="pdf-icon">PDF</a>
+    <a href="" ng-click="openLink('csv')" ng-if="isVisible('csv') && isLoggedIn" class="csv-icon">CSV</a>
+    <a href="" ng-click="openLink('project')" ng-if="isVisible('project') && isLoggedIn" class="project-icon">Add Project</a>
+    <a href="" ng-click="startIntro()" ng-if="isLoggedIn" class="info-icon" >Info</a>
+    <a href="" ng-click="openLink('profile')" ng-if="isVisible('profile')" class="profile-icon">Profile</a>
+    <a href="" class="logout-icon" ng-click="logout()">Logout</a>
 </nav>
 
 <div ng-if="isLoggedIn && companyId" bootstrap-tabs company-name="{{companyName}}" class="main-tabs"></div>
