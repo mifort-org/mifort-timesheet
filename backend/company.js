@@ -54,6 +54,9 @@ exports.restCreateCompany = function(req, res, next) {
     company.dayTypes = defaultCompany.dayTypes;
     company.defaultValues = defaultCompany.defaultValues;
     company.availablePositions = defaultCompany.availablePositions;
+    var currentDate = new Date();
+    company.createdOn = currentDate;
+    company.updatedOn = currentDate;
     if(req.user) {
         company.ownerId = req.user._id;
     }
@@ -79,6 +82,7 @@ exports.restUpdateCompany = function(req, res, next) {
         company.availablePositions = constants.DEFAULT_AVAILABLE_POSITIONS;
     }
     addIdToDayTypes(company);
+    company.updatedOn = new Date();
     save(company, function(err, savedCompany) {
         if(err) {
             next(err);
