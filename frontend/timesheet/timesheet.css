@@ -172,4 +172,10 @@
   content: ' ';
   border-left: 3px #3eb5f1 solid; }
 
+.timesheet-total {
+  padding-left: 15px;
+  font-size: 1.6rem;
+  color: #666;
+  font-weight: 500; }
+
 /*# sourceMappingURL=timesheet.css.map */

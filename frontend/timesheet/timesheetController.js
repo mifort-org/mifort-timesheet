@@ -354,4 +354,22 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                     return timesheet[index].date != timesheet[index + 1].date;
                 }
             };
+
+            $scope.totalLogged = function(timesheet) {
+                var totalExpected = 0;
+                var totalLogged = 0;
+
+                timesheet.forEach(function(log) {
+                    if(log.timePlaceholder){
+                        totalExpected += log.timePlaceholder;
+                    }
+
+                    if(log.time){
+                        totalLogged += log.time;
+                    }
+                });
+
+                return totalLogged + '/' + totalExpected;
+            };
+
         }]);
