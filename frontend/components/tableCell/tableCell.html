@@ -14,12 +14,6 @@
   limitations under the License.
 -->
 
-<div class="calendar-data" ng-class="::{'disabled-day-data': day.disabled}">
-    <span class="calendar-time">{{getDayTime(day)}}</span>
-
-    <span class="calendar-hours-label">hours</span>
-</div>
-
 <div class="start-splitter"></div>
 
 <a href=""
@@ -30,8 +24,14 @@
    popover-placement="bottom"
    popover-trigger="outsideClick"
    data-toggle="popover">
-    <!--{{$parent.$parent.$index}}<br/>-->
     <span ng-class="::{'calendar-today': isToday(day)}">{{::day.date.slice(3, 5)}}</span>
 </a>
-<!--{{day.dayId}}-->
+
+
+<div class="calendar-data" ng-class="::{'disabled-day-data': day.disabled}">
+    <span class="calendar-time">{{getDayTime(day)}}</span>
+
+    <span class="calendar-hours-label">hours</span>
+</div>
+
 <div class="end-splitter"></div>
