@@ -97,13 +97,26 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                 }
             };
 
+            $scope.ranges = {
+                'Today': [moment(), moment()],
+                //'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                'Last 7 days': [moment().subtract(7, 'days'), moment()],
+                'Last 30 days': [moment().subtract(30, 'days'), moment()],
+                'This month': [moment().startOf('month'), moment().endOf('month')]
+            };
+
+            //default settings, field: "date" value must match the dateRangePicker default value
             $scope.reportSettings = {
                 companyId: companyId,
                 sort: {
                     field: 'date',
                     asc: false
                 },
-                filters: [],
+                filters: [{
+                    field: "date",
+                    start:  moment(new Date($scope.ranges['This month'][0])).format('MM/DD/YYYY'),
+                    end: moment(new Date($scope.ranges['This month'][1])).format('MM/DD/YYYY')
+                }],
                 pageSize: 10,
                 page: 1
             };
@@ -157,13 +170,6 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                 $scope.getReport();
             };
 
-            $scope.ranges = {
-                'Today': [moment(), moment()],
-                //'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                'Last 7 days': [moment().subtract(7, 'days'), moment()],
-                'Last 30 days': [moment().subtract(30, 'days'), moment()],
-                'This month': [moment().startOf('month'), moment().endOf('month')]
-            };
             $scope.reportColumns = ['Data', 'User', 'Project', 'Assignment', 'Time', 'Action'];
             $scope.perPage = [10, 20, 50, 100];
             $scope.totalCount = 0;
@@ -218,8 +224,8 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
             });
 
             $scope.$watch('timesheetGridOptions.reportFilters', function(newValue, oldValue) {
-                if(newValue && newValue != oldValue){
-                    $scope.reportSettings.filters = [];
+                if(oldValue && newValue && newValue != oldValue){
+                    //$scope.reportSettings.filters = [];
 
                     var dateFilter = _.where(newValue, {field: 'date'})[0];
 

@@ -41,7 +41,13 @@ angular.module('mifortTimesheet')
                         gridOptions.reportFilters[dateFilterIndex].start = moment(new Date(newValue.startDate)).format('MM/DD/YYYY');
                         gridOptions.reportFilters[dateFilterIndex].end = moment(new Date(newValue.endDate)).format('MM/DD/YYYY');
                     }
-                })
+                });
+
+                //set default date range
+                scope.dates = {
+                    startDate: scope.ranges['This month'][0],
+                    endDate: scope.ranges['This month'][1]
+                };
             },
             templateUrl: 'components/reportDatePicker/reportDatePicker.html'
         };
