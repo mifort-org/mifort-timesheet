@@ -45,9 +45,22 @@ input[type='number']{
     -moz-appearance: textfield;
 }
 
-:-ms-input-placeholder {
-    color: #aaa !important;
+::-webkit-input-placeholder {
+    color: #ccc !important;
 }
+::-webkit-input-placeholder {
+    color: #ccc !important;
+}
+:-moz-placeholder {
+    color: #ccc !important;
+}
+::-moz-placeholder {
+    color: #ccc !important;
+}
+:-ms-input-placeholder {
+    color: #ccc !important;
+}
+
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button{

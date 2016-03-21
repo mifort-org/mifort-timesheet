@@ -96,21 +96,25 @@
     <input type="text" ng-model="filtersFilter"/>
 
     <!--angular bootstrap popover unintentional close solution-->
-    <div ng-repeat="n in range(dynamicPopover.projectFilter.value.length) track by $index">
+    <div ng-repeat="n in range(dynamicPopover.projectFilter.value.length) track by $index" class="filters-container">
         <hr ng-if="$first && hasFilter()"/>
 
         <div ng-show="dynamicPopover.projectFilter.value[$index].isChecked">
-            <input type="checkbox" ng-model="dynamicPopover.projectFilter.value[$index].isChecked"/>
+            <input type="checkbox" id="filter-value-{{$index}}" ng-model="dynamicPopover.projectFilter.value[$index].isChecked"/>
+            <label for="filtered-value-{{$index}}">
 
-            {{dynamicPopover.projectFilter.value[$index].name.role || dynamicPopover.projectFilter.value[$index].name}}
+                {{dynamicPopover.projectFilter.value[$index].name.role || dynamicPopover.projectFilter.value[$index].name}}
+            </label>
         </div>
     </div>
     <hr/>
 
     <!--angular bootstrap popover unintentional close solution-->
-    <div ng-repeat="n in dynamicPopover.projectFilter.value track by $index">
-        <input type="checkbox" ng-model="dynamicPopover.projectFilter.value[$index].isChecked"/>
+    <div ng-repeat="n in dynamicPopover.projectFilter.value track by $index" class="filters-container">
+        <input type="checkbox" id="filtered-value-{{$index}}" ng-model="dynamicPopover.projectFilter.value[$index].isChecked"/>
+        <label for="filtered-value-{{$index}}">
 
-        {{dynamicPopover.projectFilter.value[$index].name.role || dynamicPopover.projectFilter.value[$index].name}}
+            {{dynamicPopover.projectFilter.value[$index].name.role || dynamicPopover.projectFilter.value[$index].name}}
+        </label>
     </div>
 </script>

@@ -41,8 +41,20 @@ footer, header, hgroup, menu, nav, section {
 input[type='number'] {
   -moz-appearance: textfield; }
 
+::-webkit-input-placeholder {
+  color: #ccc !important; }
+
+::-webkit-input-placeholder {
+  color: #ccc !important; }
+
+:-moz-placeholder {
+  color: #ccc !important; }
+
+::-moz-placeholder {
+  color: #ccc !important; }
+
 :-ms-input-placeholder {
-  color: #aaa !important; }
+  color: #ccc !important; }
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
