@@ -200,12 +200,12 @@ function markAssignments(projectId) {
     users.find({'assignments.projectId': projectId})
         .toArray(function(err, findedUsers) {
             if(findedUsers) {
-                addDeactivationFlag(findedUsers, projectId);
+                addArchivedFlag(findedUsers, projectId);
             }
         });
 }
 
-function addDeactivationFlag(findedUsers, projectId) {
+function addArchivedFlag(findedUsers, projectId) {
     var users = db.userCollection();
     findedUsers.forEach(function(user) {
         var assignmentsForProject = user.assignments.filter(function(assignment){
@@ -213,7 +213,7 @@ function addDeactivationFlag(findedUsers, projectId) {
         });
 
         var newAssignments = assignmentsForProject.map(function(assignment){
-            assignment.active = false;
+            assignment.archived = true;
             return assignment;
         });
         users.update({_id: user._id},
