@@ -196,7 +196,7 @@ exports.updateAssignmentProjectName = function(project) {
                     'assignments.projectName': {$ne: project.name}})
             .toArray(function(err, findedUsers) {
                 if(findedUsers) {
-                    updateProjectName(users, findedUsers, project);
+                    updateProjectName(findedUsers, project);
                 }
             });
     }
@@ -220,7 +220,8 @@ function findByExample(query, callback) {
     });
 }
 
-function updateProjectName(userDbCollection, findedUsers, project) {
+function updateProjectName(findedUsers, project) {
+    var userDbCollection = db.userCollection();
     findedUsers.forEach(function(user) {
         var assignmentsForProject = user.assignments.filter(function(assignment){
             return assignment.projectId.equals(project._id);

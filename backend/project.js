@@ -79,6 +79,7 @@ exports.restDeactivateProject = function(req, res, next) {
                 next(err);
                 return;
             }
+            markAssignments(projectId);
             projects.findOne({_id: projectId},
                 function(err, doc) {
                     returnProjectCallback(err, res, doc, next);
@@ -189,6 +190,45 @@ function createProject(project, res, next){
                     res.json(result.ops[0]);
                     log.debug('-REST result: Save(Create) project. Project id: %s',
                         result.ops[0]._id.toHexString());
+                }
+            });
+    });
+}
+
+function markAssignments(projectId) {
+    var users = db.userCollection();
+    users.find({'assignments.projectId': projectId})
+        .toArray(function(err, findedUsers) {
+            if(findedUsers) {
+                addDeactivationFlag(findedUsers, projectId);
+            }
+        });
+}
+
+function addDeactivationFlag(findedUsers, projectId) {
+    var users = db.userCollection();
+    findedUsers.forEach(function(user) {
+        var assignmentsForProject = user.assignments.filter(function(assignment){
+            return assignment.projectId.equals(projectId);
+        });
+
+        var newAssignments = assignmentsForProject.map(function(assignment){
+            assignment.active = false;
+            return assignment;
+        });
+        users.update({_id: user._id},
+                     { $pull: {assignments: {projectId: projectId} } },
+            function(err, result) {
+                if(!err) {
+                    users.update({ _id: user._id },
+                                 { $push: { assignments: { $each: newAssignments } }},
+                        function(err, updatedUser){
+                            if(!err) {
+                                log.info('User assignment was deactivated: %s', user._id.toHexString());
+                            } else {
+                                log.warn('Assignment is not deactivated', assignment);
+                            }
+                        });
                 }
             });
     });
