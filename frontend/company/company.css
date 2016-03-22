@@ -43,11 +43,13 @@
         border-bottom: 1px #ddd solid; }
         .company-wrapper table .company-roles tr td {
           position: relative;
-          width: 40%;
+          width: 145px;
+          min-width: 145px;
           vertical-align: middle; }
           .company-wrapper table .company-roles tr td:first-child {
-            text-align: left;
-            width: 60%; }
+            width: auto;
+            min-width: auto;
+            text-align: left; }
           .company-wrapper table .company-roles tr td select {
             float: right;
             height: 50px;
@@ -70,9 +72,13 @@
     margin: 6px 20px 0 0;
     color: #888; }
   .company-wrapper .employee-role {
-    padding-left: 15px;
+    display: inline-block;
+    margin: 0;
+    padding: 5px 5px 5px 15px;
     color: #000;
-    vertical-align: bottom; }
+    vertical-align: bottom;
+    -ms-word-break: break-word;
+    word-break: break-word; }
   .company-wrapper .company-roles-label {
     margin-top: 15px; }
   .company-wrapper input,

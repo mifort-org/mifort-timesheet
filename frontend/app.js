@@ -18,7 +18,6 @@
 
 angular.module('mifortTimesheet', [
     'ngRoute',
-    'ngCookies',
     'ui.bootstrap',
     'preferences',
     'angularMoment',
@@ -78,8 +77,8 @@ angular.module('mifortTimesheet', [
         });
     })
 
-    .controller('mifortTimesheetController', ['$scope', '$location', '$cookies', '$http', 'preferences', 'companyService', 'topPanelService', '$rootScope', 'notifyingService',
-        function($scope, $location, $cookies, $http, preferences, companyService, topPanelService, $rootScope, notifyingService) {
+    .controller('mifortTimesheetController', ['$scope', '$location', '$http', 'preferences', 'companyService', 'topPanelService', '$rootScope', 'notifyingService',
+        function($scope, $location, $http, preferences, companyService, topPanelService, $rootScope, notifyingService) {
             var user = preferences.get('user');
 
             if(user){

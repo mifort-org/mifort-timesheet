@@ -60,12 +60,14 @@
 
                 td{
                     position: relative;
-                    width: 40%;
+                    width: 145px;
+                    min-width: 145px;
                     vertical-align: middle;
 
                     &:first-child{
+                        width: auto;
+                        min-width: auto;
                         text-align: left;
-                        width: 60%;
                     }
 
                     select{
@@ -100,11 +102,17 @@
         margin: 6px 20px 0 0;
         color: #888;
     }
+
     .employee-role{
-        padding-left: 15px;
+        display: inline-block;
+        margin: 0;
+        padding: 5px 5px 5px 15px;
         color: #000;
         vertical-align: bottom;
+        -ms-word-break: break-word;
+        word-break: break-word;
     }
+
     .company-roles-label{
         margin-top: 15px;
     }
