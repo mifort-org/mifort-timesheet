@@ -25,9 +25,11 @@ angular.module('mifortTimesheet.employees', ['ngRoute'])
         });
     }])
 
-    .controller('employeesController', ['$scope', 'employeesService', 'preferences',
-        function($scope, employeesService, preferences) {
+    .controller('employeesController', ['$scope', 'employeesService', 'preferences', '$location',
+        function($scope, employeesService, preferences, $location) {
             var companyId = preferences.get('user').companyId;
+
+            $scope.path = $location.path();
 
             employeesService.getCompanyEmployers(companyId).success(function(employees) {
                 employees.forEach(function(employee) {

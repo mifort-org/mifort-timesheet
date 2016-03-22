@@ -14,6 +14,22 @@
   limitations under the License.
 -->
 
+<style>
+    .polygon-each-img-wrap{
+        position: relative;
+        z-index: 3;
+        width: 132px;
+        height: 132px;
+        margin: 3px auto;
+        text-align: center;
+
+        -webkit-clip-path: polygon(50% 0%, 95% 27%, 95% 70%, 50% 95%, 5% 70%, 5% 27%);
+        clip-path: polygon(50% 0%, 95% 27%, 95% 70%, 50% 95%, 5% 70%, 5% 27%);
+        -webkit-clip-path: url("{{path}}#polygon-clip-hexagon");
+        clip-path: url("{{path}}#polygon-clip-hexagon");
+    }
+</style>
+
 <svg class="clip-svg">
     <defs>
         <clipPath id="polygon-clip-hexagon" clipPathUnits="objectBoundingBox">
@@ -83,8 +99,8 @@
 <div class="employee-card" ng-repeat="employee in employees | filter:activeSearch track by $index">
     <div class="authentication-type"></div>
 
-    <svg class="employee-image-border">
-        <polygon class="hex" points="65 1, 124.5 37, 124.5 97, 65 131, 5 97, 5 37"
+    <svg class="employee-image-border" height=450>
+        <polygon class="hex" height=450 points="65 1, 124.5 37, 124.5 97, 65 131, 5 97, 5 37"
                  style="fill: transparent; stroke: #c5c5c5; stroke-width: 6"></polygon>
     </svg>
 

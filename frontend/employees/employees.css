@@ -71,14 +71,15 @@
   width: 0;
   height: 0; }
 
-.employee-image-border,
-.employee-image-subborder {
+.employee-card .employee-image-border,
+.employee-card .employee-image-subborder {
   position: absolute;
   z-index: 2;
   left: 50%;
   width: 132px;
   margin-left: -65px;
-  padding-top: 2px; }
+  padding-top: 2px;
+  overflow: visible; }
 
 .employee-image-subborder {
   z-index: 2; }
@@ -94,8 +95,6 @@
   height: 132px;
   margin: 3px auto;
   text-align: center;
-  -webkit-clip-path: polygon(50% 0%, 95% 27%, 95% 70%, 50% 95%, 5% 70%, 5% 27%);
-  clip-path: polygon(50% 0%, 95% 27%, 95% 70%, 50% 95%, 5% 70%, 5% 27%);
   -webkit-clip-path: polygon(50% 0%, 95% 27%, 95% 70%, 50% 95%, 5% 70%, 5% 27%);
   clip-path: polygon(50% 0%, 95% 27%, 95% 70%, 50% 95%, 5% 70%, 5% 27%);
   -webkit-clip-path: url("#polygon-clip-hexagon");
