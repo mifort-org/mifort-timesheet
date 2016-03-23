@@ -125,7 +125,9 @@
     <p>{{employee.role}}</p>
 
     <p class="employee-assignments" ng-if="employee.assignments.length">
-        <span ng-repeat="groupedAssignment in employee.assignments | groupBy: 'projectId'" class="employee-assignment">
+        <span ng-repeat="groupedAssignment in employee.assignments | groupBy: 'projectId'"
+              class="employee-assignment"
+              ng-if="!groupedAssignment[0].archived">
             <a href=""
                class="collapse-item"
                ng-class="{'collapsed': !employee.assignments[$index].isCollapsed}"

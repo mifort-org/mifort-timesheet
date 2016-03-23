@@ -20,7 +20,7 @@
         <a href="" class="collapse-item" id="{{$first ? 'step1' : ''}}" ng-class="{'collapsed': isCollapsed}" ng-click="isCollapsed = !isCollapsed">
             {{project.name}}
         </a>
-        <span class="timesheet-total" ng-bind-html="totalLogged(project.periods[project.currentPeriodIndex].timesheet)">0/0</span>
+        <span class="timesheet-total" ng-bind-html="totalLogged(project.periods[project.currentPeriodIndex].timesheet, projects)">0/0</span>
     </h2>
 
     <div class="timesheet-controls clearfix" id="{{$first ? 'step2' : ''}}">

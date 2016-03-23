@@ -30,7 +30,6 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
             var user;
 
             $scope.projects = [];
-            $scope.isCollapsed = false;
             $scope.timesheetKeys = timesheetService.getTimesheetKeys();
 
             loginService.getUser().success(function(loggedUser) {
@@ -359,15 +358,17 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                 var totalExpected = 0;
                 var totalLogged = 0;
 
-                timesheet.forEach(function(log) {
-                    if(log.timePlaceholder){
-                        totalExpected += log.timePlaceholder;
-                    }
+                if(timesheet){
+                    timesheet.forEach(function(log) {
+                        if(log.timePlaceholder){
+                            totalExpected += log.timePlaceholder;
+                        }
 
-                    if(log.time){
-                        totalLogged += log.time;
-                    }
-                });
+                        if(log.time){
+                            totalLogged += log.time;
+                        }
+                    });
+                }
 
                 return totalLogged + '/' + totalExpected;
             };
