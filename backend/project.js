@@ -53,7 +53,7 @@ exports.restGetByCompanyId = function(req, res, next) {
     log.debug('-REST call: Get projects by company id. Company id: %s', companyId.toHexString());
 
     var projects = db.projectCollection();
-    projects.find({companyId: companyId)
+    projects.find({companyId: companyId})
         .toArray(function(err, findedProjects){
             if(err) {
                 err.code = 404;
