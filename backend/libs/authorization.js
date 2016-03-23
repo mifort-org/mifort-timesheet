@@ -43,7 +43,7 @@ exports.authorizeSaveProject = function(req, res, next) {
     } else {
         var projects = db.projectCollection();
         projects.findOne({_id: project._id}, function(err, findedProject) {
-            if(err) {
+            if(err || !findedProject) {
                 send403(res);
             } else {
                 if(isManagerForCompany(user, findedProject.companyId)) {
@@ -56,13 +56,31 @@ exports.authorizeSaveProject = function(req, res, next) {
     }
 };
 
+exports.authorizeDeleteProject = function(req, res, next) {
+    var user = req.user;
+    var projectId = utils.getProjectId(req);
+
+    var projects = db.projectCollection();
+    projects.findOne({_id: projectId}, function(err, findedProject) {
+        if(err || !findedProject) {
+            send403(res);
+        } else {
+            if(isManagerForCompany(user, findedProject.companyId)) {
+                next();
+            } else {
+                send403(res);
+            }
+        }
+    });
+};
+
 exports.authorizeGetProjectById = function(req, res, next) {
     var user = req.user;
     var projectId = utils.getProjectId(req);
 
     var projects = db.projectCollection();
     projects.findOne({_id: projectId}, function(err, project) {
-        if(err) {
+        if(err || !project) {
             send403(res); //error. Not a permission function
         } else {
             if(canReadProject(user, project)) {

@@ -57,6 +57,10 @@ projectRouter.get('/deactivate/:projectId',
         validators.validateDeactivateProject,
         authorization.authorizeDeactivateProject,
         project.restDeactivateProject);
+projectRouter.delete('/:projectId',
+        validators.validateDeleteProject,
+        authorization.authorizeDeleteProject,
+        project.restDeleteProject);
 exports.projectRouter = projectRouter;
 
 //user

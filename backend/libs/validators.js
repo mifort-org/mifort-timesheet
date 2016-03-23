@@ -61,6 +61,14 @@ exports.validateGetProjectByCompanyId = function(req, res, next) {
     returnErrors(req, res, next);
 };
 
+exports.validateDeleteProject = function(req, res, next) {
+    req.checkParams(reqParams.projectIdParam,
+        util.format(invalidFormatMessageTemplate, reqParams.projectIdParam))
+            .notEmpty().isMongoId();
+
+    returnErrors(req, res, next);
+}
+
 //User Rest API validators
 exports.validateGetUserByProjectId = function(req, res, next) {
     req.check(reqParams.projectIdParam,

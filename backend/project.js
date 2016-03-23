@@ -53,8 +53,7 @@ exports.restGetByCompanyId = function(req, res, next) {
     log.debug('-REST call: Get projects by company id. Company id: %s', companyId.toHexString());
 
     var projects = db.projectCollection();
-    projects.find({companyId: companyId,
-                   active: true})
+    projects.find({companyId: companyId)
         .toArray(function(err, findedProjects){
             if(err) {
                 err.code = 404;
@@ -88,6 +87,23 @@ exports.restDeactivateProject = function(req, res, next) {
                 });
         });
 };
+
+exports.restDeleteProject = function(req, res, next) {
+    var projectId = utils.getProjectId(req);
+    log.debug('-REST call: Delete project. Project id: %s', projectId.toHexString());
+
+    var projects = db.projectCollection();
+    projects.remove({_id: projectId}, {single: true},
+      function(err, numberOfDeleted){
+        if(err) {
+            next(err);
+        } else {
+            deleteAssignments(projectId);
+            res.status(204).json({ok: true});
+            log.debug('-REST result:  Delete project. Project id: %s', projectId.toHexString());
+        }
+    });
+}
 
 //Public API
 exports.saveInDb = function(project, callback) {
@@ -232,4 +248,24 @@ function addArchivedFlag(findedUsers, projectId) {
                 }
             });
     });
+}
+
+function deleteAssignments(projectId) {
+    var users = db.userCollection();
+    users.find({'assignments.projectId': projectId})
+        .toArray(function(err, findedUsers) {
+            if(findedUsers) {
+                findedUsers.forEach(function(user) {
+                    users.update({_id: user._id},
+                                 { $pull: {assignments: {projectId: projectId} } },
+                         function(err, updatedUser){
+                             if(!err) {
+                                 log.info('User assignment is deleted: %s', user._id.toHexString());
+                             } else {
+                                 log.warn('Cannot delete user assignment', assignment);
+                             }
+                        });
+                });
+            }
+        });
 }
