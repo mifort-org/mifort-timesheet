@@ -77,6 +77,7 @@
   z-index: 2;
   left: 50%;
   width: 132px;
+  height: 136px;
   margin-left: -65px;
   padding-top: 2px;
   overflow: visible; }
@@ -117,6 +118,8 @@
       background-position: -25px -313px; }
       .employee-assignments a.collapse-item.collapsed {
         background-position: -12px -633px; }
+    .employee-assignments a.archived-assignment {
+      color: #999; }
   .employee-assignments .assignment-roles {
     color: #000;
     margin: 10px 0 0 20px;

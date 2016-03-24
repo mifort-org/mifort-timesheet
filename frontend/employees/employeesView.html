@@ -130,10 +130,11 @@
 
             <a href=""
                class="collapse-item"
-               ng-class="{'collapsed': !employee.assignments[$index].isCollapsed}"
+               ng-class="{'collapsed': !employee.assignments[$index].isCollapsed, 'archived-assignment': groupedAssignment[0].archived}"
                ng-click="employee.assignments[$index].isCollapsed = !employee.assignments[$index].isCollapsed">
+                <span ng-if="groupedAssignment[0].archived">(archived)</span>
+
                 {{groupedAssignment[0].projectName}}
-                <span ng-if="!groupedAssignment[0].archived">arr</span>
             </a>
 
             <span uib-collapse="!employee.assignments[$index].isCollapsed" class="assignment-roles">

@@ -413,6 +413,9 @@ input[type=number]::-webkit-outer-spin-button{
         a{
             padding: 8px 19px;
             background-position: right 20px top -1504px;
+            white-space: normal;
+            -ms-word-break: break-word;
+            word-break: break-word;
         }
     }
 
@@ -420,6 +423,7 @@ input[type=number]::-webkit-outer-spin-button{
         left: -1px;
         right: -1px;
         overflow-y: auto;
+        overflow-x: hidden;
         min-width: 50px;
         max-height: 200px;
         margin: 0;
