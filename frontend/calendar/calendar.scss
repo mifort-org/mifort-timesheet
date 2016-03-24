@@ -14,6 +14,13 @@
  * limitations under the License.
  */
 
+.loading-indicator{
+    padding: 100px;
+    font-size: 3rem;
+    font-weight: 300;
+    text-align: center;
+}
+
 .calendar-container{
     width: calc(100% - 380px);
     float: left;
