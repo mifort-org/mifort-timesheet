@@ -373,4 +373,16 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                 return totalLogged + '/' + totalExpected;
             };
 
+            $scope.getPeriodLabel = function(period) {
+                var periodStart,
+                    periodEnd;
+
+                if(period){
+                    periodStart = moment(new Date(period.start)).format("MM/DD");
+                        periodEnd = moment(new Date(period.end)).format("MM/DD");
+                }
+
+                return periodStart + ' - ' + periodEnd;
+            }
+
         }]);

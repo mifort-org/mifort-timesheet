@@ -20,11 +20,14 @@
         <a href="" class="collapse-item" id="{{$first ? 'step1' : ''}}" ng-class="{'collapsed': isCollapsed}" ng-click="isCollapsed = !isCollapsed">
             {{project.name}}
         </a>
+
         <span class="timesheet-total" ng-bind-html="totalLogged(project.periods[project.currentPeriodIndex].timesheet, projects)">0/0</span>
     </h2>
 
     <div class="timesheet-controls clearfix" id="{{$first ? 'step2' : ''}}">
+
         <button class="previous-period" ng-class="{'disabled' : project.currentPeriodIndex <= 0}" ng-click="showPreviousPeriod(project)"></button>
+        <span class="period-label" ng-bind-html="::getPeriodLabel(project.periods[project.currentPeriodIndex])"></span>
         <button class="next-period" ng-class="{'disabled' : project.currentPeriodIndex >= project.periods.length - 1}" ng-click="showNextPeriod(project)"></button>
     </div>
 

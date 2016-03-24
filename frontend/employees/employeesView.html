@@ -125,14 +125,15 @@
     <p>{{employee.role}}</p>
 
     <p class="employee-assignments" ng-if="employee.assignments.length">
-        <span ng-repeat="groupedAssignment in employee.assignments | groupBy: 'projectId'"
-              class="employee-assignment"
-              ng-if="!groupedAssignment[0].archived">
+        <span ng-repeat="groupedAssignment in employee.assignments |  groupBy: 'projectId' "
+              class="employee-assignment">
+
             <a href=""
                class="collapse-item"
                ng-class="{'collapsed': !employee.assignments[$index].isCollapsed}"
                ng-click="employee.assignments[$index].isCollapsed = !employee.assignments[$index].isCollapsed">
                 {{groupedAssignment[0].projectName}}
+                <span ng-if="!groupedAssignment[0].archived">arr</span>
             </a>
 
             <span uib-collapse="!employee.assignments[$index].isCollapsed" class="assignment-roles">
