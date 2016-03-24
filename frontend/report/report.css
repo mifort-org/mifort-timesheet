@@ -22,6 +22,9 @@
     box-shadow: none; }
     .report-wrapper .popover.bottom > .arrow {
       border-bottom-color: #555; }
+    .report-wrapper .popover .filter-input {
+      margin-top: 4px;
+      padding: 2px 4px; }
   .report-wrapper .form-group {
     margin-bottom: 0; }
 

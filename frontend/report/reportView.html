@@ -93,7 +93,7 @@
 <script type="text/ng-template" id="myPopoverTemplate.html">
     <div>{{dynamicPopover.content}}</div>
 
-    <input type="text" ng-model="filtersFilter"/>
+    <input type="text" class="filter-input" ng-model="filtersFilter" placeholder="Search"/>
 
     <!--angular bootstrap popover unintentional close solution-->
     <div ng-repeat="n in range(dynamicPopover.projectFilter.value.length) track by $index" class="filters-container">
