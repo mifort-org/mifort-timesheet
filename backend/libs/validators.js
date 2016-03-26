@@ -148,6 +148,7 @@ exports.validateUpdateCompany = function(req, res, next) {
     req.checkBody('emails', "Property 'emails' is not an array!" ).optional().isArray();
     req.checkBody('emails', 'At least one email has incorrect format').optional().isEmails();
     req.checkBody('description', 'Field is not a string').optional().isString();
+    req.checkBody('periods', 'Start period date > end period date').optional().isCorrectPeriods();
 
     returnErrors(req, res, next);
 };
@@ -162,6 +163,7 @@ exports.validateCreateCompany = function(req, res, next) {
     req.checkBody('emails', "Property 'emails' is not an array!" ).optional().isArray();
     req.checkBody('emails', 'At least one email has incorrect format').optional().isEmails();
     req.checkBody('description', 'Field is not a string').optional().isString();
+    req.checkBody('periods', 'Start period date > end period date').optional().isCorrectPeriods();
 
     returnErrors(req, res, next);
 };
@@ -278,7 +280,8 @@ exports.config = {
         isEmails: isEmails,
         isFilters: isFilters,
         isString: isString,
-        isGroupBy: isGroupBy
+        isGroupBy: isGroupBy,
+        isCorrectPeriods: isCorrectPeriods
     }
 };
 
@@ -314,6 +317,16 @@ function isTimesheet(values) {
         });
     }
     return false;
+}
+
+function isCorrectPeriods(periods) {
+    if(!Array.isArray(periods)) {
+        return false;
+    }
+
+    return periods.every(function(period){
+        return period.start <= period.end;
+    });
 }
 
 function isArray(value) {
