@@ -24,6 +24,7 @@ var log = require('./libs/logger');
 //Rest API
 exports.restGetCurrent = function(req, res) {
     log.debug('-REST call: Get current user. Empty user?: ' + (req.user == true));
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
     res.json(req.user);
 };
 
