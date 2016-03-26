@@ -26,7 +26,6 @@
     <!-- build:css styles/vendors.min.css -->
     <link rel="stylesheet" href="bower_components/angular-ui-grid/ui-grid.min.css">
     <link rel="stylesheet" href="bower_components/angular-ui-notification/dist/angular-ui-notification.min.css">
-    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="bower_components/bootstrap-daterangepicker/daterangepicker-bs3.css">
     <link rel="stylesheet" href="bower_components/ui-select/dist/select.css">
     <link rel="stylesheet" href="bower_components/intro.js/minified/introjs.min.css">
@@ -61,22 +60,39 @@
 </div>
 
 <nav class="main-controls" ng-if="isLoggedIn">
+    <span ng-if="isLoggedIn && companyId" bootstrap-tabs company-name="{{companyName}}"></span>
+
     <a class="logo" href="">
         <img class="timesheet-icon" src="../common/images/logo-small.png" alt=""/>
         <span ng-bind="companyName + ' Timesheet'">Timesheet</span>
     </a>
 
     <!--TODO: to array of objects-->
-    <a href="javascript:window.print()" ng-if="isVisible('print') && isLoggedIn" class="print-icon" id="print">Print</a>
-    <a href="" ng-click="openLink('pdf')" ng-if="isVisible('pdf') && isLoggedIn" class="pdf-icon">PDF</a>
-    <a href="" ng-click="openLink('csv')" ng-if="isVisible('csv') && isLoggedIn" class="csv-icon">CSV</a>
-    <a href="" ng-click="openLink('project')" ng-if="isVisible('project') && isLoggedIn" class="project-icon">Add Project</a>
-    <a href="" ng-click="startIntro()" ng-if="isLoggedIn" class="info-icon" >Info</a>
-    <a href="" ng-click="openLink('profile')" ng-if="isVisible('profile')" class="profile-icon">Profile</a>
-    <a href="" class="logout-icon" ng-click="logout()">Logout</a>
+    <a href="javascript:window.print()" ng-if="isVisible('print') && isLoggedIn" class="main-control print-icon" id="print">
+        <span>Print</span>
+    </a>
+    <a href="" ng-click="openLink('pdf')" ng-if="isVisible('pdf') && isLoggedIn" class="main-control pdf-icon">
+        <span>PDF</span>
+    </a>
+    <a href="" ng-click="openLink('csv')" ng-if="isVisible('csv') && isLoggedIn" class="main-control csv-icon">
+        <span>CSV</span>
+    </a>
+    <a href="" ng-click="openLink('project')" ng-if="isVisible('project') && isLoggedIn" class="main-control project-icon">
+        <span>Add Project</span>
+    </a>
+    <a href="" ng-click="startIntro()" ng-if="isLoggedIn" class="main-control info-icon" >
+        <span>Info</span>
+    </a>
+    <a href="" ng-click="openLink('profile')" ng-if="isVisible('profile')" class="main-control profile-icon">
+        <span>Profile</span>
+    </a>
+    <a href="" class="main-control logout-icon" ng-click="logout()">
+        <span>Logout</span>
+    </a>
 </nav>
 
 <div ng-if="isLoggedIn && companyId" bootstrap-tabs company-name="{{companyName}}" class="main-tabs"></div>
+
 <div class="main-container" ng-view ng-class="{'login-wrapper': isNotLoggedIn}"></div>
 
 
@@ -99,6 +115,7 @@
 <script src="bower_components/intro.js/minified/intro.min.js"></script>
 <script src="bower_components/angular-intro.js/build/angular-intro.min.js"></script>
 <script src="bower_components/angular-filter/dist/angular-filter.min.js"></script>
+<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <!-- endbuild -->
 
 <!-- build:js scripts/scripts.min.js -->

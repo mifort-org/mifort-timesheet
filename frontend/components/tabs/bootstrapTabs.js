@@ -88,6 +88,17 @@ angular.module('mifortTimesheet')
                     });
                 }
             },
-            templateUrl: 'components/tabs/bootstrapTabs.html'
+            templateUrl: function (element) {
+                var activeTemplate;
+
+                if(element.is('span')){
+                    activeTemplate = 'components/tabs/burgerMenu.html';
+                }
+                else{
+                    activeTemplate = 'components/tabs/bootstrapTabs.html';
+                }
+
+                return activeTemplate
+            }
         };
     });

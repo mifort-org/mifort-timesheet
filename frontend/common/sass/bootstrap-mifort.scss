@@ -14,6 +14,33 @@
  * limitations under the License.
  */
 
+@import "variables";
+
+@media screen and (min-width: $grid-float-breakpoint) {
+    .navbar-collapse.collapse{
+        display: none !important;
+    }
+}
+
+.navbar-container{
+    text-align: left;
+
+    .navbar-collapse{
+        position: absolute;
+        top: 75px;
+        left: 0;
+        z-index: 3;
+        width: 100%;
+        padding: 0 34px;
+        background: #fff;
+        border-bottom: 1px #ccc solid;
+    }
+
+    .navbar-toggle{
+        margin-top: 20px;
+    }
+}
+
 .form-control{
     border-radius: 0;
     border-color: #e0e4ec;

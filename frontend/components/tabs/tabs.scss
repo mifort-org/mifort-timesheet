@@ -14,9 +14,28 @@
  * limitations under the License.
  */
 
+@import "../../common/sass/variables";
+
 .main-tabs{
     width: 250px;
     float: left;
+    clear: both;
+}
+
+@media screen and (max-width: $tablet-breakpoint) {
+    .main-tabs{
+        width: 150px;
+    }
+}
+
+@media screen and (max-width: $grid-float-breakpoint) {
+    .main-tabs{
+        display: none;
+    }
+}
+
+.icon-bar{
+    background: #000;
 }
 
 .tabs-left{

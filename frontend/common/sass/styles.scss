@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+@import "variables";
+@import "../../bower_components/bootstrap-sass/assets/stylesheets/bootstrap";
+
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -133,6 +136,7 @@ html{
 html,
 body{
     height: 100%;
+    min-width: $app-min-width;
 }
 
 
@@ -177,14 +181,30 @@ input[type=number]::-webkit-outer-spin-button{
 .main-container{
     position: relative;
     float: left;
-    width: calc(100% - 251px);
-    height: calc(100% - 101px);
+    width: calc(100% - 250px);
+    height: calc(100% - 100px);
     min-height: 295px;
     padding: 70px 55px 70px 50px;
     background: #f5f7f9;
     border-top: 1px #f5f7f9 solid;
     border-left: 1px #f2f4f7 solid;
     overflow-y: auto;
+}
+
+@media screen and (max-width: $tablet-breakpoint) {
+    .main-container{
+        width: calc(100% - 150px);
+        height: calc(100% - 75px);
+        padding: 30px 25px 30px 20px;
+    }
+}
+
+@media screen and (max-width: $grid-float-breakpoint) {
+    .main-container{
+        width: 100%;
+        min-width: $app-min-width;
+        overflow: scroll;
+    }
 }
 
 .intro-active .main-container{
@@ -196,6 +216,15 @@ input[type=number]::-webkit-outer-spin-button{
     padding: 0 25px;
     line-height: 100px;
     text-align: right;
+}
+
+@media screen and (max-width: $tablet-breakpoint) {
+    .main-controls{
+        width: 100%;
+        //box-sizing: content-box;
+        height: 75px;
+        line-height: 75px;
+    }
 }
 
 .main-controls a{
@@ -256,6 +285,14 @@ input[type=number]::-webkit-outer-spin-button{
     }
     .logout-icon{
         background-position: 0 -587px;
+    }
+}
+
+@media screen and (max-width: $grid-float-breakpoint) {
+    .main-control{
+        span{
+            display: none;
+        }
     }
 }
 
