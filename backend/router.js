@@ -148,6 +148,8 @@ adminRouter.get('/log/:fileName',
         validators.validateDownloadLogs,
         authorization.authorizeDownloadLogs,
         admin.restDownloadLog);
+adminRouter.get('/build',
+        admin.restBuildInfo);
 
 //main router
 var versionRouter = express.Router();
