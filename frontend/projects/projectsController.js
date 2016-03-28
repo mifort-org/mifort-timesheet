@@ -113,7 +113,7 @@ angular.module('mifortTimesheet.projects', ['ngRoute'])
                 $scope.projects.unshift(newProject);
                 projectsService.saveOrCreateProject(newProject).success(function(project) {
                     project.assignedEmployers = [];
-                    $scope.projects[$scope.projects.length - 1] = project;
+                    $scope.projects.unshift(project);
                     Notification.success('Changes saved');
                 });
             };
