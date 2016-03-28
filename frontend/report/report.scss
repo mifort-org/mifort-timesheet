@@ -22,6 +22,12 @@
     .popover{
         border-color: #a0a0a0;
         box-shadow: none;
+
+        .popover-inner{
+            max-height: 300px;
+            overflow-y: scroll;
+        }
+
         &.bottom > .arrow{
             border-bottom-color: #555;
         }
@@ -257,6 +263,7 @@
 }
 
 .no-data{
+    margin-top: -29px;
     text-align: center;
 }
 

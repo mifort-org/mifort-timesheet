@@ -53,7 +53,7 @@ angular.module('mifortTimesheet')
                         title: 'Report',
                         url: 'report',
                         active: false,
-                        available: userRole == 'owner' || userRole == 'manager'
+                        available: true
                     },
                     {
                         title: 'Timesheet',

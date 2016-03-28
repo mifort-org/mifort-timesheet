@@ -28,6 +28,7 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
     .controller('reportController', ['$scope', 'reportService', 'preferences', 'uiGridConstants', 'topPanelService', '$timeout',
         function($scope, reportService, preferences, uiGridConstants, topPanelService, $timeout) {
             var companyId = preferences.get('user').companyId,
+                userRole = preferences.get('user').role.toLowerCase(),
                 headerHeight = 38,
                 maxVisiblePages = 5,
                 columns = {
@@ -44,7 +45,7 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                         width: 150,
                         enableColumnResizing: true,
                         enableColumnMenu: false,
-                        filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" col-name="userName" col-title="User Name"></span></div>'
+                        filterHeaderTemplate: '<div ng-if="::!$scope.userIsManager" class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" col-name="userName" col-title="User Name"></span></div>'
                     },
                     projectName: {
                         field: 'projectName',
@@ -88,6 +89,11 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                     }
                 };
 
+            if(userRole == 'owner' || userRole == 'manager'){
+                ////////////////change for commit
+                $scope.userIsManager = !true;
+            }
+
             $scope.getAggregatedComments = function(comments) {
                 if(comments && comments.length){
                     //remove empty comments
@@ -120,6 +126,13 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                 pageSize: 10,
                 page: 1
             };
+
+            if(!$scope.userIsManager){
+                $scope.reportSettings.filters.push({
+                    field: "userName",
+                    value: [preferences.get('user').displayName]
+                });
+            }
 
             $scope.reports = [
                 {

@@ -20,6 +20,9 @@
   .report-wrapper .popover {
     border-color: #a0a0a0;
     box-shadow: none; }
+    .report-wrapper .popover .popover-inner {
+      max-height: 300px;
+      overflow-y: scroll; }
     .report-wrapper .popover.bottom > .arrow {
       border-bottom-color: #555; }
     .report-wrapper .popover .filter-input {
@@ -181,6 +184,7 @@
           box-shadow: inset 0 0 0 1px #44c3fe; }
 
 .no-data {
+  margin-top: -29px;
   text-align: center; }
 
 .report-controls {
