@@ -54,9 +54,13 @@ projectRouter.get('/:projectId',
         authorization.authorizeGetProjectById,
         project.restGetById);
 projectRouter.get('/deactivate/:projectId',
-        validators.validateDeactivateProject,
-        authorization.authorizeDeactivateProject,
+        validators.validateActivateProject,
+        authorization.authorizeActivateProject, // the same rules as activate
         project.restDeactivateProject);
+projectRouter.get('/activate/:projectId',
+        validators.validateActivateProject,
+        authorization.authorizeActivateProject,
+        project.restActivateProject);
 projectRouter.delete('/:projectId',
         validators.validateDeleteProject,
         authorization.authorizeDeleteProject,
@@ -144,6 +148,8 @@ adminRouter.get('/log/:fileName',
         validators.validateDownloadLogs,
         authorization.authorizeDownloadLogs,
         admin.restDownloadLog);
+adminRouter.get('/build',
+        admin.restBuildInfo);
 
 //main router
 var versionRouter = express.Router();

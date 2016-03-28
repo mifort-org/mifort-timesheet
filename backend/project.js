@@ -78,11 +78,33 @@ exports.restDeactivateProject = function(req, res, next) {
                 next(err);
                 return;
             }
-            markAssignments(projectId);
+            markAssignments(projectId, true); //mark as archived
             projects.findOne({_id: projectId},
                 function(err, doc) {
                     returnProjectCallback(err, res, doc, next);
                     log.debug('-REST result: Deactivate project. Project id: %s',
+                        doc._id.toHexString());
+                });
+        });
+};
+
+exports.restActivateProject = function(req, res, next) {
+    var projectId = utils.getProjectId(req);
+    log.debug('-REST call: Activate project. Project id: %s', projectId.toHexString());
+
+    var projects = db.projectCollection();
+    projects.update({ _id: projectId},
+                    {$set: { active: true } },
+        function(err, savedProject) {
+            if(err) {
+                next(err);
+                return;
+            }
+            markAssignments(projectId, false); //mark as not archived
+            projects.findOne({_id: projectId},
+                function(err, doc) {
+                    returnProjectCallback(err, res, doc, next);
+                    log.debug('-REST result: Activate project. Project id: %s',
                         doc._id.toHexString());
                 });
         });
@@ -211,17 +233,17 @@ function createProject(project, res, next){
     });
 }
 
-function markAssignments(projectId) {
+function markAssignments(projectId, archivedFlag) {
     var users = db.userCollection();
     users.find({'assignments.projectId': projectId})
         .toArray(function(err, findedUsers) {
             if(findedUsers) {
-                addArchivedFlag(findedUsers, projectId);
+                addArchivedFlag(findedUsers, projectId, archivedFlag);
             }
         });
 }
 
-function addArchivedFlag(findedUsers, projectId) {
+function addArchivedFlag(findedUsers, projectId, archivedFlag) {
     var users = db.userCollection();
     findedUsers.forEach(function(user) {
         var assignmentsForProject = user.assignments.filter(function(assignment){
@@ -229,7 +251,7 @@ function addArchivedFlag(findedUsers, projectId) {
         });
 
         var newAssignments = assignmentsForProject.map(function(assignment){
-            assignment.archived = true;
+            assignment.archived = archivedFlag;
             return assignment;
         });
         users.update({_id: user._id},
@@ -240,9 +262,13 @@ function addArchivedFlag(findedUsers, projectId) {
                                  { $push: { assignments: { $each: newAssignments } }},
                         function(err, updatedUser){
                             if(!err) {
-                                log.info('User assignment was deactivated: %s', user._id.toHexString());
+                                if(archivedFlag) {
+                                    log.info('User assignment was archived: %s', user._id.toHexString());
+                                } else {
+                                    log.info('User assignment was restored: %s', user._id.toHexString());
+                                }
                             } else {
-                                log.warn('Assignment is not deactivated', assignment);
+                                log.warn('Assignment is not marked', assignment);
                             }
                         });
                 }

@@ -216,7 +216,7 @@ exports.validateSaveTimesheet = function(req, res, next) {
     returnErrors(req, res, next);
 };
 
-exports.validateDeactivateProject = function(req, res, next) {
+exports.validateActivateProject = function(req, res, next) {
     req.check(reqParams.projectIdParam,
         util.format(invalidFormatMessageTemplate, reqParams.projectIdParam))
             .notEmpty().isMongoId();
