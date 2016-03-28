@@ -103,7 +103,7 @@ exports.authorizeGetProjectsByCompanyId = function(req, res, next) {
     }
 };
 
-exports.authorizeDeactivateProject = function(req, res, next) {
+exports.authorizeActivateProject = function(req, res, next) {
     var user = req.user;
     var projectId = utils.getProjectId(req);
 
