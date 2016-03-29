@@ -92,7 +92,8 @@
     margin-left: 10px;
     padding: 1px 5px;
     line-height: 34px;
-    border: 1px #e0e4ec solid; }
+    border: 1px #e0e4ec solid;
+    cursor: pointer; }
 
 .date-range-column-picker {
   position: absolute;
@@ -149,7 +150,8 @@
         font-size: 1.4rem;
         border-color: #e8e8e8;
         border-radius: 0;
-        text-align: center; }
+        text-align: center;
+        cursor: pointer; }
   .daterangepicker .applyBtn,
   .daterangepicker .cancelBtn {
     display: none;

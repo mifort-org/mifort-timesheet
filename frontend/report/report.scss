@@ -119,12 +119,14 @@
 
 .date-range-picker{
     display: inline-block;
+
     input{
         height: 34px;
         margin-left: 10px;
         padding: 1px 5px;
         line-height: 34px;
         border: 1px #e0e4ec solid;
+        cursor: pointer;
     }
 }
 
@@ -204,6 +206,7 @@
                 border-color: #e8e8e8;
                 border-radius: 0;
                 text-align: center;
+                cursor: pointer;
             }
         }
     }
