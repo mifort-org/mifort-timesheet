@@ -90,8 +90,7 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                 };
 
             if(userRole == 'owner' || userRole == 'manager'){
-                ////////////////change for commit
-                $scope.userIsManager = !true;
+                $scope.userIsManager = true;
             }
 
             $scope.getAggregatedComments = function(comments) {
