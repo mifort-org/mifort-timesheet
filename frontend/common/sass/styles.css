@@ -5956,7 +5956,7 @@ h2 {
   font-size: 1.8em;
   font-weight: 600; }
   h2.timesheet-collapsed {
-    padding-bottom: 11px; }
+    padding-bottom: 5px; }
   h2 a,
   h2 a:hover,
   h2 a:focus {
@@ -6060,20 +6060,25 @@ input[type=number]::-webkit-outer-spin-button {
   color: #fff;
   font-size: 1.8rem;
   font-weight: 300;
-  background: #3eb5f1;
+  background: #00b6f5;
   border: 0;
-  border-bottom: 5px #2574a9 solid;
+  border-bottom: 5px #0075ab solid;
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
   border-radius: 2px;
   vertical-align: top;
   outline: 0; }
+  .primary-button:hover,
+  .secondary-button:hover,
+  .tertiary-button:hover {
+    background: #01c5ff;
+    border-color: #0087d3; }
   .primary-button:active,
   .secondary-button:active,
   .tertiary-button:active {
     height: 32px;
     margin-top: 4px;
-    border-bottom-width: 1px; }
+    border-bottom-width: 0; }
   .primary-button.large-button,
   .secondary-button.large-button,
   .tertiary-button.large-button {
@@ -6086,13 +6091,14 @@ input[type=number]::-webkit-outer-spin-button {
     .tertiary-button.large-button:active {
       height: 42px;
       margin-top: 4px;
-      border-bottom-width: 1px; }
+      border-bottom-width: 0; }
 
 .secondary-button {
-  color: #000;
-  background: #fff;
-  border: 1px #d1d5dc solid;
-  border-bottom: 5px #d1d5dc solid; }
+  background: #b9b9b9;
+  border-bottom: 5px #898989 solid; }
+  .secondary-button:hover {
+    background: #c5c5c5;
+    border-color: #a9a9a9; }
 
 .tertiary-button {
   height: 31px;

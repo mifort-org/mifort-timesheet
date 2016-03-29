@@ -161,7 +161,7 @@ h2{
     font-weight: 600;
 
     &.timesheet-collapsed{
-        padding-bottom: 11px;
+        padding-bottom: 5px;
     }
 
     a,
@@ -306,19 +306,24 @@ input[type=number]::-webkit-outer-spin-button{
     color: #fff;
     font-size: 1.8rem;
     font-weight: 300;
-    background: #3eb5f1;
+    background: #00b6f5;
     border: 0;
-    border-bottom: 5px #2574a9 solid;
+    border-bottom: 5px #0075ab solid;
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
     border-radius: 2px;
     vertical-align: top;
     outline: 0;
 
+    &:hover{
+        background: #01c5ff;
+        border-color: #0087d3;
+    }
+
     &:active{
         height: 32px;
         margin-top: 4px;
-        border-bottom-width: 1px;
+        border-bottom-width: 0;
     }
 
     &.large-button{
@@ -330,16 +335,19 @@ input[type=number]::-webkit-outer-spin-button{
         &:active{
             height: 42px;
             margin-top: 4px;
-            border-bottom-width: 1px;
+            border-bottom-width: 0;
         }
     }
 }
 
 .secondary-button{
-    color: #000;
-    background: #fff;
-    border: 1px #d1d5dc solid;
-    border-bottom: 5px #d1d5dc solid;
+    background: #b9b9b9;
+    border-bottom: 5px #898989 solid;
+
+    &:hover{
+        background: #c5c5c5;
+        border-color: #a9a9a9;
+    }
 }
 
 .tertiary-button{

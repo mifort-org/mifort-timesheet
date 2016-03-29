@@ -112,13 +112,14 @@ angular.module('mifortTimesheet.projects', ['ngRoute'])
                     companyId: companyId
                 };
 
+                $scope.showActiveProjects = true;
+
                 projectsService.saveOrCreateProject(newProject).success(function(project) {
                     project.assignedEmployers = [];
                     $scope.projects.unshift(project);
                     Notification.success('Changes saved');
                 });
 
-                $scope.showActiveProjects = true;
             };
 
             $scope.saveAssignment = function(project, assignedEmployee, employee, previousEmployeeId, assignmentIndex) {

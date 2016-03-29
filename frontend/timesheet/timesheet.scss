@@ -26,8 +26,9 @@
 
     h2{
         padding-bottom: 25px;
+
         &.timesheet-collapsed{
-            padding-bottom: 11px;
+            padding-bottom: 5px;
         }
     }
 
@@ -91,7 +92,7 @@
 .timesheet-controls{
     position: absolute;
     right: 25px;
-    top: 20px;
+    top: 15px;
 
     .period-label{
         display: inline-block;

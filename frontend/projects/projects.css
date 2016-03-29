@@ -72,11 +72,13 @@
   font-weight: 300;
   color: #fff;
   line-height: 0;
-  background: url("../common/images/add-project.png") no-repeat center 5px; }
+  background: url("../common/images/add-project.png") no-repeat center -96px; }
   .add-project:hover, .add-project:active, .add-project:focus {
-    background-position: center -96px;
+    background-position: center 5px;
     color: #fff;
     text-decoration: none; }
+  .add-project:active {
+    bottom: 49px; }
 
 .remove-assignment {
   position: absolute;
@@ -93,7 +95,7 @@
 
 .project-actions {
   position: absolute;
-  top: 26px;
+  top: 20px;
   right: 26px; }
   .project-actions .remove-project,
   .project-actions .archive-project,

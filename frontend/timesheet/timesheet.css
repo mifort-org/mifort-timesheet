@@ -18,7 +18,7 @@
   .timesheet h2 {
     padding-bottom: 25px; }
     .timesheet h2.timesheet-collapsed {
-      padding-bottom: 11px; }
+      padding-bottom: 5px; }
   .timesheet .table {
     font-size: 1.8em;
     border-color: #e0e4ec; }
@@ -54,7 +54,7 @@
 .timesheet-controls {
   position: absolute;
   right: 25px;
-  top: 20px; }
+  top: 15px; }
   .timesheet-controls .period-label {
     display: inline-block;
     margin: 7px 3px;
