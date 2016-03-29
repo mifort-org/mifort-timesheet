@@ -18,7 +18,7 @@
     <button class="tertiary-button"
             ng-class="{'active-projects': !showActiveProjects, 'archive-projects': showActiveProjects}"
             ng-click="showActiveProjects = !showActiveProjects">
-        Show Archive projects
+        Show {{showActiveProjects ? 'Archive' : 'Active'}} projects
     </button>
 </div>
 
