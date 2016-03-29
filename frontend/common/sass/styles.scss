@@ -297,7 +297,8 @@ input[type=number]::-webkit-outer-spin-button{
 }
 
 .primary-button,
-.secondary-button{
+.secondary-button,
+.tertiary-button{
     display: inline-block;
     min-width: 105px;
     height: 36px;
@@ -341,6 +342,26 @@ input[type=number]::-webkit-outer-spin-button{
     border-bottom: 5px #d1d5dc solid;
 }
 
+.tertiary-button{
+    height: 31px;
+    background: #fff;
+    color: #000;
+    font-size: 1.6rem;
+    border: 0;
+    box-shadow: 0 0 6px #ddd;
+
+    &:hover{
+        box-shadow: 0 0 6px #999;
+    }
+
+    &:active{
+        height: 31px;
+        margin-top: 1px;
+        margin-bottom: -1px;
+    }
+}
+
+
 .collapse-wrapper{
     background: #fff;
     padding: 15px 25px;
@@ -351,6 +372,7 @@ input[type=number]::-webkit-outer-spin-button{
         font-size: 2.1rem;
     }
 }
+
 
 .collapse-item{
     padding-left: 20px;

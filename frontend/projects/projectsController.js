@@ -30,6 +30,8 @@ angular.module('mifortTimesheet.projects', ['ngRoute'])
             var companyId = preferences.get('user').companyId,
                 timer = null;
 
+            $scope.showActiveProjects = true;
+
             $scope.projectsKeys = [
                 'Employee',
                 'Assignment',
@@ -110,12 +112,13 @@ angular.module('mifortTimesheet.projects', ['ngRoute'])
                     companyId: companyId
                 };
 
-                //$scope.projects.unshift(newProject);
                 projectsService.saveOrCreateProject(newProject).success(function(project) {
                     project.assignedEmployers = [];
                     $scope.projects.unshift(project);
                     Notification.success('Changes saved');
                 });
+
+                $scope.showActiveProjects = true;
             };
 
             $scope.saveAssignment = function(project, assignedEmployee, employee, previousEmployeeId, assignmentIndex) {
@@ -124,13 +127,29 @@ angular.module('mifortTimesheet.projects', ['ngRoute'])
                 });
             };
 
-            $scope.removeProject = function(project, projectIndex) {
-                //$scope.projects.splice(projectIndex, 1);
+            $scope.archiveProject = function(project, projectIndex) {
                 if(project._id){
-                    projectsService.removeProject(project._id).success(function(data) {
+                    projectsService.archiveProject(project._id).success(function(data) {
                         project.active = false;
                         project.isCollapsed = true;
                     });
+                }
+            };
+
+            $scope.dearchiveProject = function(project) {
+                if(project._id){
+                    projectsService.dearchiveProject(project._id).success(function(data) {
+                        project.active = true;
+                        project.isCollapsed = false;
+                    });
+                }
+            };
+
+            $scope.removeProject = function(project, projectIndex) {
+                $scope.projects.splice(projectIndex, 1);
+
+                if(project._id){
+                    projectsService.removeProject(project._id);
                 }
             };
 

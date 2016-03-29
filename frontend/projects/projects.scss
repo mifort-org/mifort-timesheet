@@ -14,6 +14,23 @@
  * limitations under the License.
  */
 
+.projects-controls{
+    margin: -40px 0 20px;
+    text-align: right;
+
+    .tertiary-button{
+        padding-left: 36px;
+
+        &.archive-projects{
+            background: url("../common/images/icons.png") no-repeat #fff 12px -2233px;
+        }
+
+        &.active-projects{
+            background: url("../common/images/icons.png") no-repeat #fff 12px -2313px;
+        }
+    }
+}
+
 .project{
     position: relative;
     padding-right: 55px;
@@ -114,7 +131,9 @@
     }
 }
 
-.remove-project{
+.remove-project,
+.archive-project,
+.dearchive-project{
     position: absolute;
     top: 26px;
     right: 26px;
@@ -127,6 +146,14 @@
     &:hover{
         opacity: 0.8;
     }
+}
+
+.archive-project{
+    background-position: left -2239px;
+}
+.dearchive-project{
+    right: 53px;
+    background-position: left -2399px;
 }
 
 .no-assignments{

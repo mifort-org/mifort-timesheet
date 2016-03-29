@@ -13,6 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+.projects-controls {
+  margin: -40px 0 20px;
+  text-align: right; }
+  .projects-controls .tertiary-button {
+    padding-left: 36px; }
+    .projects-controls .tertiary-button.archive-projects {
+      background: url("../common/images/icons.png") no-repeat #fff 12px -2233px; }
+    .projects-controls .tertiary-button.active-projects {
+      background: url("../common/images/icons.png") no-repeat #fff 12px -2313px; }
+
 .project {
   position: relative;
   padding-right: 55px;
@@ -81,7 +91,9 @@
     color: #fe6767;
     text-decoration: none; }
 
-.remove-project {
+.remove-project,
+.archive-project,
+.dearchive-project {
   position: absolute;
   top: 26px;
   right: 26px;
@@ -90,8 +102,17 @@
   height: 19px;
   background: url("../common/images/icons.png") 0 -1002px no-repeat;
   opacity: 0.5; }
-  .remove-project:hover {
+  .remove-project:hover,
+  .archive-project:hover,
+  .dearchive-project:hover {
     opacity: 0.8; }
+
+.archive-project {
+  background-position: left -2239px; }
+
+.dearchive-project {
+  right: 53px;
+  background-position: left -2399px; }
 
 .no-assignments {
   padding: 20px;

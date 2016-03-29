@@ -34,8 +34,14 @@ angular.module('mifortTimesheet.projects').factory('projectsService',
             getCompanyEmployers: function(companyId) {
                 return $http.get('api/v1/user/company/' + companyId);
             },
-            removeProject: function(projectId) {
+            archiveProject: function(projectId) {
                 return $http.get('api/v1/project/deactivate/' + projectId);
+            },
+            dearchiveProject: function(projectId) {
+                return $http.get('api/v1/project/activate/' + projectId);
+            },
+            removeProject: function(projectId) {
+                return $http.delete('api/v1/project/' + projectId);
             }
         }
     }

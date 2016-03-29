@@ -13,12 +13,23 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
+
+<div class="projects-controls" style="text-align: right;">
+    <button class="tertiary-button"
+            ng-class="{'active-projects': !showActiveProjects, 'archive-projects': showActiveProjects}"
+            ng-click="showActiveProjects = !showActiveProjects">
+        Show Archive projects
+    </button>
+</div>
+
 <div timesheet-intro></div>
 
-<div class="collapse-wrapper project" ng-repeat="project in projects | orderBy: '!active' track by $index" id="{{$first ? 'step1' : ''}}">
+<div class="collapse-wrapper project"
+     ng-repeat="project in projects track by $index"
+     ng-if="project.active == showActiveProjects"
+     id="{{$first ? 'step1' : ''}}">
     <h2 ng-class="{'timesheet-collapsed': project.isCollapsed, 'project-archived': !project.active}">
         <a href="" id="{{$first ? 'step4' : ''}}" ng-if="!project.projectEdit" class="collapse-item project-name" ng-class="{'collapsed': project.isCollapsed}" ng-click="project.isCollapsed = !project.isCollapsed">
-            <span ng-if="!project.active">(archived)</span>
             {{project.name}}
         </a>
 
@@ -29,8 +40,20 @@
 
         <a href=""
            id="{{$first ? 'step3' : ''}}"
-           class="remove-project"
+           class="archive-project"
            ng-if="project.active"
+           ng-click="archiveProject(project)"></a>
+
+        <a href=""
+           id="{{$first ? 'step3' : ''}}"
+           class="dearchive-project"
+           ng-if="!project.active"
+           ng-click="dearchiveProject(project)"></a>
+
+        <a href=""
+           id="{{$first ? 'step3' : ''}}"
+           class="remove-project"
+           ng-if="!project.active"
            ng-click="removeProject(project, $index)"></a>
     </h2>
 

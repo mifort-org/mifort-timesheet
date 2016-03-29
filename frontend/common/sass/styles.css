@@ -6051,7 +6051,8 @@ input[type=number]::-webkit-outer-spin-button {
   .main-control span {
     display: none; } }
 .primary-button,
-.secondary-button {
+.secondary-button,
+.tertiary-button {
   display: inline-block;
   min-width: 105px;
   height: 36px;
@@ -6068,18 +6069,21 @@ input[type=number]::-webkit-outer-spin-button {
   vertical-align: top;
   outline: 0; }
   .primary-button:active,
-  .secondary-button:active {
+  .secondary-button:active,
+  .tertiary-button:active {
     height: 32px;
     margin-top: 4px;
     border-bottom-width: 1px; }
   .primary-button.large-button,
-  .secondary-button.large-button {
+  .secondary-button.large-button,
+  .tertiary-button.large-button {
     width: 226px;
     height: 46px;
     font-size: 24px;
     font-weight: 400; }
     .primary-button.large-button:active,
-    .secondary-button.large-button:active {
+    .secondary-button.large-button:active,
+    .tertiary-button.large-button:active {
       height: 42px;
       margin-top: 4px;
       border-bottom-width: 1px; }
@@ -6089,6 +6093,20 @@ input[type=number]::-webkit-outer-spin-button {
   background: #fff;
   border: 1px #d1d5dc solid;
   border-bottom: 5px #d1d5dc solid; }
+
+.tertiary-button {
+  height: 31px;
+  background: #fff;
+  color: #000;
+  font-size: 1.6rem;
+  border: 0;
+  box-shadow: 0 0 6px #ddd; }
+  .tertiary-button:hover {
+    box-shadow: 0 0 6px #999; }
+  .tertiary-button:active {
+    height: 31px;
+    margin-top: 1px;
+    margin-bottom: -1px; }
 
 .collapse-wrapper {
   background: #fff;
