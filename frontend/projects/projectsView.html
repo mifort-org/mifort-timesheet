@@ -38,23 +38,28 @@
         <a href="" ng-if="project.projectEdit" class="edit-project" ng-click="project.projectEdit = !project.projectEdit">Done</a>
         <a href="" ng-if="!project.projectEdit" class="edit-project" ng-click="project.projectEdit = !project.projectEdit">Edit</a>
 
-        <a href=""
-           id="{{$first ? 'step3' : ''}}"
-           class="archive-project"
-           ng-if="project.active"
-           ng-click="archiveProject(project)"></a>
+        <div class="project-actions">
+            <a href=""
+               id="{{$first ? 'step3' : ''}}"
+               class="archive-project"
+               ng-if="project.active"
+               uib-tooltip="Archive Project"
+               ng-click="archiveProject(project)"></a>
 
-        <a href=""
-           id="{{$first ? 'step3' : ''}}"
-           class="dearchive-project"
-           ng-if="!project.active"
-           ng-click="dearchiveProject(project)"></a>
+            <a href=""
+               id="{{$first ? 'step3' : ''}}"
+               class="dearchive-project"
+               ng-if="!project.active"
+               uib-tooltip="Dearchive Project"
+               ng-click="dearchiveProject(project)"></a>
 
-        <a href=""
-           id="{{$first ? 'step3' : ''}}"
-           class="remove-project"
-           ng-if="!project.active"
-           ng-click="removeProject(project, $index)"></a>
+            <a href=""
+               id="{{$first ? 'step3' : ''}}"
+               class="remove-project"
+               ng-if="!project.active"
+               uib-tooltip="Remove Project"
+               ng-click="removeProject(project, $index)"></a>
+        </div>
     </h2>
 
     <div uib-collapse="project.isCollapsed">

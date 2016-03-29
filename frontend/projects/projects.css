@@ -91,28 +91,27 @@
     color: #fe6767;
     text-decoration: none; }
 
-.remove-project,
-.archive-project,
-.dearchive-project {
+.project-actions {
   position: absolute;
   top: 26px;
-  right: 26px;
-  display: inline-block;
-  width: 19px;
-  height: 19px;
-  background: url("../common/images/icons.png") 0 -1002px no-repeat;
-  opacity: 0.5; }
-  .remove-project:hover,
-  .archive-project:hover,
-  .dearchive-project:hover {
-    opacity: 0.8; }
-
-.archive-project {
-  background-position: left -2239px; }
-
-.dearchive-project {
-  right: 53px;
-  background-position: left -2399px; }
+  right: 26px; }
+  .project-actions .remove-project,
+  .project-actions .archive-project,
+  .project-actions .dearchive-project {
+    display: inline-block;
+    width: 19px;
+    height: 19px;
+    background: url("../common/images/icons.png") 0 -1002px no-repeat;
+    opacity: 0.5; }
+    .project-actions .remove-project:hover,
+    .project-actions .archive-project:hover,
+    .project-actions .dearchive-project:hover {
+      opacity: 0.8; }
+  .project-actions .archive-project {
+    background-position: left -2239px; }
+  .project-actions .dearchive-project {
+    right: 53px;
+    background-position: left -2399px; }
 
 .no-assignments {
   padding: 20px;

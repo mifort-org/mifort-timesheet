@@ -131,30 +131,34 @@
     }
 }
 
-.remove-project,
-.archive-project,
-.dearchive-project{
+.project-actions{
     position: absolute;
     top: 26px;
     right: 26px;
-    display: inline-block;
-    width: 19px;
-    height: 19px;
-    background: url("../common/images/icons.png") 0 -1002px no-repeat;
-    opacity: 0.5;
 
-    &:hover{
-        opacity: 0.8;
+    .remove-project,
+    .archive-project,
+    .dearchive-project{
+        display: inline-block;
+        width: 19px;
+        height: 19px;
+        background: url("../common/images/icons.png") 0 -1002px no-repeat;
+        opacity: 0.5;
+
+        &:hover{
+            opacity: 0.8;
+        }
+    }
+    
+    .archive-project{
+        background-position: left -2239px;
+    }
+    .dearchive-project{
+        right: 53px;
+        background-position: left -2399px;
     }
 }
 
-.archive-project{
-    background-position: left -2239px;
-}
-.dearchive-project{
-    right: 53px;
-    background-position: left -2399px;
-}
 
 .no-assignments{
     padding: 20px;
