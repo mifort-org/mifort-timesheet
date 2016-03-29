@@ -272,7 +272,8 @@
   text-align: right; }
 
 .disabled-day-data {
-  opacity: 0.2; }
+  opacity: 0.2;
+  cursor: default; }
 
 .disabled-day {
   background: #f5f7f9; }

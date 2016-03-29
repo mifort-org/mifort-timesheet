@@ -163,7 +163,7 @@ angular.module('mifortTimesheet.calendar', ['ngRoute'])
 
                     for(var i = 0; i < daysAfterCalendarEnd; i++){
                         generatedDay = _.clone($scope.company.template);
-                        generatedDay.date = moment(currentDate).subtract(i, 'day').format('MM/DD/YYYY');
+                        generatedDay.date = moment(currentDate).add(i, 'day').format('MM/DD/YYYY');
                         generatedDay.disabled = true;
                         previousMonth[previousMonth.length - 1].push(generatedDay);
                     }
