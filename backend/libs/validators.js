@@ -19,7 +19,7 @@
 var validator = require('validator');
 var reqParams = require('./req_params');
 var util = require('util');
-var authorization = require('./authorization');
+var constants = require('./config_constants');
 
 var emptyBody = {
     code: 400,
@@ -112,7 +112,7 @@ exports.validateUpdateRole = function(req, res, next) {
 
     req.checkBody('_id', util.format(invalidFormatMessageTemplate, 'User id')).notEmpty().isMongoId();
     req.checkBody('role', util.format(invalidFormatMessageTemplate, 'Role'))
-        .notEmpty().isIn([authorization.EMPLOYEE_ROLE, authorization.MANAGER_ROLE, authorization.OWNER_ROLE]);
+        .notEmpty().isIn([constants.EMPLOYEE_ROLE, constants.MANAGER_ROLE, constants.OWNER_ROLE]);
     returnErrors(req, res, next);
 };
 
@@ -133,7 +133,7 @@ exports.validateAddNewUser = function(req, res, next) {
     req.checkBody('email', 'E-mail is not valid').notEmpty().isEmail();
     req.checkBody('companyId', 'Company is not valid').notEmpty().isMongoId();
     req.checkBody('role', 'Role should be Manager or Employee')
-        .optional().isIn([authorization.EMPLOYEE_ROLE, authorization.MANAGER_ROLE]);
+        .optional().isIn([constants.EMPLOYEE_ROLE, constants.MANAGER_ROLE]);
 
     returnErrors(req, res, next);
 };

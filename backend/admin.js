@@ -41,5 +41,5 @@ exports.restBuildInfo = function(req, res, next) {
         Build_time: process.env.HEROKU_RELEASE_CREATED_AT,
         Build_revision: process.env.HEROKU_SLUG_DESCRIPTION
     });
-    log.debug('-REST Call: Get build info');
+    log.debug('-REST Result: Get build info');
 };
