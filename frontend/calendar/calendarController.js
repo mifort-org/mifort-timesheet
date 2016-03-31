@@ -243,7 +243,7 @@ angular.module('mifortTimesheet.calendar', ['ngRoute'])
                 }, true);
             }
 
-            $scope.IntroSteps = [
+            $scope.introSteps = [
                 {
                     element: '#step1',
                     intro: "<p>In this section you could see the list of months." +

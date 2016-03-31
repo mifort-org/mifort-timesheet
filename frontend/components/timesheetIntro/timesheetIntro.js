@@ -23,7 +23,7 @@ angular.module('mifortTimesheet')
             link: function(scope, element, attributes) {
                 $timeout(function() {
                     scope.IntroOptions = {
-                        steps: scope.IntroSteps,
+                        steps: scope.introSteps,
                         showStepNumbers: false,
                         showBullets: true,
                         exitOnOverlayClick: true,

@@ -295,7 +295,7 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                 });
             };
 
-            $scope.IntroSteps = [
+            $scope.introSteps = [
                 {
                     element: '#step1',
                     intro: "<p>This is a table of all logs among the application. Each column could be sorted by clicking on column name " +

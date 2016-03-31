@@ -49,7 +49,7 @@ angular.module('mifortTimesheet.company', ['ngRoute'])
             companyService.getCompany($scope.user.companyId).success(function(company) {
                 $scope.company = company;
                 $scope.company.emails = [];
-                $scope.IntroSteps.push({
+                $scope.introSteps.push({
                     element: '#step4',
                     intro: "<p>Table with all invited employees and roles.</p>" +
                     "<p><strong>Name</strong> column shows employee\'s Name if he already logged in and shared google account data, otherwise his email will be shown instead of name.</p>" +
@@ -68,7 +68,7 @@ angular.module('mifortTimesheet.company', ['ngRoute'])
             });
         }
 
-        $scope.IntroSteps = [
+        $scope.introSteps = [
             {
                 element: '#step1',
                 intro: "<p>Use this field to change the company name.</p>",

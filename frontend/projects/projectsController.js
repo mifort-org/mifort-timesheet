@@ -28,7 +28,50 @@ angular.module('mifortTimesheet.projects', ['ngRoute'])
     .controller('projectsController', ['$scope', 'projectsService', 'preferences', 'topPanelService', 'Notification', '$timeout',
         function($scope, projectsService, preferences, topPanelService, Notification, $timeout) {
             var companyId = preferences.get('user').companyId,
-                timer = null;
+                timer = null,
+                basicSteps = [
+                    {
+                        element: '#step1',
+                        intro: "<p>This section contains a company project. </p>" +
+                        "<p>Each project table has three columns: </p>" +
+                        "<ul class=\"dotted-list\"><li><strong>Assignment</strong> - contains the dropdown list with all possible assignments for current company (i.e. Developer, QA, Manager, Team Lead etc.). </li>" +
+                        "<li><strong>Workload</strong> - set\'s the employee\'s default workload for the current project. </li>" +
+                        "<li><strong>Person</strong> - contains the search/dropdown with all company\'s employees. Each assigned employee could be deassigned by pressing the red cross button next to that employees table row. " +
+                        "Each employee could be assigned on any project any number of times with any roles.</li></ul>",
+                        position: 'bottom'
+                    },
+                    {
+                        element: '#step2',
+                        intro: "<p>Pressing the blue Diamond button as well as \"<strong>Add Project</strong>\" link at the top of page will create a new empty project.</p>",
+                        position: 'left'
+                    },
+                    {
+                        element: '#step4',
+                        intro: "<p>Click on the Project Name will allow you to change it.</p>" +
+                        "<p>Pressing the arrow icon will minimize or maximize the project.</p>",
+                        position: 'right'
+                    }
+                ],
+                activeProjectsIntroSteps = [
+                    {
+                        element: '#step3',
+                        intro: "<p>Pressing the \"archive\" button will close and archive the project and make it inactive," +
+                        "so user will not be able to log time on this project.</p>",
+                        position: 'left'
+                    },
+                    {
+                        element: '#step5',
+                        intro: "<p>Pressing the \"dearchive\" button will dearchive the project and make it active back," +
+                        "so user will be able to log time on this project.</p>",
+                        position: 'left'
+                    },
+                    {
+                        element: '#step6',
+                        intro: "<p>Pressing the \"remove\" button will delete archived project completely. " +
+                        "All timesheets with logged time for deleted projects will not be deleted.</p>",
+                        position: 'left'
+                    }
+                ];
 
             $scope.showActiveProjects = true;
 
@@ -61,7 +104,7 @@ angular.module('mifortTimesheet.projects', ['ngRoute'])
                 }
             });
 
-            $scope.IntroSteps = [
+            $scope.introSteps = [
                 {
                     element: '#step1',
                     intro: "<p>This section contains a company project. </p>" +
@@ -79,8 +122,12 @@ angular.module('mifortTimesheet.projects', ['ngRoute'])
                 },
                 {
                     element: '#step3',
-                    intro: "<p>Pressing the cross button will close and archive the project and make it inactive." +
-                    "IntroSteps and user will not be able to log time on this project.</p>",
+                    intro: "<p>Pressing the \"archive\" button will close and archive the project and make it inactive," +
+                    "so user will not be able to log time on this project.</p>" +
+                    "<p>Pressing the \"dearchive\" button will dearchive the project and make it active back," +
+                    "so user will be able to log time on this project.</p>" +
+                    "<p>Pressing the \"remove\" button will delete archived project completely. " +
+                    "All timesheets with logged time for deleted projects will not be deleted.</p>",
                     position: 'left'
                 },
                 {

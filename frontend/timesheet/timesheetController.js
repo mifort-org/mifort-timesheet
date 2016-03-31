@@ -88,7 +88,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                 });
             };
 
-            $scope.IntroSteps = [
+            $scope.introSteps = [
                 {
                     element: '#step1',
                     intro: "<p>Click on arrow will minimize/maximize the section</p>",
