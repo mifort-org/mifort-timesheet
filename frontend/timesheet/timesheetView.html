@@ -21,7 +21,7 @@
             {{project.name}}
         </a>
 
-        <span class="timesheet-total" ng-bind-html="totalLogged(project.periods[project.currentPeriodIndex].timesheet, projects)">0/0</span>
+        <span class="timesheet-total" ng-bind-html="totalLogged(project.periods[project.currentPeriodIndex].timesheet, projects)">0h/0h</span>
     </h2>
 
     <div class="timesheet-controls clearfix" id="{{$first ? 'step2' : ''}}">
@@ -76,7 +76,7 @@
                 </td>
 
                 <td>
-                    <input class="timesheet-hours form-control" type="number" ng-model="log.time" placeholder="{{log.timePlaceholder}}"/>
+                    <input class="timesheet-hours form-control" type="number" ng-model="log.time" placeholder="{{log.timePlaceholder}}h"/>
                 </td>
 
                 <td>

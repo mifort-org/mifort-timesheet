@@ -377,7 +377,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                     });
                 }
 
-                return totalLogged + '/' + totalExpected;
+                return totalLogged + 'h/' + totalExpected + 'h';
             };
 
             $scope.getPeriodLabel = function(period) {
