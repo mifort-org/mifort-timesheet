@@ -16,7 +16,7 @@
  * @author Andrew Voitov
  */
 
- //Default roles
+ //Default roles in project
  exports.DEFAULT_AVAILABLE_POSITIONS = [
      'CEO',
      'CTO',
@@ -31,3 +31,11 @@
      'Teamlead',
      'UX'
  ];
+
+//Default application roles
+ var OWNER_ROLE = 'Owner';
+ var MANAGER_ROLE = 'Manager';
+ var EMPLOYEE_ROLE = 'Employee';
+ exports.OWNER_ROLE = OWNER_ROLE;
+ exports.MANAGER_ROLE = MANAGER_ROLE;
+ exports.EMPLOYEE_ROLE = EMPLOYEE_ROLE;

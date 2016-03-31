@@ -19,12 +19,11 @@
 var passport = require('passport');
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var ObjectID = require('mongodb').ObjectID;
-var path = require('path');
 var log = require('./logger');
 
 var users = require('../user');
 var registration = require('./registration');
-var authorization = require('./authorization');
+var constants = require('./config_constants');
 
 var GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || "YOUR_GOOGLE_CLIENT_ID";
 var GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET || "YOUR_GOOGLE_CLIENT_SECRET";
@@ -76,7 +75,7 @@ passport.use(new GoogleStrategy({
                             email: email,
                             external: profile,
                             displayName: profile.displayName,
-                            role: authorization.OWNER_ROLE
+                            role: constants.OWNER_ROLE
                         };
                         createUser(user, done);
                     }
@@ -123,12 +122,12 @@ function logout(req, res) {
     res.redirect(loginRedirect);
 }
 
-function createUser(user, done) {
-    registration.createUser(user, function(err, savedUser) {
+function createUser(user, callback) {
+    users.save(user, function(err, savedUser){
         if(err) {
-            return done(err, false);
+            callback(err, savedUser);
         } else {
-            return done(null, savedUser);
+            callback(null, savedUser);
         }
     });
-}
+};

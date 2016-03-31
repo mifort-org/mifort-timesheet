@@ -12,7 +12,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  * @author Andrew Voitov
  */
 
@@ -20,21 +20,11 @@ var users = require('../user');
 var projects = require('../project');
 var log = require('./logger');
 
-exports.createUser = function(user, callback) {
-    users.save(user, function(err, savedUser){
-        if(err) {
-            callback(err, savedUser);
-        } else {
-            callback(null, savedUser);
-        }
-    });
-};
-
 exports.createDefaultProject = function(company, user) {
     var project = projects.generateDefaultProject(company);
     projects.saveInDb(project, function(err, savedProject) {
         if(err) {
-            log.error('Cannot save project!', {error: err}); 
+            log.error('Cannot save project!', {error: err});
         } else {
             log.info('Defaul project is created!');
             if(user) {
@@ -45,7 +35,7 @@ exports.createDefaultProject = function(company, user) {
                 }];
                 user.companyId = company._id;
                 users.save(user, function(err, updatedUser) {
-                    log.info('Default assignment is added! User ID: %s', 
+                    log.info('Default assignment is added! User ID: %s',
                         updatedUser._id.toHexString());
                 });
             }
