@@ -298,7 +298,7 @@ function isTimesheet(values) {
             if(val.time){
                 isValid = isValid
                     && (typeof val.time === 'number')
-                    && val.time <= 24;
+                    && (0 <= val.time && val.time <= 24);
             }
             if(val.role){
                 isValid = isValid
