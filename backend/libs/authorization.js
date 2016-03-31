@@ -308,7 +308,7 @@ exports.authorizeGetCompanyById = function(req, res, next) {
 exports.authorizeGetFilters = function(req, res, next) {
     var user = req.user;
     var companyId = utils.getCompanyId(req);
-    if(isManagerForCompany(user, companyId)) {
+    if(companyId.equals(user.companyId)) {
         next();
     } else {
         send403(res);
@@ -317,9 +317,28 @@ exports.authorizeGetFilters = function(req, res, next) {
 
 exports.authorizeCommonReport = function(req, res, next) {
     var user = req.user;
-    var filters = req.body;
-    if(isManagerForCompany(user, filters.companyId)) {
-        next();
+    var filtersObj = req.body;
+    if(filtersObj.companyId.equals(user.companyId)) {
+        if(isManagerForCompany(user, filtersObj.companyId)) {
+            next();
+        } else {
+            if(Array.isArray(filtersObj.filters) && filtersObj.filters.length) {
+                var userNameFilter = {value: []};
+                filtersObj.filters.forEach(function(filter) {
+                    if(filter.field === 'userName') {
+                        userNameFilter = filter;
+                    }
+                });
+                if(userNameFilter.value.indexOf(user.displayName) > -1
+                        && userNameFilter.value.length == 1) {
+                    next();
+                } else {
+                    send403(res);
+                }
+            } else {
+                send403(res);
+            }
+        }
     } else {
         send403(res);
     }
