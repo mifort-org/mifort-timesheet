@@ -45,7 +45,7 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                         width: 150,
                         enableColumnResizing: true,
                         enableColumnMenu: false,
-                        filterHeaderTemplate: '<div ng-if="::!$scope.userIsManager" class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" col-name="userName" col-title="User Name"></span></div>'
+                        filterHeaderTemplate: '<div ng-if="$parent.grid.appScope.userIsManager" class="ui-grid-filter-container">{{userIsManager}}<span dropdown-filter class="dropdown-filter" col-name="userName" col-title="User Name"></span></div>'
                     },
                     projectName: {
                         field: 'projectName',
@@ -63,7 +63,7 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                     },
                     time: {
                         field: 'time',
-                        width: 80,
+                        width: 81,
                         enableColumnResizing: true,
                         enableColumnMenu: false,
                         enableFiltering: false,
@@ -91,6 +91,9 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
 
             if(userRole == 'owner' || userRole == 'manager'){
                 $scope.userIsManager = true;
+            }
+            else{
+                $scope.userIsManager = false;
             }
 
             $scope.getAggregatedComments = function(comments) {
