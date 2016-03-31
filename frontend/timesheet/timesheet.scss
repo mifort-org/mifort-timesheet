@@ -87,6 +87,14 @@
 
         }
     }
+
+    .loading-indicator{
+        display: flex;
+        padding: 0;
+        //margin-top: -10px;
+        flex-direction: column;
+        justify-content: center;
+    }
 }
 
 .timesheet-controls{

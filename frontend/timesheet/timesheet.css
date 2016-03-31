@@ -50,6 +50,11 @@
     .timesheet .table .form-control {
       font-size: 1.8rem;
       color: #000; }
+  .timesheet .loading-indicator {
+    display: flex;
+    padding: 0;
+    flex-direction: column;
+    justify-content: center; }
 
 .timesheet-controls {
   position: absolute;

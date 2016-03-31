@@ -41,7 +41,7 @@
             </tr>
             </thead>
 
-            <tbody>
+            <tbody ng-show="!project.loading">
             <tr ng-if="project.currentPeriodIndex >= 0"
                 ng-repeat="log in project.periods[project.currentPeriodIndex].timesheet track by $index"
                 ng-style="{background: log.color}"
@@ -85,6 +85,8 @@
             </tr>
             </tbody>
         </table>
+
+        <div class="loading-indicator" ng-show="project.loading" style="min-height: {{lastPeriodRecords * 52}}px">Loading...</div>
     </div>
 </div>
 

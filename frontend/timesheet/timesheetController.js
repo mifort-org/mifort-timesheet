@@ -122,6 +122,8 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                 project.periods[periodIndex].timesheet = [];
                 project.periods[periodIndex].userTimesheets = [];
 
+                project.loading = true;
+
                 timesheetService.getTimesheet(user._id, project._id, startDate, endDate).success(function(dataTimesheet) {
                     project.periods[periodIndex].userTimesheets.push.apply(project.periods[periodIndex].userTimesheets, dataTimesheet.timesheet);
                 }).then(function() {
@@ -131,6 +133,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                     applyUserTimesheets(project, periodIndex);
                     applyProjectDefaultValues(project, periodIndex);
                     initWatchers(projectIndex, periodIndex);
+                    project.loading = false;
                 });
             }
 
@@ -307,6 +310,8 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
             };
 
             $scope.showPreviousPeriod = function(project) {
+                $scope.lastPeriodRecords = project.periods[project.currentPeriodIndex].timesheet.length;
+
                 if(project.currentPeriodIndex){
                     project.currentPeriodIndex--;
 
@@ -317,6 +322,8 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
             };
 
             $scope.showNextPeriod = function(project) {
+                $scope.lastPeriodRecords = project.periods[project.currentPeriodIndex].timesheet.length;
+
                 if(project.currentPeriodIndex < project.periods.length - 1){
                     project.currentPeriodIndex++;
 
