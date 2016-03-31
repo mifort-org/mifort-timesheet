@@ -151,7 +151,7 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                     }
                 },
                 {
-                    title: 'User',
+                    title: 'Employee',
                     active: false,
                     setSettings: function() {
                         $scope.reportSettings.groupBy = ['userName'];
@@ -159,7 +159,7 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                     }
                 },
                 {
-                    title: 'Project + User total',
+                    title: 'Project + Employee total',
                     active: false,
                     setSettings: function() {
                         $scope.reportSettings.groupBy = ['userName', 'projectName'];

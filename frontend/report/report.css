@@ -266,7 +266,7 @@
     .aggregation-wrapper .aggregation-options li {
       display: inline-block; }
     .aggregation-wrapper .aggregation-options a {
-      padding: 15px;
+      padding: 15px 10px;
       color: #000;
       text-decoration: none; }
       .aggregation-wrapper .aggregation-options a:hover {
