@@ -13,5 +13,5 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-
-<input class="timesheet-hours form-control" type="text" ng-model="log.time" min="0" max="24" placeholder="{{log.timePlaceholder}}h"/>
+ 
+<input class="timesheet-hours form-control" type="text" ng-model="log.time" min="0" max="24" placeholder="{{log.timePlaceholder ? log.timePlaceholder + 'h' : ''}}"/>
