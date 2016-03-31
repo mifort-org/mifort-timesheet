@@ -53,7 +53,8 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                         timesheetService.getProject(assignment).success(function(project) {
                             if(project && project.active){
                                 project.assignments = _.where(user.assignments, {projectId: project._id});
-                                //$scope.projects.push(project);
+                                project.loading = true;
+
                                 $scope.projects.splice(index, 0, project);
                             }
 
@@ -133,7 +134,9 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                     applyUserTimesheets(project, periodIndex);
                     applyProjectDefaultValues(project, periodIndex);
                     initWatchers(projectIndex, periodIndex);
-                    project.loading = false;
+                    $timeout(function() {
+                        project.loading = false;
+                    });
                 });
             }
 
@@ -237,7 +240,16 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
 
                 $scope.$watch('projects[' + projectIndex + '].periods[' + periodIndex + '].timesheet', function(newValue, oldValue) {
                     if(newValue != oldValue && newValue.length >= oldValue.length){
-                        var timesheetToSave = _.map(newValue, _.clone);
+                        var timesheetToSave = angular.copy(newValue);
+
+                        //angular.copy(newValue)
+                        timesheetToSave.map(function(log) {
+                            if(log.time !== ''){
+                                log.time = +log.time;
+                            }
+
+                            return log;
+                        });
 
                         if(timer){
                             $timeout.cancel(timer);
@@ -368,17 +380,29 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                 if(timesheet){
                     timesheet.forEach(function(log) {
                         if(log.timePlaceholder){
-                            totalExpected += log.timePlaceholder;
+                            totalExpected += formatTime(log.timePlaceholder);
                         }
 
-                        if(log.time){
-                            totalLogged += log.time;
-                        }
+                        totalLogged += formatTime(log.time);
                     });
                 }
 
                 return totalLogged + 'h/' + totalExpected + 'h';
             };
+
+            function formatTime(time){
+                if(time && angular.isNumber(time)){
+                    time = time;
+                }
+                else if(time && time.slice(-1) == 'h'){
+                    time = time.slice(0, -1);
+                }
+                else{
+                    time = +time;
+                }
+
+                return time;
+            }
 
             $scope.getPeriodLabel = function(period) {
                 var periodStart,

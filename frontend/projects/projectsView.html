@@ -96,7 +96,8 @@
                 </td>
 
                 <td>
-                    <input type="number" ng-model="assignment.workload" ng-change="saveAssignment(project, assignedEmployee)"/>
+                    <time-mask assigned-employee="assignedEmployee"></time-mask>
+                    <!--<input type="number" ng-model="assignment.workload" ng-change="saveAssignment(project, assignedEmployee)"/>-->
                     <a href="" class="remove-assignment" ng-click="removeAssignment(project, assignedEmployee, $index)">&times;</a>
                 </td>
             </tr>

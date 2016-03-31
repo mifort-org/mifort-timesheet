@@ -96,6 +96,7 @@ angular.module('mifortTimesheet.projects', ['ngRoute'])
                             project.assignedEmployers = assignedEmployers || [];
                             project.isCollapsed = !project.active;
                             project.projectEdit = false;
+                            project.loading = false;
                         });
                     });
                 }
