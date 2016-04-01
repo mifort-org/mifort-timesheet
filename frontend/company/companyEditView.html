@@ -27,7 +27,7 @@
                     <label for="step1">Company Name:</label>
                 </td>
                 <td>
-                    <input id="step1" ng-model="company.name" required type="text" placeholder="My Company"/>
+                    <input id="step1" ng-model="company.name" ng-change="saveCompany()" ng-model-options='{ debounce: 500 }' required type="text" placeholder="My Company"/>
                 </td>
             </tr>
 
@@ -82,15 +82,6 @@
                             </td>
                         </tr>
                     </table>
-                </td>
-            </tr>
-
-            <tr>
-                <td></td>
-                <td class="button-holder">
-                    <button type="submit" class="primary-button large-button">
-                        Save
-                    </button>
                 </td>
             </tr>
             </tbody>

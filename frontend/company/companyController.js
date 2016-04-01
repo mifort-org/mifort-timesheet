@@ -30,8 +30,8 @@ angular.module('mifortTimesheet.company', ['ngRoute'])
         });
     }])
 
-    .controller('companyController', ['$scope', '$location', 'companyService', 'preferences', '$rootScope',
-        function ($scope, $location, companyService, preferences, $rootScope) {
+    .controller('companyController', ['$scope', '$location', 'companyService', 'preferences', '$rootScope', 'Notification',
+        function ($scope, $location, companyService, preferences, $rootScope, Notification) {
         $scope.user = preferences.get('user');
 
         $scope.company = {
@@ -97,8 +97,8 @@ angular.module('mifortTimesheet.company', ['ngRoute'])
 
         $scope.saveCompany = function () {
             companyService.saveCompany($scope.company).success(function (data) {
+                Notification.success('Changes saved');
                 $rootScope.$broadcast('companyNameChanged', data.name);
-                $location.path('/calendar');
             });
         };
 
@@ -106,19 +106,24 @@ angular.module('mifortTimesheet.company', ['ngRoute'])
             companyService.saveCompany($scope.company).success(function () {
                 getEmployees();
                 $scope.company.emails = [];
+                Notification.success('Changes saved');
             });
         };
 
         $scope.changeRole = function(employee, role) {
             employee. role = role;
-            companyService.changeRole(employee);
+            companyService.changeRole(employee).success(function() {
+                Notification.success('Changes saved');
+            });
         };
 
         $scope.removeEmployee = function(employee) {
             $scope.companyEmployees = _.filter($scope.companyEmployees, function(companyEmployee){
                 return companyEmployee._id != employee._id;
             });
-            companyService.removeEmployee(employee._id);
+            companyService.removeEmployee(employee._id).success(function() {
+                Notification.success('Changes saved');
+            });;
         };
 
         $scope.$watch('company.emails', function (newValue) {
