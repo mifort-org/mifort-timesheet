@@ -96,8 +96,6 @@
 
     <!--angular bootstrap popover unintentional close solution-->
     <div ng-repeat="n in range(dynamicPopover.projectFilter.value.length) track by $index" class="filters-container">
-        <hr ng-if="$first && hasFilter()"/>
-
         <div ng-show="dynamicPopover.projectFilter.value[$index].isChecked">
             <input type="checkbox" id="filter-value-{{$index}}" ng-model="dynamicPopover.projectFilter.value[$index].isChecked"/>
             <label for="filtered-value-{{$index}}">
@@ -106,7 +104,9 @@
             </label>
         </div>
     </div>
-    <hr/>
+
+    <hr ng-if="hasFilter()"/>
+    <!--<hr/>-->
 
     <!--angular bootstrap popover unintentional close solution-->
     <div ng-repeat="n in dynamicPopover.projectFilter.value track by $index" class="filters-container">
