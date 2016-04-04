@@ -42,6 +42,7 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                     },
                     userName: {
                         field: 'userName',
+                        displayName: 'Employee Name',
                         width: 150,
                         enableColumnResizing: true,
                         enableColumnMenu: false,
