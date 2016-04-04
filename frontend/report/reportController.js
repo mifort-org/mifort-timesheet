@@ -33,7 +33,7 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                 maxVisiblePages = 5,
                 columns = {
                     date: {
-                        field: 'Date',
+                        field: 'date',
                         width: 100,
                         enableColumnResizing: true,
                         enableColumnMenu: false,
@@ -41,20 +41,20 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                         filterHeaderTemplate: '<div class="ui-grid-filter-container"><span report-date-picker id="step2" class="report-filter"></span></div>'
                     },
                     userName: {
-                        field: 'Employee Name',
+                        field: 'userName',
                         width: 150,
                         enableColumnResizing: true,
                         enableColumnMenu: false,
                         filterHeaderTemplate: '<div ng-if="$parent.grid.appScope.userIsManager" class="ui-grid-filter-container">{{userIsManager}}<span dropdown-filter class="dropdown-filter" col-name="employeeName" col-title="Employee Name"></span></div>'
                     },
                     projectName: {
-                        field: 'Project Name',
+                        field: 'projectName',
                         enableColumnResizing: true,
                         enableColumnMenu: false,
                         filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" col-name="projectName" col-title="Project Name"></span></div>'
                     },
                     role: {
-                        field: 'Role',
+                        field: 'role',
                         width: 140,
                         enableColumnResizing: true,
                         enableColumnMenu: false,
@@ -62,7 +62,7 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                         filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" col-name="role" col-title="Role"></span></div>'
                     },
                     time: {
-                        field: 'Time',
+                        field: 'time',
                         width: 81,
                         enableColumnResizing: true,
                         enableColumnMenu: false,
@@ -70,7 +70,7 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                         filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" col-name="time" col-title="Time"></span></div>'
                     },
                     comment: {
-                        field: 'Comment',
+                        field: 'comment',
                         enableColumnResizing: true,
                         enableColumnMenu: false,
                         enableSorting: false,
@@ -79,7 +79,7 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                         cellTemplate: '<span cutted-comment></span>'
                     },
                     comments: {
-                        field: 'Comments',
+                        field: 'comments',
                         enableColumnResizing: true,
                         enableColumnMenu: false,
                         enableSorting: false,
