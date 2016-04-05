@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+@import "../common/sass/variables";
+
+
 .projects-controls{
     margin: -40px 0 20px;
     text-align: right;
@@ -28,6 +31,12 @@
         &.active-projects{
             background: url("../common/images/icons.png") no-repeat #fff 12px -2313px;
         }
+    }
+}
+
+@media screen and (max-width: $tablet-breakpoint) {
+    .projects-controls{
+        margin-top: -10px;
     }
 }
 

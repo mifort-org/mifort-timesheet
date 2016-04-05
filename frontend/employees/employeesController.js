@@ -36,6 +36,8 @@ angular.module('mifortTimesheet.employees', ['ngRoute'])
                     if(employee.external && employee.external.photos.length){
                         employee.photo = employee.external.photos[0].value.split("?")[0] + '?sz=132';
                     }
+
+                    employee.isCollapsed = true;
                 });
 
                 $scope.employees = employees;
