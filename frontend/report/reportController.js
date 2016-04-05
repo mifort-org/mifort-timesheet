@@ -46,7 +46,7 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                         width: 150,
                         enableColumnResizing: true,
                         enableColumnMenu: false,
-                        filterHeaderTemplate: '<div ng-if="$parent.grid.appScope.userIsManager" class="ui-grid-filter-container">{{userIsManager}}<span dropdown-filter class="dropdown-filter" col-name="employeeName" col-title="Employee Name"></span></div>'
+                        filterHeaderTemplate: '<div ng-if="$parent.grid.appScope.userIsManager" class="ui-grid-filter-container">{{userIsManager}}<span dropdown-filter class="dropdown-filter" col-name="userName" col-title="Employee Name"></span></div>'
                     },
                     projectName: {
                         field: 'projectName',
@@ -242,11 +242,11 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
             $scope.$watch('timesheetGridOptions.reportFilters', function(newValue, oldValue) {
                 if(oldValue && newValue && newValue != oldValue){
                     //$scope.reportSettings.filters = [];
-
-                    var dateFilter = _.where(newValue, {field: 'date'})[0];
+                    var dateFilter = _.where(newValue, {field: 'date'})[0],
+                        usedFilters = $scope.reportSettings.filters;
 
                     if(dateFilter){
-                        $scope.reportSettings.filters.push(dateFilter)
+                        usedFilters.push(dateFilter)
                     }
 
                     newValue.forEach(function(filter) {
@@ -260,7 +260,14 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                         });
 
                         if(filterToPush.value.length){
-                            $scope.reportSettings.filters.push(filterToPush);
+                            usedFilters.push(filterToPush);
+                        }
+                        else{
+                            var usedFilterIndex = _.findIndex(usedFilters, {field: filter.field});
+
+                            if(usedFilterIndex !== -1){
+                                usedFilters.splice(usedFilterIndex, 1);
+                            }
                         }
                     });
 
