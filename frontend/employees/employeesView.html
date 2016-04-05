@@ -40,7 +40,7 @@
 </svg>
 
 
-<div class="employee-card employee-search">
+<form class="employee-card employee-search">
     <svg class="employee-image-border">
         <polygon class="hex" points="65 1, 124.5 37, 124.5 97, 65 131, 5 97, 5 37"
                  style="fill: transparent; stroke: #c5c5c5; stroke-width: 6"></polygon>
@@ -89,11 +89,11 @@
             Clear Search
         </button>
 
-        <button type="button" class="primary-button" ng-click="searchEmployees(employeeSearch)">
+        <button type="submit" class="primary-button" ng-click="searchEmployees(employeeSearch)">
             Search
         </button>
     </p>
-</div>
+</form>
 
 
 <div class="employee-card" ng-repeat="employee in employees | filter:activeSearch track by $index">
