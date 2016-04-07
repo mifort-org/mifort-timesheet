@@ -244,7 +244,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
 
                         //angular.copy(newValue)
                         timesheetToSave.map(function(log) {
-                            if(log.time !== ''){
+                            if(log.time !== '' && log.time !== null){
                                 log.time = +log.time;
                             }
 
