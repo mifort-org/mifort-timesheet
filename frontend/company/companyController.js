@@ -123,7 +123,7 @@ angular.module('mifortTimesheet.company', ['ngRoute'])
             });
             companyService.removeEmployee(employee._id).success(function() {
                 Notification.success('Changes saved');
-            });;
+            });
         };
 
         $scope.$watch('company.emails', function (newValue) {
