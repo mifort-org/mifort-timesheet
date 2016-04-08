@@ -31,64 +31,9 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                 userRole = preferences.get('user').role.toLowerCase(),
                 headerHeight = 38,
                 maxVisiblePages = 5,
-                columns = {
-                    date: {
-                        field: 'date',
-                        width: 100,
-                        enableColumnResizing: true,
-                        enableColumnMenu: false,
-                        enableFiltering: false,
-                        filterHeaderTemplate: '<div class="ui-grid-filter-container"><span report-date-picker id="step2" class="report-filter"></span></div>'
-                    },
-                    userName: {
-                        field: 'userName',
-                        displayName: 'Employee Name',
-                        width: 150,
-                        enableColumnResizing: true,
-                        enableColumnMenu: false,
-                        filterHeaderTemplate: '<div ng-if="$parent.grid.appScope.userIsManager" class="ui-grid-filter-container">{{userIsManager}}<span dropdown-filter class="dropdown-filter" col-name="userName" col-title="Employee Name"></span></div>'
-                    },
-                    projectName: {
-                        field: 'projectName',
-                        enableColumnResizing: true,
-                        enableColumnMenu: false,
-                        filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" col-name="projectName" col-title="Project Name"></span></div>'
-                    },
-                    role: {
-                        field: 'role',
-                        width: 140,
-                        enableColumnResizing: true,
-                        enableColumnMenu: false,
-                        cellTemplate: '<div class="ui-grid-cell-contents">{{row.entity.role}}</div>',
-                        filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" col-name="role" col-title="Role"></span></div>'
-                    },
-                    time: {
-                        field: 'time',
-                        width: 81,
-                        enableColumnResizing: true,
-                        enableColumnMenu: false,
-                        enableFiltering: false,
-                        filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" col-name="time" col-title="Time"></span></div>'
-                    },
-                    comment: {
-                        field: 'comment',
-                        enableColumnResizing: true,
-                        enableColumnMenu: false,
-                        enableSorting: false,
-                        enableFiltering: false,
-                        filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" col-name="time" col-title="Comment"></span></div>',
-                        cellTemplate: '<span cutted-comment></span>'
-                    },
-                    comments: {
-                        field: 'comments',
-                        enableColumnResizing: true,
-                        enableColumnMenu: false,
-                        enableSorting: false,
-                        enableFiltering: false,
-                        filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" col-name="time" col-title="Comments"></span></div>',
-                        cellTemplate: '<span cutted-comment></span>'
-                    }
-                };
+                columns = reportService.columns;
+
+            $scope.introSteps = reportService.introSteps;
 
             if(userRole == 'owner' || userRole == 'manager'){
                 $scope.userIsManager = true;
@@ -144,15 +89,17 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                     setSettings: function() {
                         $scope.reportSettings.groupBy = [];
                         $scope.reportSettings.isCommentNeeded = false;
-                    }
+                    },
+                    columnsOrder: ['date', 'userName', 'projectName', 'role', 'time', 'comment']
                 },
                 {
-                    title: 'Project total',
+                    title: 'Project',
                     active: false,
                     setSettings: function() {
                         $scope.reportSettings.groupBy = ['projectName'];
                         $scope.reportSettings.isCommentNeeded = false;
-                    }
+                    },
+                    columnsOrder: ['projectName', 'time']
                 },
                 {
                     title: 'Employee',
@@ -160,15 +107,17 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                     setSettings: function() {
                         $scope.reportSettings.groupBy = ['userName'];
                         $scope.reportSettings.isCommentNeeded = true;
-                    }
+                    },
+                    columnsOrder: ['userName', 'time', 'comments']
                 },
                 {
-                    title: 'Project + Employee total',
+                    title: 'Project & Employee',
                     active: false,
                     setSettings: function() {
                         $scope.reportSettings.groupBy = ['userName', 'projectName'];
                         $scope.reportSettings.isCommentNeeded = true;
-                    }
+                    },
+                    columnsOrder: ['projectName', 'userName', 'time', 'comments']
                 }
             ];
 
@@ -277,15 +226,20 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
 
             $scope.getReport = function() {
                 reportService.getReport($scope.reportSettings).success(function(data, status, headers) {
+                    var columnsOrder = $scope.reports[_.findIndex($scope.reports, {active: true})].columnsOrder;
+
                     $scope.reportData = data;
 
                     //add columns to grid
                     if(data.length){
                         $scope.timesheetGridOptions.columnDefs = [];
+                        $scope.timesheetGridOptions.columnDefs.length = columnsOrder.length;
 
                         for(var column in data[0]){
                             if(columns[column]){
-                                $scope.timesheetGridOptions.columnDefs.push(columns[column]);
+                                var indexToPush = _.indexOf(columnsOrder, column);
+
+                                $scope.timesheetGridOptions.columnDefs[indexToPush] = columns[column];
                             }
                         }
                     }
@@ -305,31 +259,6 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                     });
                 });
             };
-
-            $scope.introSteps = [
-                {
-                    element: '#step1',
-                    intro: "<p>This is a table of all logs among the application. Each column could be sorted by clicking on column name " +
-                    "and each of them has filter that could be opened on the filter button next to column name.</p>" +
-                    "<p>User, Project and Assignment columns has dropdown filter with the quick search field and checkboxes to choose the filtered options.</p>",
-                    position: 'bottom'
-                },
-                {
-                    element: '#step2',
-                    intro: "<p>Switch tabs to change the column to be aggregated.</p>",
-                    position: 'bottom'
-                },
-                {
-                    element: '#step3',
-                    intro: "<p>Use aggregation field to set the period of time to show.</p>",
-                    position: 'bottom'
-                },
-                {
-                    element: '#print',
-                    intro: "<p>You could print or export the report by pressing the top panel buttons Print/CSV.</p>",
-                    position: 'left'
-                }
-            ];
 
             $scope.openPage = function(pageIndex) {
                 $scope.reportSettings.page = pageIndex;
