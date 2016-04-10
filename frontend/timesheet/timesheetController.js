@@ -89,32 +89,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                 });
             };
 
-            $scope.introSteps = [
-                {
-                    element: '#step1',
-                    intro: "<p>Click on arrow will minimize/maximize the section</p>",
-                    position: 'bottom'
-                },
-                {
-                    element: '#step2',
-                    intro: "<p>Use periods switch arrows (next and previous) to switch the period</p>",
-                    position: 'left'
-                },
-                {
-                    element: '#step3',
-                    intro: "<p>Table of logs has four columns:" +
-                    "<ul class=\"dotted" +
-                    "gn\"><li>Date - is not editable but you can add several logs to the current date by pressing the blue plus icon next to Date field." +
-                    "New row for log created for current date will have the red minus icon that will delete the log on click</li>" +
-                    "<li>Role - dropdown with your roles of this project. If it is only one role it is selected by default." +
-                    "There is no possibility to log time with empty role.</li>" +
-                    "<li>Time - numeric input where you log." +
-                    "Empty input shows placeholder with minimum of your workload (personal workload how much time this person works per day) and project assignment workload.</li>" +
-                    "<li>Comment - input where you write detailed description of tasks which you done at logged time.</li></ul>" +
-                    "<p>Each day will may have a background color and workload according to Timesheet Calendar option created by Owner/HR/Manager. </p>",
-                    position: 'bottom'
-                }
-            ];
+            $scope.introSteps = timesheetService.introSteps;
 
             function initPeriod(project, periodIndex) {
                 var startDate = project.periods[periodIndex].start,
@@ -417,35 +392,4 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
 
                 return periodStart + ' - ' + periodEnd;
             };
-
-            $scope.autofillNext = function(log) {
-                var project = _.find($scope.projects, {_id: log.projectId}),
-                    timesheet = project.periods[project.currentPeriodIndex].timesheet,
-                    logIndex = _.findIndex(timesheet, {_id: log._id}),
-                    nextLog,
-                    timesheetLength = timesheet.length;
-
-                for(logIndex; logIndex < timesheetLength; logIndex++){
-                    if(!nextLog && timesheet[logIndex] && timesheet[logIndex] !== log.comment){
-                        nextLog = timesheet[logIndex + 1];
-                    }
-                }
-
-                if(nextLog){
-                    nextLog.comment = log.comment;
-                }
-
-                $scope.$apply();
-            };
-
-            $scope.autofillPrev = function(log) {
-                var project = _.find($scope.projects, {_id: log.projectId}),
-                    timesheet = project.periods[project.currentPeriodIndex].timesheet,
-                    logIndex = _.findIndex(timesheet, {_id: log._id}),
-                    prevLog = timesheet[logIndex - 1];
-
-                prevLog.comment = log.comment;
-                $scope.$apply();
-            };
-
         }]);
