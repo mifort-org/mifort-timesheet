@@ -416,6 +416,36 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                 }
 
                 return periodStart + ' - ' + periodEnd;
-            }
+            };
+
+            $scope.autofillNext = function(log) {
+                var project = _.find($scope.projects, {_id: log.projectId}),
+                    timesheet = project.periods[project.currentPeriodIndex].timesheet,
+                    logIndex = _.findIndex(timesheet, {_id: log._id}),
+                    nextLog,
+                    timesheetLength = timesheet.length;
+
+                for(logIndex; logIndex < timesheetLength; logIndex++){
+                    if(!nextLog && timesheet[logIndex] && timesheet[logIndex] !== log.comment){
+                        nextLog = timesheet[logIndex + 1];
+                    }
+                }
+
+                if(nextLog){
+                    nextLog.comment = log.comment;
+                }
+
+                $scope.$apply();
+            };
+
+            $scope.autofillPrev = function(log) {
+                var project = _.find($scope.projects, {_id: log.projectId}),
+                    timesheet = project.periods[project.currentPeriodIndex].timesheet,
+                    logIndex = _.findIndex(timesheet, {_id: log._id}),
+                    prevLog = timesheet[logIndex - 1];
+
+                prevLog.comment = log.comment;
+                $scope.$apply();
+            };
 
         }]);
