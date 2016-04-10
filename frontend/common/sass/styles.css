@@ -5896,16 +5896,22 @@ html {
 body {
   line-height: 1; }
   body .ui-notification {
+    width: auto;
     padding: 5px 10px 5px 45px;
     font-size: 1.4rem;
     border-left: 6px solid #74b65f; }
+    body .ui-notification.success, body .ui-notification.error {
+      color: #727272; }
     body .ui-notification.success {
-      color: #727272;
       background: #fff url("../images/icons.png") 20px -1386px no-repeat; }
+    body .ui-notification.error {
+      border-color: #d24a43;
+      background: #fff url("../images/icons.png") 20px -1426px no-repeat; }
     body .ui-notification div:after {
       float: right;
       width: 20px;
       height: 20px;
+      margin-left: 15px;
       content: "";
       background: url("../images/icons.png") 1px -1479px no-repeat; }
 
