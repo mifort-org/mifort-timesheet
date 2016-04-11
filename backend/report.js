@@ -268,7 +268,7 @@ function convertFiltersToQuery(filters, projectIds) {
     //skip all empty timelogs
     if(!query.time) {
         query.$or = [
-            {comment: {$ne : null}}, 
+            {comment: {$ne : null}},
             {comment: {$ne : ''}},
             {time: {$gt: 0}}
         ];
@@ -360,14 +360,11 @@ function fillUserNameValues(companyId, filterValues, next, callback) {
 function fillProjectNameValues(companyId, filterValues, next, callback) {
     var projects = db.projectCollection();
     projects.find({companyId: companyId},
-                  {name: 1})
+                  {name: 1, active: 1, _id:0})
             .sort({name: 1})
         .toArray(function(err, projectDtos){
             if(!err) {
-                var projectNames = projectDtos.map(function(projectDto){
-                    return projectDto.name;
-                });
-                filterValues.push({field:'projectName', value: projectNames});
+                filterValues.push({field:'project', value: projectDtos});
                 callback();
             } else {
                 next(err);
