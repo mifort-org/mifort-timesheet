@@ -120,7 +120,7 @@ angular.module('mifortTimesheet', [
                         message = 'Not valid data to save';
                         break;
                     case 401:
-                        message = 'You are not authorized';
+                        message = '';
                         break;
                     case 403:
                         message = 'You have no permission';
@@ -129,7 +129,9 @@ angular.module('mifortTimesheet', [
                         message  = 'Something gone wrong';
                 }
 
-                Notification.error(message +' (' + errorCode + ' error)');
+                if(message){
+                    Notification.error(message +' (' + errorCode + ' error)');
+                }
             });
         }])
 
