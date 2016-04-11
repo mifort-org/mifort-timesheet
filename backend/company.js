@@ -154,7 +154,7 @@ function createUsersByEmails(company) {
     var emails = company.emails;
     if(emails) {
         emails.forEach(function(email) {
-            var user = {email: email,
+            var user = {email: email.toLowerCase(),
                         companyId: company._id};
 
             users.findByExample(user, function(err, dbUser) {

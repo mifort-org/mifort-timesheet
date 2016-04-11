@@ -204,7 +204,7 @@ exports.updateAssignmentProjectName = function(project) {
 };
 
 exports.findByEmail = function(email, callback) {
-    findByExample({email: email}, callback);
+    findByExample({email: email.toLowerCase()}, callback);
 };
 
 exports.findById = function(id, callback) {

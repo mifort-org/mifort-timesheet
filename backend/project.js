@@ -155,7 +155,7 @@ exports.generateDefaultProject = function(company) {
 exports.findProjectIdsByCompanyId = function(companyId, callback) {
     var projects = db.projectCollection();
     projects.find({companyId: companyId},
-                  {_id:1})
+                  {_id: 1})
         .toArray(function(err, findedProjectIds){
             var projectIdArray = findedProjectIds.map(function(object) {
                 return object._id;
