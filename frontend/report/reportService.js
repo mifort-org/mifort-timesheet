@@ -35,8 +35,90 @@ angular.module('mifortTimesheet.report').factory('reportService',
             },
             downloadAggregationCsv: function(reportSettings) {
                 return $http.post('api/v1/report/aggregation/download', reportSettings);
-            }
-
+            },
+            columns: {
+                date: {
+                    field: 'date',
+                    minWidth: 100,
+                    enableColumnResizing: true,
+                    enableColumnMenu: false,
+                    enableFiltering: false,
+                    filterHeaderTemplate: '<div class="ui-grid-filter-container"><span report-date-picker id="step2" class="report-filter"></span></div>'
+                },
+                userName: {
+                    field: 'userName',
+                    displayName: 'Employee Name',
+                    minWidth: 172,
+                    enableColumnResizing: true,
+                    enableColumnMenu: false,
+                    filterHeaderTemplate: '<div ng-if="$parent.grid.appScope.userIsManager" class="ui-grid-filter-container">{{userIsManager}}<span dropdown-filter class="dropdown-filter" col-name="userName" col-title="Employee Name"></span></div>'
+                },
+                projectName: {
+                    field: 'projectName',
+                    minWidth: 152,
+                    enableColumnResizing: true,
+                    enableColumnMenu: false,
+                    filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" col-name="projectName" col-title="Project Name"></span></div>'
+                },
+                role: {
+                    field: 'role',
+                    minWidth: 140,
+                    enableColumnResizing: true,
+                    enableColumnMenu: false,
+                    cellTemplate: '<div class="ui-grid-cell-contents">{{row.entity.role}}</div>',
+                    filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" col-name="role" col-title="Role"></span></div>'
+                },
+                time: {
+                    field: 'time',
+                    width: 82,
+                    enableColumnResizing: true,
+                    enableColumnMenu: false,
+                    enableFiltering: false,
+                    filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" col-name="time" col-title="Time"></span></div>'
+                },
+                comment: {
+                    field: 'comment',
+                    enableColumnResizing: true,
+                    enableColumnMenu: false,
+                    enableSorting: false,
+                    enableFiltering: false,
+                    filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" col-name="time" col-title="Comment"></span></div>',
+                    cellTemplate: '<span cutted-comment></span>'
+                },
+                comments: {
+                    field: 'comments',
+                    enableColumnResizing: true,
+                    enableColumnMenu: false,
+                    enableSorting: false,
+                    enableFiltering: false,
+                    filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" col-name="time" col-title="Comments"></span></div>',
+                    cellTemplate: '<span cutted-comment></span>'
+                }
+            },
+            introSteps: [
+                {
+                    element: '#step1',
+                    intro: "<p>This is a table of all logs among the application. Each column could be sorted by clicking on column name " +
+                    "and each of them has filter that could be opened on the filter button next to column name.</p>" +
+                    "<p>User, Project and Assignment columns has dropdown filter with the quick search field and checkboxes to choose the filtered options.</p>",
+                    position: 'bottom'
+                },
+                {
+                    element: '#step2',
+                    intro: "<p>Switch tabs to change the column to be aggregated.</p>",
+                    position: 'bottom'
+                },
+                {
+                    element: '#step3',
+                    intro: "<p>Use aggregation field to set the period of time to show.</p>",
+                    position: 'bottom'
+                },
+                {
+                    element: '#print',
+                    intro: "<p>You could print or export the report by pressing the top panel buttons Print/CSV.</p>",
+                    position: 'left'
+                }
+            ]
         }
     }
     ]);

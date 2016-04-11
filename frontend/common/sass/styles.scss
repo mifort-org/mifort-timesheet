@@ -83,18 +83,30 @@ body{
     line-height: 1;
 
     .ui-notification{
+        width: auto;
         padding: 5px 10px 5px 45px;
         font-size: 1.4rem;
         border-left: 6px solid #74b65f;
 
-        &.success{
+        &.success,
+        &.error{
             color: #727272;
+        }
+
+        &.success{
             background: #fff url('../images/icons.png') 20px -1386px no-repeat;
         }
+
+        &.error{
+            border-color: #d24a43;
+            background: #fff url('../images/icons.png') 20px -1426px no-repeat;
+        }
+
         div:after{
             float: right;
             width: 20px;
             height: 20px;
+            margin-left: 15px;
             content: "";
             background: url('../images/icons.png') 1px -1479px no-repeat;
         }
@@ -138,7 +150,6 @@ body{
     height: 100%;
     min-width: $app-min-width;
 }
-
 
 body{
     color: #000;
@@ -188,7 +199,7 @@ input[type=number]::-webkit-outer-spin-button{
     background: #f5f7f9;
     border-top: 1px #f5f7f9 solid;
     border-left: 1px #f2f4f7 solid;
-    overflow-y: auto;
+    overflow: auto;
 }
 
 @media screen and (max-width: $tablet-breakpoint) {
@@ -203,7 +214,7 @@ input[type=number]::-webkit-outer-spin-button{
     .main-container{
         width: 100%;
         min-width: $app-min-width;
-        overflow: scroll;
+        overflow: auto;
     }
 }
 

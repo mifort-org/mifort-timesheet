@@ -17,7 +17,7 @@
 'use strict';
 
 angular.module('mifortTimesheet')
-    .directive('customDay', function($timeout) {
+    .directive('customDay', function() {
         return {
             scope: true,
             link: function(scope, element) {

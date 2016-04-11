@@ -107,6 +107,11 @@
   border: 1px #e8e8e8 solid;
   border-left: 0;
   border-right: 0; }
+  .employee-assignments.archived-assignments {
+    padding-top: 0;
+    font-size: 1.4rem;
+    line-height: 19px;
+    border-top: 0; }
   .employee-assignments .employee-assignment {
     display: block; }
   .employee-assignments a {

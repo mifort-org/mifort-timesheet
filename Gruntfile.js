@@ -122,6 +122,8 @@ module.exports = function(grunt) {
                     'frontend/components/reportDatePicker/reportDatePicker.js',
                     'frontend/components/timesheetIntro/timesheetIntro.js',
                     'frontend/components/cuttedComment/cuttedComment.js',
+                    'frontend/components/timeMask/timeMask.js',
+                    'frontend/components/timesheetComment/timesheetComment.js',
                     'frontend/login/loginController.js',
                     'frontend/login/loginService.js',
                     'frontend/company/companyController.js',

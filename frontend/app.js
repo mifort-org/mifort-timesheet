@@ -43,21 +43,7 @@ angular.module('mifortTimesheet', [
     .config(['$routeProvider', '$httpProvider', '$locationProvider', function($routeProvider, $httpProvider, $locationProvider) {
         $routeProvider.otherwise({redirectTo: '/login'});
 
-        $httpProvider.interceptors.push(function($q, $location) {
-            return {
-                'responseError': function(rejection) {
-                    var defer = $q.defer();
-
-                    if(rejection.status == 401){
-                        $location.path('login');
-                    }
-
-                    defer.reject(rejection);
-
-                    return defer.promise;
-                }
-            };
-        });
+        $httpProvider.interceptors.push('myHttpInterceptor');
 
         $locationProvider.html5Mode({
             enabled: true,
@@ -77,8 +63,8 @@ angular.module('mifortTimesheet', [
         });
     })
 
-    .controller('mifortTimesheetController', ['$scope', '$location', '$http', 'preferences', 'companyService', 'topPanelService', '$rootScope', 'notifyingService',
-        function($scope, $location, $http, preferences, companyService, topPanelService, $rootScope, notifyingService) {
+    .controller('mifortTimesheetController', ['$scope', '$location', '$http', 'preferences', 'companyService', 'topPanelService', '$rootScope', 'notifyingService', 'Notification',
+        function($scope, $location, $http, preferences, companyService, topPanelService, $rootScope, notifyingService, Notification) {
             var user = preferences.get('user');
 
             if(user){
@@ -126,6 +112,27 @@ angular.module('mifortTimesheet', [
                 notifyingService.notify('startIntro');
             };
 
+            $scope.$on('handleError', function(event, errorCode) {
+                var message;
+
+                switch(errorCode) {
+                    case 400:
+                        message = 'Not valid data to save';
+                        break;
+                    case 401:
+                        message = '';
+                        break;
+                    case 403:
+                        message = 'You have no permission';
+                        break;
+                    default:
+                        message  = 'Something gone wrong';
+                }
+
+                if(message){
+                    Notification.error(message +' (' + errorCode + ' error)');
+                }
+            });
         }])
 
     .factory('topPanelService', ['$location', '$rootScope', function($location, $rootScope) {
@@ -171,4 +178,26 @@ angular.module('mifortTimesheet', [
                 $rootScope.$emit(message);
             }
         };
-    });
+    })
+
+    .factory('myHttpInterceptor', ['$q', '$rootScope', '$injector', '$location',
+        function($q, $rootScope, $injector, $location) {
+            $rootScope.showSpinner = false;
+            $rootScope.http = null;
+            return {
+                'responseError': function(rejection) {
+                    var defer = $q.defer();
+
+                    if(rejection.status == 401){
+                        $location.path('login');
+                    }
+
+                   $rootScope.$broadcast('handleError', rejection.status);
+
+                    defer.reject(rejection);
+
+                    return defer.promise;
+                }
+            }
+        }
+    ]);

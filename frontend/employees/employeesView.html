@@ -39,8 +39,7 @@
     </defs>
 </svg>
 
-
-<div class="employee-card employee-search">
+<form class="employee-card employee-search">
     <svg class="employee-image-border">
         <polygon class="hex" points="65 1, 124.5 37, 124.5 97, 65 131, 5 97, 5 37"
                  style="fill: transparent; stroke: #c5c5c5; stroke-width: 6"></polygon>
@@ -89,14 +88,13 @@
             Clear Search
         </button>
 
-        <button type="button" class="primary-button" ng-click="searchEmployees(employeeSearch)">
+        <button type="submit" class="primary-button" ng-click="searchEmployees(employeeSearch)">
             Search
         </button>
     </p>
-</div>
+</form>
 
-
-<div class="employee-card" ng-repeat="employee in employees | filter:activeSearch track by $index">
+<section class="employee-card" ng-repeat="employee in employees | filter:activeSearch track by $index">
     <div class="authentication-type"></div>
 
     <svg class="employee-image-border" height=450>
@@ -125,12 +123,13 @@
     <p>{{employee.role}}</p>
 
     <p class="employee-assignments" ng-if="employee.assignments.length">
-        <span ng-repeat="groupedAssignment in employee.assignments |  groupBy: 'projectId' "
+        <span ng-repeat="groupedAssignment in employee.assignments |  groupBy: 'projectId'"
+              ng-if="!groupedAssignment[0].archived"
               class="employee-assignment">
 
             <a href=""
                class="collapse-item"
-               ng-class="{'collapsed': !employee.assignments[$index].isCollapsed, 'archived-assignment': groupedAssignment[0].archived}"
+               ng-class="{'collapsed': !employee.assignments[$index].isCollapsed}"
                ng-click="employee.assignments[$index].isCollapsed = !employee.assignments[$index].isCollapsed">
                 <span ng-if="groupedAssignment[0].archived">(archived)</span>
 
@@ -149,10 +148,46 @@
         </span>
     </p>
 
+    <p class="employee-assignments archived-assignments" ng-if="employee.assignments.length">
+        <a href=""
+           class="collapse-item archived-assignment"
+           ng-class="{'collapsed': employee.isCollapsed}"
+           ng-click="employee.isCollapsed = !employee.isCollapsed">
+            Archived Projects
+        </a>
+
+        <span uib-collapse="employee.isCollapsed" class="assignment-roles">
+            <span ng-repeat="groupedAssignment in employee.assignments |  groupBy: 'projectId'"
+                  ng-if="groupedAssignment[0].archived"
+                  class="employee-assignment">
+
+            <a href=""
+               class="collapse-item"
+               ng-class="{'collapsed': !employee.assignments[$index].isCollapsed, 'archived-assignment': groupedAssignment[0].archived}"
+               ng-click="employee.assignments[$index].isCollapsed = !employee.assignments[$index].isCollapsed">
+
+                {{groupedAssignment[0].projectName}}
+            </a>
+
+            <span uib-collapse="!employee.assignments[$index].isCollapsed" class="assignment-roles">
+                <span ng-repeat="assignment in groupedAssignment">
+                    {{assignment.role}}
+                    <span ng-if="assignment.workload" class="pull-right employee-workload">{{assignment.workload}}h</span>
+                    <br/>
+                </span>
+            </span>
+
+            <br/>
+        </span>
+        </span>
+
+
+    </p>
+
     <p class="employee-workload-container" ng-if="::employee.workload || calculateWorkload(employee)">
         Workload:
         <span class="employee-workload">
             {{calculateWorkload(employee)}}<span ng-if="::employee.workload">/{{employee.workload}}</span>h
         </span>
     </p>
-</div>
+</section>

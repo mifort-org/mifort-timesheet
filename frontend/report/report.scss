@@ -20,12 +20,19 @@
     font-size: 1.6rem;
 
     .popover{
+        width: 200px;
         border-color: #a0a0a0;
         box-shadow: none;
 
+        hr{
+            margin-top: 15px;
+            margin-bottom: 15px;
+        }
+
         .popover-inner{
             max-height: 300px;
-            overflow-y: scroll;
+            overflow-y: auto;
+            overflow-x: hidden;
         }
 
         &.bottom > .arrow{
@@ -33,7 +40,9 @@
         }
 
         .filter-input{
+            width: 100%;
             margin-top: 4px;
+            margin-bottom: 17px;
             padding: 2px 4px;
         }
     }
@@ -121,6 +130,7 @@
     display: inline-block;
 
     input{
+        width: 197px;
         height: 34px;
         margin-left: 10px;
         padding: 1px 5px;
@@ -266,7 +276,6 @@
 }
 
 .no-data{
-    margin-top: -29px;
     text-align: center;
 }
 

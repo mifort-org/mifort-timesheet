@@ -18,15 +18,22 @@
   padding: 25px 27px 30px 27px;
   font-size: 1.6rem; }
   .report-wrapper .popover {
+    width: 200px;
     border-color: #a0a0a0;
     box-shadow: none; }
+    .report-wrapper .popover hr {
+      margin-top: 15px;
+      margin-bottom: 15px; }
     .report-wrapper .popover .popover-inner {
       max-height: 300px;
-      overflow-y: scroll; }
+      overflow-y: auto;
+      overflow-x: hidden; }
     .report-wrapper .popover.bottom > .arrow {
       border-bottom-color: #555; }
     .report-wrapper .popover .filter-input {
+      width: 100%;
       margin-top: 4px;
+      margin-bottom: 17px;
       padding: 2px 4px; }
   .report-wrapper .form-group {
     margin-bottom: 0; }
@@ -88,6 +95,7 @@
 .date-range-picker {
   display: inline-block; }
   .date-range-picker input {
+    width: 197px;
     height: 34px;
     margin-left: 10px;
     padding: 1px 5px;
@@ -186,7 +194,6 @@
           box-shadow: inset 0 0 0 1px #44c3fe; }
 
 .no-data {
-  margin-top: -29px;
   text-align: center; }
 
 .report-controls {

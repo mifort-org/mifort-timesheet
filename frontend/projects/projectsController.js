@@ -25,8 +25,8 @@ angular.module('mifortTimesheet.projects', ['ngRoute'])
         });
     }])
 
-    .controller('projectsController', ['$scope', 'projectsService', 'preferences', 'topPanelService', 'Notification', '$timeout',
-        function($scope, projectsService, preferences, topPanelService, Notification, $timeout) {
+    .controller('projectsController', ['$scope', 'projectsService', 'preferences', 'topPanelService', 'Notification',
+        function($scope, projectsService, preferences, topPanelService, Notification) {
             var companyId = preferences.get('user').companyId,
                 timer = null,
                 basicSteps = [
@@ -144,14 +144,9 @@ angular.module('mifortTimesheet.projects', ['ngRoute'])
             });
 
             $scope.changeProjectName = function(project) {
-                if(timer){
-                    $timeout.cancel(timer);
-                }
-                timer = $timeout(function() {
-                    projectsService.saveOrCreateProject(project).success(function() {
-                        Notification.success('Changes saved');
-                    });
-                }, 500);
+                projectsService.saveOrCreateProject(project).success(function() {
+                    Notification.success('Changes saved');
+                });
             };
 
             $scope.addProject = function() {

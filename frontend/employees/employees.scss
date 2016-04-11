@@ -139,6 +139,13 @@
     border-left: 0;
     border-right: 0;
 
+    &.archived-assignments{
+        padding-top: 0;
+        font-size: 1.4rem;
+        line-height: 19px;
+        border-top: 0;
+    }
+
     .employee-assignment{
         display: block;
     }
