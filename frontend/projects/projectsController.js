@@ -193,7 +193,9 @@ angular.module('mifortTimesheet.projects', ['ngRoute'])
                 $scope.projects.splice(projectIndex, 1);
 
                 if(project._id){
-                    projectsService.removeProject(project._id);
+                    projectsService.removeProject(project._id).success(function() {
+                        Notification.success('Changes saved');
+                    });
                 }
             };
 

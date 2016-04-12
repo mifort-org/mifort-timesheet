@@ -77,4 +77,8 @@ angular.module('mifortTimesheet.employees', ['ngRoute'])
                 $scope.employeeSearch = {};
                 $scope.activeSearch = {};
             };
+
+            $scope.hasArchivedProjects = function(assignments) {
+                return _.findWhere(assignments, {archived: true});
+            }
         }]);

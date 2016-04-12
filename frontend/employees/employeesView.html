@@ -148,7 +148,7 @@
         </span>
     </p>
 
-    <p class="employee-assignments archived-assignments" ng-if="employee.assignments.length">
+    <p class="employee-assignments archived-assignments" ng-if="employee.assignments.length && hasArchivedProjects(employee.assignments)">
         <a href=""
            class="collapse-item archived-assignment"
            ng-class="{'collapsed': employee.isCollapsed}"
