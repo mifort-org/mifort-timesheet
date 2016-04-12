@@ -93,6 +93,7 @@
     <div>{{dynamicPopover.content}}</div>
 
     <input type="text" class="filter-input" ng-model="filtersFilter" placeholder="Search"/>
+<!--{{dynamicPopover.projectFilter}}-->
 
     <!--angular bootstrap popover unintentional close solution-->
     <div ng-repeat="n in range(dynamicPopover.projectFilter.value.length) track by $index" class="filters-container">
@@ -105,11 +106,38 @@
         </div>
     </div>
 
-    <hr ng-if="hasFilter()"/>
-    <!--<hr/>-->
+    <hr ng-if="hasFilter() && dynamicPopover.projectFilter.field !== 'projectName'"/>
 
     <!--angular bootstrap popover unintentional close solution-->
-    <div ng-repeat="n in dynamicPopover.projectFilter.value track by $index" class="filters-container">
+    <div ng-if="dynamicPopover.projectFilter.field == 'projectName'">
+        <h5>Active Project</h5>
+
+        <div ng-if="dynamicPopover.projectFilter.field == 'projectName' && dynamicPopover.projectFilter.value[$index].active"
+             ng-repeat="n in dynamicPopover.projectFilter.value track by $index"
+             class="filters-container">
+            <input type="checkbox" id="filtered-value-{{$index}}" ng-model="dynamicPopover.projectFilter.value[$index].isChecked"/>
+            <label for="filtered-value-{{$index}}">
+
+                {{dynamicPopover.projectFilter.value[$index].name}}
+            </label>
+        </div>
+
+        <h5>Archived Project</h5>
+
+        <div ng-if="dynamicPopover.projectFilter.field == 'projectName' && !dynamicPopover.projectFilter.value[$index].active"
+             ng-repeat="n in dynamicPopover.projectFilter.value track by $index"
+             class="filters-container">
+            <input type="checkbox" id="filtered-value-{{$index}}" ng-model="dynamicPopover.projectFilter.value[$index].isChecked"/>
+            <label for="filtered-value-{{$index}}">
+
+                {{dynamicPopover.projectFilter.value[$index].name}}
+            </label>
+        </div>
+    </div>
+
+    <div ng-if="dynamicPopover.projectFilter.field !== 'projectName'"
+         ng-repeat="n in dynamicPopover.projectFilter.value track by $index"
+         class="filters-container">
         <input type="checkbox" id="filtered-value-{{$index}}" ng-model="dynamicPopover.projectFilter.value[$index].isChecked"/>
         <label for="filtered-value-{{$index}}">
 

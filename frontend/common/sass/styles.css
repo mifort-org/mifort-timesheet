@@ -5890,6 +5890,10 @@ small {
   font-size: 10px;
   line-height: 8px; }
 
+h5,
+b {
+  font-weight: bold; }
+
 html {
   font-size: 62.5%; }
 

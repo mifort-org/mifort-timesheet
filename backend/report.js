@@ -364,7 +364,7 @@ function fillProjectNameValues(companyId, filterValues, next, callback) {
             .sort({name: 1})
         .toArray(function(err, projectDtos){
             if(!err) {
-                filterValues.push({field:'project', value: projectDtos});
+                filterValues.push({field:'projectName', value: projectDtos});
                 callback();
             } else {
                 next(err);
