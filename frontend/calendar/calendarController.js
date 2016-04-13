@@ -376,7 +376,7 @@ angular.module('mifortTimesheet.calendar', ['ngRoute'])
                 else{
                     delete day.dayId;
                     delete day.color;
-                    delete day.comment;
+                    day.comment = '';
                     day.time = 8;
                 }
             };

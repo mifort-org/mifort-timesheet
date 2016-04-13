@@ -129,6 +129,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
 
                         //reset client saved data
                         delete day.color;
+                        delete day.placeholder;
                         day.timePlaceholder = sameDateDays[0].timePlaceholder;
 
                         //if current iterated log is not the first for this date to push
