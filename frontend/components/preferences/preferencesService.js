@@ -41,6 +41,10 @@ angular.module('preferences').factory('preferences', ['$q', '$location', functio
 
         remove: function (key) {
             localStorage.removeItem(key);
+        },
+
+        clear: function() {
+            localStorage.clear();
         }
     };
 }]);

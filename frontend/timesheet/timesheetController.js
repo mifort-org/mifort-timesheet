@@ -73,15 +73,13 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                 $scope.projects.forEach(function(project) {
                     var today = moment();
 
-                    project.currentPeriodIndex = 0;
-
                     //scroll into cuttent week
                     project.periods.forEach(function(period, periodIndex) {
                         var momentStart = moment(new Date(period.start)),
                             momentEnd = moment(new Date(period.end));
 
                         if(today.isBetween(momentStart, momentEnd) || today.isSame(momentStart, 'day') || today.isSame(momentEnd, 'day')){
-                            project.currentPeriodIndex = periodIndex;
+                            project.currentPeriodIndex = preferences.get(project._id) || periodIndex || 0;
                         }
                     });
 
@@ -307,6 +305,8 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                         initPeriod(project, project.currentPeriodIndex);
                     }
                 }
+
+                preferences.set(project._id, project.currentPeriodIndex);
             };
 
             $scope.showNextPeriod = function(project) {
@@ -319,6 +319,8 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                         initPeriod(project, project.currentPeriodIndex);
                     }
                 }
+
+                preferences.set(project._id, project.currentPeriodIndex);
             };
 
             $scope.status = {

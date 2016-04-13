@@ -92,7 +92,7 @@ angular.module('mifortTimesheet', [
             };
 
             $scope.logout = function() {
-                preferences.remove('user');
+                preferences.clear();
 
                 $http.get('logout').then(function() {
                     $location.path('login');
