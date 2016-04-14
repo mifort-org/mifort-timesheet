@@ -17,13 +17,15 @@
 'use strict';
 
 angular.module('mifortTimesheet')
-    .directive('reportDatePicker', function() {
+    .directive('reportDatePicker', function(preferences, $timeout) {
         return {
             scope: true,
-            link: function(scope) {
+            link: function(scope, element) {
                 scope.$watch('dates', function(newValue, oldValue) {
                     if(newValue && newValue != oldValue){
                         var dateFilter,
+                            startDate = moment(new Date(newValue.startDate)).format('MM/DD/YYYY'),
+                            endDate = moment(new Date(newValue.endDate)).format('MM/DD/YYYY'),
                             gridOptions = scope.timesheetGridOptions || scope.grid.options,
                             dateFilterIndex = _.findIndex(gridOptions.reportFilters, function(reportFilter) {
                                 return reportFilter.field == 'date';
@@ -38,16 +40,33 @@ angular.module('mifortTimesheet')
                             gridOptions.reportFilters.push(dateFilter);
                         }
 
-                        gridOptions.reportFilters[dateFilterIndex].start = moment(new Date(newValue.startDate)).format('MM/DD/YYYY');
-                        gridOptions.reportFilters[dateFilterIndex].end = moment(new Date(newValue.endDate)).format('MM/DD/YYYY');
+                        gridOptions.reportFilters[dateFilterIndex].start = startDate;
+                        gridOptions.reportFilters[dateFilterIndex].end = endDate;
+
+                        element.find('input').val(startDate + ' - ' + endDate);
+
+                        preferences.set('reportFilter', newValue);
                     }
                 });
 
-                //set default date range
-                scope.dates = {
-                    startDate: scope.ranges['This month'][0],
-                    endDate: scope.ranges['This month'][1]
-                };
+                if(preferences.get('reportFilter')){
+                    var savedDated = preferences.get('reportFilter');
+
+                    $timeout(function() {
+                        scope.dates = {
+                            startDate: new Date(savedDated.startDate),
+                            endDate: new Date(savedDated.endDate)
+                        };
+                    });
+                }
+                else{
+                    $timeout(function() {
+                        scope.dates = {
+                            startDate: scope.ranges['This month'][0],
+                            endDate: scope.ranges['This month'][1]
+                        };
+                    });
+                }
             },
             templateUrl: 'components/reportDatePicker/reportDatePicker.html'
         };

@@ -66,11 +66,7 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                     field: 'date',
                     asc: false
                 },
-                filters: [{
-                    field: "date",
-                    start:  moment(new Date($scope.ranges['This month'][0])).format('MM/DD/YYYY'),
-                    end: moment(new Date($scope.ranges['This month'][1])).format('MM/DD/YYYY')
-                }],
+                filters: [],
                 pageSize: 10,
                 page: 1
             };
@@ -214,7 +210,7 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                         else{
                             var usedFilterIndex = _.findIndex(usedFilters, {field: filter.field});
 
-                            if(usedFilterIndex !== -1){
+                            if(usedFilterIndex !== -1 && filter.field != 'date'){
                                 usedFilters.splice(usedFilterIndex, 1);
                             }
                         }
@@ -225,39 +221,45 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
             }, true);
 
             $scope.getReport = function() {
-                reportService.getReport($scope.reportSettings).success(function(data, status, headers) {
-                    var columnsOrder = $scope.reports[_.findIndex($scope.reports, {active: true})].columnsOrder;
+                var dateFilterIndex = _.findIndex($scope.reportSettings.filters, function(reportFilter) {
+                    return reportFilter.field == 'date';
+                });
 
-                    $scope.reportData = data;
+                if(dateFilterIndex >= 0){
+                    reportService.getReport($scope.reportSettings).success(function(data, status, headers) {
+                        var columnsOrder = $scope.reports[_.findIndex($scope.reports, {active: true})].columnsOrder;
 
-                    //add columns to grid
-                    if(data.length){
-                        $scope.timesheetGridOptions.columnDefs = [];
-                        $scope.timesheetGridOptions.columnDefs.length = columnsOrder.length;
+                        $scope.reportData = data;
 
-                        for(var column in data[0]){
-                            if(columns[column]){
-                                var indexToPush = _.indexOf(columnsOrder, column);
+                        //add columns to grid
+                        if(data.length){
+                            $scope.timesheetGridOptions.columnDefs = [];
+                            $scope.timesheetGridOptions.columnDefs.length = columnsOrder.length;
 
-                                $scope.timesheetGridOptions.columnDefs[indexToPush] = columns[column];
+                            for(var column in data[0]){
+                                if(columns[column]){
+                                    var indexToPush = _.indexOf(columnsOrder, column);
+
+                                    $scope.timesheetGridOptions.columnDefs[indexToPush] = columns[column];
+                                }
                             }
                         }
-                    }
 
-                    $scope.gridHeight = {
-                        height: ((data.length) * ($scope.timesheetGridOptions.rowHeight + 1)) + headerHeight + "px"
-                    };
+                        $scope.gridHeight = {
+                            height: ((data.length) * ($scope.timesheetGridOptions.rowHeight + 1)) + headerHeight + "px"
+                        };
 
-                    if(headers()['x-total-count']){
-                        $scope.totalCount = headers()['x-total-count'];
-                        $scope.totalPages = Math.ceil($scope.totalCount / $scope.reportSettings.pageSize);
-                    }
-                }).finally(function() {
-                    //call the directive 'cuttedComment' to reRender comments
-                    $timeout(function() {
-                        $scope.$broadcast('activeReportChanged');
+                        if(headers()['x-total-count']){
+                            $scope.totalCount = headers()['x-total-count'];
+                            $scope.totalPages = Math.ceil($scope.totalCount / $scope.reportSettings.pageSize);
+                        }
+                    }).finally(function() {
+                        //call the directive 'cuttedComment' to reRender comments
+                        $timeout(function() {
+                            $scope.$broadcast('activeReportChanged');
+                        });
                     });
-                });
+                }
             };
 
             $scope.openPage = function(pageIndex) {

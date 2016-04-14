@@ -17,10 +17,10 @@
 'use strict';
 
 angular.module('mifortTimesheet')
-    .directive('dropdownFilter', function () {
+    .directive('dropdownFilter', function() {
         return {
             scope: true,
-            link: function (scope, element, attrs) {
+            link: function(scope, element, attrs) {
                 scope.popoverOpened = false;
 
                 scope.dynamicPopover = {
@@ -47,7 +47,7 @@ angular.module('mifortTimesheet')
 
                 scope.hasFilter = function() {
                     if(scope.dynamicPopover.projectFilter){
-                        return _.where(scope.dynamicPopover.projectFilter.value, {isChecked : true}).length;
+                        return _.where(scope.dynamicPopover.projectFilter.value, {isChecked: true}).length;
                     }
                 };
 
