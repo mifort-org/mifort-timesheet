@@ -86,6 +86,8 @@ log.info('Error handler is initialized!');
 //mail.sendInvite('andreivoitau@gmail.com', 'blablabla');
 
 //run application
-app.listen(app.get('port'), function() {
+var server = app.listen(app.get('port'), function() {
     log.info('MiTimesheet server is started on port: %d', app.get('port'));
 });
+
+module.exports = server;

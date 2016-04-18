@@ -8,3 +8,4 @@ tmp
 report_files/*.csv
 deployment/
 *.bat
+tests_output/

@@ -16,6 +16,5 @@ before_script:
   - sleep 3 # give xvfb some time to start
 
 script:
-  - node app.js
   - sleep 10
-  - npm test
+  - ./run_tests
