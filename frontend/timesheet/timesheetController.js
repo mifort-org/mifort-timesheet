@@ -358,11 +358,11 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                 if(timesheet){
                     timesheet.forEach(function(log) {
                         if(log.time){
-                            if(log.timePlaceholder){
-                                totalExpected += formatTime(log.timePlaceholder);
-                            }
-
                             totalLogged += formatTime(log.time);
+                        }
+
+                        if(log.timePlaceholder){
+                            totalExpected += formatTime(log.timePlaceholder);
                         }
                     });
                 }
