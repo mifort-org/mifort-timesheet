@@ -1,5 +1,4 @@
 language: node_js
-sudo: required
 
 node_js:
   - node
@@ -19,5 +18,4 @@ before_script:
   - sleep 3 # give xvfb some time to start
 
 script:
-  - sleep 10
   - ./run_tests

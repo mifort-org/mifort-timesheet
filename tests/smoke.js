@@ -6,7 +6,7 @@ module.exports = {
     },
     'Application start test' : function (browser) {
         browser
-            .pause(1500)
+            .pause(2000)
             .url('http://localhost:1313')
             .waitForElementVisible('body', 2000)
             .assert.containsText('.form-signin', 'Timesheet')
