@@ -255,12 +255,12 @@ angular.module('mifortTimesheet.calendar', ['ngRoute'])
                     "splitter and split the current period in two.</p>",
                     position: 'right'
                 },
-                {
-                    element: '#step2',
-                    intro: "<p>Control panel has the autosplitting engine that allows you to split all months automatically. " +
-                    "Choose report period (Month, Week) and Start date of splitting and press the blue \"Split\" button to generate periods for all year.</p>",
-                    position: 'left'
-                },
+                //{
+                //    element: '#step2',
+                //    intro: "<p>Control panel has the autosplitting engine that allows you to split all months automatically. " +
+                //    "Choose report period (Month, Week) and Start date of splitting and press the blue \"Split\" button to generate periods for all year.</p>",
+                //    position: 'left'
+                //},
                 {
                     element: '#step3',
                     intro: "<p>Use Day Types controls to manage new Day Types. </p>" +

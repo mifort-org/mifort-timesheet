@@ -27,7 +27,6 @@ angular.module('mifortTimesheet')
                     var time = $(this).val();
 
                     if(time != ''){
-                        $(this).attr('type', 'text');
                         $(this).val(time + 'h');
                     }
                 });
@@ -35,14 +34,19 @@ angular.module('mifortTimesheet')
                 input.on('focus', function(){
                     var time = $(this).val();
 
-                    if(time != ''){
+                    if(time != '' && time.slice(-1) == 'h'){
                         $(this).val(time.slice(0, -1));
-                        $(this).attr('type', 'number');
                     }
                 });
 
-                scope.$watch('project.loading', function(newValue, oldValue) {
-                    if(scope.project && !newValue){
+                input.on('keypress', function(event){
+                    if(event.which != 8 && isNaN(String.fromCharCode(event.which))){
+                        event.preventDefault(); //stop character from entering input
+                    }
+                });
+
+                scope.$watch('project.currentPeriodIndex', function(newValue, oldValue) {
+                    if(scope.project){
                         var time = input.val();
 
                         if(time && time.slice(-1) !== 'h'){
@@ -50,7 +54,6 @@ angular.module('mifortTimesheet')
                         }
                     }
                 });
-
             },
             templateUrl: function (element) {
                 var activeTemplate;
