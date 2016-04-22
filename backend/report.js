@@ -265,14 +265,7 @@ function convertFiltersToQuery(filters, projectIds) {
             }
         });
     }
-    //skip all empty timelogs
-    if(!query.time) {
-        query.$or = [
-            {comment: {$ne : null}},
-            {comment: {$ne : ''}},
-            {time: {$gt: 0}}
-        ];
-    }
+
     if(projectIds) {
         query.projectId = {$in: projectIds};
     }

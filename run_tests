@@ -1,0 +1,5 @@
+#!/bin/bash
+# exit with an error, if any internal script errors
+set -e
+# run Nightwatch test
+./nightwatch --config nightwatch.json
