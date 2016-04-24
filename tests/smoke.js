@@ -13,6 +13,7 @@ module.exports = {
             .setValue('#step3 tr:nth-child(1) td:nth-child(3) input', '8')
             .clearValue('#step3 tr:nth-child(1) td:nth-child(4) input')
             .setValue('#step3 tr:nth-child(1) td:nth-child(4) input', 'Test comment bla')
+            .pause(500)
             .click('.tabs-left li:nth-child(5)')
             //temporary selection because of #197
             .waitForElementVisible('.date-range-picker input', 1000)
