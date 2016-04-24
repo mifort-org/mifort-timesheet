@@ -27,6 +27,7 @@ var constants = require('./config_constants');
 
 var GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || "YOUR_GOOGLE_CLIENT_ID";
 var GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET || "YOUR_GOOGLE_CLIENT_SECRET";
+var GOOGLE_CALLBACK = process.env.GOOGLE_CALLBACK || 'http://127.0.0.1:1313/oauth2callback';
 
 var loginRedirect = '/';
 
@@ -51,7 +52,7 @@ passport.deserializeUser(function(id, done) {
 passport.use(new GoogleStrategy({
         clientID: GOOGLE_CLIENT_ID,
         clientSecret: GOOGLE_CLIENT_SECRET,
-        callbackURL: process.env.GOOGLE_CALLBACK || 'http://127.0.0.1:1313/oauth2callback'
+        callbackURL: GOOGLE_CALLBACK
     },
     function(accessToken, refreshToken, profile, done) {
         // asynchronous verification, for effect...
@@ -86,6 +87,9 @@ passport.use(new GoogleStrategy({
 ));
 
 exports.ensureAuthenticated = function (req, res, next) {
+    if(process.env.APPLICATION_TEST) {
+        return next();
+    }
     if (req.isAuthenticated()) {
         return next();
     }
@@ -130,4 +134,10 @@ function createUser(user, callback) {
             callback(null, savedUser);
         }
     });
-};
+}
+
+function testUser(callback) {
+    users.findByEmail('test@test.com', function(err, user){
+        callback(null, user);
+    });
+}
