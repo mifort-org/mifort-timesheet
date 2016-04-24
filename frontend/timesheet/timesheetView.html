@@ -15,21 +15,24 @@
 -->
 <div timesheet-intro></div>
 
+<div class="timesheet collapse-wrapper timesheet-total clearfix">
+    <span class="period-label">Total logged: {{totalLogged(projects)}}</span>
+
+    <div class="timesheet-controls clearfix" id="{{$first ? 'step2' : ''}}">
+        <button class="previous-period" ng-class="{'disabled' : currentPeriodIndex <= 0}" ng-click="showPreviousPeriod(projects)"></button>
+        <span class="period-label" ng-bind-html="getPeriodLabel(projects[0].periods[currentPeriodIndex])"></span>
+        <button class="next-period" ng-class="{'disabled' : currentPeriodIndex >= projects[0].periods.length - 1}" ng-click="showNextPeriod(projects)"></button>
+    </div>
+</div>
+
 <div class="timesheet collapse-wrapper clearfix" ng-repeat="project in projects track by $index">
     <h2 ng-class="{'timesheet-collapsed': isCollapsed}">
         <a href="" class="collapse-item" id="{{$first ? 'step1' : ''}}" ng-class="{'collapsed': isCollapsed}" ng-click="isCollapsed = !isCollapsed">
             {{project.name}}
         </a>
 
-        <span class="timesheet-total" ng-bind-html="totalLogged(project.periods[project.currentPeriodIndex].timesheet, projects)">0h/0h</span>
+        <span class="timesheet-total" ng-bind-html="totalProjectLogged(project)">0h/0h</span>
     </h2>
-
-    <div class="timesheet-controls clearfix" id="{{$first ? 'step2' : ''}}">
-
-        <button class="previous-period" ng-class="{'disabled' : project.currentPeriodIndex <= 0}" ng-click="showPreviousPeriod(project)"></button>
-        <span class="period-label" ng-bind-html="getPeriodLabel(project.periods[project.currentPeriodIndex])"></span>
-        <button class="next-period" ng-class="{'disabled' : project.currentPeriodIndex >= project.periods.length - 1}" ng-click="showNextPeriod(project)"></button>
-    </div>
 
     <div uib-collapse="isCollapsed">
         <table class="table table-bordered timesheet" id="{{$first ? 'step3' : ''}}">
@@ -42,22 +45,22 @@
             </thead>
 
             <tbody ng-show="!project.loading">
-            <tr ng-if="project.currentPeriodIndex >= 0"
-                ng-repeat="log in project.periods[project.currentPeriodIndex].timesheet track by $index"
+            <tr ng-if="currentPeriodIndex >= 0"
+                ng-repeat="log in project.periods[currentPeriodIndex].timesheet track by $index"
                 ng-style="{background: log.color}"
                 ng-class="{'is-today': isToday(log.date),
-                           'is-last-todays-record': isLastTodaysRecord(project.periods[project.currentPeriodIndex].timesheet, $index)}">
+                           'is-last-todays-record': isLastTodaysRecord(project.periods[currentPeriodIndex].timesheet, $index)}">
 
                 <td>
                     <span class="timesheet-data">
-                        <a href="" ng-if="log.isFirstDayRecord" class="add-timesheet" ng-click="addLog(log, project, project.currentPeriodIndex)">+</a>
+                        <a href="" ng-if="log.isFirstDayRecord" class="add-timesheet" ng-click="addLog(log, project, currentPeriodIndex)">+</a>
 
                         <span ng-if="log.isFirstDayRecord">
                             {{getWeekDay(log.date)}}
                             <span class="log-date">{{log.date}}</span>
                         </span>
 
-                        <a href="" ng-if="!log.isFirstDayRecord" class="remove-timesheet" ng-click="removeRow(log, project, project.currentPeriodIndex)">&#8211;</a>
+                        <a href="" ng-if="!log.isFirstDayRecord" class="remove-timesheet" ng-click="removeRow(log, project, currentPeriodIndex)">&#8211;</a>
                     </span>
                 </td>
 
@@ -86,7 +89,7 @@
             </tbody>
         </table>
 
-        <div class="loading-indicator" ng-show="project.loading" style="min-height: {{lastPeriodRecords * 52}}px">Loading...</div>
+        <div class="loading-indicator" ng-show="project.loading" style="min-height: {{project.lastPeriodRecords * 52}}px">Loading...</div>
     </div>
 </div>
 

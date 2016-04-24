@@ -98,18 +98,16 @@
 }
 
 .timesheet-controls{
-    position: absolute;
-    right: 25px;
-    top: 15px;
+    float: right;
+}
 
-    .period-label{
-        display: inline-block;
-        margin: 7px 3px;
-        font-size: 1.6rem;
-        color: #999;
-        font-weight: 500;
-        vertical-align: top;
-    }
+.period-label{
+    display: inline-block;
+    margin: 7px 3px;
+    font-size: 1.6rem;
+    color: #999;
+    font-weight: 500;
+    vertical-align: top;
 }
 
 .previous-period,

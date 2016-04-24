@@ -30,6 +30,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
             var user;
 
             $scope.projects = [];
+            $scope.currentPeriodIndex = 0;
             $scope.timesheetKeys = timesheetService.getTimesheetKeys();
 
             loginService.getUser().success(function(loggedUser) {
@@ -79,11 +80,11 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                             momentEnd = moment(new Date(period.end));
 
                         if(today.isBetween(momentStart, momentEnd) || today.isSame(momentStart, 'day') || today.isSame(momentEnd, 'day')){
-                            project.currentPeriodIndex = preferences.get(project._id) || periodIndex || 0;
+                            $scope.currentPeriodIndex = preferences.get('currentPeriodIndex') || periodIndex || 0;
                         }
                     });
 
-                    initPeriod(project, project.currentPeriodIndex);
+                    initPeriod(project, $scope.currentPeriodIndex);
                 });
             };
 
@@ -295,32 +296,40 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                 }
             };
 
-            $scope.showPreviousPeriod = function(project) {
-                $scope.lastPeriodRecords = project.periods[project.currentPeriodIndex].timesheet.length;
+            $scope.showPreviousPeriod = function(projects) {
+                var lastPeriod = $scope.currentPeriodIndex;
 
-                if(project.currentPeriodIndex){
-                    project.currentPeriodIndex--;
+                if($scope.currentPeriodIndex){
+                    $scope.currentPeriodIndex--;
 
-                    if(!project.periods[project.currentPeriodIndex].timesheet){
-                        initPeriod(project, project.currentPeriodIndex);
-                    }
+                    projects.forEach(function(project) {
+                        project.lastPeriodRecords = project.periods[lastPeriod].timesheet.length;
+
+                        if(!project.periods[$scope.currentPeriodIndex].timesheet){
+                            initPeriod(project, $scope.currentPeriodIndex);
+                        }
+                    });
                 }
 
-                preferences.set(project._id, project.currentPeriodIndex);
+                preferences.set('currentPeriodIndex', $scope.currentPeriodIndex);
             };
 
-            $scope.showNextPeriod = function(project) {
-                $scope.lastPeriodRecords = project.periods[project.currentPeriodIndex].timesheet.length;
+            $scope.showNextPeriod = function(projects) {
+                var lastPeriod = $scope.currentPeriodIndex;
 
-                if(project.currentPeriodIndex < project.periods.length - 1){
-                    project.currentPeriodIndex++;
+                if($scope.currentPeriodIndex < projects[0].periods.length - 1){
+                    $scope.currentPeriodIndex++;
 
-                    if(!project.periods[project.currentPeriodIndex].timesheet){
-                        initPeriod(project, project.currentPeriodIndex);
-                    }
+                    projects.forEach(function(project) {
+                        project.lastPeriodRecords = project.periods[lastPeriod].timesheet.length;
+
+                        if(!project.periods[$scope.currentPeriodIndex].timesheet){
+                            initPeriod(project, $scope.currentPeriodIndex);
+                        }
+                    });
                 }
 
-                preferences.set(project._id, project.currentPeriodIndex);
+                preferences.set('currentPeriodIndex', $scope.currentPeriodIndex);
             };
 
             $scope.status = {
@@ -351,23 +360,43 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                 }
             };
 
-            $scope.totalLogged = function(timesheet) {
-                var totalExpected = 0;
-                var totalLogged = 0;
+            function getTotalSum(projects){
+                var totalSum = {
+                    totalLogged: 0,
+                    totalExpected: 0
+                };
 
-                if(timesheet){
-                    timesheet.forEach(function(log) {
-                        if(log.time){
-                            totalLogged += formatTime(log.time);
+                projects.forEach(function(project){
+                    if($scope.currentPeriodIndex){
+                        var timesheet = project.periods[$scope.currentPeriodIndex].timesheet;
+
+                        if(timesheet){
+                            timesheet.forEach(function(log) {
+                                if(log.time){
+                                    totalSum.totalLogged += formatTime(log.time);
+                                }
+
+                                if(log.timePlaceholder){
+                                    totalSum.totalExpected += formatTime(log.timePlaceholder);
+                                }
+                            });
                         }
+                    }
+                });
 
-                        if(log.timePlaceholder){
-                            totalExpected += formatTime(log.timePlaceholder);
-                        }
-                    });
-                }
+                return totalSum;
+            };
 
-                return totalLogged + 'h/' + totalExpected + 'h';
+            $scope.totalProjectLogged = function(project) {
+                var totalSum = getTotalSum([project]);
+
+                return totalSum.totalLogged + 'h/' + totalSum.totalExpected + 'h';
+            };
+
+            $scope.totalLogged = function(projects) {
+                var totalSum = getTotalSum(projects);
+
+                return totalSum.totalLogged + 'h/' + totalSum.totalExpected + 'h';
             };
 
             function formatTime(time){
