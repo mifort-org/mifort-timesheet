@@ -59,6 +59,17 @@ app.use(session(
     saveUninitialized: true,
     store: new MongoStore({url: db.sessionMongoUrl})})
 );
+//Set test user to request
+if(process.env.APPLICATION_TEST) {
+    log.info('E2e test mode');
+    var users = require('./backend/user');
+    app.use('/', function(req, res, next) {
+        users.findByEmail('test@test.com', function(err, user) {
+            req.user = user;
+            next();
+        })
+    });
+}
 //last step: init auth
 authentication.init(app);
 

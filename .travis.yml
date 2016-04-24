@@ -2,6 +2,8 @@ language: node_js
 
 node_js:
   - node
+env:
+  - APPLICATION_TEST=true
 
 services:
   - mongodb
