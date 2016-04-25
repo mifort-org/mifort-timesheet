@@ -30,9 +30,9 @@ angular.module('mifortTimesheet')
                             dateFilterIndex = _.findIndex(gridOptions.reportFilters, function(reportFilter) {
                                 return reportFilter.field == 'date';
                             });
-                        $timeout(function() {
+
                             if(dateFilterIndex < 0){
-                                    dateFilterIndex = gridOptions.reportFilters.length;
+                                    dateFilterIndex = gridOptions.reportFilters.length || 0;
                                     dateFilter = {
                                         "field": "date"
                                     };
@@ -46,19 +46,20 @@ angular.module('mifortTimesheet')
                             element.find('input').val(startDate + ' - ' + endDate);
 
                             preferences.set('reportFilter', newValue);
-                        });
                     }
                 });
 
                 if(preferences.get('reportFilter')){
-                    var savedDated = preferences.get('reportFilter');
+                    var savedDate = preferences.get('reportFilter');
 
-                    $timeout(function() {
-                        scope.dates = {
-                            startDate: new Date(savedDated.startDate),
-                            endDate: new Date(savedDated.endDate)
-                        };
-                    });
+                    if(savedDate){
+                        $timeout(function() {
+                            scope.dates = {
+                                startDate: new Date(savedDate.startDate),
+                                endDate: new Date(savedDate.endDate)
+                            };
+                        });
+                    }
                 }
                 else{
                     $timeout(function() {

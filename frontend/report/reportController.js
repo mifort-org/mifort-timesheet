@@ -146,6 +146,7 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                 rowHeight: 30,
                 columnDefs: [],
                 data: 'reportData',
+                reportFilters: [],
 
                 onRegisterApi: function(gridApi) {
                     $scope.gridApi = gridApi;
@@ -181,7 +182,7 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
             };
 
             reportService.getFilters(companyId).success(function(data) {
-                $scope.timesheetGridOptions.reportFilters = data;
+                    $scope.timesheetGridOptions.reportFilters.concat(data);
             });
 
             $scope.$watch('timesheetGridOptions.reportFilters', function(newValue, oldValue) {
