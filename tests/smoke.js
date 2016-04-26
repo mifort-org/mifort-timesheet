@@ -7,12 +7,14 @@ module.exports = {
             .init()
             .waitForElementVisible('.logo', 2000)
             // Check only one day
+            .waitForElementVisible('#step3 tr:nth-child(2) td:nth-child(2)', 1000)
             .assert.containsText('#step3 tr:nth-child(2) td:nth-child(2)', 'Developer')
             .clearValue('#step3 tr:nth-child(1) td:nth-child(3) input')
             .setValue('#step3 tr:nth-child(1) td:nth-child(3) input', '8')
             .clearValue('#step3 tr:nth-child(1) td:nth-child(4) input')
             .setValue('#step3 tr:nth-child(1) td:nth-child(4) input', 'Test comment bla')
             .pause(500)
+            //go to report
             .click('.tabs-left li:nth-child(5)')
             .pause(1000)
             .assert.containsText('.ui-grid-render-container', 'Test comment bla')
