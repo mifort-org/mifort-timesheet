@@ -43,6 +43,7 @@ module.exports = {
             .click('.tabs-left li:nth-child(2)')
             .waitForElementVisible('.add-project', 1000)
             .click('.add-project')
+            .pause(1000)
             .click('#step1 tr:nth-child(1) #simple-dropdown')
             .click('#step1 tr:nth-child(1) td:nth-child(1) ul li a')
             .setValue('#step1 tr:nth-child(1) td:nth-child(3) input', '5')
