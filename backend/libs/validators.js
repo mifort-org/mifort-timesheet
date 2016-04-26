@@ -116,7 +116,7 @@ exports.validateUpdateRole = function(req, res, next) {
     returnErrors(req, res, next);
 };
 
-exports.validateDeleteUser = function(req, res, next) {
+exports.validateUserIdParam = function(req, res, next) {
     req.checkParams(reqParams.userIdParam, util.format(invalidFormatMessageTemplate, reqParams.userIdParam))
             .notEmpty().isMongoId();
 
