@@ -25,8 +25,8 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
         });
     }])
 
-    .controller('reportController', ['$scope', 'reportService', 'preferences', 'uiGridConstants', 'topPanelService', '$timeout',
-        function($scope, reportService, preferences, uiGridConstants, topPanelService, $timeout) {
+    .controller('reportController', ['$scope', 'reportService', 'preferences', 'uiGridConstants', 'topPanelService', '$timeout', '$location',
+        function($scope, reportService, preferences, uiGridConstants, topPanelService, $timeout, $location) {
             var companyId = preferences.get('user').companyId,
                 userRole = preferences.get('user').role.toLowerCase(),
                 headerHeight = 38,
@@ -347,4 +347,8 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                     return true;
                 }
             };
+
+            $scope.editEmployeeTimesheet = function(userName) {
+                $location.path('timesheet/' + userName);
+            }
         }]);
