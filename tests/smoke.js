@@ -4,22 +4,18 @@ module.exports = {
     },
     'Timesheet fill test' : function(browser) {
         browser
-            .pause(2000) //for first test because of server start delay
             .init()
             .waitForElementVisible('.logo', 2000)
             // Check only one day
+            .waitForElementVisible('#step3 tr:nth-child(2) td:nth-child(2)', 1000)
             .assert.containsText('#step3 tr:nth-child(2) td:nth-child(2)', 'Developer')
             .clearValue('#step3 tr:nth-child(1) td:nth-child(3) input')
             .setValue('#step3 tr:nth-child(1) td:nth-child(3) input', '8')
             .clearValue('#step3 tr:nth-child(1) td:nth-child(4) input')
             .setValue('#step3 tr:nth-child(1) td:nth-child(4) input', 'Test comment bla')
             .pause(500)
+            //go to report
             .click('.tabs-left li:nth-child(5)')
-            //temporary selection because of #197
-            .waitForElementVisible('.date-range-picker input', 1000)
-            .click('.date-range-picker input')
-            .click('.daterangepicker .ranges ul li:nth-child(2):not(.active)')
-            //end of temporary selection
             .pause(1000)
             .assert.containsText('.ui-grid-render-container', 'Test comment bla')
             .assert.containsText('.ui-grid-render-container', 'Developer')
@@ -34,14 +30,28 @@ module.exports = {
             .setValue('#step3 tr:nth-child(2) td:nth-child(4) input', 'Test sub task')
             .pause(500)
             .click('.tabs-left li:nth-child(5)')
-            //temporary selection because of #197
             .waitForElementVisible('.date-range-picker input', 1000)
-            .click('.date-range-picker input')
-            .click('.daterangepicker .ranges ul li:nth-child(2):not(.active)')
-            //end of temporary selection
             .pause(1000)
             .assert.containsText('.ui-grid-render-container', 'Test sub task')
             .assert.containsText('.ui-grid-render-container', '3')
+            .end();
+    },
+    'Project creation': function(browser) {
+        browser
+            .init()
+            .waitForElementVisible('.logo', 2000)
+            .click('.tabs-left li:nth-child(2)')
+            .waitForElementVisible('.add-project', 1000)
+            .click('.add-project')
+            .pause(500)
+            .click('#step1 tr:nth-child(1) #simple-dropdown')
+            .click('#step1 tr:nth-child(1) td:nth-child(1) ul li a')
+            .setValue('#step1 tr:nth-child(1) td:nth-child(3) input', '5')
+            .click('.tabs-left li:nth-child(6)')
+            .waitForElementVisible('.main-container', 1000)
+            .pause(500)
+            .assert.containsText('.main-container', 'New Project')
+            .assert.containsText('.main-container', 'CEO')
             .end();
     }
 };

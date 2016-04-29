@@ -5,6 +5,9 @@ node_js:
 env:
   - APPLICATION_TEST=true
 
+notifications:
+  slack: mifort:1WM7cdHbyutWvwq839SVnpQV
+
 services:
   - mongodb
 
