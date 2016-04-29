@@ -30,6 +30,9 @@ angular.module('mifortTimesheet.calendar', ['ngRoute'])
             $scope.daySettingsPopover = {
                 templateUrl: 'daySettimgs.html'
             };
+            $scope.customDayPopover = {
+                templateUrl: 'customDay.html'
+            };
             $scope.periodSettings = calendarService.getPeriodSettings();
             $scope.weekDays = calendarService.getWeekDays();
 
@@ -382,12 +385,6 @@ angular.module('mifortTimesheet.calendar', ['ngRoute'])
             };
 
             $scope.saveDayType = function(changedDayType, changedDayTypeOldValue) {
-                $scope.company.defaultValues.forEach(function(defaultValue) {
-                    if(changedDayTypeOldValue && defaultValue.comment == changedDayTypeOldValue.name){
-                        angular.extend(defaultValue, changedDayType);
-                    }
-                });
-
                 applyDefaultValues();
 
                 calendarService.saveCompany($scope.company).success(function(data) {
