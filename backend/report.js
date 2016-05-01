@@ -128,9 +128,9 @@ exports.restGetFilterValues = function(req, res, next) {
     log.debug('-REST call: Get filter values. Company id: %s', companyId.toHexString());
 
     var filterValues = [];
-    fillUserNameValues(companyId, filterValues, next,
+    fillUserValues(companyId, filterValues, next,
         function() {
-            fillProjectNameValues(companyId, filterValues, next,
+            fillProjectValues(companyId, filterValues, next,
                 function() {
                     fillRoleValues(companyId, filterValues,
                         function() {
@@ -230,6 +230,9 @@ function createGroupBy(fieldNames) {
     if(fieldNames) {
         fieldNames.forEach(function(fieldName) {
             groupBy[fieldName] = '$'+fieldName;
+            if(fieldName === 'userId') {
+                groupBy['userName'] = '$userName';
+            }
         });
     }
     return groupBy;
@@ -246,6 +249,9 @@ function createProjection(filterObj) {
     if(fieldNames) {
         fieldNames.forEach(function(fieldName) {
             projection[fieldName] = '$_id.'+fieldName;
+            if(fieldName === 'userId') {
+                projection['userName'] = '$_id.userName';
+            }
         });
     }
     return projection;
@@ -332,17 +338,14 @@ function filterTimelog(query, sortObj, pageInfo, res, callback) {
         });
 }
 
-function fillUserNameValues(companyId, filterValues, next, callback) {
+function fillUserValues(companyId, filterValues, next, callback) {
     var users = db.userCollection();
     users.find({companyId: companyId},
                {displayName: 1})
         .sort({displayName: 1})
-        .toArray(function(err, userNames) {
+        .toArray(function(err, dbusers) {
             if(!err) {
-                var displayNames = userNames.map(function(user){
-                    return user.displayName;
-                });
-                filterValues.push({field:'userName', value: displayNames});
+                filterValues.push({field:'users', value: dbusers});
                 callback();
             } else {
                 next(err);
@@ -350,14 +353,14 @@ function fillUserNameValues(companyId, filterValues, next, callback) {
         });
 }
 
-function fillProjectNameValues(companyId, filterValues, next, callback) {
+function fillProjectValues(companyId, filterValues, next, callback) {
     var projects = db.projectCollection();
     projects.find({companyId: companyId},
                   {name: 1, active: 1, _id:0})
             .sort({name: 1})
         .toArray(function(err, projectDtos){
             if(!err) {
-                filterValues.push({field:'projectName', value: projectDtos});
+                filterValues.push({field:'projects', value: projectDtos});
                 callback();
             } else {
                 next(err);
