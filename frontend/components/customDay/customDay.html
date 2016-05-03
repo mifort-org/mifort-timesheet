@@ -19,21 +19,27 @@
         <dt ng-repeat-start="day in company.dayTypes track by $index"
             id="customDay-{{$index}}"
             ng-class="{'odd-day' : $index%2}"
-            ng-click="editableName = true"
+            uib-popover-template="customDayPopover.templateUrl"
+            popover-title="{{customDayPopover.title}}"
+            popover-placement="bottom"
+            popover-trigger="outsideClick"
+            popover-is-open="customDayNameIsOpen"
             click-outside="editableName = false">
-            <span ng-show="!editableName">{{day.name}}</span>
 
-            <input type="text" ng-show="editableName" ng-model="day.name"/>
+            <span ng-show="!editableName">{{day.name}}</span>
         </dt>
+
         <dd ng-repeat-end
             id="customDayWorkload-{{$index}}"
             ng-class="{'odd-day' : $index%2}"
-            ng-click="editableWorkload = true"
-            click-outside="editableWorkload = false">
+            uib-popover-template="customDayPopover.templateUrl"
+            popover-title="{{customDayPopover.title}}"
+            popover-placement="bottom"
+            popover-trigger="outsideClick"
+            popover-is-open="customDayTimeIsOpen"
+            click-outside="editableName = false">
+
             <span ng-show="!editableWorkload">{{day.time}}</span>
-
-            <input type="text" ng-show="editableWorkload" ng-model="day.time"/>
-
             hours
         </dd>
     </dl>
@@ -57,6 +63,7 @@
                  orgHeight="79"
                  usemap="#color-picker-map-{{$index}}}"
                  alt=""/>
+
             <map name="color-picker-map-{{$index}}}" id="color-picker-map-{{$index}}}">
                 <area alt="area"
                       href="#"
@@ -75,4 +82,3 @@
         </div>
     </div>
 </div>
-<!--<small>{{company.dayTypes}}</small>-->

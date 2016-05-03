@@ -21,8 +21,6 @@ angular.module('mifortTimesheet')
         return {
             scope: true,
             link: function(scope, element) {
-                scope.editableName = false;
-                scope.editableWorkload = false;
                 scope.customColors = [
                     {
                         color: '#99ff99',
@@ -103,26 +101,8 @@ angular.module('mifortTimesheet')
                 ];
 
                 scope.$watch('company.dayTypes', function(newValue, oldValue) {
-                    var changedDayTypeOldValue,
-                        changedDayType,
-                        pureNewValues;
-
-                    if(newValue && oldValue && newValue != oldValue){
-                        if(oldValue.length == newValue.length){
-                            pureNewValues = JSON.parse(angular.toJson(newValue));
-
-                            pureNewValues.forEach(function(newDayType, index) {
-                                if(!_.isEqual(newDayType, oldValue[index])){
-                                    changedDayType = newDayType;
-                                    changedDayTypeOldValue = oldValue[index]
-                                }
-                            });
-                        }
-                        else if(newValue.length > oldValue.length){
-                            changedDayType = newValue[newValue.length - 1];
-                        }
-
-                        scope.saveDayType(changedDayType, changedDayTypeOldValue);
+                   if(newValue && oldValue && newValue != oldValue){
+                        scope.saveDayType();
                     }
 
                 }, true);

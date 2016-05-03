@@ -264,6 +264,19 @@ exports.authorizeDeleteUser = function(req, res, next) {
                 });
 };
 
+exports.authorizeGetUserById = function(req, res, next) {
+    var user = req.user;
+    var userId = utils.getUserId(req);
+
+    isManagerForUser(user, [userId],
+                function() { // fail callback
+                    send403(res);
+                },
+                function() { //success callback
+                    next();
+                });
+};
+
 exports.authorizeAddNewUser = function(req, res, next) {
     var currentUser = req.user;
     var newUser = req.body;

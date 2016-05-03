@@ -70,6 +70,10 @@ exports.projectRouter = projectRouter;
 //user
 var user = require('./user');
 var userRouter = express.Router();
+userRouter.get('/:userId',
+        validators.validateUserIdParam,
+        authorization.authorizeGetUserById,
+        user.restGetById);
 userRouter.get('/',
         user.restGetCurrent);
 userRouter.get('/project/:projectId',
@@ -89,7 +93,7 @@ userRouter.post('/update-role',
         authorization.authorizaUpdateRole,
         user.restUpdateUserRole);
 userRouter.delete('/:userId',
-        validators.validateDeleteUser,
+        validators.validateUserIdParam,
         authorization.authorizeDeleteUser,
         user.restDeleteUser);
 userRouter.put('/',

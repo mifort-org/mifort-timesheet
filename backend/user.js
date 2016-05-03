@@ -28,6 +28,25 @@ exports.restGetCurrent = function(req, res) {
     res.json(req.user);
 };
 
+exports.restGetById = function(req, res, next) {
+    var userIdParam = utils.getUserId(req);
+    log.debug('-REST call: Get users by id. User id: %s',
+        userIdParam.toHexString());
+
+    var users = db.userCollection();
+    users.findOne({_id: userIdParam},
+        function(err, user) {
+            if(err) {
+                next(err);
+            } else {
+                res.json(user);
+                log.debug('-REST result: Get users by id. User id: %s',
+                    userIdParam.toHexString());
+            }
+        }
+    );
+};
+
 exports.restGetByProjectId = function(req, res, next) {
     var projectIdParam = utils.getProjectId(req);
     log.debug('-REST call: Get users by project id. Project id: %s',
