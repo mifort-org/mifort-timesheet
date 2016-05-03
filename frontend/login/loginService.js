@@ -19,8 +19,13 @@
 angular.module('mifortTimesheet.login').factory('loginService',
     ['$http', function($http) {
         return {
-            getUser: function() {
-                return $http.get('api/v1/user');
+            getUser: function(customUserId) {
+                if(customUserId){
+                    return $http.get('api/v1/user/' + customUserId);
+                }
+                else{
+                    return $http.get('api/v1/user');
+                }
             }
         };
     }

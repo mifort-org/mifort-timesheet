@@ -51,7 +51,7 @@ angular.module('mifortTimesheet.report').factory('reportService',
                     minWidth: 172,
                     enableColumnResizing: true,
                     enableColumnMenu: false,
-                    filterHeaderTemplate: '<div ng-if="$parent.grid.appScope.userIsManager" class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" col-name="userName" col-title="Employee Name"></span></div>',
+                    filterHeaderTemplate: '<div ng-if="$parent.grid.appScope.userIsManager" class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" col-name="users" col-title="Employee Name"></span></div>',
                     cellTemplate: '<div class="ui-grid-cell-contents">' +
                     '<a href="" ng-if="$parent.grid.appScope.userIsManager" ng-click="$parent.grid.appScope.editEmployeeTimesheet(row.entity.userName)">{{row.entity.userName}}</a>' +
                     '<span ng-if="!$parent.grid.appScope.userIsManager">{{row.entity.userName}}</span>' +
@@ -62,7 +62,7 @@ angular.module('mifortTimesheet.report').factory('reportService',
                     minWidth: 152,
                     enableColumnResizing: true,
                     enableColumnMenu: false,
-                    filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" col-name="projectName" col-title="Project Name"></span></div>'
+                    filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" col-name="projects" col-title="Project Name"></span></div>'
                 },
                 role: {
                     field: 'role',

@@ -15,6 +15,10 @@
 -->
 <div timesheet-intro></div>
 
+<div class="timesheet collapse-wrapper timesheet-total clearfix" ng-if="customUserId">
+    <b>Timesheet of {{customUserName}}</b>
+</div>
+
 <div class="timesheet collapse-wrapper timesheet-total clearfix">
     <span class="period-label">Total logged: {{totalLogged(projects)}}</span>
 

@@ -24,7 +24,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
             controller: 'timesheetController'
         });
 
-        $routeProvider.when('/timesheet/:userName', {
+        $routeProvider.when('/timesheet/:userId', {
             templateUrl: 'timesheet/timesheetView.html',
             controller: 'timesheetController'
         });
@@ -38,13 +38,14 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
             $scope.currentPeriodIndex = 0;
             $scope.timesheetKeys = timesheetService.getTimesheetKeys();
 
-            $scope.customUser = $routeParams.userName;
+            $scope.customUserId = $routeParams.userId;
 
-            loginService.getUser().success(function(loggedUser) {
+            loginService.getUser($scope.customUserId).success(function(loggedUser) {
                 if(loggedUser){
                     var uniqueProjectAssignments = [],
                         loadedProjects = 0;
 
+                    $scope.customUserName = loggedUser.displayName;
                     user = loggedUser;
 
                     user.assignments.forEach(function(assignment) {

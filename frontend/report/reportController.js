@@ -182,7 +182,7 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
             };
 
             reportService.getFilters(companyId).success(function(data) {
-                    $scope.timesheetGridOptions.reportFilters.concat(data);
+                    $scope.timesheetGridOptions.reportFilters = $scope.timesheetGridOptions.reportFilters.concat(data);
             });
 
             $scope.$watch('timesheetGridOptions.reportFilters', function(newValue, oldValue) {
@@ -349,6 +349,11 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
             };
 
             $scope.editEmployeeTimesheet = function(userName) {
-                $location.path('timesheet/' + userName);
+                var usersFilter = _.findWhere($scope.timesheetGridOptions.reportFilters, {field: 'users'}),
+                    user = _.find(usersFilter.value, function(filterValue) {
+                        return filterValue.name.displayName == userName;
+                    });
+
+                $location.path('timesheet/' + user.name._id);
             }
         }]);
