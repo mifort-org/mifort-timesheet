@@ -189,9 +189,13 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                 if(oldValue && newValue && newValue != oldValue){
                     //$scope.reportSettings.filters = [];
                     var dateFilter = _.where(newValue, {field: 'date'})[0],
-                        usedFilters = $scope.reportSettings.filters;
+                        usedFilters = $scope.reportSettings.filters,
+                        dateFilterIndex = _.findIndex(usedFilters, {field: 'date'});
 
-                    if(dateFilter){
+                    if(dateFilter && dateFilterIndex != -1){
+                        usedFilters[dateFilterIndex] = dateFilter;
+                    }
+                    else if(dateFilter){
                         usedFilters.push(dateFilter)
                     }
 
@@ -199,21 +203,21 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                         var filterToPush = {
                                 field: filter.field
                             },
-                            checkedFilters = _.where(filter.value, {isChecked: true});
+                            checkedFilters = _.where(filter.value, {isChecked: true}),
+                            usedFilterIndex = _.findIndex(usedFilters, {field: filter.field});
 
                         filterToPush.value = checkedFilters.map(function(checkedFilter) {
                             return checkedFilter.name
                         });
 
-                        if(filterToPush.value.length){
+                        if(filterToPush.value.length && usedFilterIndex == -1){
                             usedFilters.push(filterToPush);
                         }
-                        else{
-                            var usedFilterIndex = _.findIndex(usedFilters, {field: filter.field});
-
-                            if(usedFilterIndex !== -1 && filter.field != 'date'){
-                                usedFilters.splice(usedFilterIndex, 1);
-                            }
+                        else if(filterToPush.value.length && usedFilterIndex !== -1){
+                            usedFilters[usedFilterIndex] = filterToPush;
+                        }
+                        else if(usedFilterIndex !== -1 && filter.field != 'date'){
+                            usedFilters.splice(usedFilterIndex, 1);
                         }
                     });
 

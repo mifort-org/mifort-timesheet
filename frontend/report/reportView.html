@@ -101,7 +101,7 @@
             <input type="checkbox" id="filter-value-{{$index}}" ng-model="dynamicPopover.projectFilter.value[$index].isChecked"/>
             <label for="filtered-value-{{$index}}">
 
-                {{dynamicPopover.projectFilter.value[$index].name.role || dynamicPopover.projectFilter.value[$index].name}}
+                {{dynamicPopover.projectFilter.value[$index].name.role || dynamicPopover.projectFilter.value[$index].name.displayName || dynamicPopover.projectFilter.value[$index].name}}
             </label>
         </div>
     </div>
