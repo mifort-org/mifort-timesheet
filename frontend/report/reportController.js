@@ -45,7 +45,9 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
             $scope.getAggregatedComments = function(comments) {
                 if(comments && comments.length){
                     //remove empty comments
-                    var cleanComments = comments.filter(function(e){ return e.replace(/(\r\n|\n|\r)/gm,"")});
+                    var cleanComments = comments.filter(function(e) {
+                        return e.replace(/(\r\n|\n|\r)/gm, "")
+                    });
 
                     return cleanComments.join(", ")
                 }
@@ -182,7 +184,7 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
             };
 
             reportService.getFilters(companyId).success(function(data) {
-                    $scope.timesheetGridOptions.reportFilters = $scope.timesheetGridOptions.reportFilters.concat(data);
+                $scope.timesheetGridOptions.reportFilters = $scope.timesheetGridOptions.reportFilters.concat(data);
             });
 
             $scope.$watch('timesheetGridOptions.reportFilters', function(newValue, oldValue) {
@@ -201,14 +203,26 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
 
                     newValue.forEach(function(filter) {
                         var filterToPush = {
-                                field: filter.field
-                            },
-                            checkedFilters = _.where(filter.value, {isChecked: true}),
-                            usedFilterIndex = _.findIndex(usedFilters, {field: filter.field});
+                            field: filter.field
+                        };
+
+                        //proper names for backend
+                        switch(filterToPush.field){
+                            case 'projects':
+                                filterToPush.field = 'projectName';
+                                break;
+                            case 'users':
+                                filterToPush.field = 'userId';
+                                break;
+                        }
+
+                        var checkedFilters = _.where(filter.value, {isChecked: true}),
+                            usedFilterIndex = _.findIndex(usedFilters, {field: filterToPush.field});
 
                         filterToPush.value = checkedFilters.map(function(checkedFilter) {
-                            return checkedFilter.name
+                            return checkedFilter.name._id || checkedFilter.name;
                         });
+
 
                         if(filterToPush.value.length && usedFilterIndex == -1){
                             usedFilters.push(filterToPush);
@@ -216,7 +230,7 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                         else if(filterToPush.value.length && usedFilterIndex !== -1){
                             usedFilters[usedFilterIndex] = filterToPush;
                         }
-                        else if(usedFilterIndex !== -1 && filter.field != 'date'){
+                        else if(usedFilterIndex !== -1 && filterToPush.field != 'date'){
                             usedFilters.splice(usedFilterIndex, 1);
                         }
                     });
