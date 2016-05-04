@@ -266,6 +266,13 @@ function convertFiltersToQuery(filters, projectIds) {
                     query.date = {$gte: filter.start,
                                   $lte: filter.end};
                     break;
+                case 'userId':
+                    query.userId = {
+                        $in: filter.value.map(function(id) {
+                            return utils.convertToMongoId(id);
+                            })
+                        }
+                    break;
                 default:
                     query[filter.field] = {$in: filter.value};
             }
