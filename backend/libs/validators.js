@@ -369,6 +369,14 @@ function isFilters(filters) {
             if(filter.field === 'date') {
                 return validator.isDate(filter.start)
                     && validator.isDate(filter.end);
+            } else if(filter.field === 'userId'){
+                if(Array.isArray(filter.value)){
+                    return filter.value.every(function(val){
+                            return validator.isMongoId(val);
+                        });
+                } else {
+                    return false;
+                }
             } else {
                 return Array.isArray(filter.value);
             }

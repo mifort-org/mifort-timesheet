@@ -86,6 +86,14 @@ exports.formatDate = function(date) {
     return moment(date).format(dateFormat);
 };
 
+exports.convertToMongoId = function(str) {
+    var mongoId = str;
+    if(str && ObjectID.isValid(str)) {
+        mongoId = new ObjectID(str);
+    }
+    return mongoId;
+};
+
 //private section
 function getObjectIdParam(req, name) {
     var entityObjectId = getParameter(req, name);
