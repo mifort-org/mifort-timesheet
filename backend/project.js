@@ -194,11 +194,26 @@ function updateProject(project, res, next) {
                             }
                         );
                         users.updateAssignmentProjectName(project);
+                        updateTimesheetProjectName(project);
                     });
             } else {
                 res.json({message: "Project doesn't exist or Project name is not changed"});
                 log.debug("-REST result: Save(Update) project. Project doesn't exist or Project name is not changed");
             }
+        });
+}
+
+function updateTimesheetProjectName(project) {
+    var timesheet = db.timelogCollection();
+    timesheet.update({projectId: project._id,
+                     projectName: {$ne: project.name}},
+                    {$set: {projectName: project.name}},
+                    { multi: true },
+        function(err, updateInfo) {
+            if(err) {
+                log.warn('Timesheet is not updated after project re-naming', err);
+            }
+            log.info('Project name in timesheet collection is successfully updated.');
         });
 }
 
