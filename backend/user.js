@@ -206,6 +206,7 @@ exports.updateExternalInfo = function(user, callback) {
                  },
         function(err, result) {
             callback(err, result);
+            updateTimesheetUserName(user);
         });
 };
 
@@ -263,4 +264,19 @@ function updateProjectName(findedUsers, project) {
                 }
             });
     });
+}
+
+function updateTimesheetUserName(user) {
+    var timesheet = db.timelogCollection();
+    timesheet.update({userId: user._id,
+                     userName: {$ne: user.displayName}},
+                    {$set: {userName: user.displayName}},
+                    { multi: true },
+        function(err, updateInfo) {
+            if(err) {
+                log.warn('Timesheet is not updated after user update', err);
+            } else {
+                log.info('User name in timesheet collection is successfully updated.', updateInfo.result);
+            }
+        });
 }

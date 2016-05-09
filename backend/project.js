@@ -212,8 +212,9 @@ function updateTimesheetProjectName(project) {
         function(err, updateInfo) {
             if(err) {
                 log.warn('Timesheet is not updated after project re-naming', err);
+            } else {
+                log.info('Project name in timesheet collection is successfully updated.', updateInfo.result);
             }
-            log.info('Project name in timesheet collection is successfully updated.');
         });
 }
 
