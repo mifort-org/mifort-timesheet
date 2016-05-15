@@ -88,6 +88,7 @@ exports.restGetByCompanyId = function(req, res, next) {
                 email: 1,
                 assignments: 1,
                 'external.photos':1})
+        .sort({displayName: 1})
         .toArray(function(err, companyUsers) {
             if(err) {
                 err.code = 404;
@@ -277,6 +278,5 @@ function updateTimesheetUserName(user) {
                 log.warn('Timesheet is not updated after user update', err);
             } else {
                 log.info('User name in timesheet collection is successfully updated.', updateInfo.result);
-            }
-        });
+            });
 }
