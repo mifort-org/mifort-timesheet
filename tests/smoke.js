@@ -90,5 +90,20 @@ module.exports = {
             .click('.main-container section:first-of-type .employee-assignment a')
             .assert.containsText('.main-container section:first-of-type', 'CEO')
             .end();
+    },
+
+    'Check company page': function(browser) {
+        // New user invitation is checked in previous  test
+        var newCompanyName = 'Tralala';
+        browser
+            .init()
+            .waitForElementVisible('.logo', 2000)
+            .click('.tabs-left li:nth-child(1)')
+            .waitForElementVisible('#step1', 1000)
+            .clearValue('#step1')
+            .setValue('#step1', newCompanyName)
+            .pause(500)
+            .assert.containsText('.logo', newCompanyName)
+            .end();
     }
 };
