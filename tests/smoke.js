@@ -102,6 +102,7 @@ module.exports = {
             .waitForElementVisible('#step1', 1000)
             .clearValue('#step1')
             .setValue('#step1', newCompanyName)
+            .pause(900)
             .assert.containsText('.logo', newCompanyName)
             .end();
     }
