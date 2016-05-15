@@ -278,5 +278,6 @@ function updateTimesheetUserName(user) {
                 log.warn('Timesheet is not updated after user update', err);
             } else {
                 log.info('User name in timesheet collection is successfully updated.', updateInfo.result);
-            });
+            }
+        });
 }
