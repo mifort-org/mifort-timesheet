@@ -105,5 +105,30 @@ module.exports = {
             .pause(900)
             .assert.containsText('.logo', newCompanyName)
             .end();
+    },
+
+    'Check report page': function(browser) {
+        browser
+            .init()
+            .waitForElementVisible('.logo', 2000)
+            .click('.tabs-left li:nth-child(5)')
+            .pause(1000)
+            //Check Project report
+            .click('.aggregation-options li:nth-child(2) a')
+            .pause(500)
+            .assert.containsText('.ui-grid-render-container', 'Mifort-Test')
+            .assert.containsText('.ui-grid-render-container', '11')
+            //Check employee report
+            .click('.aggregation-options li:nth-child(3) a')
+            .pause(500)
+            .assert.containsText('.ui-grid-render-container', 'Test User')
+            .assert.containsText('.ui-grid-render-container', '11')
+            //Check Employee + Project Page
+            .click('.aggregation-options li:nth-child(4) a')
+            .pause(500)
+            .assert.containsText('.ui-grid-render-container', 'Test User')
+            .assert.containsText('.ui-grid-render-container', 'Mifort-Test')
+            .assert.containsText('.ui-grid-render-container', '11')
+            .end();
     }
 };
