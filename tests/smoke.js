@@ -54,7 +54,7 @@ module.exports = {
             //check new assignment on timesheet page
             .click('.tabs-left li:nth-child(6)')
             .waitForElementVisible('.main-container', 1000)
-            .pause(500)
+            .pause(1000)
             .assert.containsText('.main-container', 'New Project')
             .assert.containsText('.main-container', 'CEO')
             .end();
