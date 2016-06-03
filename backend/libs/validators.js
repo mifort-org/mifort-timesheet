@@ -295,9 +295,8 @@ function isTimesheet(values) {
             if(val._id){
                 isValid = validator.isMongoId(val._id);
             }
-            if(val.time){
+            if(typeof val.time === 'number'){
                 isValid = isValid
-                    && (typeof val.time === 'number')
                     && (0 <= val.time && val.time <= 24);
             } else if (val.time != null) { // time field is required
                 return false;
