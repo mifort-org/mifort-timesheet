@@ -14,4 +14,4 @@
   limitations under the License.
 -->
 
-<input id="step4" class="timesheet-comment form-control" placeholder="{{log.placeholder}}" type="text" ng-model="log.comment"/>
+<input ng-disabled="!log.projectId" id="step4" class="timesheet-comment form-control" placeholder="{{log.placeholder}}" type="text" ng-model="log.comment"/>

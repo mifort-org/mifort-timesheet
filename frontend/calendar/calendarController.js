@@ -34,18 +34,25 @@ angular.module('mifortTimesheet.calendar', ['ngRoute'])
                 templateUrl: 'customDay.html'
             };
             $scope.periodSettings = calendarService.getPeriodSettings();
+            $scope.countPeriodSettings = calendarService.getCountPeriodSettings();
             $scope.weekDays = calendarService.getWeekDays();
-
-            calendarService.getCompany(preferences.get('user').companyId).success(function(data) {
+            calendarService.getCompany(preferences.get('user').companyId).success(function (data) {
                 $scope.company = data;
-            }).then(function() {
+                if (data.periodSetting && data.countPeriodSetting) {
+                    $scope.countPeriodSetting = data.countPeriodSetting;
+                    $scope.periodSetting = data.periodSetting;
+                } else {
+                    $scope.countPeriodSetting = "1";
+                    $scope.periodSetting = "Week";
+                }
+            }).then(function () {
                 $scope.init();
             });
 
             $scope.selectedPeriod = $scope.periodSettings[0]; //default period is week
             $scope.splittedCalendar = [];
             $scope.calendarIsOpened = false;
-
+            $scope.periodCount = [1,2,3,4,5,6,7];
             //check and remove
             $scope.range = function(n) {
                 return new Array(n);
@@ -76,6 +83,17 @@ angular.module('mifortTimesheet.calendar', ['ngRoute'])
                     $scope.calendar.push(dayToPush);
                 }
 
+                updateCalendarDaysWithPeriods();
+
+                //Splitting the calendar days into tables
+                $scope.calendar.forEach(function(day, index) {
+                    generateCalendarTables(day, index);
+                });
+
+                applyDefaultValues();
+            }
+
+            function updateCalendarDaysWithPeriods(){
                 $scope.company.periods.forEach(function(period) {
                     if(period.start){
                         var periodStartDay = _.findWhere($scope.calendar, {date: moment(new Date(period.start)).format('MM/DD/YYYY')});
@@ -93,13 +111,6 @@ angular.module('mifortTimesheet.calendar', ['ngRoute'])
                         }
                     }
                 });
-
-                //Splitting the calendar days into tables
-                $scope.calendar.forEach(function(day, index) {
-                    generateCalendarTables(day, index);
-                });
-
-                applyDefaultValues();
             }
 
             function applyDefaultValues() {
@@ -246,6 +257,17 @@ angular.module('mifortTimesheet.calendar', ['ngRoute'])
                 }, true);
             }
 
+            //var daysYear = $scope.calendar;
+
+            function resetPeriodsSplitters(){
+                $scope.calendar.forEach(function (day) {
+                    if (day.date) {
+                        day.isPeriodStartDate = false;
+                        day.isPeriodEndDate = false;
+                    }
+                });
+            }
+
             $scope.introSteps = [
                 {
                     element: '#step1',
@@ -277,12 +299,12 @@ angular.module('mifortTimesheet.calendar', ['ngRoute'])
             ];
 
             $scope.splitCalendar = function(shouldBeSplitted, period, splitStartDate) {
-                if(period.periodName == 'month' && splitStartDate.getDate() > 28){
+                if(period == 'month' && splitStartDate.getDate() > 28){
                     alert('Please choose the correct date for split');
                     return;
                 }
 
-                switch(period.periodName){
+                switch(period){
                     case 'Week':
                         var startWeekDay = splitStartDate.getDay(),
                             endWeekDay = startWeekDay == 0 ? 6 : startWeekDay - 1;
@@ -392,24 +414,63 @@ angular.module('mifortTimesheet.calendar', ['ngRoute'])
                 });
             };
 
-            $scope.GenerateMoreDays = function() {
-                var lastPeriodEnd = $scope.company.periods[$scope.company.periods.length - 1].end,
-                    newPeriodStart = moment(new Date(lastPeriodEnd)).add(i + 1, 'days'),
-                    nextPeriodStart,
-                    weeksToGenerate = 52, //weeks in year
+            $scope.calculatePeriods = function() {
+                var firstPeriod = new Date(),
+                    newPeriodStartDays = moment(new Date(firstPeriod)).add(i + 1, 'days'),
+                    newPeriodStartMonths = moment(new Date(firstPeriod)).add(i + 1, 'months'),
                     i;
 
-                for(i = 0; i < weeksToGenerate; i++){
-                    nextPeriodStart = moment(new Date(newPeriodStart)).add(i * 7, 'days');
+                $scope.company.periods = [];
+                resetPeriodsSplitters();
+                generatePeriods(newPeriodStartDays, newPeriodStartMonths);
+                updateCalendarDaysWithPeriods();
 
-                    $scope.company.periods.push({
-                        end: nextPeriodStart.add(7, 'days').format('MM/DD/YYYY'),
-                        start: nextPeriodStart.format('MM/DD/YYYY')
-                    });
-                }
+                preferences.set('currentPeriodIndex', 0);
+            };
 
+            $scope.GenerateMoreDays = function() {
+
+                var lastPeriodEnd = $scope.company.periods[$scope.company.periods.length - 1].end,
+                    newPeriodStartDays = moment(new Date(lastPeriodEnd)).add(i + 1, 'days'),
+                    newPeriodStartMonths = moment(new Date(lastPeriodEnd)).add(i + 1, 'months'),
+                    i;
+
+                generatePeriods(newPeriodStartDays, newPeriodStartMonths);
                 generateCalendar();
             };
+
+            function generatePeriods(newPeriodStartDays, newPeriodStartMonths) {
+                var nextPeriodStart,
+                    countPeriods,
+                    daysInYear = 365,
+                    monthsInYear = 12,
+                    i;
+
+                if($scope.periodSetting == "Week") {
+                    countPeriods = daysInYear  / 7 / $scope.countPeriodSetting;
+                    for (i = 0; i < countPeriods; i++) {
+                        nextPeriodStart = moment(new Date(newPeriodStartDays)).add($scope.countPeriodSetting * i * 7, 'days');
+
+                        $scope.company.periods.push({
+                            start: nextPeriodStart.format('MM/DD/YYYY'),
+                            end: nextPeriodStart.add(($scope.countPeriodSetting * 7) - 1, 'days').format('MM/DD/YYYY')
+                        });
+                    }
+                }
+                else{
+                    countPeriods = monthsInYear / $scope.countPeriodSetting;
+                    for(i = 0; i < countPeriods; i++){
+                        nextPeriodStart = moment(new Date(newPeriodStartMonths)).add($scope.countPeriodSetting * i, 'months');
+
+                        $scope.company.periods.push({
+                            start: nextPeriodStart.format('MM/DD/YYYY'),
+                            end: nextPeriodStart.add($scope.countPeriodSetting, 'months').format('MM/DD/YYYY')
+                        });
+                    }
+                }
+                $scope.company.countPeriodSetting = $scope.countPeriodSetting;
+                $scope.company.periodSetting = $scope.periodSetting;
+            }
 
             $scope.getDayColor = function(dayId) {
                 if(dayId){

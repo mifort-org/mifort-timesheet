@@ -14,7 +14,31 @@
   limitations under the License.
 -->
 
-<div ng-show="!company" class="loading-indicator">Loading...</div>
+<!--<span class="blank-dropdown blank-dropdown-small form-control period-count" uib-dropdown on-toggle="toggled(open)">-->
+                    <!--<a href id="simple-dropdown" uib-dropdown-toggle>-->
+                        <!--{{reportSettings.pageSize}}-->
+                    <!--</a>-->
+
+                    <!--<ul uib-dropdown-menu aria-labelledby="simple-dropdown">-->
+                        <!--<li ng-repeat="pageSize in perPage">-->
+                            <!--<a href ng-click="perPageChanged(pageSize)">{{pageSize}}</a>-->
+                        <!--</li>-->
+                    <!--</ul>-->
+    <!--</span>-->
+<div class="periods-options-wrapper">
+    <div class="periods-options">
+        <div class="selects-periods-options">
+            <span class="periods-options-text">Report every:</span>
+            <select id="sel" class="select-periods-options" ng-model="countPeriodSetting"
+                    ng-options="countPeriod as countPeriod for countPeriod in countPeriodSettings">
+            </select>
+            <select id="sel2" class="select-periods-options" ng-model="periodSetting"
+                    ng-options="period as period for period in periodSettings">
+            </select>
+        </div>
+        <button ng-click="calculatePeriods()" class="primary-button calculate-periods-button">Apply</button>
+    </div>
+</div>
 
 <div class="calendar-controls-wrapper" ng-show="company">
     <div timesheet-intro></div>

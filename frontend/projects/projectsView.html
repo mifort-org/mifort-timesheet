@@ -60,7 +60,7 @@
     </h2>
 
     <div uib-collapse="project.isCollapsed">
-        <table class="table table-bordered">
+        <table class="table table-bordered projects-table">
             <thead>
             <tr>
                 <th ng-repeat="projectsKey in projectsKeys track by $index">
@@ -82,21 +82,7 @@
                 </td>
 
                 <td>
-                    <span class="blank-dropdown" uib-dropdown on-toggle="toggled(open)">
-                        <a href id="simple-dropdown-two" uib-dropdown-toggle>
-                            {{assignment.role}}
-                        </a>
-
-                        <ul uib-dropdown-menu aria-labelledby="simple-dropdown">
-                            <li ng-repeat="availablePosition in availablePositions track by $index">
-                                <a href ng-click="changeRole(project, assignedEmployee, assignment, availablePosition)">{{availablePosition}}</a>
-                            </li>
-                        </ul>
-                    </span>
-                </td>
-
-                <td>
-                    <time-mask assigned-employee="assignedEmployee"></time-mask>
+                    <time-mask assigned-employee="assignedEmployee" watch="project.currentPeriodIndex"></time-mask>
                     <!--<input type="number" ng-model="assignment.workload" ng-change="saveAssignment(project, assignedEmployee)"/>-->
                     <a href="" class="remove-assignment" ng-click="removeAssignment(project, assignedEmployee, $index)">&times;</a>
                 </td>

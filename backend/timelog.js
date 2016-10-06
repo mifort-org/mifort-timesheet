@@ -27,6 +27,7 @@ exports.restSave = function(req, res, next) {
 
     var ids = [];
     var timelogs = req.body.timesheet;
+    var logsToDelete = req.body.logsToDelete;
 
     log.debug('-REST call: Save timelog. Number of timelog items: %d', timelogs.length);
 
@@ -37,6 +38,10 @@ exports.restSave = function(req, res, next) {
             batch.insert(log);
         }
         ids.push(log._id);
+    });
+
+    logsToDelete.forEach(function (log){
+        batch.find({_id: log._id}).remove();
     });
 
     batch.execute(function(err, result) {

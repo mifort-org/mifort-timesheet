@@ -23,32 +23,32 @@ angular.module('mifortTimesheet')
             link: function (scope, element) {
                 var clickableAreaWidth = 7;
 
-                element.on('click', function (e) {
-                    if(scope.day.date && ($(e.target).hasClass('start-splitter') || $(e.target).hasClass('end-splitter'))){
-                        var dayIndex = _.findIndex(scope.calendar, scope.day);
-                        var nextDay = scope.calendar[dayIndex + 1],
-                            previousDay = scope.calendar[dayIndex - 1];
-
-                        //left border click
-                        if (e.pageX - clickableAreaWidth < $(this).offset().left) {
-                            scope.day.isPeriodStartDate = !scope.day.isPeriodStartDate;
-                            if(previousDay && previousDay.date){
-                                previousDay.isPeriodEndDate = !previousDay.isPeriodEndDate;
-                                scope.aggregatePeriods(scope.calendar);
-                            }
-                        }
-                        //right border click
-                        else if (e.pageX > $(this).offset().left + $(this).outerWidth() - clickableAreaWidth) {
-                            scope.day.isPeriodEndDate = !scope.day.isPeriodEndDate;
-                            if(nextDay && nextDay.date) {
-                                nextDay.isPeriodStartDate = !nextDay.isPeriodStartDate;
-                                scope.aggregatePeriods(scope.calendar);
-                            }
-                        }
-
-                        scope.$apply();
-                    }
-                });
+                //element.on('click', function (e) {
+                //    if(scope.day.date && ($(e.target).hasClass('start-splitter') || $(e.target).hasClass('end-splitter'))){
+                //        var dayIndex = _.findIndex(scope.calendar, scope.day);
+                //        var nextDay = scope.calendar[dayIndex + 1],
+                //            previousDay = scope.calendar[dayIndex - 1];
+                //
+                //        //left border click
+                //        if (e.pageX - clickableAreaWidth < $(this).offset().left) {
+                //            scope.day.isPeriodStartDate = !scope.day.isPeriodStartDate;
+                //            if(previousDay && previousDay.date){
+                //                previousDay.isPeriodEndDate = !previousDay.isPeriodEndDate;
+                //                scope.aggregatePeriods(scope.calendar);
+                //            }
+                //        }
+                //        //right border click
+                //        else if (e.pageX > $(this).offset().left + $(this).outerWidth() - clickableAreaWidth) {
+                //            scope.day.isPeriodEndDate = !scope.day.isPeriodEndDate;
+                //            if(nextDay && nextDay.date) {
+                //                nextDay.isPeriodStartDate = !nextDay.isPeriodStartDate;
+                //                scope.aggregatePeriods(scope.calendar);
+                //            }
+                //        }
+                //
+                //        scope.$apply();
+                //    }
+                //});
 
                 scope.getDayTime = function(day) {
                     if(day.dayId){

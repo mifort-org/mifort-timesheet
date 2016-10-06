@@ -77,7 +77,6 @@ angular.module('mifortTimesheet.projects', ['ngRoute'])
 
             $scope.projectsKeys = [
                 'Employee',
-                'Assignment',
                 'Workload'
             ];
             $scope.assignments = [

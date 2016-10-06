@@ -31,13 +31,13 @@ angular.module('mifortTimesheet.timesheet').factory('timesheetService',
             getTimesheetKeys: function() {
                 return {
                     'date': 'Date',
-                    'role': 'Role',
+                    'project': 'Project',
                     'time': 'Time',
                     'comment': 'Comment'
                 }
             },
-            updateTimesheet: function(userId, timesheet) {
-                return $http.post('api/v1/timesheet', {'timesheet': timesheet});
+            updateTimesheet: function(userId, timesheet, logsToDelete) {
+                return $http.post('api/v1/timesheet', {'timesheet': timesheet, 'logsToDelete': logsToDelete});
             },
             introSteps: [
                 {

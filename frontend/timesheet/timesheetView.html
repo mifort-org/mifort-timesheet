@@ -29,13 +29,12 @@
     </div>
 </div>
 
-<div class="timesheet collapse-wrapper clearfix" ng-repeat="project in projects track by $index">
-    <h2 ng-class="{'timesheet-collapsed': isCollapsed}">
-        <a href="" class="collapse-item" id="{{$first ? 'step1' : ''}}" ng-class="{'collapsed': isCollapsed}" ng-click="isCollapsed = !isCollapsed">
-            {{project.name}}
-        </a>
+<div class="timesheet collapse-wrapper clearfix">
+    <h2 ng-class="{'timesheet-collapsed': isCollapsed}">Total
+        <!--<a href="" class="collapse-item" id="{{$first ? 'step1' : ''}}" ng-class="{'collapsed': isCollapsed}" ng-click="isCollapsed = !isCollapsed">-->
+            <!--{{project.name}}-->
+        <!--</a>-->
 
-        <span class="timesheet-total" ng-bind-html="totalProjectLogged(project)">0h/0h</span>
     </h2>
 
     <div uib-collapse="isCollapsed">
@@ -48,42 +47,36 @@
             </tr>
             </thead>
 
-            <tbody ng-show="!project.loading">
+            <tbody ng-show="!loading">
             <tr ng-if="currentPeriodIndex >= 0"
-                ng-repeat="log in project.periods[currentPeriodIndex].timesheet track by $index"
+                ng-repeat="log in getDates() track by $index"
                 ng-style="{background: log.color}"
                 ng-class="{'is-today': isToday(log.date),
-                           'is-last-todays-record': isLastTodaysRecord(project.periods[currentPeriodIndex].timesheet, $index)}">
-
+                           'is-last-todays-record': isLastTodaysRecord(projects[0].periods[currentPeriodIndex].timesheet, $index)}">
                 <td>
                     <span class="timesheet-data">
-                        <a href="" ng-if="log.isFirstDayRecord" class="add-timesheet" ng-click="addLog(log, project, currentPeriodIndex)">+</a>
+                        <a href="" ng-if="log.isFirstDayRecord" class="add-timesheet" ng-click="addLog(log, projects[0], currentPeriodIndex)">+</a>
 
                         <span ng-if="log.isFirstDayRecord">
                             {{getWeekDay(log.date)}}
                             <span class="log-date">{{log.date}}</span>
                         </span>
 
-                        <a href="" ng-if="!log.isFirstDayRecord" class="remove-timesheet" ng-click="removeRow(log, project, currentPeriodIndex)">&#8211;</a>
+                        <a href="" ng-if="!log.isFirstDayRecord" class="remove-timesheet" ng-click="removeRow(log, projects[0], currentPeriodIndex)">&#8211;</a>
                     </span>
                 </td>
 
                 <td>
-                    <span class="blank-dropdown" uib-dropdown on-toggle="toggled(open)">
-                        <a href id="simple-dropdown" uib-dropdown-toggle>
-                            {{log.role}}
-                        </a>
+                    <select id="sel" class="select-timesheet-project" ng-model="log.projectId"
+                            ng-options="project._id as project.name for project in projects"
+                            ng-change="onChangeProjectId(log)">
+                        <option value="">Choose Project</option>
+                    </select>
 
-                        <ul uib-dropdown-menu aria-labelledby="simple-dropdown">
-                            <li ng-repeat="assignment in project.assignments">
-                                <a href ng-click="assignRole(assignment.role, log)">{{assignment.role}}</a>
-                            </li>
-                        </ul>
-                    </span>
                 </td>
 
                 <td>
-                    <time-mask class="timesheet-hours"></time-mask>
+                    <time-mask class="timesheet-hours" watch="log"></time-mask>
                 </td>
 
                 <td>
@@ -92,8 +85,7 @@
             </tr>
             </tbody>
         </table>
-
-        <div class="loading-indicator" ng-show="project.loading" style="min-height: {{project.lastPeriodRecords * 52}}px">Loading...</div>
+        <div class="loading-indicator" ng-show="loading" style="min-height: {{project.lastPeriodRecords * 52}}px">Loading...</div>
     </div>
 </div>
 
