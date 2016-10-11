@@ -30,6 +30,7 @@
   margin: 0 5px; }
 
 .calendar-wrapper {
+  margin-left: 18px;
   display: inline-block;
   width: 546px;
   margin-right: 20px;
@@ -340,10 +341,10 @@
   /*background: url("../../common/images/icons.png") 0 -894px no-repeat; }*/
 
 .periods-options-wrapper{
+  margin: -50px 0 20px 18px;
   width: 546px;
   height: 60px;
   background-color: #fff;
-  margin-bottom: 20px;
 }
 
 .periods-options-text{

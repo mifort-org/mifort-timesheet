@@ -310,7 +310,6 @@ function isTimesheet(values) {
             }
             isValid = isValid
                 && validator.isMongoId(val.userId) //required && format
-                //&& validator.isOptionalMongoId(val.projectId) //format
                 && validator.isMongoId(val.projectId) //required && format
                 && validator.isLength(val.projectName, 1) //required
                 && validator.isDate(val.date) //required && format

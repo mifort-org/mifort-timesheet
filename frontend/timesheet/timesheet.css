@@ -14,7 +14,11 @@
  * limitations under the License.
  */
 .timesheet {
-  position: relative; }
+  position: relative;
+}
+.timesheet-collapse-wrapper{
+  margin: -50px 0 0 18px;
+}
   .timesheet h2 {
     padding-bottom: 25px; }
     .timesheet h2.timesheet-collapsed {
@@ -63,16 +67,35 @@
     flex-direction: column;
     justify-content: center; }
 
-.timesheet-controls {
-  float: right; }
-
 .period-label {
-  display: inline-block;
-  margin: 7px 3px;
-  font-size: 1.6rem;
-  color: #999;
-  font-weight: 500;
-  vertical-align: top; }
+    display: inline-block;
+    margin: 7px 0 25px 3px;
+    font-size: 1.6rem;
+    color: #999;
+    font-weight: 500;
+    vertical-align: top;
+}
+
+.wrapper-timesheet-controls .total-logged{
+    padding: 5px 0 0 166px
+}
+
+.total-logged{
+    display: inline-block;
+    margin: 7px 0 15px 3px;
+    font-size: 1.6rem;
+    font-weight: 600;
+    padding-left: 421px;
+}
+
+.wrapper-timesheet-controls {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    display: flex;
+}
+.wrapper-timesheet-controls .timesheet-controls{
+    display: inline-block;
+}
 
 .previous-period,
 .next-period {
@@ -105,24 +128,24 @@
     .next-period.disabled:hover {
       background-position: 2px -1035px;
       cursor: not-allowed; }
+.log-date-wrapper{
+    vertical-align: initial !important;
+}
 
 .add-timesheet,
 .remove-timesheet {
   position: relative;
   top: 6px;
-  margin: 0 16px 0 10px;
+  margin: 0 5px 0 10px;
   color: #19b5fe;
   opacity: 0.7;
   font-size: 1.65em;
   line-height: 1; }
 
-.add-timesheet {
-  float: left; }
-
 .remove-timesheet {
   color: red;
   float: right;
-  margin-top: -10px; }
+  margin-top: -2px; }
 
 .add-timesheet:hover,
 .add-timesheet:focus,
@@ -193,8 +216,7 @@
   float: right; }
 
 .log-date {
-  font-size: 1.4rem;
-  color: #999; }
+  font-size: 1.4rem;}
 
 .is-today td:first-child:before {
   position: absolute;

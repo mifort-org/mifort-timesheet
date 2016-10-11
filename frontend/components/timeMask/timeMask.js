@@ -29,6 +29,7 @@ angular.module('mifortTimesheet')
                     if(time != ''){
                         $(this).val(time + 'h');
                     }
+                    $(this).attr('placeholder','8h');
                 });
 
                 input.on('focus', function(){
@@ -37,10 +38,14 @@ angular.module('mifortTimesheet')
                     if(time != '' && time.slice(-1) == 'h'){
                         $(this).val(time.slice(0, -1));
                     }
+                    $(this).removeAttr("placeholder");
                 });
 
-                input.on('keypress', function(event){
-                    if(event.which != 8 && isNaN(String.fromCharCode(event.which))){
+                input.on('keypress', function (event) {
+                    var indexOfDot = $(this).val().indexOf(".");
+                    if (event.which != 8 &&
+                        (event.key != '.' && isNaN(String.fromCharCode(event.which))) ||
+                        (indexOfDot > -1 && event.key == '.')) {
                         event.preventDefault(); //stop character from entering input
                     }
                 });

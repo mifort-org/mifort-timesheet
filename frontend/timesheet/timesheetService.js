@@ -72,5 +72,5 @@ angular.module('mifortTimesheet.timesheet').factory('timesheetService',
             ]
     }
 }
-])
-;
+]);
+
