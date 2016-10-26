@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('mifortTimesheet')
-    .directive('projectSummary', function($location, preferences) {
+    .directive('projectSummary', function($location, preferences, $rootScope) {
         return {
             scope: true,
             link: function (scope, element, attrs) {
@@ -93,7 +93,8 @@ angular.module('mifortTimesheet')
                 };
 
                 scope.getTotalWorkloadTime = function (countProject) {
-                    scope.$root.$emit('totaltime', { totalTime: 40});
+                    $rootScope.totalTimeWorkload = countProject*40; // !!!!!
+                    scope.$root.$emit('totaltime', { totalTime: countProject*40});
                     var totalTime = countProject*40;
                     this.$root.totaltime = totalTime;
                     return totalTime;
@@ -119,6 +120,7 @@ angular.module('mifortTimesheet')
                     scope.projectsWithTime = [];
 
                     scope.totalWorkloadLogs();
+                    scope.getTotalWorkloadTime();
                     initWatchers();
                 });
 

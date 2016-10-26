@@ -30,8 +30,8 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
         });
     }])
 
-    .controller('timesheetController', ['$scope', 'timesheetService', 'calendarService', 'preferences', 'loginService', '$routeParams', '$timeout', 'Notification', "$q",
-        function($scope, timesheetService, calendarService, preferences, loginService, $routeParams, $timeout, Notification, $q) {
+    .controller('timesheetController', ['$scope', 'timesheetService', 'calendarService', 'preferences', 'loginService', '$routeParams', '$timeout', 'Notification', "$q", "$rootScope",
+        function($scope, timesheetService, calendarService, preferences, loginService, $routeParams, $timeout, Notification, $q, $rootScope) {
             var user;
 
             $scope.projects = [];
@@ -673,24 +673,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
             // };
 
             $scope.getTotalSumWorkload = function () {
-                $scope.$root.$on('totalWorkloadLogs', function (event, data) {
-                    return data.logsCurrentPeriod;
-                });
-                // var projectWithTime = $scope.$root.totaltime;
-                // var logsCurrentPeriod = $scope.getLogDates();
-                // var projects = $scope.projects;
-                // logsCurrentPeriod.forEach(function (log) {
-                //     if (projectWithTime){
-                //         if(!_.findWhere(projectWithTime, {companyId: log.projectId})){
-                //
-                //         }
-                //         // log.projectId
-                //     }
-                //     else{
-                //         projectWithTime.push(projects[0]);
-                //     }
-                // })
-
+                return $rootScope.totalTimeWorkload;
             };
 
             $scope.getProjectWorkloadTime = function (project, logs) {
