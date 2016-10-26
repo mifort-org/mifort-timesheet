@@ -80,6 +80,11 @@ angular.module('mifortTimesheet')
                     changeActiveTab($location.path().substr(1))
                 });
 
+                scope.isTimesheetTabActive = function () {
+                    var activeTab = _.findWhere(scope.tabs, {active: true});
+                    return activeTab && activeTab.title == "Timesheet";
+                };
+
                 function changeActiveTab(newLocation){
                     scope.tabs.map(function(tab) {
                         if(tab.url == newLocation){

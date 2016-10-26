@@ -23,10 +23,8 @@ angular.module('mifortTimesheet')
             link: function(scope, element, attrs) {
                 scope.popoverOpened = false;
 
-                scope.dynamicPopover = {
-                    content: attrs.colTitle,
-                    templateUrl: 'myPopoverTemplate.html',
-                    projectFilter: _.find(scope.grid.options.reportFilters, function(filter) {
+                scope.getProjectFilter = function () {
+                    return _.find(scope.grid.options.reportFilters, function(filter) {
                         if(filter.field == attrs.colName){
                             filter.value = filter.value.map(function(filterValue) {
                                 if(filterValue.name){
@@ -44,6 +42,16 @@ angular.module('mifortTimesheet')
                         }
                     })
                 };
+
+                scope.dynamicPopover = {
+                    content: attrs.colTitle,
+                    templateUrl: 'myPopoverTemplate.html',
+                    projectFilter: scope.getProjectFilter()
+                };
+
+                scope.$watch("grid.options.reportFilters", function (newValue, oldValue) {
+                    scope.dynamicPopover.projectFilter = scope.getProjectFilter();
+                });
 
                 scope.hasFilter = function() {
                     if(scope.dynamicPopover.projectFilter){

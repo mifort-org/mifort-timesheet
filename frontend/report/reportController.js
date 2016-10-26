@@ -88,7 +88,7 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                         $scope.reportSettings.groupBy = [];
                         $scope.reportSettings.isCommentNeeded = false;
                     },
-                    columnsOrder: ['date', 'userName', 'projectName', 'role', 'time', 'comment']
+                    columnsOrder: ['date', 'userName', 'projectName', 'time', 'comment']
                 },
                 {
                     title: 'Project',

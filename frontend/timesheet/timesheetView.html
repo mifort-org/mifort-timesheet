@@ -20,15 +20,6 @@
 </div>
 
 <div class="timesheet collapse-wrapper timesheet-collapse-wrapper clearfix">
-    <div class="timesheet collapse-wrapper timesheet-total clearfix wrapper-timesheet-controls">
-
-        <div class="timesheet-controls clearfix" id="{{$first ? 'step2' : ''}}">
-            <button class="previous-period" ng-class="{'disabled' : currentPeriodIndex <= 0}" ng-click="showPreviousPeriod(projects)"></button>
-            <span class="period-label" ng-bind-html="getPeriodLabel(projects[0].periods[currentPeriodIndex])"></span>
-            <button class="next-period" ng-class="{'disabled' : currentPeriodIndex >= projects[0].periods.length - 1}" ng-click="showNextPeriod(projects)"></button>
-        </div>
-        <span class="total-logged" style="margin: 0;">Total logged: {{totalLogged(projects)}}</span>
-    </div>
     <!--<h2 ng-class="{'timesheet-collapsed': isCollapsed}">Total-->
         <!--<a href="" class="collapse-item" id="{{$first ? 'step1' : ''}}" ng-class="{'collapsed': isCollapsed}" ng-click="isCollapsed = !isCollapsed">-->
             <!--{{project.name}}-->
@@ -40,15 +31,40 @@
         <table class="table table-bordered timesheet" id="{{$first ? 'step3' : ''}}">
             <thead>
             <tr>
-                <th ng-repeat="timesheetKey in timesheetKeys track by $index">
-                    {{timesheetKey}}
+                <th ng-repeat="timesheetKey in timesheetKeys track by $index"
+                    ng-class="{'log-date-header' : $index == 0 && !isStartEndPeriodSameMonth(projects[0].periods[currentPeriodIndex])}">
+                    <div style="float: left;">
+                        {{timesheetKey}}
+
+                        <div ng-show="$index == 0"
+                             class="timesheet collapse-wrapper timesheet-total clearfix wrapper-timesheet-controls">
+
+                            <div class="timesheet-controls clearfix" id="{{$first ? 'step2' : ''}}">
+                                <button class="previous-period" ng-class="{'disabled' : currentPeriodIndex <= 0}"
+                                        ng-click="showPreviousPeriod(projects)"></button>
+                                <span class="period-label"
+                                      ng-bind-html="getPeriodLabel(projects[0].periods[currentPeriodIndex])"></span>
+                                <button class="next-period"
+                                        ng-class="{'disabled' : currentPeriodIndex >= projects[0].periods.length - 1}"
+                                        ng-click="showNextPeriod(projects)"></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="float: right;">
+                        <div ng-show="timesheetKey == 'Project'">
+                            <span class="dropdown-filter" dropdown-filter col-name="projects" col-title="Project Name" search-text="{{bbb}}"></span>
+                        </div>
+                    </div>
+
+                    <div style="clear: both;"></div>
                 </th>
             </tr>
-            </thead>
 
+            </thead>
             <tbody ng-show="!loading">
             <tr ng-if="currentPeriodIndex >= 0"
-                ng-repeat="log in getDates() track by $index"
+                ng-repeat="log in filteredLogs | orderBy:'date' track by $index"
                 ng-style="{background: log.color}"
                 ng-class="{'is-today': isToday(log.date),
                            'is-last-todays-record': isLastTodaysRecord(projects[0].periods[currentPeriodIndex].timesheet, $index)}">
@@ -57,7 +73,8 @@
                         <a href="" ng-if="log.isFirstDayRecord" class="add-timesheet" ng-click="addLog(log, projects[0], currentPeriodIndex)">+</a>
 
                         <span ng-if="log.isFirstDayRecord">
-                            <span class="log-date">{{log.date| toDateFilter | date:'dd MMM'}}</span>
+                            <span class="log-date">{{log.date| toDateFilter | date:'dd MMM'}}</span></br>
+                            <span class="log-date-name-day">{{log.date| toDateFilter | date:"EEEE"}}</span>
                         </span>
 
                         <a href="" ng-if="!log.isFirstDayRecord" class="remove-timesheet" ng-click="removeRow(log, projects[0], currentPeriodIndex)">&#8211;</a>
@@ -65,13 +82,21 @@
                 </td>
 
                 <td>
-                    <select id="sel" class="select-timesheet-project" ng-model="log.projectId"
-                            ng-options="project._id as project.name for project in projects"
-                            ng-change="onChangeProjectId(log)">
-                    </select>
+                    <!--{{log}}-->
+                    <span class="blank-dropdown" uib-dropdown on-toggle="toggled(open)">
+                        <a href id="simple-dropdown" uib-dropdown-toggle>
+                            {{log.projectName | longTextFilter: 15}}
+                        </a>
+
+                        <ul uib-dropdown-menu aria-labelledby="simple-dropdown">
+                            <li ng-repeat="project in projects">
+                                <a href ng-click="assignProject(project._id, log)">{{project.name}}</a>
+                            </li>
+                        </ul>
+                    </span>
                 </td>
 
-                <td>
+                <td style="text-align: right !important;">
                     <time-mask class="timesheet-hours" watch="log"></time-mask>
                 </td>
 
@@ -80,10 +105,77 @@
                 </td>
             </tr>
             </tbody>
+            <tfoot>
+            <tr>
+                <td class="total-logged">Total:</td>
+                <td></td>
+                <td class="total-logged-general-time">{{getTotalSum()}}/{{120}}</td>
+                <td></td>
+            </tr>
+            </tfoot>
         </table>
-        <span class="total-logged">Total logged: {{totalLogged(projects)}}</span>
         <div class="loading-indicator" ng-show="loading" style="min-height: {{project.lastPeriodRecords * 52}}px">Loading...</div>
     </div>
 </div>
 
 <div class="timesheet collapse-wrapper no-assignments" ng-show="!projects.length && noAssignments">You are not assigned to any project</div>
+
+
+
+<script type="text/ng-template" id="myPopoverTemplate.html">
+    <div>{{dynamicPopover.content}}</div>
+
+    <input type="text" class="filter-input" ng-model="$parent.searchProjectByText" placeholder="Search" ng-change="onSearchProjectByText()"/>
+
+    <!--{{dynamicPopover.projectFilter}}-->
+
+    <!--angular bootstrap popover unintentional close solution-->
+    <div ng-repeat="n in range(dynamicPopover.projectFilter.value.length) track by $index" class="filters-container">
+        <div ng-show="dynamicPopover.projectFilter.value[$index].isChecked">
+            <input type="checkbox" id="filter-value-{{$index}}" ng-model="dynamicPopover.projectFilter.value[$index].isChecked"/>
+            <label for="filtered-value-{{$index}}">
+
+                {{dynamicPopover.projectFilter.value[$index].name.role || dynamicPopover.projectFilter.value[$index].name.displayName || dynamicPopover.projectFilter.value[$index].name}}
+            </label>
+        </div>
+    </div>
+
+    <hr ng-if="hasFilter() && dynamicPopover.projectFilter.field !== 'projectName'"/>
+
+    <!--angular bootstrap popover unintentional close solution-->
+    <div ng-if="dynamicPopover.projectFilter.field == 'projectName'">
+        <h5>Active Project</h5>
+
+        <div ng-if="dynamicPopover.projectFilter.field == 'projectName' && dynamicPopover.projectFilter.value[$index].active"
+             ng-repeat="n in dynamicPopover.projectFilter.value track by $index"
+             class="filters-container">
+            <input type="checkbox" id="filtered-value-{{$index}}" ng-model="dynamicPopover.projectFilter.value[$index].isChecked"/>
+            <label for="filtered-value-{{$index}}">
+
+                {{dynamicPopover.projectFilter.value[$index].name}}
+            </label>
+        </div>
+
+        <h5>Archived Project</h5>
+
+        <div ng-if="dynamicPopover.projectFilter.field == 'projectName' && !dynamicPopover.projectFilter.value[$index].active"
+             ng-repeat="n in dynamicPopover.projectFilter.value track by $index"
+             class="filters-container">
+            <input type="checkbox" id="filtered-value-{{$index}}" ng-model="dynamicPopover.projectFilter.value[$index].isChecked"/>
+            <label for="filtered-value-{{$index}}">
+
+                {{dynamicPopover.projectFilter.value[$index].name}}
+            </label>
+        </div>
+    </div>
+
+    <div ng-if="dynamicPopover.projectFilter.field !== 'projectName'"
+         ng-repeat="n in dynamicPopover.projectFilter.value track by $index"
+         class="filters-container">
+        <input type="checkbox" id="filtered-value-{{$index}}" ng-model="dynamicPopover.projectFilter.value[$index].isChecked"/>
+        <label for="filtered-value-{{$index}}">
+
+            {{dynamicPopover.projectFilter.value[$index].name.role || dynamicPopover.projectFilter.value[$index].name.displayName || dynamicPopover.projectFilter.value[$index].name}}
+        </label>
+    </div>
+</script>

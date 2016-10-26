@@ -39,7 +39,7 @@
     .projects-controls .tertiary-button.active-projects {
       background: url("../common/images/icons.png") no-repeat #fff 12px -2313px;
     }
-
+.wrapper-projects{margin-left: -15px;}
 @media screen and (max-width: 1024px) {
   .projects-controls {
     margin-top: -10px; } }
@@ -107,7 +107,7 @@
   position: absolute;
   z-index: 1;
   top: 3px;
-  right: -35px;
+  right: -21px;
   color: #fe6767;
   font-size: 2.5rem;
   opacity: 0.5; }

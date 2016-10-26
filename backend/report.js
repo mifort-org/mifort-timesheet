@@ -31,7 +31,8 @@ var REPORT_COLUMNS = {
     userName: 'User',
     projectName: 'Project',
     role: 'Role',
-    time: 'Time'
+    time: 'Time',
+    comment: 'Comment'
 };
 
 var reportDownloadUrlPrefix = '/api/v1/report/download/'; // /api/v1 prefix shoulв be shared

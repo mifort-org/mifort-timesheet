@@ -39,7 +39,8 @@ angular.module('mifortTimesheet.report').factory('reportService',
             columns: {
                 date: {
                     field: 'date',
-                    minWidth: 100,
+                    minWidth: 168,
+                    width: 168,
                     enableColumnResizing: true,
                     enableColumnMenu: false,
                     enableFiltering: false,
@@ -49,6 +50,7 @@ angular.module('mifortTimesheet.report').factory('reportService',
                     field: 'userName',
                     displayName: 'Employee Name',
                     minWidth: 172,
+                    width: 172,
                     enableColumnResizing: true,
                     enableColumnMenu: false,
                     filterHeaderTemplate: '<div ng-if="$parent.grid.appScope.userIsManager" class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" col-name="users" col-title="Employee Name"></span></div>',
@@ -60,25 +62,20 @@ angular.module('mifortTimesheet.report').factory('reportService',
                 projectName: {
                     field: 'projectName',
                     minWidth: 152,
+                    width: 152,
                     enableColumnResizing: true,
                     enableColumnMenu: false,
                     filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" col-name="projects" col-title="Project Name"></span></div>'
                 },
-                role: {
-                    field: 'role',
-                    minWidth: 140,
-                    enableColumnResizing: true,
-                    enableColumnMenu: false,
-                    cellTemplate: '<div class="ui-grid-cell-contents">{{row.entity.role}}</div>',
-                    filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" col-name="role" col-title="Role"></span></div>'
-                },
                 time: {
                     field: 'time',
                     width: 82,
+                    paddingRight:0,
                     enableColumnResizing: true,
                     enableColumnMenu: false,
                     enableFiltering: false,
-                    filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" col-name="time" col-title="Time"></span></div>'
+                    filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" col-name="time" col-title="Time"></span></div>',
+                    cellTemplate:'<div class="report-time-cell">{{row.entity[col.field]}}</div>'
                 },
                 comment: {
                     field: 'comment',

@@ -52,9 +52,9 @@
   opacity: 0.3; }
   .report-filter:hover {
     opacity: 0.6; }
-  .report-filter.active {
-    background-position: 3px -1197px;
-    opacity: 1; }
+  .timesheet .report-filter {
+    margin: -3px;
+  }
   .report-filter .popover.bottom > .arrow {
     display: none; }
 
@@ -75,7 +75,12 @@
   padding: 9px 22px 11px 12px; }
 
 .ui-grid-cell-contents {
-  padding: 7px 5px 5px; }
+  padding: 7px 5px 5px 12px; }
+
+.report-time-cell{
+  padding: 7px 29px 5px 12px;
+  float: right;
+}
 
 .ui-grid-row {
   border-bottom: 1px #e0e4ec solid; }

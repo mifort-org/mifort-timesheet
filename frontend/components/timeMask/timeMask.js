@@ -22,14 +22,15 @@ angular.module('mifortTimesheet')
             scope: true,
             link: function (scope, element, attrs) {
                 var input = element.find('input');
+                var timePlaceholder = '';
 
                 input.on('blur', function(){
                     var time = $(this).val();
 
                     if(time != ''){
-                        $(this).val(time + 'h');
+                        $(this).val(time);
                     }
-                    $(this).attr('placeholder','8h');
+                    $(this).attr('placeholder', timePlaceholder);
                 });
 
                 input.on('focus', function(){
@@ -38,6 +39,7 @@ angular.module('mifortTimesheet')
                     if(time != '' && time.slice(-1) == 'h'){
                         $(this).val(time.slice(0, -1));
                     }
+                    timePlaceholder = $(this).attr('placeholder');
                     $(this).removeAttr("placeholder");
                 });
 
@@ -50,15 +52,15 @@ angular.module('mifortTimesheet')
                     }
                 });
 
-                scope.$watch(attrs.watch, function(newValue, oldValue) {
-                    //if(scope.project){
-                        var time = input.val();
-
-                        if(time && time.slice(-1) !== 'h'){
-                            input.val(time + 'h')
-                        }
-                    //}
-                });
+                // scope.$watch(attrs.watch, function(newValue, oldValue) {
+                //     //if(scope.project){
+                //         var time = input.val();
+                //
+                //         if(time && time.slice(-1) !== 'h'){
+                //             input.val(time + 'h')
+                //         }
+                //     //}
+                // });
             },
             templateUrl: function (element) {
                 var activeTemplate;
