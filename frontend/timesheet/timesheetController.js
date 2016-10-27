@@ -645,19 +645,15 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
             //     return allLogs;
             // };
 
-            $scope.getTotalSum = function () {
-                var actualTotalSum = 0;
-                // var dates = $scope.getAllLogs();
+            $scope.getTotalLoggedTime = function () {
+                var total = 0;
 
                 $scope.filteredLogs.forEach(function (log) {
                     if (log.time) {
-                        actualTotalSum += formatTime(log.time);
+                        total += formatTime(log.time);
                     }
                 });
-                if (actualTotalSum.toFixed() != actualTotalSum) {
-                    return actualTotalSum.toFixed(2);
-                }
-                return actualTotalSum;
+                return total;
             };
 
             // $scope.getTotalWorkloadTime = function(){
@@ -672,7 +668,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
             //     return total;
             // };
 
-            $scope.getTotalSumWorkload = function () {
+            $scope.getTotalWorkload = function () {
                 return $rootScope.totalTimeWorkload;
             };
 

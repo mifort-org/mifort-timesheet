@@ -109,7 +109,7 @@
             <tr>
                 <td class="total-logged">Total:</td>
                 <td></td>
-                <td class="total-logged-general-time">{{getTotalSum()}}/{{getTotalSumWorkload()}}</td>
+                <td class="total-logged-general-time">{{getTotalLoggedTime() | fixedFilter }}/{{getTotalWorkload()}}</td>
                 <td></td>
             </tr>
             </tfoot>
