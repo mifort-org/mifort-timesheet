@@ -10,7 +10,7 @@ angular.module('mifortTimesheet')
                     if (!projectId) return 0;
 
                     var total = 0;
-                    var logs = _.filter(scope.getLogDates(), {projectId: projectId});
+                    var logs = _.filter(scope.getCurrentLogDates(), {projectId: projectId});
                     logs.forEach(function (log) {
                         if (log.time) {
                             total += +log.time;
@@ -76,16 +76,20 @@ angular.module('mifortTimesheet')
                     if (!scope.projectsWithTime) return 0;
 
                     var count = scope.projectsWithTime.length;
-                    var total = count*40;
+                    var total = count * scope.getWorkload();
                     $rootScope.totalTimeWorkload = total;
                     return total;
+                };
+
+                scope.getWorkload = function () {
+                    return 40;
                 };
 
                 scope.getCurrentLog = function () {
                     return _.findWhere(scope.logs, {index: scope.currentPeriodIndex});
                 };
 
-                scope.getLogDates = function () {
+                scope.getCurrentLogDates = function () {
                     var log = scope.getCurrentLog();
                     return log ? log.data : [];
                 };
