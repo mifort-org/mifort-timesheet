@@ -163,9 +163,9 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                 if(sortColumns.length === 0 || (sortColumns[0] && !sortColumns[0].sort)){
                     $scope.reportSettings.sort = {
                         field: 'date',
-                            asc: false
+                        asc: false
                     };
-                    
+
                     $scope.getReport();
                 }else{
                     switch(sortColumns[0].sort.direction){

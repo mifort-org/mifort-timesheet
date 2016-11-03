@@ -36,6 +36,11 @@
     background: #fff;
 }
 
+.period-count {
+    display: inline-block;
+    width: 80px;
+    margin: 0 5px; }
+
 @media screen and (min-width: 1830px) and (max-width: 2050px) {
     .calendar-wrapper{
         float: none;
@@ -572,4 +577,60 @@
             outline: none;
         }
     }
+}
+
+.periods-options{
+    padding: 13px;
+    display: flex;
+
+    .selects-periods-options{
+        align-items: center;
+        margin-right: 10px;
+        padding: 6px;
+
+        .select-periods-options {
+            border: 0 transparent;
+            height: 23px;
+            border-bottom: 1px solid;
+
+            font-size: 1.4rem;
+        }
+    }
+}
+
+.periods-options-wrapper{
+    margin: 0 0 18px;
+    width: 546px;
+    height: 60px;
+    background-color: #fff;
+
+    .periods-options{
+        select{
+            &:nth-child(2){
+                margin-right: 10px;
+            }
+
+            &:nth-child(3){
+                margin-right: 18px;
+            }
+        }
+    }
+
+}
+
+.periods-options-text{
+    font-size: 1.5rem;
+    color: #aeaeae;
+
+    margin-right: 10px;
+}
+
+.periods-options-wrapper .periods-options select:nth-child(2)
+
+.primary-button,.calculate-periods-button{
+    min-width: 86px;
+}
+
+#periods-count, #periods-name{
+    cursor:pointer;
 }
