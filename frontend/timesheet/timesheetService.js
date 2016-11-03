@@ -30,7 +30,7 @@ angular.module('mifortTimesheet.timesheet').factory('timesheetService',
             },
             getTimesheetKeys: function() {
                 return {
-                    'date': '',
+                    '': '',
                     'project': 'Project',
                     'time': 'Time, h',
                     'comment': 'Comment'

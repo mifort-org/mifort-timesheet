@@ -30,8 +30,8 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
         });
     }])
 
-    .controller('timesheetController', ['$scope', 'timesheetService', 'calendarService', 'preferences', 'loginService', '$routeParams', '$timeout', 'Notification', "$q", "projectSummaryService",
-        function($scope, timesheetService, calendarService, preferences, loginService, $routeParams, $timeout, Notification, $q, projectSummaryService) {
+    .controller('timesheetController', ['$scope', 'timesheetService', 'calendarService', 'preferences', 'loginService', '$routeParams', '$timeout', 'Notification', "$q", "$rootScope",
+        function($scope, timesheetService, calendarService, preferences, loginService, $routeParams, $timeout, Notification, $q, $rootScope) {
             var user;
 
             $scope.projects = [];
@@ -66,6 +66,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                         timesheetService.getProject(assignment).success(function(project) {
                             if(project && project.active){
                                 project.assignments = _.where(user.assignments, {projectId: project._id});
+                                //project.loading = true;
 
                                 $scope.projects.splice(index, 0, project);
                             }
@@ -147,9 +148,16 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                 return timesheetService.getTimesheet(user._id, project._id, startDate, endDate).success(function(dataTimesheet) {
                     project.periods[periodIndex].userTimesheets.push.apply(project.periods[periodIndex].userTimesheets, dataTimesheet.timesheet);
                 }).then(function() {
+                    //var projectIndex = _.findIndex($scope.projects, {_id: project._id});
 
                     generateDaysTemplates(project, periodIndex);
                     applyUserTimesheets(project, periodIndex);
+                    //applyProjectDefaultValues(project, periodIndex);
+
+                    //initWatchers(projectIndex, periodIndex);
+                    //$timeout(function() {
+                    //    project.loading = false;
+                    //});
                 });
             }
 
@@ -193,9 +201,10 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                 });
             }
 
-            function applyProjectDefaultValues(project) {
+            function applyProjectDefaultValues(project, periodIndex) {
                 if(project.defaultValues){
                     project.defaultValues.forEach(function(day) {
+                        //var existedDays = _.where(project.periods[periodIndex].timesheet, {date: moment(new Date(day.date)).format("MM/DD/YYYY")});
                         var existedDays = $scope.getSameDateDays($scope.getLogDates(), day.date);
 
                         if(existedDays.length && day.dayId){
@@ -222,6 +231,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                     endDate = moment(new Date(project.periods[periodIndex].end)),
                     daysToGenerate = endDate.diff(startDate, 'days'),
                     userRole = project.assignments[0].role,
+                    assignment = _.findWhere(project.assignments, {role: userRole, projectId: project._id}),
                     timePlaceholder = project.assignments[0].workload;
 
                 for(var i = 0; i < daysToGenerate + 1; i++){
@@ -229,6 +239,8 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
 
                     //TODO: to template
                     project.template.userId = user._id;
+                    //project.template.projectId = project._id;
+                    //project.template.projectName = project.name;
                     delete project.template.time;
 
                     dayToPush = _.clone(project.template);
@@ -236,6 +248,9 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                     dayToPush.role = userRole;
                     dayToPush.isFirstDayRecord = true;
                     dayToPush.userName = user.displayName;
+                    // if(assignment){
+                    //     timePlaceholder = assignment.workload;
+                    // }
                     dayToPush.timePlaceholder = timePlaceholder;
 
                     project.periods[periodIndex].timesheet.push(dayToPush);
@@ -245,20 +260,20 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
             function initWatchers(property) {
                 var timer = null;
 
-                $scope.$watch(property, function (newValue, oldValue) {
+                $scope.$watch(property, function(newValue, oldValue) {
                     var newLogs = newValue[$scope.currentPeriodIndex].data,
                         oldLogs = oldValue[$scope.currentPeriodIndex].data;
-                    if (newLogs.length >= oldLogs.length) {
+                    if(newLogs.length >= oldLogs.length) {
 
-                        var newValueToCompare = $scope.getNotEmptyLogs(newLogs).map(function (log) {
+                        var newValueToCompare = $scope.getNotEmptyLogs(newLogs).map(function(log) {
                             return {projectId: log.projectId, time: log.time, comment: log.comment};
                         });
 
-                        var oldValueToCompare = $scope.getNotEmptyLogs(oldLogs).map(function (log) {
+                        var oldValueToCompare = $scope.getNotEmptyLogs(oldLogs).map(function(log) {
                             return {projectId: log.projectId, time: log.time, comment: log.comment};
                         });
 
-                        if (!_.isEqual(newValueToCompare, oldValueToCompare)) {
+                        if(!_.isEqual(newValueToCompare, oldValueToCompare)) {
 
                             var dates = $scope.getNotEmptyDates();
                             var timesheetToSave = angular.copy(dates);
@@ -282,12 +297,14 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                             if (logsToDelete.length || timesheetToSave.length) {
                                 timer = $timeout(function () {
                                     timesheetService.updateTimesheet(user._id, timesheetToSave, logsToDelete).success(function (data) {
+                                        //var periodTimesheet = $scope.projects[projectIndex].periods[periodIndex].timesheet,
                                         var periodTimesheet = $scope.getNotEmptyDates(),
                                             noIdLog = _.find(periodTimesheet, function (log) {
                                                 return !log._id;
                                             });
 
                                         if (noIdLog) {
+                                            //var dates = $scope.getDates();
                                             var index = 0;
                                             dates.forEach(function (item) {
                                                 if (item.time || item.comment) {
@@ -297,8 +314,11 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                                                     index++;
                                                 }
                                             });
+                                            //angular.extend(periodTimesheet, data.timesheet);
                                         }
-                                        Notification.success('Changes saved');
+                                        //else {
+                                            Notification.success('Changes saved');
+                                        //}
                                     });
                                 }, 500);
                             }
@@ -327,7 +347,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                 });
             };
 
-            $scope.addLog = function(log, project) {
+            $scope.addLog = function(log, project, periodIndex) {
                 var newRow = angular.copy(project.template),
                     currentPeriod = $scope.getLogDates(),
                     dayPeriodIndex = _.findIndex(currentPeriod, {date: log.date});
@@ -342,6 +362,15 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                 newRow.position = $scope.calcNewLogPosition(currentPeriod, log.date);
 
                 $scope.setDefaultProject(newRow);
+
+                //angular.extend(newRow, {
+                //    date: log.date,
+                //    userName: log.userName,
+                //    color: log.color,
+                //    role: log.role,
+                //    isFirstDayRecord: false,
+                //    position: maxPosition + 1
+                //});
 
                 newRow.hasLog = true;
                 newRow.isCreatedManually = true;
@@ -380,6 +409,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                     });
 
                     $q.all(promises).then(function() {
+                        //var log = $scope.getCurrentLog();
 
                         $scope.currentPeriodLogsLoaded();
 
@@ -406,6 +436,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                     });
 
                     $q.all(promises).then(function() {
+                        //var log = $scope.getCurrentLog();
 
                         $scope.currentPeriodLogsLoaded();
 
@@ -588,7 +619,6 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                 var project = _.findWhere($scope.projects, {_id: projectId});
                 log.projectName = project ? project.name : '';
                 log.projectId = projectId;
-                log.timePlaceholder = project ? (project.assignments[0].workload ? project.assignments[0].workload : 8) : 8;
             };
 
             $scope.getWeekDay = function(date) {
@@ -605,13 +635,60 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                 }
             };
 
+            // $scope.getAllLogs = function () {
+            //     var allLogs = [];
+            //     $scope.logs.forEach(function (logs) {
+            //         logs.data.forEach(function (log) {
+            //             allLogs.push(log);
+            //         });
+            //     });
+            //     return allLogs;
+            // };
+
             $scope.getTotalLoggedTime = function () {
-                return projectSummaryService.getTotalLoggedTime($scope.filteredLogs);
+                var total = 0;
+
+                $scope.filteredLogs.forEach(function (log) {
+                    if (log.time) {
+                        total += formatTime(log.time);
+                    }
+                });
+                return total;
             };
 
+            // $scope.getTotalWorkloadTime = function(){
+            //     var total = 0;
+            //
+            //     var logs = $scope.getAllLogs();
+            //     $scope.projects.forEach(function (project) {
+            //         var projectLogs = _.filter(logs, {projectId: project._id});
+            //         total += $scope.getProjectWorkloadTime(project, projectLogs);
+            //     });
+            //
+            //     return total;
+            // };
+
             $scope.getTotalWorkload = function () {
-                var projectsWithTime = projectSummaryService.getProjectsWithTime($scope.projects, $scope.getLogDates());
-                return projectSummaryService.getTotalWorkloadTime(projectsWithTime);
+                return $rootScope.totalTimeWorkload;
+            };
+
+            $scope.getProjectWorkloadTime = function (project, logs) {
+                var n = 0;
+
+                var dates = logs.map(function(log) {
+                    return log.date;
+                });
+                var uniqueDates = dates.filter(function (item, pos) {
+                    return dates.indexOf(item) == pos;
+                });
+
+                uniqueDates.forEach(function (date) {
+                    var day = new Date(date).getDay();
+                    var isWeekend = (day == 6) || (day == 0);
+                    if (!isWeekend) n++;
+                });
+
+                return project.assignments[0].workload * n || 0;
             };
 
             $scope.watchFilterChanges = function () {
@@ -686,17 +763,31 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
 
             $scope.isStartEndPeriodSameMonth = function (period) {
                 if (period) {
-                    var periodStart = moment(new Date(period.start)),
-                        periodEnd = moment(new Date(period.end));
+                    var periodStart = moment(new Date(period.start)),// 0
+                        periodEnd = moment(new Date(period.end));// 0
                     return periodStart.format("MMM") == periodEnd.format("MMM")
                 }
                 return false;
             };
 
+            function formatTime(time){
+                if(time && angular.isNumber(time)){
+                    time = time;
+                }
+                else if(time && time.slice(-1) == 'h'){
+                    time = time.slice(0, -1);
+                }
+                else{
+                    time = time == "." ? 0 : +time;
+                }
+
+                return time;
+            }
+
             $scope.getPeriodLabel = function(period) {
                 if(period){
-                    var periodStart = moment(new Date(period.start)),
-                        periodEnd = moment(new Date(period.end));
+                    var periodStart = moment(new Date(period.start)),// 0
+                        periodEnd = moment(new Date(period.end));// 0
                     if(periodStart.format("MMM") == periodEnd.format("MMM")){
                         periodStart = periodStart.format("DD");
                     }

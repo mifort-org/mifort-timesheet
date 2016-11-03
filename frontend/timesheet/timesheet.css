@@ -14,7 +14,11 @@
  * limitations under the License.
  */
 .timesheet {
-  position: relative; }
+  position: relative;
+}
+.timesheet-collapse-wrapper{
+  padding: 23px 25px;
+}
   .timesheet h2 {
     padding-bottom: 25px; }
     .timesheet h2.timesheet-collapsed {
@@ -24,60 +28,92 @@
     border-color: #e0e4ec; }
     .timesheet .table td:first-child,
     .timesheet .table th:first-child {
-      width: 170px;
-      min-width: 170px;
-      padding: 4px 10px; }
-    .timesheet .table th:first-child {
-      min-width: 184px; }
-    .timesheet .table th:nth-child(2) {
-      width: 210px;
-      min-width: 210px; }
+      width: 168px;
+      min-width: 185px;
+      padding: 2px; }
+    /*.timesheet .table th:first-child {*/
+      /*min-width: 168px;*/
+    /*}*/
+
+.project-filter{
+  position: relative;
+  display: inline-block;
+  height: 20px;
+  width: 18px;
+  margin-right: 3px;
+  background: url(../common/images/icons.png) 3px -1237px;
+  opacity: 0.3;
+}
+
+.log-date-header{
+  min-width: 221px !important;
+}
+
+.timesheet .table th:nth-child(2) {
+  width: 210px;
+}
     .timesheet .table th:nth-child(3) {
       width: 106px;
-      min-width: 90px;
       text-align: center; }
     .timesheet .table td {
       position: relative;
       padding: 0;
       line-height: 21px; }
-      .timesheet .table td:nth-child(3) {
+      .timesheet .table td:nth-child(4) {
         padding: 2px; }
       .timesheet .table td .blank-dropdown > a {
+          min-width: 199px;
         padding: 14px 19px;
         background-position: right 20px top -300px; }
       .timesheet .table td .blank-dropdown.open a {
         background-position: right 20px top -1501px; }
-    .timesheet .table td.total-logged {
-      padding: 15px 15px 15px 47px;
-      margin: 7px 0 15px 3px;
-      font-size: 1.8rem;
-      font-weight: 600; }
-    .timesheet .table td.total-logged-general-time {
-      padding: 15px 21px 15px 0;
-      text-align: right; }
-    .timesheet .table .wrapper-timesheet-controls {
-      padding: 0 0 0 8px;
-      margin-bottom: 0;
-      display: flex; }
     .timesheet .table .form-control {
       font-size: 1.8rem;
       color: #000; }
+    .arrow-test{
+      background-image: url("../images/icons.png");
+      background-position: right center;
+      background-repeat: no-repeat;
+
+    }
   .timesheet .loading-indicator {
     display: flex;
     padding: 0;
     flex-direction: column;
     justify-content: center; }
 
-.timesheet-controls {
-  float: right; }
-
 .period-label {
-  display: inline-block;
-  margin: 8px 11px 0 10px;
-  font-size: 1.6rem;
-  color: #000;
-  font-weight: 500;
-  vertical-align: top; }
+    display: inline-block;
+    margin: 7px 11px 0 10px;
+    color: #000;
+    font-weight: 500;
+    vertical-align: top;
+}
+
+.wrapper-timesheet-controls .total-logged{
+    padding: 5px 0 0 166px;
+}
+
+.total-logged{
+    padding: 15px 15px 15px 47px !important;
+    margin: 7px 0 15px 3px;
+    font-size: 1.8rem;
+    font-weight: 600;
+}
+
+.total-logged-general-time{
+  padding: 15px 21px 15px 0 !important;
+  text-align: right;
+}
+
+.wrapper-timesheet-controls {
+    padding: 0 0 0 8px !important;
+    margin-bottom: 0;
+    display: flex;
+}
+.wrapper-timesheet-controls .timesheet-controls{
+    display: inline-block;
+}
 
 .previous-period,
 .next-period {
@@ -85,7 +121,9 @@
   height: 30px;
   background: url("../common/images/icons.png") 2px -1110px no-repeat;
   border: 0;
-  outline: 0; }
+  outline: 0;
+  /*opacity: 0.4; */
+}
   .previous-period:hover,
   .next-period:hover {
     background-position: 2px -1070px;
@@ -109,27 +147,25 @@
     .next-period.disabled:hover {
       background-position: 2px -1030px;
       cursor: not-allowed; }
-
-.log-date-wrapper {
-  vertical-align: initial !important; }
+.log-date-wrapper{
+    vertical-align: initial !important;
+}
 
 .add-timesheet,
 .remove-timesheet {
+  float:left;
+  margin: 0 16px 0 10px;
   position: relative;
   top: 6px;
-  margin: 0 16px 0 10px;
   color: #19b5fe;
   opacity: 0.7;
   font-size: 1.65em;
   line-height: 1; }
 
-.add-timesheet {
-  float: left; }
-
 .remove-timesheet {
   color: red;
   float: right;
-  margin-top: 1px; }
+  margin-top: -2px; }
 
 .add-timesheet:hover,
 .add-timesheet:focus,
@@ -160,37 +196,49 @@
 .timesheet-validation {
   padding: 10px; }
 
-.time-mask-hours {
-  padding-right: 21px; }
+.time-mask-hours{
+  padding-right: 21px;
+}
 
 .timesheet-hours {
   width: 100%;
+  text-align: right;
+  background-color: transparent;
   height: 47px;
   margin: 0 auto;
-  text-align: right;
-  background: transparent;
   border: 0;
   border-radius: 0;
-  box-shadow: none; }
+  box-shadow: none;
+}
 
-.timesheet-key {
-  float: left; }
+.select-timesheet-project{
+  width: 100%;
+  border: 0 transparent;
+  height: 51px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  padding-left: 20px;
 
-.table .timesheet-project-filter {
-  float: right; }
+  background: url("../common/images/icons.png") no-repeat right 20px top -300px;
+}
 
-.timesheet .report-filter {
-  margin: -3px; }
+.replace-image-drop-down{
+  background-position: right 20px top -1501px;
+  cursor: pointer;
+  border-color: #a0a0a0;
+}
 
-.clear-both {
-  clear: both; }
+#sel:hover{
+  cursor: pointer;
+}
 
 .timesheet-comment {
   width: 100%;
   height: 47px;
   padding: 6px 18px;
-  background-color: transparent;
   background: transparent;
+  background-color: transparent !important;
   border: 0;
   border-radius: 0;
   box-shadow: none; }
@@ -202,8 +250,12 @@
   float: right; }
 
 .log-date {
+  font-size: 1.8rem;}
+
+.log-date-name-day{
   font-size: 1.4rem;
-  color: #000; }
+  color: #999;
+}
 
 .is-today td:first-child:before {
   position: absolute;
@@ -218,44 +270,20 @@
   color: #666;
   font-weight: 500; }
 
-.log-date-header {
-  min-width: 221px !important; }
-
-.wrapper-timesheet-controls .total-logged {
-  padding: 5px 0 0 166px; }
-
-.log-date {
-  font-size: 1.8rem; }
-
-.log-date-name-day {
-  font-size: 1.4rem;
-  color: #999; }
-
-.wrapper-summary-projects {
-  padding-left: 28px; }
-  .wrapper-summary-projects .select-summary-projects {
-    overflow: hidden; }
-  .wrapper-summary-projects .general-total-logged {
-    padding: 17px 25px; }
-  .wrapper-summary-projects .option-total-label {
-    float: left;
-    font-weight: 600; }
-  .wrapper-summary-projects .option-total-time {
-    float: right;
-    font-weight: 600; }
-  .wrapper-summary-projects .option2 {
-    float: right; }
-
 @media (max-width: 1024px) {
-  .tabs-left .wrapper-summary-projects {
-    padding-left: 0; }
+    .tabs-left .wrapper-summary-projects {
+        padding-left: 0;
+    }
 
-  .option1 {
-    width: 100%;
-    display: block; }
+    .option1 {
+        width: 100%;
+    }
 
-  .tabs-left .option2 {
-    padding-top: 5px;
-    float: left; } }
+    .option2 {
+        padding-top: 5px;
+        float: left !important;
+    }
+}
 
 /*# sourceMappingURL=timesheet.css.map */
+

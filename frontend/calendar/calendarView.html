@@ -14,14 +14,25 @@
   limitations under the License.
 -->
 
+<!--<span class="blank-dropdown blank-dropdown-small form-control period-count" uib-dropdown on-toggle="toggled(open)">-->
+                    <!--<a href id="simple-dropdown" uib-dropdown-toggle>-->
+                        <!--{{reportSettings.pageSize}}-->
+                    <!--</a>-->
+
+                    <!--<ul uib-dropdown-menu aria-labelledby="simple-dropdown">-->
+                        <!--<li ng-repeat="pageSize in perPage">-->
+                            <!--<a href ng-click="perPageChanged(pageSize)">{{pageSize}}</a>-->
+                        <!--</li>-->
+                    <!--</ul>-->
+    <!--</span>-->
 <div class="periods-options-wrapper">
     <div class="periods-options">
         <div class="selects-periods-options">
             <span class="periods-options-text">Report every:</span>
-            <select id="periods-count" class="select-periods-options" ng-model="countPeriodSetting"
-                    ng-options="countPeriod.count as countPeriod.count for countPeriod in countPeriodSettings">
+            <select id="sel" class="select-periods-options" ng-model="countPeriodSetting"
+                    ng-options="countPeriod as countPeriod for countPeriod in countPeriodSettings">
             </select>
-            <select id="periods-name" class="select-periods-options" ng-model="periodSetting"
+            <select id="sel2" class="select-periods-options" ng-model="periodSetting"
                     ng-options="period as period for period in periodSettings">
             </select>
         </div>
@@ -31,6 +42,63 @@
 
 <div class="calendar-controls-wrapper" ng-show="company">
     <div timesheet-intro></div>
+
+    <!--<img ng-show="!company" src="../common/images/animation-wait.gif" alt=""/>-->
+
+    <!--<div id="step2" class="calendar-controls">-->
+    <!--<div class="clearfix">-->
+    <!--<label for="">Report Period</label>-->
+
+    <!--<span class="blank-dropdown blank-dropdown-small form-control calendar-control" uib-dropdown on-toggle="toggled(open)">-->
+    <!--<a href id="simple-dropdown" uib-dropdown-toggle>-->
+    <!--{{selectedPeriod.periodName}}-->
+    <!--</a>-->
+
+    <!--<ul uib-dropdown-menu aria-labelledby="simple-dropdown">-->
+    <!--<li ng-repeat="period in periodSettings track by $index">-->
+    <!--<a href ng-click="changePeriodSplit(period)">{{::period.periodName}}</a>-->
+    <!--</li>-->
+    <!--</ul>-->
+    <!--</span>-->
+    <!--</div>-->
+
+    <!--<div class="clearfix">-->
+    <!--<label for="startDate">Start Date</label>-->
+
+    <!--<div class="calendar-control">-->
+    <!--<p class="input-group ">-->
+    <!--<input id="startDate"-->
+    <!--class="form-control"-->
+    <!--uib-datepicker-popup-->
+    <!--ng-model="startDate"-->
+    <!--is-open="calendarIsOpened"-->
+    <!--min-date="minDate"-->
+    <!--max-date="'2020-06-22'"-->
+    <!--datepicker-options="dateOptions"-->
+    <!--date-disabled="disabled(date, mode)"-->
+    <!--ng-required="true"-->
+    <!--close-text="Close"/>-->
+
+    <!--<span class="input-group-btn">-->
+    <!--<button type="button" class="btn btn-default" ng-click="openCalendar($event)">-->
+    <!--<i class="glyphicon glyphicon-calendar"></i>-->
+    <!--</button>-->
+    <!--</span>-->
+    <!--</p>-->
+    <!--</div>-->
+    <!--</div>-->
+
+    <!--<div class="clearfix split-buttons-wrapper">-->
+    <!--<button type="button" class="secondary-button" ng-click="splitCalendar(false, selectedPeriod, startDate)">-->
+    <!--Undo-->
+    <!--</button>-->
+
+    <!--<button type="button" class="primary-button" ng-click="splitCalendar(true, selectedPeriod, startDate)">-->
+    <!--Split-->
+    <!--</button>-->
+    <!--</div>-->
+    <!--</div>-->
+
     <div id="step3" class="calendar-controls">
         <h3>Custom Day</h3>
 
@@ -88,6 +156,11 @@
         <form name="custom-day">
             <input type="text" ng-model="day.name" ng-model-options="{debounce: 1000}"/>
             <input type="text" ng-model="day.time" ng-model-options="{debounce: 1000}"/>
+
+            <!--<div>-->
+                <!--<button type="submit" class="btn btn-link pull-right" ng-click="saveCustomDay()">Save</button>-->
+                <!--<button type="button" class="btn btn-link pull-right" ng-click="closeModal()">Cancel</button>-->
+            <!--</div>-->
         </form>
     </div>
 </script>

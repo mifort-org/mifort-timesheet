@@ -34,20 +34,22 @@
   .projects-controls .tertiary-button {
     padding-left: 36px; }
     .projects-controls .tertiary-button.archive-projects {
-      background: url("../common/images/icons.png") no-repeat #fff 12px -2233px; }
+      background: url("../common/images/icons.png") no-repeat #fff 12px -2233px;
+    }
     .projects-controls .tertiary-button.active-projects {
-      background: url("../common/images/icons.png") no-repeat #fff 12px -2313px; }
-
+      background: url("../common/images/icons.png") no-repeat #fff 12px -2313px;
+    }
+.wrapper-projects{margin-left: -15px;}
 @media screen and (max-width: 1024px) {
   .projects-controls {
     margin-top: -10px; } }
 .project {
-  position: relative;
-  padding-right: 55px;
-  font-size: 1.8rem;
   width: 42%;
   display: inline-block;
-  margin: 0 15px 30px 15px; }
+  margin: 0 15px 30px 15px;
+  position: relative;
+  padding-right: 55px;
+  font-size: 1.8rem; }
   .project h2 .edit-project {
     padding-left: 15px;
     color: #8e8e8e;
@@ -105,7 +107,7 @@
   position: absolute;
   z-index: 1;
   top: 3px;
-  right: -35px;
+  right: -21px;
   color: #fe6767;
   font-size: 2.5rem;
   opacity: 0.5; }
@@ -135,6 +137,10 @@
   .project-actions .dearchive-project {
     right: 53px;
     background-position: left -2399px; }
+
+.projects-table{
+  max-width: 98%;
+}
 
 .no-assignments {
   padding: 20px;

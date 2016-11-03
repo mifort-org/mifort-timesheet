@@ -335,8 +335,8 @@ module.exports = function(grunt) {
             'notify',
             'cachebreaker',
 
-            // 'remove:frontend',
-            // 'mkdir:frontend',
+            'remove:frontend',
+            'mkdir:frontend',
             'copy:dist',
             'remove:dist'
         ];
