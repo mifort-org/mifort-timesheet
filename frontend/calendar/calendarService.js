@@ -43,6 +43,7 @@ angular.module('mifortTimesheet.calendar').factory('calendarService',
             getWeekDays: function() {
                 return ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
             }
+            
         };
     }
     ]);
