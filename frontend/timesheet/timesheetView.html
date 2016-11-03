@@ -21,21 +21,13 @@
 </div>
 
 <div class="timesheet collapse-wrapper timesheet-collapse-wrapper clearfix">
-    <!--<h2 ng-class="{'timesheet-collapsed': isCollapsed}">Total-->
-        <!--<a href="" class="collapse-item" id="{{$first ? 'step1' : ''}}" ng-class="{'collapsed': isCollapsed}" ng-click="isCollapsed = !isCollapsed">-->
-            <!--{{project.name}}-->
-        <!--</a>-->
-
-    <!--</h2>-->
-
-
     <div uib-collapse="isCollapsed">
         <table class="table table-bordered timesheet" id="{{$first ? 'step3' : ''}}">
             <thead>
             <tr>
                 <th ng-repeat="timesheetKey in timesheetKeys track by $index"
                     ng-class="{'log-date-header' : $index == 0 && !isStartEndPeriodSameMonth(projects[0].periods[currentPeriodIndex])}">
-                    <div style="float: left;">
+                    <div class="timesheet-key">
                         {{timesheetKey}}
 
                         <div ng-show="$index == 0"
@@ -53,13 +45,14 @@
                         </div>
                     </div>
 
-                    <div style="float: right;">
+                    <div class="timesheet-project-filter">
                         <div ng-show="timesheetKey == 'Project'">
-                            <span class="dropdown-filter" dropdown-filter col-name="projects" col-title="Project Name" search-text="{{bbb}}"></span>
+                            <span class="dropdown-filter" dropdown-filter col-name="projects" col-title="Project Name"
+                                  search-text="{{bbb}}"></span>
                         </div>
                     </div>
 
-                    <div style="clear: both;"></div>
+                    <div class="clear-both"></div>
                 </th>
             </tr>
 
@@ -72,19 +65,20 @@
                            'is-last-todays-record': isLastTodaysRecord(projects[0].periods[currentPeriodIndex].timesheet, $index)}">
                 <td class="log-date-wrapper">
                     <span class="timesheet-data">
-                        <a href="" ng-if="log.isFirstDayRecord" class="add-timesheet" ng-click="addLog(log, projects[0], currentPeriodIndex)">+</a>
+                        <a href="" ng-if="log.isFirstDayRecord" class="add-timesheet"
+                           ng-click="addLog(log, projects[0], currentPeriodIndex)">+</a>
 
                         <span ng-if="log.isFirstDayRecord">
                             <span class="log-date">{{log.date| toDateFilter | date:'dd MMM'}}</span></br>
                             <span class="log-date-name-day">{{log.date| toDateFilter | date:"EEEE"}}</span>
                         </span>
 
-                        <a href="" ng-if="!log.isFirstDayRecord" class="remove-timesheet" ng-click="removeRow(log, projects[0], currentPeriodIndex)">&#8211;</a>
+                        <a href="" ng-if="!log.isFirstDayRecord" class="remove-timesheet"
+                           ng-click="removeRow(log, projects[0], currentPeriodIndex)">&#8211;</a>
                     </span>
                 </td>
 
                 <td>
-                    <!--{{log}}-->
                     <span class="blank-dropdown" uib-dropdown on-toggle="toggled(open)">
                         <a href id="simple-dropdown" uib-dropdown-toggle>
                             {{log.projectName | longTextFilter: 15}}
@@ -98,7 +92,7 @@
                     </span>
                 </td>
 
-                <td style="text-align: right !important;">
+                <td>
                     <time-mask class="timesheet-hours" watch="log"></time-mask>
                 </td>
 
@@ -111,33 +105,40 @@
             <tr>
                 <td class="total-logged">Total:</td>
                 <td></td>
-                <td class="total-logged-general-time">{{getTotalLoggedTime() | fixedFilter }}/{{getTotalWorkload()}}</td>
+                <td class="total-logged-general-time">{{getTotalLoggedTime() | fixedFilter}}/{{getTotalWorkload()}}</td>
                 <td></td>
             </tr>
             </tfoot>
         </table>
-        <div class="loading-indicator" ng-show="loading" style="min-height: {{project.lastPeriodRecords * 52}}px">Loading...</div>
+        <div class="loading-indicator" ng-show="loading" style="min-height: {{project.lastPeriodRecords * 52}}px">
+            Loading...
+        </div>
     </div>
 </div>
 
-<div class="timesheet collapse-wrapper no-assignments" ng-show="!projects.length && noAssignments">You are not assigned to any project</div>
-
+<div class="timesheet collapse-wrapper no-assignments" ng-show="!projects.length && noAssignments">You are not assigned
+    to any project
+</div>
 
 
 <script type="text/ng-template" id="myPopoverTemplate.html">
     <div>{{dynamicPopover.content}}</div>
 
-    <input type="text" class="filter-input" ng-model="$parent.searchProjectByText" placeholder="Search" ng-change="onSearchProjectByText()"/>
+    <input type="text" class="filter-input" ng-model="$parent.searchProjectByText" placeholder="Search"
+           ng-change="onSearchProjectByText()"/>
 
     <!--{{dynamicPopover.projectFilter}}-->
 
     <!--angular bootstrap popover unintentional close solution-->
     <div ng-repeat="n in range(dynamicPopover.projectFilter.value.length) track by $index" class="filters-container">
         <div ng-show="dynamicPopover.projectFilter.value[$index].isChecked">
-            <input type="checkbox" id="filter-value-{{$index}}" ng-model="dynamicPopover.projectFilter.value[$index].isChecked"/>
+            <input type="checkbox" id="filter-value-{{$index}}"
+                   ng-model="dynamicPopover.projectFilter.value[$index].isChecked"/>
             <label for="filtered-value-{{$index}}">
 
-                {{dynamicPopover.projectFilter.value[$index].name.role || dynamicPopover.projectFilter.value[$index].name.displayName || dynamicPopover.projectFilter.value[$index].name}}
+                {{dynamicPopover.projectFilter.value[$index].name.role ||
+                dynamicPopover.projectFilter.value[$index].name.displayName ||
+                dynamicPopover.projectFilter.value[$index].name}}
             </label>
         </div>
     </div>
@@ -151,7 +152,8 @@
         <div ng-if="dynamicPopover.projectFilter.field == 'projectName' && dynamicPopover.projectFilter.value[$index].active"
              ng-repeat="n in dynamicPopover.projectFilter.value track by $index"
              class="filters-container">
-            <input type="checkbox" id="filtered-value-{{$index}}" ng-model="dynamicPopover.projectFilter.value[$index].isChecked"/>
+            <input type="checkbox" id="filtered-value-{{$index}}"
+                   ng-model="dynamicPopover.projectFilter.value[$index].isChecked"/>
             <label for="filtered-value-{{$index}}">
 
                 {{dynamicPopover.projectFilter.value[$index].name}}
@@ -163,7 +165,8 @@
         <div ng-if="dynamicPopover.projectFilter.field == 'projectName' && !dynamicPopover.projectFilter.value[$index].active"
              ng-repeat="n in dynamicPopover.projectFilter.value track by $index"
              class="filters-container">
-            <input type="checkbox" id="filtered-value-{{$index}}" ng-model="dynamicPopover.projectFilter.value[$index].isChecked"/>
+            <input type="checkbox" id="filtered-value-{{$index}}"
+                   ng-model="dynamicPopover.projectFilter.value[$index].isChecked"/>
             <label for="filtered-value-{{$index}}">
 
                 {{dynamicPopover.projectFilter.value[$index].name}}
@@ -174,10 +177,13 @@
     <div ng-if="dynamicPopover.projectFilter.field !== 'projectName'"
          ng-repeat="n in dynamicPopover.projectFilter.value track by $index"
          class="filters-container">
-        <input type="checkbox" id="filtered-value-{{$index}}" ng-model="dynamicPopover.projectFilter.value[$index].isChecked"/>
+        <input type="checkbox" id="filtered-value-{{$index}}"
+               ng-model="dynamicPopover.projectFilter.value[$index].isChecked"/>
         <label for="filtered-value-{{$index}}">
 
-            {{dynamicPopover.projectFilter.value[$index].name.role || dynamicPopover.projectFilter.value[$index].name.displayName || dynamicPopover.projectFilter.value[$index].name}}
+            {{dynamicPopover.projectFilter.value[$index].name.role ||
+            dynamicPopover.projectFilter.value[$index].name.displayName ||
+            dynamicPopover.projectFilter.value[$index].name}}
         </label>
     </div>
 </script>

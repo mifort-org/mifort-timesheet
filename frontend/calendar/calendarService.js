@@ -33,7 +33,11 @@ angular.module('mifortTimesheet.calendar').factory('calendarService',
             },
             getCountPeriodSettings: function() {
                 return [
-                    1, 2, 3, 4, 5
+                    {count: 1},
+                    {count: 2},
+                    {count: 3},
+                    {count: 4},
+                    {count: 5}
                 ]
             },
             getWeekDays: function() {

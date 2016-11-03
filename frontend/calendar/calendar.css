@@ -24,11 +24,6 @@
   float: left;
   clear: left; }
 
-.period-count {
-  display: inline-block;
-  width: 80px;
-  margin: 0 5px; }
-
 .calendar-wrapper {
   display: inline-block;
   width: 546px;
@@ -36,6 +31,11 @@
   margin-bottom: 40px;
   padding: 36px 27px;
   background: #fff; }
+
+.period-count {
+  display: inline-block;
+  width: 80px;
+  margin: 0 5px; }
 
 @media screen and (min-width: 1830px) and (max-width: 2050px) {
   .calendar-wrapper {
@@ -322,6 +322,16 @@
   .end-splitter:hover {
     right: 1px; }
 
+.periods > tbody > tr > td .start-splitter:hover:before,
+.periods > tbody > tr > td .end-splitter:hover:after {
+  position: absolute;
+  top: -1px;
+  left: -8px;
+  height: 72px;
+  width: 15px;
+  background: url("../../common/images/icons.png") 0 -794px no-repeat;
+  cursor: pointer;
+  content: ''; }
 .periods > tbody > tr > .period-start .start-splitter:before,
 .periods > tbody > tr > .period-end .end-splitter:after {
   position: absolute;
@@ -335,52 +345,9 @@
 .periods > tbody > tr > td .end-splitter:hover:after {
   left: auto;
   right: -8px; }
-/*.periods > tbody > tr > .period-start .start-splitter:hover:before,
-.periods > tbody > tr > .period-end .end-splitter:hover:before {*/
-  /*background: url("../../common/images/icons.png") 0 -894px no-repeat; }*/
-
-.periods-options-wrapper{
-  margin: 0 0 18px;
-  width: 546px;
-  height: 60px;
-  background-color: #fff;
-}
-
-.periods-options-text{
-  font-size: 1.5rem;
-  color: #aeaeae;
-
-  margin-right: 10px;
-}
-
-.periods-options-wrapper .periods-options select:nth-child(2){
-  margin-right: 10px;
-}
-
-.periods-options-wrapper .periods-options select:nth-child(3){
-  margin-right: 18px;
-}
-
-.periods-options{
-  padding: 13px;
-  display: flex;
-}
-.periods-options .selects-periods-options{
-  align-items: center;
-  margin-right: 10px;
-  padding: 6px;
-}
-.periods-options .selects-periods-options .select-periods-options {
-  border: 0 transparent;
-  height: 23px;
-  border-bottom: 1px solid;
-
-  font-size: 1.4rem;
-}
-
-.calculate-periods-button{
-  min-width: 86px;
-}
+.periods > tbody > tr > .period-start .start-splitter:hover:before,
+.periods > tbody > tr > .period-end .end-splitter:hover:before {
+  background: url("../../common/images/icons.png") 0 -894px no-repeat; }
 
 .calendar-time,
 .calendar-hours-label {
@@ -455,5 +422,40 @@
     color: #000;
     border-bottom-color: #00b6f2;
     outline: none; }
+
+.periods-options {
+  padding: 13px;
+  display: flex; }
+  .periods-options .selects-periods-options {
+    align-items: center;
+    margin-right: 10px;
+    padding: 6px; }
+    .periods-options .selects-periods-options .select-periods-options {
+      border: 0 transparent;
+      height: 23px;
+      border-bottom: 1px solid;
+      font-size: 1.4rem; }
+
+.periods-options-wrapper {
+  margin: 0 0 18px;
+  width: 546px;
+  height: 60px;
+  background-color: #fff; }
+  .periods-options-wrapper .periods-options select:nth-child(2) {
+    margin-right: 10px; }
+  .periods-options-wrapper .periods-options select:nth-child(3) {
+    margin-right: 18px; }
+
+.periods-options-text {
+  font-size: 1.5rem;
+  color: #aeaeae;
+  margin-right: 10px; }
+
+.periods-options-wrapper .periods-options select:nth-child(2)
+.primary-button, .calculate-periods-button {
+  min-width: 86px; }
+
+#periods-count, #periods-name {
+  cursor: pointer; }
 
 /*# sourceMappingURL=calendar.css.map */
