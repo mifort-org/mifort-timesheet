@@ -40,10 +40,18 @@ angular.module('mifortTimesheet.calendar').factory('calendarService',
                     {count: 5}
                 ]
             },
+            getCountPeriodSettings1: function() {
+                return [
+                    {count: 1},
+                    {count: 2},
+                    {count: 3},
+                    {count: 4},
+                    {count: 5}
+                ]
+            },
             getWeekDays: function() {
                 return ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
             }
-            
         };
     }
     ]);
