@@ -8,46 +8,16 @@ angular.module('mifortTimesheet')
 
                 scope.getLoggedTime = function (projectId) {
                     return projectSummaryService.getLoggedTime(projectId, scope.getCurrentLogDates());
-                    // if (!projectId) return 0;
-                    //
-                    // var total = 0;
-                    // var logs = _.filter(scope.getCurrentLogDates(), {projectId: projectId});
-                    // logs.forEach(function (log) {
-                    //     if (log.time) {
-                    //         total += +log.time;
-                    //     }
-                    // });
-                    // return total;
                 };
 
                 scope.getTotalLoggedTime = function () {
                     return projectSummaryService.getTotalLoggedTime(scope.getCurrentLogDates());
-
-                    // var total = 0;
-                    // if (!scope.projects) return 0;
-                    // scope.projects.forEach(function (project) {
-                    //     total += scope.getLoggedTime(project._id);
-                    // });
-                    // return total;
                 };
 
                 function initWatchers() {
 
                     scope.$watch("logs", function (newValue, oldValue) {
                         scope.projectsWithTime = projectSummaryService.getProjectsWithTime(scope.projects, scope.getCurrentLogDates());
-                        //
-                        // scope.projects.forEach(function (project) {
-                        //     if (project.assignments[0].workload) {
-                        //         scope.projectsWithTime.push({id: project._id, name: project.name});
-                        //     }
-                        // });
-                        // scope.projects.forEach(function (project) {
-                        //     project.periods[scope.currentPeriodIndex].timesheet.forEach(function (log) {
-                        //         if (log.time && !_.findWhere(scope.projectsWithTime, {name: log.projectName})) {
-                        //             scope.projectsWithTime.push({id: log.projectId, name: log.projectName});
-                        //         }
-                        //     })
-                        // });
                     }, true);
                 }
 
@@ -76,7 +46,6 @@ angular.module('mifortTimesheet')
                     scope.currentPeriodIndex = data.index;
                     scope.projectsWithTime = [];
 
-                    //scope.getTotalWorkloadTime();
                 });
 
                 scope.$on('$destroy', handler);

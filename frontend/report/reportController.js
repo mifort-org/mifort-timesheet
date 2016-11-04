@@ -46,7 +46,7 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                 if(comments && comments.length){
                     //remove empty comments
                     var cleanComments = comments.filter(function(e) {
-                        return e.replace(/(\r\n|\n|\r)/gm, "")
+                        return e ? e.replace(/(\r\n|\n|\r)/gm, "") : ""
                     });
 
                     return cleanComments.join(", ")

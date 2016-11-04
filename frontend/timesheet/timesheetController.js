@@ -588,7 +588,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                 var project = _.findWhere($scope.projects, {_id: projectId});
                 log.projectName = project ? project.name : '';
                 log.projectId = projectId;
-                log.timePlaceholder = project ? (project.assignments[0].workload ? project.assignments[0].workload : 8) : 8;
+                log.timePlaceholder = project ? (project.assignments[0].workload ? project.assignments[0].workload : '0') : '0';
             };
 
             $scope.getWeekDay = function(date) {

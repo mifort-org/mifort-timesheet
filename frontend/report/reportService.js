@@ -70,6 +70,8 @@ angular.module('mifortTimesheet.report').factory('reportService',
                 time: {
                     field: 'time',
                     width: 82,
+                    minWidth: 82,
+                    textAlign: 'right',
                     paddingRight:0,
                     enableColumnResizing: true,
                     enableColumnMenu: false,

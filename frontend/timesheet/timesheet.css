@@ -110,9 +110,6 @@
       background-position: 2px -1030px;
       cursor: not-allowed; }
 
-.log-date-wrapper {
-  vertical-align: initial !important; }
-
 .add-timesheet,
 .remove-timesheet {
   position: relative;
@@ -129,7 +126,7 @@
 .remove-timesheet {
   color: red;
   float: right;
-  margin-top: 1px; }
+  margin-top: -7px; }
 
 .add-timesheet:hover,
 .add-timesheet:focus,
@@ -182,9 +179,6 @@
 .timesheet .report-filter {
   margin: -3px; }
 
-.clear-both {
-  clear: both; }
-
 .timesheet-comment {
   width: 100%;
   height: 47px;
@@ -218,8 +212,8 @@
   color: #666;
   font-weight: 500; }
 
-.log-date-header {
-  min-width: 221px !important; }
+.table th.log-date-header:first-child {
+  min-width: 221px; }
 
 .wrapper-timesheet-controls .total-logged {
   padding: 5px 0 0 166px; }

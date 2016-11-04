@@ -44,7 +44,6 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="timesheet-project-filter">
                         <div ng-show="timesheetKey == 'Project'">
                             <span class="dropdown-filter" dropdown-filter col-name="projects" col-title="Project Name"
@@ -52,7 +51,7 @@
                         </div>
                     </div>
 
-                    <div class="clear-both"></div>
+                    <div style="clear:both"></div>
                 </th>
             </tr>
 
@@ -63,7 +62,7 @@
                 ng-style="{background: log.color}"
                 ng-class="{'is-today': isToday(log.date),
                            'is-last-todays-record': isLastTodaysRecord(projects[0].periods[currentPeriodIndex].timesheet, $index)}">
-                <td class="log-date-wrapper">
+                <td>
                     <span class="timesheet-data">
                         <a href="" ng-if="log.isFirstDayRecord" class="add-timesheet"
                            ng-click="addLog(log, projects[0], currentPeriodIndex)">+</a>

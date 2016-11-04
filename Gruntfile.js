@@ -118,6 +118,8 @@ module.exports = function(grunt) {
                     'frontend/components/preferences/preferencesService.js',
                     'frontend/components/customDay/customDay.js',
                     'frontend/components/filters/propsFilter.js',
+                    'frontend/components/filters/fixedFilter.js',
+                    'frontend/components/filters/longTextFilter.js',
                     'frontend/components/filters/toDateFilter.js',
                     'frontend/components/dropdownFilter/dropdownFilter.js',
                     'frontend/components/reportDatePicker/reportDatePicker.js',
@@ -127,6 +129,8 @@ module.exports = function(grunt) {
                     'frontend/components/timesheetComment/timesheetComment.js',
                     'frontend/login/loginController.js',
                     'frontend/login/loginService.js',
+                    'frontend/components/projectSummary/projectSummary.js',
+                    'frontend/services/projectSummaryService.js',
                     'frontend/company/companyController.js',
                     'frontend/company/companyService.js',
                     'frontend/projects/projectsController.js',
@@ -335,8 +339,8 @@ module.exports = function(grunt) {
             'notify',
             'cachebreaker',
 
-            // 'remove:frontend',
-            // 'mkdir:frontend',
+            'remove:frontend',
+            'mkdir:frontend',
             'copy:dist',
             'remove:dist'
         ];
