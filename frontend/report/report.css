@@ -52,9 +52,9 @@
   opacity: 0.3; }
   .report-filter:hover {
     opacity: 0.6; }
-  .timesheet .report-filter {
-    margin: -3px;
-  }
+  .report-filter.active {
+    background-position: 3px -1197px;
+    opacity: 1; }
   .report-filter .popover.bottom > .arrow {
     display: none; }
 
@@ -71,16 +71,15 @@
     background: #fff;
     border-color: #e0e4ec; }
 
+.ui-grid-header-cell-row .ui-grid-header-cell:nth-child(4) .ui-grid-cell-contents {
+  padding: 9px 0 11px 12px;
+  text-align: right; }
+
 .ui-grid-header-cell .ui-grid-cell-contents {
-  padding: 9px 22px 11px 12px; }
+  padding: 9px 0 11px 12px; }
 
 .ui-grid-cell-contents {
   padding: 7px 5px 5px 12px; }
-
-.report-time-cell{
-  padding: 7px 29px 5px 12px;
-  float: right;
-}
 
 .ui-grid-row {
   border-bottom: 1px #e0e4ec solid; }
@@ -309,7 +308,11 @@
 
 .ui-grid-cell-contents .aggregated-comment-measure {
   position: absolute;
-  display: block !important;
+  display: block;
   visibility: hidden; }
+
+.report-time-cell {
+  padding: 7px 29px 5px 12px;
+  float: right; }
 
 /*# sourceMappingURL=report.css.map */

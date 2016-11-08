@@ -42,7 +42,7 @@ angular.module('mifortTimesheet.calendar', ['ngRoute'])
                     $scope.countPeriodSetting = data.countPeriodSetting;
                     $scope.periodSetting = data.periodSetting;
                 } else {
-                    $scope.countPeriodSetting = "1";
+                    $scope.countPeriodSetting = calendarService.getCountPeriodSettings()[0].count;
                     $scope.periodSetting = "Week";
                 }
             }).then(function () {
@@ -52,7 +52,6 @@ angular.module('mifortTimesheet.calendar', ['ngRoute'])
             $scope.selectedPeriod = $scope.periodSettings[0]; //default period is week
             $scope.splittedCalendar = [];
             $scope.calendarIsOpened = false;
-            $scope.periodCount = [1,2,3,4,5,6,7];
             //check and remove
             $scope.range = function(n) {
                 return new Array(n);
@@ -136,10 +135,6 @@ angular.module('mifortTimesheet.calendar', ['ngRoute'])
                     daysAfterCalendarEnd = $scope.calendar[index - 1] && 6 - moment(new Date($scope.calendar[index - 1].date)).weekday(),
                     generatedDay;
 
-                //last week reset
-                //if(currentDayWeek == 53 && $scope.splittedCalendar[currentDayYear - 1]){
-                //    currentDayWeek = 0;
-                //}
                 if(currentDayWeek == 1 && $scope.splittedCalendar[currentDayYear - 1] && moment(currentDate).get('date') == 31){
                     currentDayWeek = 53;
                 }
@@ -280,12 +275,6 @@ angular.module('mifortTimesheet.calendar', ['ngRoute'])
                     "splitter and split the current period in two.</p>",
                     position: 'right'
                 },
-                //{
-                //    element: '#step2',
-                //    intro: "<p>Control panel has the autosplitting engine that allows you to split all months automatically. " +
-                //    "Choose report period (Month, Week) and Start date of splitting and press the blue \"Split\" button to generate periods for all year.</p>",
-                //    position: 'left'
-                //},
                 {
                     element: '#step3',
                     intro: "<p>Use Day Types controls to manage new Day Types. </p>" +
@@ -416,9 +405,8 @@ angular.module('mifortTimesheet.calendar', ['ngRoute'])
 
             $scope.calculatePeriods = function() {
                 var firstPeriod = new Date(),
-                    newPeriodStartDays = moment(new Date(firstPeriod)).add(i + 1, 'days'),
-                    newPeriodStartMonths = moment(new Date(firstPeriod)).add(i + 1, 'months'),
-                    i;
+                    newPeriodStartDays = moment(new Date(firstPeriod)).add(1, 'days'),
+                    newPeriodStartMonths = moment(new Date(firstPeriod)).add(1, 'months');
 
                 $scope.company.periods = [];
                 resetPeriodsSplitters();
@@ -431,9 +419,8 @@ angular.module('mifortTimesheet.calendar', ['ngRoute'])
             $scope.GenerateMoreDays = function() {
 
                 var lastPeriodEnd = $scope.company.periods[$scope.company.periods.length - 1].end,
-                    newPeriodStartDays = moment(new Date(lastPeriodEnd)).add(i + 1, 'days'),
-                    newPeriodStartMonths = moment(new Date(lastPeriodEnd)).add(i + 1, 'months'),
-                    i;
+                    newPeriodStartDays = moment(new Date(lastPeriodEnd)).add(1, 'days'),
+                    newPeriodStartMonths = moment(new Date(lastPeriodEnd)).add(1, 'months');
 
                 generatePeriods(newPeriodStartDays, newPeriodStartMonths);
                 generateCalendar();

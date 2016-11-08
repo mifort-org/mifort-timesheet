@@ -5,7 +5,7 @@
             <div class="select-summary-projects">
                 <span class="option1">{{project.name | longTextFilter:11}}</span>
                 <span class="option2">
-            <span>{{ getLoggedTime(project.id) | fixedFilter }}</span>/<span>{{getWorkload()}}</span>
+            <span>{{getLoggedTime(project.id) | fixedFilter}}</span>/<span>{{getWorkload()}}</span>
         </span>
             </div>
 
@@ -15,7 +15,7 @@
     <div class="general-total-logged">
         <span class="option-total-label">Total:</span>
         <span class="option-total-time">
-            <span>{{ getTotalLoggedTime() | fixedFilter }}</span>/<span>{{getTotalWorkloadTime()}}</span>
+            <span>{{getTotalLoggedTime() | fixedFilter}}</span>/<span>{{getTotalWorkloadTime()}}</span>
         </span>
     </div>
 </div>

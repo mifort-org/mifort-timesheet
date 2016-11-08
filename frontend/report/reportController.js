@@ -46,7 +46,7 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                 if(comments && comments.length){
                     //remove empty comments
                     var cleanComments = comments.filter(function(e) {
-                        return e.replace(/(\r\n|\n|\r)/gm, "")
+                        return e ? e.replace(/(\r\n|\n|\r)/gm, "") : ""
                     });
 
                     return cleanComments.join(", ")
@@ -163,9 +163,9 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                 if(sortColumns.length === 0 || (sortColumns[0] && !sortColumns[0].sort)){
                     $scope.reportSettings.sort = {
                         field: 'date',
-                            asc: false
+                        asc: false
                     };
-                    
+
                     $scope.getReport();
                 }else{
                     switch(sortColumns[0].sort.direction){

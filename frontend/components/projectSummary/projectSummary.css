@@ -1,28 +1,3 @@
-.tabs-left .wrapper-summary-projects{
-    padding-left: 28px;
-}
 
-.wrapper-summary-projects .select-summary-projects{
-    overflow: hidden;
-}
 
-.wrapper-summary-projects .option1{
-    float: left;
-}
-
-.wrapper-summary-projects .option-total-label {
-    float: left;
-    font-weight: 600;
-}
-
-.wrapper-summary-projects .option-total-time{
-    float: right;
-    font-weight: 600;
-}
-
-.wrapper-summary-projects .option2{
-    float: right;
-}
-.wrapper-summary-projects .general-total-logged{
-    padding: 17px 25px;
-}
+/*# sourceMappingURL=projectSummary.css.map */
