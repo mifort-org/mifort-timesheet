@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = function(grunt) {
+module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch'); //Run predefined tasks whenever watched file patterns are added, changed or deleted
     grunt.loadNpmTasks('grunt-contrib-clean'); //Clean files and folders
     grunt.loadNpmTasks('grunt-contrib-copy'); //Copy files and folders
@@ -103,7 +103,7 @@ module.exports = function(grunt) {
                     ]
                 },
                 options: {
-                    process: function(src) {
+                    process: function (src) {
                         return src.replace(/(?:(?:(?:\.\.\/)+common\/)|(?:(?:\.\.\/)*))images\//g, '../common/images/');
                     }
                 }
@@ -112,15 +112,16 @@ module.exports = function(grunt) {
                 src: [
                     'frontend/app.js',
                     'frontend/components/tabs/bootstrapTabs.js',
+                    'frontend/components/projectSummary/projectSummary.js',
                     'frontend/components/tableCell/tableCell.js',
                     'frontend/components/projectRow/projectRow.js',
                     'frontend/components/preferences/preferences.js',
                     'frontend/components/preferences/preferencesService.js',
                     'frontend/components/customDay/customDay.js',
                     'frontend/components/filters/propsFilter.js',
-                    'frontend/components/filters/fixedFilter.js',
-                    'frontend/components/filters/longTextFilter.js',
                     'frontend/components/filters/toDateFilter.js',
+                    'frontend/components/filters/longTextFilter.js',
+                    'frontend/components/filters/fixedFilter.js',
                     'frontend/components/dropdownFilter/dropdownFilter.js',
                     'frontend/components/reportDatePicker/reportDatePicker.js',
                     'frontend/components/timesheetIntro/timesheetIntro.js',
@@ -129,14 +130,13 @@ module.exports = function(grunt) {
                     'frontend/components/timesheetComment/timesheetComment.js',
                     'frontend/login/loginController.js',
                     'frontend/login/loginService.js',
-                    'frontend/components/projectSummary/projectSummary.js',
-                    'frontend/services/projectSummaryService.js',
                     'frontend/company/companyController.js',
                     'frontend/company/companyService.js',
                     'frontend/projects/projectsController.js',
                     'frontend/projects/projectsService.js',
                     'frontend/timesheet/timesheetController.js',
                     'frontend/timesheet/timesheetService.js',
+                    'frontend/services/projectSummaryService.js',
                     'frontend/calendar/calendarController.js',
                     'frontend/calendar/calendarService.js',
                     'frontend/report/reportController.js',
@@ -198,7 +198,7 @@ module.exports = function(grunt) {
                 ],
                 dest: 'dist/scripts/templates.js',
                 options: {
-                    url: function(url) {
+                    url: function (url) {
                         url = url.slice(url.indexOf('dist'));
 
                         return url.replace('dist/', '');
@@ -327,23 +327,23 @@ module.exports = function(grunt) {
 
     var tasks = [];
     if(process.env.GRUNT_ENV === 'production') {
-        tasks = [
-            'clean:build',
-            'copy:build',
-            'concat',
-            'ngAnnotate',
-            'usemin',
-            //'ngtemplates',
-            'uglify',
-            'cssmin',
-            'notify',
-            'cachebreaker',
+    tasks = [
+        'clean:build',
+        'copy:build',
+        'concat',
+        'ngAnnotate',
+        'usemin',
+        //'ngtemplates',
+        'uglify',
+        'cssmin',
+        'notify',
+        'cachebreaker',
 
-            'remove:frontend',
-            'mkdir:frontend',
-            'copy:dist',
-            'remove:dist'
-        ];
+        'remove:frontend',
+        'mkdir:frontend',
+        'copy:dist',
+        'remove:dist'
+    ];
     }
 
     grunt.registerTask('build', tasks);
