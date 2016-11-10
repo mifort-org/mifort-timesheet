@@ -22,8 +22,8 @@
 
 <div class="timesheet collapse-wrapper timesheet-collapse-wrapper clearfix">
     <div uib-collapse="isCollapsed">
-        <table class="table table-bordered timesheet" id="{{$first ? 'step3' : ''}}">
-            <thead>
+        <table ng-show="!loading" class="table table-bordered timesheet" id="{{$first ? 'step3' : ''}}">
+            <thead ng-show="filteredLogs.length > 0">
             <tr>
                 <th ng-repeat="timesheetKey in timesheetKeys track by $index"
                     ng-class="{'log-date-header' : $index == 0 && !isStartEndPeriodSameMonth(projects[0].periods[currentPeriodIndex])}">
@@ -56,7 +56,7 @@
             </tr>
 
             </thead>
-            <tbody ng-show="!loading">
+            <tbody>
             <tr ng-if="currentPeriodIndex >= 0"
                 ng-repeat="log in filteredLogs | orderBy:'date' track by $index"
                 ng-style="{background: log.color}"
@@ -100,7 +100,7 @@
                 </td>
             </tr>
             </tbody>
-            <tfoot>
+            <tfoot ng-show="filteredLogs.length > 0">
             <tr>
                 <td class="total-logged">Total:</td>
                 <td></td>
