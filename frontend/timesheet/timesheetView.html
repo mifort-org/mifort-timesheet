@@ -65,7 +65,7 @@
                 <td>
                     <span class="timesheet-data">
                         <a href="" ng-if="log.isFirstDayRecord" class="add-timesheet"
-                           ng-click="addLog(log, projects[0], currentPeriodIndex)">+</a>
+                           ng-click="addLog(log)">+</a>
 
                         <span ng-if="log.isFirstDayRecord">
                             <span class="log-date">{{log.date| toDateFilter | date:'dd MMM'}}</span></br>

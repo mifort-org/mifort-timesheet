@@ -51,16 +51,6 @@ angular.module('mifortTimesheet')
                         event.preventDefault(); //stop character from entering input
                     }
                 });
-
-                // scope.$watch(attrs.watch, function(newValue, oldValue) {
-                //     //if(scope.project){
-                //         var time = input.val();
-                //
-                //         if(time && time.slice(-1) !== 'h'){
-                //             input.val(time + 'h')
-                //         }
-                //     //}
-                // });
             },
             templateUrl: function (element) {
                 var activeTemplate;
