@@ -450,9 +450,6 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                 var filterProjectsByName = _.filter($scope.grid.options.reportFilters[0].value, function (filter) {
                     return filter.name.toLowerCase().startsWith(text);
                 });
-                filterProjectsByName.forEach(function (project) {
-                    project.isChecked = false;
-                });
                 $scope.grid.options.reportFilters[0].value = filterProjectsByName;
             };
 
@@ -528,27 +525,28 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
 
             $scope.getSortedProjects = function () {
                 return $scope.projects.sort(function(a, b) {
+                    var sortValue = 0;
                     if (a.assignments[0].workload && !b.assignments[0].workload) {
-                        return -1;
+                        sortValue = -1;
                     }
                     if (!a.assignments[0].workload && b.assignments[0].workload) {
-                        return 1;
+                        sortValue = 1;
                     }
                     if (a.assignments[0].workload && b.assignments[0].workload) {
                         if (+a.assignments[0].workload > +b.assignments[0].workload) {
-                            return -1;
+                            sortValue = -1;
                         }
                         if (+a.assignments[0].workload < +b.assignments[0].workload) {
-                            return 1;
+                            sortValue = 1;
                         }
                     }
                     if (a.name > b.name) {
-                        return 1;
+                        sortValue = 1;
                     }
                     if (a.name < b.name) {
-                        return -1;
+                        sortValue = -1;
                     }
-                    return 0;
+                    return sortValue;
                 });
             };
 
@@ -588,7 +586,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                 var project = _.findWhere($scope.projects, {_id: projectId});
                 log.projectName = project ? project.name : '';
                 log.projectId = projectId;
-                log.timePlaceholder = project ? (project.assignments[0].workload ? project.assignments[0].workload : '0') : '0';
+                log.timePlaceholder = project ? (project.assignments[0].workload ? project.assignments[0].workload : 0) : 0;
             };
 
             $scope.getWeekDay = function(date) {
@@ -629,22 +627,20 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
 
                     if (logOfDate.length == 0) {
                         $scope.projects.forEach(function (project) {
-                            //if ($scope.currentPeriodIndex) {
-                                var timesheet = project.periods[periodIndex].timesheet;
-                                timesheet.forEach(function(log) {
-                                    if (log.date == logGroup.date) {
-                                        if (!log._id) {
-                                            var hasLogThisDay = $scope.getSameDateDays(allLogs, log.date).length > 0;
-                                            if (!hasLogThisDay && !$scope.someProjectHasLog(log.date)) {
-                                                $scope.addLogToArray(log, allLogs);
-                                            }
-                                        }
-                                        else {
+                            var timesheet = project.periods[periodIndex].timesheet;
+                            timesheet.forEach(function (log) {
+                                if (log.date == logGroup.date) {
+                                    if (!log._id) {
+                                        var hasLogThisDay = $scope.getSameDateDays(allLogs, log.date).length > 0;
+                                        if (!hasLogThisDay && !$scope.someProjectHasLog(log.date)) {
                                             $scope.addLogToArray(log, allLogs);
                                         }
                                     }
-                                });
-                            //}
+                                    else {
+                                        $scope.addLogToArray(log, allLogs);
+                                    }
+                                }
+                            });
                         });
                     }
                 });
@@ -682,7 +678,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                 });
 
                 return someProjectHasLog;
-            }
+            };
 
             $scope.isStartEndPeriodSameMonth = function (period) {
                 if (period) {

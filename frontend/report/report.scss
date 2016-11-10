@@ -63,7 +63,7 @@
     display: inline-block;
     height: 20px;
     width: 18px;
-    margin-right: 3px;
+    margin: 0 3px 0 6px;
     background: url("../common/images/icons.png") 3px -1237px;
     opacity: 0.3;
 
@@ -101,13 +101,10 @@
 }
 
 .ui-grid-header-cell-row{
-    .ui-grid-header-cell{
-        &:nth-child(4){
-            .ui-grid-cell-contents{
-
-                padding: 9px 0 11px 12px;
-                text-align: right;
-            }
+    .time-header{
+        .ui-grid-cell-contents{
+            padding: 9px 0 11px 12px;
+            text-align: right;
         }
     }
 }
@@ -458,4 +455,25 @@
 .report-time-cell{
     padding: 7px 29px 5px 12px;
     float: right;
+}
+
+.time-header{
+    text-align: right;
+}
+
+.name-header{
+    border: none;
+}
+
+.header-sort-direction{
+    position: absolute;
+    right: 2px;
+}
+
+.header-filter{
+    right: inherit;
+}
+
+.header-area{
+    float: left;
 }
