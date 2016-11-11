@@ -326,24 +326,24 @@ module.exports = function (grunt) {
     });
 
     var tasks = [];
-    if(process.env.GRUNT_ENV === 'production') {
-    tasks = [
-        'clean:build',
-        'copy:build',
-        'concat',
-        'ngAnnotate',
-        'usemin',
-        //'ngtemplates',
-        'uglify',
-        'cssmin',
-        'notify',
-        'cachebreaker',
+    if (process.env.GRUNT_ENV === 'production') {
+        tasks = [
+            'clean:build',
+            'copy:build',
+            'concat',
+            'ngAnnotate',
+            'usemin',
+            //'ngtemplates',
+            'uglify',
+            'cssmin',
+            'notify',
+            'cachebreaker',
 
-        'remove:frontend',
-        'mkdir:frontend',
-        'copy:dist',
-        'remove:dist'
-    ];
+            'remove:frontend',
+            'mkdir:frontend',
+            'copy:dist',
+            'remove:dist'
+        ];
     }
 
     grunt.registerTask('build', tasks);
