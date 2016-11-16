@@ -115,10 +115,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                             $scope.currentPeriodIndex = +preferences.get('currentPeriodIndex') || periodIndex || 0;
                         }
                     });
-
-                    project.periods.forEach(function (period, index) {
-                        promises.push(initPeriod(project, index));
-                    });
+                    promises.push(initPeriod(project, $scope.currentPeriodIndex));
                 });
 
                 $q.all(promises).then(function () {
