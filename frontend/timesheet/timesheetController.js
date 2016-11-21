@@ -30,8 +30,8 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
         });
     }])
 
-    .controller('timesheetController', ['$scope', 'timesheetService', 'calendarService', 'preferences', 'loginService', '$routeParams', '$timeout', 'Notification', "$q", "projectSummaryService",
-        function ($scope, timesheetService, calendarService, preferences, loginService, $routeParams, $timeout, Notification, $q, projectSummaryService) {
+    .controller('timesheetController', ['$scope', 'timesheetService', 'calendarService', 'preferences', 'loginService', '$routeParams', '$timeout', 'Notification', "$q", "projectSummaryService", "$filter",
+        function ($scope, timesheetService, calendarService, preferences, loginService, $routeParams, $timeout, Notification, $q, projectSummaryService, $filter) {
             var user;
 
             $scope.projects = [];
@@ -261,6 +261,24 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                         if (!_.isEqual(newValueToCompare, oldValueToCompare)) {
 
                             var dates = $scope.getNotEmptyDates();
+                            dates = dates.sort(function (a, b) {
+                                var result = 0;
+                                if (a.date > b.date) {
+                                    result = 1;
+                                }
+                                if (a.date < b.date) {
+                                    result = -1;
+                                }
+
+                                if (!result && a.position > b.position) {
+                                    result = 1;
+                                }
+                                if (!result && a.position < b.position) {
+                                    result = -1;
+                                }
+                                return result;
+                            });
+
                             var timesheetToSave = angular.copy(dates);
 
                             timesheetToSave.map(function (log) {
@@ -461,6 +479,8 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                     endDate = moment(new Date($scope.projects[0].periods[$scope.currentPeriodIndex].end)),
                     daysToGenerate = endDate.diff(startDate, 'days');
 
+                var projectId = $scope.getDefaultProject()._id;
+                var project = $scope.getProjectById(projectId);
                 var logs = [];
                 for (var i = 0; i < daysToGenerate + 1; i++) {
                     var date = angular.copy(startDate).add(i, 'days').format("MM/DD/YYYY");
@@ -468,16 +488,15 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                     var logsOnDate = $scope.getSameDateDays(filteredLogs, date);
 
                     if (!logsOnDate.length) {
-                        var newRow = angular.copy(data[0]);
+                        var newRow = angular.copy(project.template);
                         newRow.date = date;
                         newRow.time = null;
                         newRow.comment = null;
                         newRow._id = null;
                         newRow.isCreatedManually = false;
                         newRow.position = $scope.calcNewLogPosition(data, date);
-                        var projectId = $scope.getDefaultProject()._id;
-                        var project = $scope.getProjectById(projectId);
                         newRow.timePlaceholder = getTimePlaceholder(project);
+                        newRow.userName = user.displayName;
 
                         $scope.setDefaultProject(newRow);
                         newRow.isFirstDayRecord = $scope.isFirstDayRecord(logs, date);
