@@ -88,7 +88,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                 }
             });
 
-            $scope.addLogs = function (period, index) {
+            $scope.addLogs = function (index) {
                 $scope.logs.push({index: index, data: $scope.groupDatePeriodsProjects(index)});
             };
 
@@ -119,9 +119,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                 });
 
                 $q.all(promises).then(function () {
-                    $scope.projects[0].periods.forEach(function (period, index) {
-                        $scope.addLogs(period, index);
-                    });
+                    $scope.addLogs($scope.currentPeriodIndex);
                     initWatchers("logs");
                     $scope.currentPeriodLogsLoaded();
 
@@ -196,7 +194,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
             function applyProjectDefaultValues(project) {
                 if (project.defaultValues) {
                     project.defaultValues.forEach(function (day) {
-                        var existedDays = $scope.getSameDateDays($scope.getLogDates(), day.date);
+                        var existedDays = $scope.getSameDateDays($scope.getCurrentLogData(), day.date);
 
                         if (existedDays.length && day.dayId) {
                             existedDays.forEach(function (existedDay) {
@@ -246,15 +244,19 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                 var timer = null;
 
                 $scope.$watch(property, function (newValue, oldValue) {
-                    var newLogs = newValue[$scope.currentPeriodIndex].data,
-                        oldLogs = oldValue[$scope.currentPeriodIndex].data;
-                    if (newLogs.length >= oldLogs.length) {
+                    var newLogs = $scope.getCurrentLog(newValue),
+                        oldLogs = $scope.getCurrentLog(oldValue);
+                    if (newLogs && !oldLogs) return;
 
-                        var newValueToCompare = $scope.getNotEmptyLogs(newLogs).map(function (log) {
+                    var newLogsData = newLogs.data,
+                        oldLogsData = oldLogs.data;
+                    if (newLogsData.length >= oldLogsData.length) {
+
+                        var newValueToCompare = $scope.getNotEmptyLogs(newLogsData).map(function (log) {
                             return {projectId: log.projectId, time: log.time, comment: log.comment};
                         });
 
-                        var oldValueToCompare = $scope.getNotEmptyLogs(oldLogs).map(function (log) {
+                        var oldValueToCompare = $scope.getNotEmptyLogs(oldLogsData).map(function (log) {
                             return {projectId: log.projectId, time: log.time, comment: log.comment};
                         });
 
@@ -349,7 +351,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                 var projectId = $scope.getDefaultProject()._id;
                 var project = $scope.getProjectById(projectId);
                 var newRow = angular.copy(project.template),
-                    currentPeriod = $scope.getLogDates(),
+                    currentPeriod = $scope.getCurrentLogData(),
                     dayPeriodIndex = _.findIndex(currentPeriod, {date: log.date});
 
                 newRow.date = log.date;
@@ -371,7 +373,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
             };
 
             $scope.removeRow = function (log, project, periodIndex) {
-                var dates = $scope.getLogDates();
+                var dates = $scope.getCurrentLogData();
 
                 if (log._id) {
                     timesheetService.removeTimesheet(log).success(function () {
@@ -401,6 +403,8 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
 
                     $q.all(promises).then(function () {
 
+                        $scope.addLogs($scope.currentPeriodIndex);
+
                         $scope.currentPeriodLogsLoaded();
 
                         $scope.filteredLogs = $scope.getFilteredDates();
@@ -427,6 +431,8 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
 
                     $q.all(promises).then(function () {
 
+                        $scope.addLogs($scope.currentPeriodIndex);
+
                         $scope.currentPeriodLogsLoaded();
 
                         $scope.filteredLogs = $scope.getFilteredDates();
@@ -436,12 +442,12 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                 preferences.set('currentPeriodIndex', $scope.currentPeriodIndex);
             };
 
-            $scope.getCurrentLog = function () {
-                return _.findWhere($scope.logs, {index: $scope.currentPeriodIndex});
+            $scope.getCurrentLog = function (logs) {
+                return _.findWhere(logs, {index: $scope.currentPeriodIndex});
             };
 
-            $scope.getLogDates = function () {
-                var log = $scope.getCurrentLog();
+            $scope.getCurrentLogData = function () {
+                var log = $scope.getCurrentLog($scope.logs);
                 return log ? log.data : [];
             };
 
@@ -473,7 +479,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
             };
 
             $scope.getFilteredDates = function () {
-                var data = $scope.getLogDates();
+                var data = $scope.getCurrentLogData();
                 var filteredLogs = $scope.getFilteredLogs(data);
                 var startDate = moment(new Date($scope.projects[0].periods[$scope.currentPeriodIndex].start)),
                     endDate = moment(new Date($scope.projects[0].periods[$scope.currentPeriodIndex].end)),
@@ -580,12 +586,12 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
             };
 
             $scope.getNotEmptyDates = function () {
-                var dates = $scope.getLogDates();
+                var dates = $scope.getCurrentLogData();
                 return $scope.getNotEmptyLogs(dates);
             };
 
             $scope.getLogsToDelete = function () {
-                var dates = $scope.getLogDates();
+                var dates = $scope.getCurrentLogData();
                 return _.filter(dates, function (item) {
                     return !item.time && !item.comment && item._id;
                 });
@@ -639,7 +645,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
             };
 
             $scope.getTotalWorkload = function () {
-                var projectsWithTime = projectSummaryService.getProjectsWithTime($scope.projects, $scope.getLogDates());
+                var projectsWithTime = projectSummaryService.getProjectsWithTime($scope.projects, $scope.getCurrentLogData());
                 return projectSummaryService.getTotalWorkloadTime(projectsWithTime);
             };
 
