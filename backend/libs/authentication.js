@@ -20,6 +20,7 @@ var passport = require('passport');
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var ObjectID = require('mongodb').ObjectID;
 var log = require('./logger');
+var request = require('request');
 
 var users = require('../user');
 var registration = require('./registration');
@@ -87,13 +88,26 @@ passport.use(new GoogleStrategy({
 ));
 
 exports.ensureAuthenticated = function (req, res, next) {
-    if(process.env.APPLICATION_TEST) {
-        return next();
+    var token = req.get('Authorization');
+    if (token) {
+        var accessToken = token.substr(7); //remove 'Bearer' prefix
+        request('https://www.googleapis.com/oauth2/v3/tokeninfo?access_token=' + accessToken, function (error, response, body) {
+            var resBody = JSON.parse(body);
+            if (!error && !resBody.error_description) {
+                next();
+            } else {
+                res.status(401).json({msg: 'You aren’t authenticated!'});
+            }
+        })
+    } else {
+        if (process.env.APPLICATION_TEST) {
+            return next();
+        }
+        if (req.isAuthenticated()) {
+            return next();
+        }
+        res.status(401).json({msg: 'You aren’t authenticated!'});
     }
-    if (req.isAuthenticated()) {
-        return next();
-    }
-    res.status(401).json({msg: 'You aren’t authenticated!'});
 };
 
 exports.init = function(app) {
@@ -114,6 +128,25 @@ exports.init = function(app) {
                 res.redirect(loginRedirect);
             }
     );
+
+    app.get('/get-access-token', function (req, res) {
+        request.post({
+            url: 'https://www.googleapis.com/oauth2/v4/token',
+            form: {
+                code: req.query.code,
+                client_id: GOOGLE_CLIENT_ID,
+                client_secret: GOOGLE_CLIENT_SECRET,
+                redirect_uri: GOOGLE_CALLBACK,
+                grant_type: 'authorization_code'
+            }
+        }, function (err, httpResponse, body) {
+            if (!err) {
+                var resBody = JSON.parse(body);
+                console.log(resBody);
+                res.json(resBody);
+            }
+        });
+    });
 
     app.get('/logout', logout);
 
