@@ -90,7 +90,10 @@ passport.use(new GoogleStrategy({
 exports.ensureAuthenticated = function (req, res, next) {
     var token = req.get('Authorization');
     if (token) {
-        var accessToken = token.substr(7); //remove 'Bearer' prefix
+        var accessToken = token;
+        if (token.indexOf("Bearer") != -1) {
+            accessToken = token.substr(7); //remove 'Bearer' prefix
+        }
         request('https://www.googleapis.com/oauth2/v3/tokeninfo?access_token=' + accessToken, function (error, response, body) {
             var resBody = JSON.parse(body);
             if (!error && !resBody.error_description) {
