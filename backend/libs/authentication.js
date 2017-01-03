@@ -91,7 +91,7 @@ exports.ensureAuthenticated = function (req, res, next) {
     var token = req.get('Authorization');
     if (token) {
         var accessToken = token;
-        if (token.indexOf("Bearer") != -1) {
+        if (token.indexOf("Bearer") == 0) {
             accessToken = token.substr(7); //remove 'Bearer' prefix
         }
         request('https://www.googleapis.com/oauth2/v3/tokeninfo?access_token=' + accessToken, function (error, response, body) {
