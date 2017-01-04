@@ -646,7 +646,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
 
             $scope.getTotalWorkload = function () {
                 var projectsWithTime = projectSummaryService.getProjectsWithTime($scope.projects, $scope.getCurrentLogData());
-                return projectSummaryService.getTotalWorkloadTime(projectsWithTime);
+                return projectSummaryService.getTotalWorkloadTime(projectsWithTime, $scope.getCurrentLogData());
             };
 
             $scope.watchFilterChanges = function () {

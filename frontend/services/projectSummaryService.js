@@ -20,7 +20,7 @@
 'use strict';
 
 angular.module('mifortTimesheet.timesheet').factory('projectSummaryService',
-    ['$http', function($http) {
+    ['$http', function ($http) {
         var self = this;
 
 
@@ -48,14 +48,11 @@ angular.module('mifortTimesheet.timesheet').factory('projectSummaryService',
             return total;
         };
 
-        self.getTotalWorkloadTime = function (projects) {
-            if (!projects) return 0;
-
-            return projects.length * self.getWorkload();
-        };
-
-        self.getWorkload = function () {
-            return 40;
+        self.getWorkload = function (project, daysCount) {
+            if (!project > 0) {
+                return 0;
+            }
+            return project.workload * daysCount;
         };
 
         self.getProjectsWithTime = function (projects, logs) {
@@ -63,31 +60,60 @@ angular.module('mifortTimesheet.timesheet').factory('projectSummaryService',
 
             projects.forEach(function (project) {
                 if (project.assignments[0].workload) {
-                    projectsWithTime.push({id: project._id, name: project.name});
+                    projectsWithTime.push({
+                        id: project._id,
+                        name: project.name,
+                        workload: project.assignments[0].workload
+                    });
                 }
             });
             logs.forEach(function (log) {
                 if (log.time && !_.findWhere(projectsWithTime, {id: log.projectId})) {
-                    projectsWithTime.push({id: log.projectId, name: log.projectName});
+                    projectsWithTime.push({id: log.projectId, name: log.projectName, workload: 8});
                 }
             });
 
             return projectsWithTime;
         };
 
-        self.formatTime = function (time){
-            if(time && angular.isNumber(time)){
+        self.getDaysCount = function (logs) {
+            var uniqueLogs = [];
+            logs.forEach(function (day) {
+                if (!_.findWhere(uniqueLogs, {date: day.date})) {
+                    uniqueLogs.push(day);
+                }
+            });
+            return uniqueLogs.length;
+        };
+
+        self.getTotalWorkloadTime = function (projects, logs) {
+            var sum = 0;
+            if (!projects) {
+                return sum;
+            }
+
+            var daysCount = self.getDaysCount(logs);
+
+            projects.forEach(function (project) {
+                sum += self.getWorkload(project, daysCount);
+            });
+
+            return sum;
+        };
+
+        self.formatTime = function (time) {
+            if (time && angular.isNumber(time)) {
                 time = time;
             }
-            else if(time && time.slice(-1) == 'h'){
+            else if (time && time.slice(-1) == 'h') {
                 time = time.slice(0, -1);
             }
-            else{
+            else {
                 time = time == "." ? 0 : +time;
             }
 
             return time;
-        }
+        };
 
         return self;
     }

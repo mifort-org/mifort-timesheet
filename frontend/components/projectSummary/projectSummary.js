@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('mifortTimesheet')
-    .directive('projectSummary', function($location, preferences, projectSummaryService) {
+    .directive('projectSummary', function ($location, preferences, projectSummaryService) {
         return {
             scope: true,
             link: function (scope, element, attrs) {
@@ -22,11 +22,13 @@ angular.module('mifortTimesheet')
                 }
 
                 scope.getTotalWorkloadTime = function () {
-                    return projectSummaryService.getTotalWorkloadTime(scope.projectsWithTime);
+                    return projectSummaryService.getTotalWorkloadTime(scope.projectsWithTime, scope.getCurrentLogDates());
                 };
 
-                scope.getWorkload = function () {
-                    return projectSummaryService.getWorkload();
+                scope.getWorkload = function (projectId) {
+                    var project = _.findWhere(scope.projectsWithTime, {id: projectId});
+                    var daysCount = projectSummaryService.getDaysCount(scope.getCurrentLogDates());
+                    return projectSummaryService.getWorkload(project, daysCount);
                 };
 
                 scope.getCurrentLog = function () {
