@@ -32,10 +32,16 @@ angular.module('mifortTimesheet.report').factory('reportService',
             }
         };
         self.downloadCsv = function (reportSettings) {
-            return $http.post('api/v1/report/common/download', reportSettings);
+            return $http.post('api/v1/report/common/download/csv', reportSettings);
         };
         self.downloadAggregationCsv = function (reportSettings) {
-            return $http.post('api/v1/report/aggregation/download', reportSettings);
+            return $http.post('api/v1/report/aggregation/download/csv', reportSettings);
+        };
+        self.downloadPdf = function (reportSettings) {
+            return $http.post('api/v1/report/common/download/pdf', reportSettings);
+        };
+        self.downloadAggregationPdf = function (reportSettings) {
+            return $http.post('api/v1/report/aggregation/download/pdf', reportSettings);
         };
         self.getHeaderTemplate = function (filterHeaderTemplate) {
             return '<div class="header-area" ng-class="{ \'sortable\': sortable }">' +

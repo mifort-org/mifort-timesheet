@@ -150,12 +150,13 @@ angular.module('mifortTimesheet', [
                     break;
                 case '/report':
                     if(linkName == 'csv' ||
-                        linkName == 'print'){
-                        return true
+                        linkName == 'print' ||
+                        linkName== 'pdf'){
+                        return true;
                     }
                     break;
                 default:
-                    return false
+                    return false;
             }
         };
 

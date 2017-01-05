@@ -128,16 +128,20 @@ reportRouter.post('/common',
         validators.validateCommonReport,
         authorization.authorizeCommonReport,
         report.restCommonReport);
-reportRouter.post('/common/download',
+reportRouter.post('/common/download/csv',
         validators.validateDowloadCommonReport,
         authorization.authorizeCommonReport,
         report.restCommonReportCSV);
+reportRouter.post('/common/download/pdf',
+        validators.validateDowloadCommonReport,
+        authorization.authorizeCommonReport,
+        report.restCommonReportPDF);
 //aggregation reports
 reportRouter.post('/aggregation',
         validators.validateAggregationReport,
         authorization.authorizeCommonReport,
         report.restAggregationReport);
-reportRouter.post('/aggregation/download',
+reportRouter.post('/aggregation/download/csv',
         validators.validateDownloadAggregationReport,
         authorization.authorizeCommonReport,
         report.restAggregationReportCSV);

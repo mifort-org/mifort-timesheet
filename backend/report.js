@@ -94,12 +94,18 @@ exports.restCommonReportCSV = function(req, res, next) {
                 }
             });
 
+
         createCSVFile(cursorStream, REPORT_COLUMNS, function(fileName) {
             log.debug('-REST Result: Download common report. CSV file is generated. Company id: %s',
                 filterObj.companyId.toHexString());
             res.json({url: reportDownloadUrlPrefix + fileName});
         });
     });
+};
+
+exports.restCommonReportPDF = function(req, res, next) {
+
+
 };
 
 exports.restDownloadFile = function(req, res, next) {
