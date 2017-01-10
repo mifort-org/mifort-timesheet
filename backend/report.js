@@ -26,6 +26,9 @@ var utils = require('./libs/utils');
 var projects = require('./project');
 var company = require('./company');
 
+var u = require("underscore");
+var pdf = require('html-pdf');
+
 var REPORT_COLUMNS = {
     date: 'Date',
     userName: 'User',
@@ -104,7 +107,28 @@ exports.restCommonReportCSV = function(req, res, next) {
 };
 
 exports.restCommonReportPDF = function(req, res, next) {
+    var filterObj = req.body;
+    log.debug('-REST call: Download common report. Company id: %s',
+        filterObj.companyId.toHexString());
+    projects.findProjectIdsByCompanyId(filterObj.companyId, function(err, projectIds) {
+        if (err) {
+            next(err);
+            return;
+        }
+        var query = convertFiltersToQuery(filterObj.filters, projectIds);
+        var sorting = convertToSortQuery(filterObj.sort);
+        var timelogCollection = db.timelogCollection().find(query).toArray(function (err, logs) {
+            if (err) {
+                throw err;
+            }
 
+            createPdfFile (logs, function (fileName) {
+                log.debug('-REST Result: Download common report. PDF file is generated. Company id: %s',
+                    filterObj.companyId.toHexString());
+                res.json({url: reportDownloadUrlPrefix + fileName});
+            });
+        });
+    })
 
 };
 
@@ -289,7 +313,6 @@ function convertFiltersToQuery(filters, projectIds) {
     if(projectIds) {
         query.projectId = {$in: projectIds};
     }
-
     return query;
 }
 
@@ -403,3 +426,123 @@ function createCSVFile(outputStream, reportColumns, callback) {
         log.error(err);
     });
 }
+
+function createPdfFile (logs, callback) {
+    var fileName = 'report_' + shortid.generate() + '.pdf';
+    var projectName = 'mifort';
+
+    var htmlPage = generateHtmlData(logs, projectName, calendar);
+
+    writePdf (htmlPage, fileName, function () {
+        callback(fileName)
+    })
+}
+
+function writePdf (html, fileName, callback) {
+    var options = { format: 'Letter'};
+    pdf.create(html, options).toFile('./report_files/' + fileName, function(err, res) {
+        if (err) return console.log(err);
+        console.log(res); // { filename: '/app/businesscard.pdf' }
+        callback();
+    });
+}
+
+function generateHtmlData (logs, name, calendar) {
+    var project = {
+        name: name,
+        users: [],
+        totalTime: 0
+    };
+    var projectTotalTime = 0;
+    var workHours = 0;
+    var workDays = [];
+
+    u.each(calendar, function (a) {
+        if (a[1]) {
+            workHours += a[1];
+        }
+    });
+
+    u.chain(logs).pluck('user').uniq().each(function(usr) {
+        var userLogs = u.where(logs, {user: usr});
+        var user = {};
+        user.name = usr;
+        user.days = [];
+        var totalTime = 0;
+        u.each(calendar, function (cal) {
+            var date = "2016-someMonth-" + cal[0];
+            var log = u.findWhere(userLogs, {date: date});
+            var day = {};
+            if (!log) {
+                day = {
+                    date: date,
+                    time: 0,
+                    comment: '',
+                    expectHours: cal[1]
+                };
+            } else {
+                day = {
+                    date: date,
+                    time: log.time,
+                    comment: log.comment,
+                    expectHours: cal[1]
+                };
+            }
+            user.days.push(day);
+            totalTime += day.time || 0;
+        });
+        user.totalTime = totalTime;
+        project.users.push(user);
+        project.totalTime += user.totalTime;
+    });
+
+    var htmlData = {
+        project: project,
+        workHours: workHours
+    };
+
+    var template = fs.readFileSync("report_files/projectsTemplate.html").toString();
+    var compiled = u.template(template);
+    var page = compiled(htmlData);
+
+    return page;
+}
+
+
+
+var calendar = [
+    ["01", 8],
+    ["02", 8],
+    ["03", 8],
+    ["04", 8],
+    ["05", 0],
+    ["06", 0],
+
+    ["07", 0],
+    ["08", 8],
+    ["09", 8],
+    ["10", 8],
+    ["11", 8],
+    ["12", 0],
+    ["13", 0],
+
+    ["14", 8],
+    ["15", 8],
+    ["16", 8],
+    ["17", 8],
+    ["18", 8],
+    ["19", 0],
+    ["20", 0],
+
+    ["21", 8],
+    ["22", 8],
+    ["23", 8],
+    ["24", 8],
+    ["25", 8],
+    ["26", 0],
+    ["27", 0],
+
+    ["28", 8],
+    ["29", 8],
+    ["30", 8]
+]

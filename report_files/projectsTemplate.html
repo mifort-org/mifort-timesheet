@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title><%=project.name%></title>
+    <style>
+        .grey-text{color: #888}
+        .right-date{float: right; margin: 38px 0 0;}
+        h1 {font-size: 36px; text-align: center}
+        h2{font-size: 30px;float: left}
+        table {border-collapse: collapse;width: 100%;margin-bottom: 20px;}
+        thead th, tbody, tfoot { border: 1px solid #666;}
+        tbody {border-bottom: none;}
+        tfoot {border-top: none;font-weight: bold;}
+        th, td {border: 1px solid #666;padding: 5px 10px;width: 13%;font-size: 14px;overflow: hidden;max-width: 10cm;}
+        td {border: 1px solid #666;page-break-inside:avoid}
+        th {text-align: left;}
+        tr {page-break-inside:avoid;}
+        .tasks {width: 90%;}
+        .day-off{background: #cedef1;}
+        .weekend{background: #a7cff7;}
+        .page{page-break-after: always;}
+        .page:last-child{page-break-after:avoid}
+        tr{max-height: 1cm;overflow: hidden}
+        .content-table, .content-table thead th, .content-table tbody, .content-table td {border: none}
+        .content-table {width: 90%; margin:10% auto; text-align: center; font-size: 30px}
+        .content-table th,.content-table td {font-size: 22px; padding:10px 0}
+        .content-table td:first-child, .content-table th:first-child {width: 45%;text-align: left;}
+        .content-table thead th{font-weight: bold}
+        .content-table tr:last-child{font-weight: bold}
+        .worker{position: relative}
+        .worker::after{content: " "; border-bottom: 1px dotted #000; width: 100%;height: 10px;position: absolute;margin-left: 30px;top: 18px;}
+    </style>
+</head>
+<body>
+<div class="page">
+    <h1><%=project.name%></h1>
+    <table class='content-table'>
+        <thead>
+        <tr>
+            <th></th>
+            <th colspan='2'>Time in hours</th>
+        </tr>
+        <tr>
+            <th></th>
+            <th>actual</th>
+            <th>expected</th>
+        </tr>
+        </thead>
+        <% _.each( project.users, function( user ){ %>
+
+        <tr>
+            <td class='worker'><%=user.name%></td>
+            <td><%=user.totalTime%></td>
+            <td class='grey-text'><%=workHours%></td>
+        </tr>
+
+        <% }); %>
+        <tr>
+            <td>TOTAL</td>
+            <td><%=project.totalTime%></td>
+            <td></td>
+        </tr>
+    </table>
+</div>
+<% _.each( project.users, function( user ){ %>
+<div class="page">
+    <h2><%=user.name%></h2>
+    <span class="right-date">November 2016</span>
+    <table>
+        <thead>
+        <tr class="header row-2">
+            <th></th>
+            <th class="work-hours-title hours">Expected/Actual</th>
+            <th class="tasks">Tasks</th>
+        </tr>
+        </thead>
+        <tfoot>
+        <tr>
+            <td>TOTAL</td>
+            <td><%=workHours%>/<%=user.totalTime%></td>
+            <td></td>
+        </tr>
+        </tfoot>
+        <tbody>
+        <% _.each( user.days, function( day ){ %>
+            <% if (day.expectHours != 0) {%>
+            <tr>
+            <% } else { %>
+            <tr  class="weekend">
+            <% } %>
+                <td><%=day.date%></td>
+                <% if (!day.expectHours && !day.time) {%>
+                <td></td>
+                <% } else { %>
+                <td><%=day.expectHours%>/<%=day.time%></td>
+                <% } %>
+                <% if (day.comment.toLowerCase() == 'day off') { %>
+                <td class="day-off"><%=day.comment%></td>
+                <% } else { %>
+                <td><%=day.comment%></td>
+                <% } %>
+            </tr>
+        <% }); %>
+        </tbody>
+    </table>
+</div>
+<% }); %>
+</body>
+</html>

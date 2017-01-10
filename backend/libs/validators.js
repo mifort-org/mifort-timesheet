@@ -258,7 +258,7 @@ exports.validateGetFilters = function(req, res, next) {
 exports.validateGetDownloadReport = function(req, res, next) {
     req.checkParams(reqParams.fileNameParam,
         util.format(invalidFormatMessageTemplate, reqParams.fileNameParam))
-            .notEmpty().contains('.csv');
+            .notEmpty().contains(/.csv|.pdf/);
 
     returnErrors(req, res, next);
 };
