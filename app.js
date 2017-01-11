@@ -50,6 +50,20 @@ log.info('Static resources are initialized!');
 
 app.use(expressValidator(validators.config));
 
+app.use(expressValidator({
+    customValidators: {
+        containsAny: function(val, array) {
+            var valid = false;
+            for(var i = 0, l = array.length; i < l; i++) {
+                if (val.includes(array[i])) {
+                    valid = true;
+                }
+            }
+            return valid;
+        }
+    }
+}));
+
 app.use(session(
     { secret: 'homogen cat' ,
     name: 'kaas',

@@ -85,7 +85,6 @@ exports.restCommonReportCSV = function(req, res, next) {
         }
         var query = convertFiltersToQuery(filterObj.filters, projectIds);
         var sorting = convertToSortQuery(filterObj.sort);
-
         var cursorStream = timelogCollection.find(query)
             .sort(sorting)
             .stream({
@@ -108,35 +107,54 @@ exports.restCommonReportCSV = function(req, res, next) {
 
 exports.restCommonReportPDF = function(req, res, next) {
     var filterObj = req.body;
+    var projectId = '586ba288ed93771db8853986';
     log.debug('-REST call: Download common report. Company id: %s',
         filterObj.companyId.toHexString());
-    projects.findProjectIdsByCompanyId(filterObj.companyId, function(err, projectIds) {
+
+    var query = convertFiltersToQuery(filterObj.filters, projectId);
+    var days = getDatesArray(query.date.$gte, query.date.$lte);
+    var calendar = [];
+    db.projectCollection().find({_id: query.projectId}).toArray(function (err, logs) {
         if (err) {
-            next(err);
-            return;
+            throw err;
         }
-        var query = convertFiltersToQuery(filterObj.filters, projectIds);
-        var sorting = convertToSortQuery(filterObj.sort);
-        var timelogCollection = db.timelogCollection().find(query).toArray(function (err, logs) {
-            if (err) {
-                throw err;
-            }
-
-            createPdfFile (logs, function (fileName) {
-                log.debug('-REST Result: Download common report. PDF file is generated. Company id: %s',
-                    filterObj.companyId.toHexString());
-                res.json({url: reportDownloadUrlPrefix + fileName});
-            });
+        console.log(req.body)
+        var weekends = [];
+        u.each(logs[0].defaultValues, function (item) {
+            var dayOff = item.date.toISOString().match(/\d{4}-\d{2}-\d{2}/)[0];
+            weekends.push(dayOff);
         });
-    })
+        u.each(days, function (day) {
+            day = day.toISOString().match(/\d{4}-\d{2}-\d{2}/)[0];
+            if (u.contains(weekends, day)) {
+                calendar.push([day, 0]);
+            } else {
+                calendar.push([day, logs[0].template.time]);
+            }
+        });
+        console.log(calendar);
 
+    });
+
+    db.timelogCollection().find(query).toArray(function (err, logs) {
+        if (err) {
+            throw err;
+        }
+
+        createPdfFile (logs, calendar, function (fileName) {
+            log.debug('-REST Result: Download common report. PDF file is generated. Company id: %s',
+                filterObj.companyId.toHexString());
+            res.json({url: reportDownloadUrlPrefix + fileName});
+        });
+    });
 };
 
 exports.restDownloadFile = function(req, res, next) {
     var fileName = utils.getFileName(req);
+    var ext = fileName.includes('.csv')? '.csv' : '.pdf';
     log.debug('-REST Call: Download file. File is downloaded. %s', fileName);
 
-    res.download('./report_files/' + fileName, 'report.csv', function(err) {
+    res.download('./report_files/' + fileName, 'report' + ext, function(err) {
         if(err) {
             next(err);
             return;
@@ -311,7 +329,15 @@ function convertFiltersToQuery(filters, projectIds) {
     }
 
     if(projectIds) {
-        query.projectId = {$in: projectIds};
+        if (typeof(projectIds) == 'object') {
+            console.log('obj');
+            console.log(typeof(projectIds));
+            console.log(typeof(projectIds) == 'object');
+            query.projectId = {$in: projectIds};
+        } else {
+            console.log('not obj');
+            query.projectId = utils.convertToMongoId(projectIds);
+        }
     }
     return query;
 }
@@ -427,9 +453,11 @@ function createCSVFile(outputStream, reportColumns, callback) {
     });
 }
 
-function createPdfFile (logs, callback) {
+function createPdfFile (logs, calendar, callback) {
     var fileName = 'report_' + shortid.generate() + '.pdf';
     var projectName = 'mifort';
+    // console.log(logs);
+    logs = cleanUpAndUnifyData(logs);
 
     var htmlPage = generateHtmlData(logs, projectName, calendar);
 
@@ -448,6 +476,7 @@ function writePdf (html, fileName, callback) {
 }
 
 function generateHtmlData (logs, name, calendar) {
+
     var project = {
         name: name,
         users: [],
@@ -465,13 +494,17 @@ function generateHtmlData (logs, name, calendar) {
 
     u.chain(logs).pluck('user').uniq().each(function(usr) {
         var userLogs = u.where(logs, {user: usr});
+        console.log(usr);
+        console.log(userLogs);
         var user = {};
         user.name = usr;
         user.days = [];
         var totalTime = 0;
         u.each(calendar, function (cal) {
-            var date = "2016-someMonth-" + cal[0];
+            var date = new Date(cal[0]).toISOString().match(/\d{4}-\d{2}-\d{2}/)[0];
             var log = u.findWhere(userLogs, {date: date});
+            // console.log(date);
+            // console.log(log);
             var day = {};
             if (!log) {
                 day = {
@@ -508,7 +541,64 @@ function generateHtmlData (logs, name, calendar) {
     return page;
 }
 
+function cleanUpAndUnifyData (logs) {
 
+    function extractSensibleData(line) {
+        var date = new Date(line.date).toISOString().match(/\d{4}-\d{2}-\d{2}/);
+        return {
+            date: date ? date[0] : null,
+            project: line.projectName,
+            time: line.time,
+            user: line.userName,
+            comment: line.comment
+        }
+    }
+    function sumTimeAndConcatComments(times) {
+        return u.reduce(times, function (memo, item) {
+            memo.time += (item.time || 0);
+
+            if (item.comment) {
+                if (memo.comment) {
+                    memo.comment += "; ";
+                }
+
+                memo.comment += item.comment;
+            }
+
+            return memo;
+        }, {
+            user: times[0].user,
+            project: times[0].project,
+            date: times[0].date,
+            time: 0,
+            comment: ""
+        })
+    }
+    return u.chain(logs)
+        .map(extractSensibleData)
+        // .filter(function (l) { return users.indexOf(l.user) != -1})
+        .filter(function (l) { return l.date.match(new RegExp("\\d{4}-" + "\\d{2}" + "-\\d{2}")) != null })
+        .groupBy(function (l) { return [l.user, l.project, l.date].join("-") })
+        .mapObject(sumTimeAndConcatComments)
+        .values()
+        .value();
+}
+
+function getDatesArray (startDate, endDate) {
+    var dates = [];
+    var currentDate = startDate;
+    function addDays(current) {
+            var date = new Date(current.valueOf());
+            date.setDate(date.getDate() + 1);
+            return date;
+        };
+    while (currentDate <= endDate) {
+        dates.push(currentDate);
+        currentDate = addDays(currentDate);
+    }
+    return dates;
+}
+/*
 
 var calendar = [
     ["01", 8],
@@ -546,3 +636,4 @@ var calendar = [
     ["29", 8],
     ["30", 8]
 ]
+*/
