@@ -107,7 +107,8 @@ exports.restCommonReportCSV = function(req, res, next) {
 
 exports.restCommonReportPDF = function(req, res, next) {
     var filterObj = req.body;
-    var projectId = '586ba288ed93771db8853986';
+    var projectId = filterObj.projectId.toString();
+
     log.debug('-REST call: Download common report. Company id: %s',
         filterObj.companyId.toHexString());
 
@@ -118,7 +119,6 @@ exports.restCommonReportPDF = function(req, res, next) {
         if (err) {
             throw err;
         }
-        console.log(req.body)
         var weekends = [];
         u.each(logs[0].defaultValues, function (item) {
             var dayOff = item.date.toISOString().match(/\d{4}-\d{2}-\d{2}/)[0];
@@ -140,7 +140,6 @@ exports.restCommonReportPDF = function(req, res, next) {
         if (err) {
             throw err;
         }
-
         createPdfFile (logs, calendar, function (fileName) {
             log.debug('-REST Result: Download common report. PDF file is generated. Company id: %s',
                 filterObj.companyId.toHexString());
@@ -331,8 +330,6 @@ function convertFiltersToQuery(filters, projectIds) {
     if(projectIds) {
         if (typeof(projectIds) == 'object') {
             console.log('obj');
-            console.log(typeof(projectIds));
-            console.log(typeof(projectIds) == 'object');
             query.projectId = {$in: projectIds};
         } else {
             console.log('not obj');
@@ -482,9 +479,7 @@ function generateHtmlData (logs, name, calendar) {
         users: [],
         totalTime: 0
     };
-    var projectTotalTime = 0;
     var workHours = 0;
-    var workDays = [];
 
     u.each(calendar, function (a) {
         if (a[1]) {
@@ -503,8 +498,6 @@ function generateHtmlData (logs, name, calendar) {
         u.each(calendar, function (cal) {
             var date = new Date(cal[0]).toISOString().match(/\d{4}-\d{2}-\d{2}/)[0];
             var log = u.findWhere(userLogs, {date: date});
-            // console.log(date);
-            // console.log(log);
             var day = {};
             if (!log) {
                 day = {
@@ -598,42 +591,3 @@ function getDatesArray (startDate, endDate) {
     }
     return dates;
 }
-/*
-
-var calendar = [
-    ["01", 8],
-    ["02", 8],
-    ["03", 8],
-    ["04", 8],
-    ["05", 0],
-    ["06", 0],
-
-    ["07", 0],
-    ["08", 8],
-    ["09", 8],
-    ["10", 8],
-    ["11", 8],
-    ["12", 0],
-    ["13", 0],
-
-    ["14", 8],
-    ["15", 8],
-    ["16", 8],
-    ["17", 8],
-    ["18", 8],
-    ["19", 0],
-    ["20", 0],
-
-    ["21", 8],
-    ["22", 8],
-    ["23", 8],
-    ["24", 8],
-    ["25", 8],
-    ["26", 0],
-    ["27", 0],
-
-    ["28", 8],
-    ["29", 8],
-    ["30", 8]
-]
-*/

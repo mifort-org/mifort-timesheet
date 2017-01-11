@@ -63,20 +63,26 @@ angular.module('mifortTimesheet', [
         });
     })
 
-    .controller('mifortTimesheetController', ['$scope', '$location', '$http', 'preferences', 'companyService', 'topPanelService', '$rootScope', 'notifyingService', 'Notification',
-        function($scope, $location, $http, preferences, companyService, topPanelService, $rootScope, notifyingService, Notification) {
+    .controller('mifortTimesheetController', ['$scope', '$location', '$http', 'preferences', 'companyService', 'topPanelService', '$rootScope', 'notifyingService', 'Notification', 'projectsService',
+        function($scope, $location, $http, preferences, companyService, topPanelService, $rootScope, notifyingService, Notification, projectsService) {
             var user = preferences.get('user');
-
             if(user){
                 if(user.companyId){
+                    console.log($scope);
                     $rootScope.companyId = user.companyId;
                 }
 
                 $rootScope.isLoggedIn = true;
+                projectsService.getProjects(user.companyId).success(function(projects) {
+                    if (projects.length) {
+                        $scope.projects = projects;
+                    }
+                });
             }
             else{
                 $location.path('login');
             }
+
 
             $scope.$watch('companyId', function(newValue) {
                 if(newValue){
@@ -99,8 +105,8 @@ angular.module('mifortTimesheet', [
                 });
             };
 
-            $scope.openLink = function(linkName) {
-                topPanelService.prepForBroadcast(linkName);
+            $scope.openLink = function(linkName, id) {
+                topPanelService.prepForBroadcast(linkName, id);
             };
 
             $scope.$on('companyNameChanged', function(response, companyName) {
@@ -141,7 +147,6 @@ angular.module('mifortTimesheet', [
 
         topPanelService.isVisibleLink = function(linkName) {
             var location = $location.path();
-
             switch(location){
                 case '/projects':
                     if(linkName == 'project'){
@@ -160,8 +165,9 @@ angular.module('mifortTimesheet', [
             }
         };
 
-        topPanelService.prepForBroadcast = function(linkName) {
+        topPanelService.prepForBroadcast = function(linkName, projectId) {
             topPanelService.linkName = linkName;
+            topPanelService.projectId = projectId || undefined;
             $rootScope.$broadcast('handleBroadcast'); //use notifyingService instead
         };
 

@@ -123,6 +123,7 @@ module.exports = function (grunt) {
                     'frontend/components/filters/longTextFilter.js',
                     'frontend/components/filters/fixedFilter.js',
                     'frontend/components/dropdownFilter/dropdownFilter.js',
+                    'frontend/components/dropdownFilter/dropdownFilterPdf.js',
                     'frontend/components/reportDatePicker/reportDatePicker.js',
                     'frontend/components/timesheetIntro/timesheetIntro.js',
                     'frontend/components/cuttedComment/cuttedComment.js',

@@ -324,13 +324,14 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                 }
             };
 
-            $scope.downloadPdf = function() {
+            $scope.downloadPdf = function(id) {
                 if($scope.reportSettings.groupBy && $scope.reportSettings.groupBy.length){
                     reportService.downloadAggregationPdf($scope.reportSettings).success(function(data) {
                         window.location = data.url;
                     });
                 }
                 else{
+                    $scope.reportSettings.projectId = id;
                     reportService.downloadPdf($scope.reportSettings).success(function(data) {
                         window.location = data.url;
                     });
@@ -347,7 +348,7 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                 if(topPanelService.linkName == 'csv'){
                     $scope.downloadCsv();
                 } else if (topPanelService.linkName == 'pdf') {
-                    $scope.downloadPdf();
+                    $scope.downloadPdf(topPanelService.projectId);
                 }
             });
 
