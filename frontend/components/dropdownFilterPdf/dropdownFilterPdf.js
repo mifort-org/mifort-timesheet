@@ -17,52 +17,15 @@
 'use strict';
 
 angular.module('mifortTimesheet')
-    .directive('dropdownFilter', function() {
+    .directive('dropdownFilterPdf', function() {
         return {
             scope: true,
-            link: function(scope, element, attrs) {
+            link: function(scope) {
                 scope.popoverOpened = false;
-
-                scope.getProjectFilter = function () {
-                    return _.find(scope.grid.options.reportFilters, function(filter) {
-                        if(filter.field == attrs.colName){
-                            filter.value = filter.value.map(function(filterValue) {
-                                if(filterValue.name){
-                                    return filterValue;
-                                }
-                                else{
-                                    return {
-                                        name: filterValue,
-                                        isChecked: false
-                                    }
-                                }
-                            });
-
-                            return true;
-                        }
-                    })
-                };
-
-                scope.dynamicPopover = {
-                    content: attrs.colTitle,
-                    templateUrl: 'myPopoverTemplate.html',
-                    projectFilter: scope.getProjectFilter()
-                };
-
-                scope.$watch("grid.options.reportFilters", function (newValue, oldValue) {
-                    scope.dynamicPopover.projectFilter = scope.getProjectFilter();
-                });
-
-                scope.hasFilter = function() {
-                    if(scope.dynamicPopover.projectFilter){
-                        return _.where(scope.dynamicPopover.projectFilter.value, {isChecked: true}).length;
-                    }
-                };
-
-                scope.range = function(n) {
-                    return new Array(n);
+                scope.dynamicPopoverPdf = {
+                    templateUrl: 'components/dropdownFilterPdf/PdfPopoverTemplate.html'
                 };
             },
-            templateUrl: 'components/dropdownFilter/dropdownFilter.html'
+            templateUrl: 'components/dropdownFilterPdf/dropdownFilterPdf.html'
         };
     });

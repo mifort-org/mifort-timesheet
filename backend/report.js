@@ -487,6 +487,8 @@ function generateHtmlData (logs, name, calendar) {
         }
     });
 
+    var period = calendar[0][0] + " - " + calendar[calendar.length-1][0];
+
     u.chain(logs).pluck('user').uniq().each(function(usr) {
         var userLogs = u.where(logs, {user: usr});
         console.log(usr);
@@ -524,7 +526,8 @@ function generateHtmlData (logs, name, calendar) {
 
     var htmlData = {
         project: project,
-        workHours: workHours
+        workHours: workHours,
+        period: period
     };
 
     var template = fs.readFileSync("report_files/projectsTemplate.html").toString();
