@@ -6009,6 +6009,11 @@ input[type=number]::-webkit-outer-spin-button {
   line-height: 100px;
   text-align: right; }
 
+.main-controls .project-list {
+  padding: 5px 10px;
+  font-size: 1.1em;
+  display: block; }
+
 @media screen and (max-width: 1024px) {
   .main-controls {
     width: 100%;

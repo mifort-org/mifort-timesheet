@@ -232,6 +232,11 @@ input[type=number]::-webkit-outer-spin-button{
     padding: 0 25px;
     line-height: 100px;
     text-align: right;
+    .project-list {
+        padding: 5px 10px;
+        font-size: 1.1em;
+        display: block;
+    }
 }
 
 @media screen and (max-width: $tablet-breakpoint) {
