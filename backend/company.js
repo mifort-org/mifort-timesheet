@@ -25,7 +25,12 @@ var registration = require('./libs/registration');
 var log = require('./libs/logger');
 var constants = require('./libs/config_constants');
 var mail = require('./libs/mail');
+var u = require("underscore");
+var backup = require('mongodb-backup');
+var schedule = require('node-schedule');
 
+setTimeout(function() {log.info('Company')}, 1);
+// initBackups ();
 //Rest API
 exports.restFindById = function(req, res, next) {
     var companyId = utils.getCompanyId(req);
@@ -59,7 +64,6 @@ exports.restCreateCompany = function(req, res, next) {
     if(req.user) {
         company.ownerId = req.user._id;
     }
-
     save(company, function(err, savedCompany) {
         if(err) {
             next(err);
@@ -80,8 +84,18 @@ exports.restUpdateCompany = function(req, res, next) {
     if(!company.availablePositions) {
         company.availablePositions = constants.DEFAULT_AVAILABLE_POSITIONS;
     }
+
     addIdToDayTypes(company);
     company.updatedOn = new Date();
+
+    db.companyCollection().findOne({_id: company._id}, function (err, c) {
+        var root = './dump';
+        console.log(company.backup);
+        if(c.backup != company.backup) {
+            setBackupSchedule(company._id, company.backup, root);
+        }
+    });
+
     save(company, function(err, savedCompany) {
         if(err) {
             next(err);
@@ -141,6 +155,70 @@ exports.generateDefaultCompany = function() {
 };
 
 exports.findById = findById;
+
+exports.initBackups = function() {
+    db.companyCollection().find({}).toArray(function (err, companies) {
+        u.each(companies, function (company) {
+            console.log(company.backup);
+            if(company.backup && company.backup != 'none') {
+                setBackupSchedule(company._id, company.backup);
+            }
+        })
+    });
+    log.info('Backups init!')
+};
+
+var backupSchedule = {};
+
+function setBackupSchedule (companyId, period, root) {
+    log.info('root1: ' + root);
+   db.companyCollection().findOne({_id: companyId}, function (err, doc) {
+       var start;
+       if (doc.lastBackupDate) {
+           start = doc.lastBackupDate;
+       } else {
+           start = new Date;
+       }
+
+       var weekDay = start.getDay();
+       var day = start.getDate();
+       var hour = start.getHours();
+       log.info('day: ' + day);
+       log.info('weekDay: ' + weekDay);
+       log.info('hour: ' + hour);
+       log.info('root2: ' + root);
+
+       switch(period) {
+           case 'none':
+               clear();
+               break;
+           case 'month':
+               //set('0'+ hour + day + ' * *');
+               set('0 * * * * *');
+               break;
+           case 'week':
+               //set('0'+ hour + '* *' + weekDay);
+               set('30 * * * * *');
+               break;
+           default:
+               log.error('backup period is wrong. Company id: %s',
+                   savedCompany._id.toHexString());
+       }
+       function clear() {
+           if (backupSchedule[companyId]) {
+               backupSchedule[companyId].cancel();
+           }
+       }
+       function set (time) {
+           clear();
+           backupSchedule[companyId] = schedule.scheduleJob(time, function(){
+               companyBackup(companyId, root)
+           });
+       }
+   });
+
+
+};
 
 //private part
 function findById(id, callback) {
@@ -267,3 +345,58 @@ function generateDefaultValues(periods) {
 function isWeekend(date) {
     return moment.utc(date).day() % 6 == 0;
 }
+
+function companyBackup (companyId, root) {
+    var uri = 'mongodb://localhost:27017/homogen';
+    var today = new Date;
+    today = today.toISOString().match(/\d{4}-\d{2}-\d{2}/)[0];
+    root = './dump/' + companyId;
+    log.info(root);
+    var projects = [];
+    db.projectCollection().find({companyId: {$eq: companyId}}).toArray(function (err, logs) {
+        if (err) {
+            throw err;
+        }
+        u.each(logs, function (project) {
+            log.debug(project._id);
+            projects.push(project._id);
+        });
+        log.debug('all Projects' + projects);
+        backup({
+            uri: uri, // mongodb://<dbuser>:<dbpassword>@<dbdomain>.mongolab.com:<dbport>/<dbdatabase>
+            root: root,
+            collections: ['companies'],
+            query: {
+                _id: {$eq: companyId}
+            }
+        });
+        backup({
+            uri: uri, // mongodb://<dbuser>:<dbpassword>@<dbdomain>.mongolab.com:<dbport>/<dbdatabase>
+            root: root,
+            collections: ['projects'],
+            query: {
+                companyId: {$eq: companyId}
+            }
+        });
+        backup({
+            uri: uri, // mongodb://<dbuser>:<dbpassword>@<dbdomain>.mongolab.com:<dbport>/<dbdatabase>
+            root: root,
+            collections: ['users'],
+            query: {
+                companyId: {$eq: companyId}
+            }
+        });
+        backup({
+            uri: uri, // mongodb://<dbuser>:<dbpassword>@<dbdomain>.mongolab.com:<dbport>/<dbdatabase>
+            root: root,
+            collections: ['timelogs'],
+            query: {
+                projectId: {$in: projects}
+            }
+        });
+    });
+    var date = new Date ()
+    db.companyCollection().updateOne({_id: companyId}, {$set: {lastBackupDate: date}});
+    log.debug('-REST result: backup. Company: %s',
+        companyId + " " + date);
+};

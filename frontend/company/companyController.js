@@ -36,7 +36,9 @@ angular.module('mifortTimesheet.company', ['ngRoute'])
 
         $scope.company = {
             name: null,
-            emails: []
+            emails: [],
+            backup: 'none',
+            lastBackupDate: undefined
         };
 
         $scope.possibleRoles = [
@@ -45,10 +47,15 @@ angular.module('mifortTimesheet.company', ['ngRoute'])
             'Employee'
         ];
 
+        $scope.activateBackup = function () {
+            console.log($scope.company.backup);
+        };
         if($location.path() == '/company'){
             companyService.getCompany($scope.user.companyId).success(function(company) {
                 $scope.company = company;
                 $scope.company.emails = [];
+                $scope.company.backup = $scope.company.backup || 'none';
+                $scope.company.lastBackupDate = $scope.company.lastBackupDate;
                 $scope.introSteps.push({
                     element: '#step4',
                     intro: "<p>Table with all invited employees and roles.</p>" +
@@ -56,7 +63,13 @@ angular.module('mifortTimesheet.company', ['ngRoute'])
                     "<p><strong>Role</strong> column shows the assigned role of employee. Company owner can change employee's roles and remove an employee from company.</p>" +
                     "<p>Pressing the Continue button saves all data and redirect to Projects page.</p>",
                     position: 'top'
-                })
+                });
+                $scope.introSteps.push(
+                    {
+                        element: '#step5',
+                        intro: "<p>Chose whether you want want to do backups</p>",
+                        position: 'top'
+                    })
             });
 
             getEmployees();
@@ -96,6 +109,7 @@ angular.module('mifortTimesheet.company', ['ngRoute'])
         };
 
         $scope.saveCompany = function () {
+            console.log($scope.company);
             companyService.saveCompany($scope.company).success(function (data) {
                 Notification.success('Changes saved');
                 $rootScope.$broadcast('companyNameChanged', data.name);

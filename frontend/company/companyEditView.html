@@ -85,6 +85,26 @@
                 </td>
             </tr>
             </tbody>
+            <table id="step5">
+                <tbody>
+                <tr>
+                    <td>
+                        <label for="step5">Backup</label>
+                    </td>
+                    <td>
+                        <input type="radio" name="backup" value="week" class="primary-button" ng-model="company.backup" ng-change="saveCompany()">
+                        Twice a month
+                        </input>
+                        <input type="radio" name="backup" value="month" id="step5" class="primary-button" ng-model="company.backup" ng-change="saveCompany()">
+                        Once a month
+                        </input>
+                        <input type="radio" name="backup" value="none" class="primary-button" ng-model="company.backup" ng-change="saveCompany()" checked>
+                        None
+                        </input>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
         </table>
     </form>
 </div>

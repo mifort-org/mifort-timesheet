@@ -149,6 +149,7 @@ exports.validateUpdateCompany = function(req, res, next) {
     req.checkBody('emails', 'At least one email has incorrect format').optional().isEmails();
     req.checkBody('description', 'Field is not a string').optional().isString();
     req.checkBody('periods', 'Start period date > end period date').optional().isCorrectPeriods();
+    req.checkBody('backup', 'Start period date > end period date').optional().isString();
 
     returnErrors(req, res, next);
 };

@@ -19,6 +19,7 @@
 var MongoClient = require('mongodb').MongoClient;
 var testDataImporter = require('./test_data_importer');
 var log = require('./logger');
+var company = require('../company');
 
 var mongodbUrl = process.env.MONGOLAB_URI || 'mongodb://localhost:27017/homogen';
 var mongoDbSessionStorageUrl = process.env.MONGOLAB_URI
@@ -31,6 +32,7 @@ var companyCollectionName = 'companies';
 var userCollectionName = 'users';
 var cachedDb;
 
+log.info('mongo')
 MongoClient.connect(mongodbUrl, function(err, db) {
     if(err) {
         log.error('Mongo DB connection failed', {error: err});
@@ -41,9 +43,10 @@ MongoClient.connect(mongodbUrl, function(err, db) {
         if(process.env.NODE_ENV !== 'production') {
             testDataImporter.import();
         }
+        company.initBackups ();
     }
 });
-
+log.info('mongo2')
 exports.timelogCollection = function() {
     return cachedDb.collection(timelogCollectionName);
 };
