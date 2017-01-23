@@ -95,7 +95,6 @@ exports.restUpdateCompany = function(req, res, next) {
             setBackupSchedule(company._id, company.backup, root);
         }
     });
-
     save(company, function(err, savedCompany) {
         if(err) {
             next(err);
@@ -168,6 +167,13 @@ exports.initBackups = function() {
     log.info('Backups init!')
 };
 
+exports.companyBackup  = function (req, res, next) {
+    var companyId = utils.getCompanyId(req);
+    log.debug('-REST call: Find company by id. Company id: %s', companyId.toHexString());
+    companyBackup (companyId);
+    res.json({lastBackupDate: new Date()});
+};
+
 var backupSchedule = {};
 
 function setBackupSchedule (companyId, period, root) {
@@ -194,11 +200,11 @@ function setBackupSchedule (companyId, period, root) {
                break;
            case 'month':
                //set('0'+ hour + day + ' * *');
-               set('0 * * * * *');
+               set('* * * 1 * *');
                break;
            case 'week':
                //set('0'+ hour + '* *' + weekDay);
-               set('30 * * * * *');
+               set('* * * 1 * *');
                break;
            default:
                log.error('backup period is wrong. Company id: %s',
@@ -395,8 +401,9 @@ function companyBackup (companyId, root) {
             }
         });
     });
-    var date = new Date ()
+    var date = new Date ();
     db.companyCollection().updateOne({_id: companyId}, {$set: {lastBackupDate: date}});
     log.debug('-REST result: backup. Company: %s',
         companyId + " " + date);
-};
+}
+

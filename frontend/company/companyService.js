@@ -36,7 +36,10 @@ angular.module('mifortTimesheet.company').factory('companyService',
             },
             saveCompany: function(company) {
                 return $http.post('api/v1/company', company);
+            },
+            companyBackup: function(companyId) {
+                return $http.get('api/v1/company/backup/' + companyId);
             }
-        }
+        };
     }
     ]);

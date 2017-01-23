@@ -577,9 +577,11 @@ input[type=number]::-webkit-outer-spin-button{
         width: calc(100% + 2px);
     }
 }
-
-
 .project-list {
     padding: 10px 10px;
     font-size: 1.1em;
+}
+
+.company-wrapper {
+    background: #000;
 }

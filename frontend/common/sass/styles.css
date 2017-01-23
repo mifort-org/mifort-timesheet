@@ -6258,5 +6258,16 @@ input[type=number]::-webkit-outer-spin-button {
     display: none; }
   .blank-dropdown .ui-select-choices {
     width: calc(100% + 2px); }
-
+.company-wrapper .backup-cell input[type='radio'] {
+  min-width: auto;
+  width: 25px;
+  height: 25px;
+  display: inline-block;}
+.company-wrapper .backup-cell label {
+  padding: 7px;
+  cursor: pointer;
+  margin-top: 0;}
+.company-wrapper .backup-cell button,
+.company-wrapper .backup-cell button:active {
+  margin-top: 20px; }
 /*# sourceMappingURL=styles.css.map */

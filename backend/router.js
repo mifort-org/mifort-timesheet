@@ -116,6 +116,10 @@ companyRouter.get('/:companyId',
         validators.validateGetCompanyById,
         authorization.authorizeGetCompanyById,
         company.restFindById);
+companyRouter.get('/backup/:companyId',
+        validators.validateGetCompanyById,
+        authorization.authorizeGetCompanyById,
+        company.companyBackup);
 
 //report
 var report = require('./report');

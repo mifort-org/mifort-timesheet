@@ -85,22 +85,30 @@
                 </td>
             </tr>
             </tbody>
-            <table id="step5">
+            <table>
                 <tbody>
                 <tr>
                     <td>
-                        <label for="step5">Backup</label>
+                        <label>Backup server</label>
                     </td>
+                    <td id="step5">
+                        <input ng-model="company.backupPath" ng-change="saveCompany()" type="text" placeholder="Path"/>
+                        <input ng-model="company.accessKeyId" ng-change="saveCompany()" type="text" placeholder="Access Key"/>
+                        <input ng-model="company.signature" ng-change="saveCompany()" type="text" placeholder="Signature"/>
+                    </td>
+                </tr>
+                <tr>
                     <td>
-                        <input type="radio" name="backup" value="week" class="primary-button" ng-model="company.backup" ng-change="saveCompany()">
-                        Twice a month
-                        </input>
-                        <input type="radio" name="backup" value="month" id="step5" class="primary-button" ng-model="company.backup" ng-change="saveCompany()">
-                        Once a month
-                        </input>
-                        <input type="radio" name="backup" value="none" class="primary-button" ng-model="company.backup" ng-change="saveCompany()" checked>
-                        None
-                        </input>
+                        <label>Backup frequency</label>
+                    </td>
+                    <td id="step6" class="backup-cell">
+                        <input type="radio" id="week-backup" name="backup" value="week" class="primary-button" ng-model="company.backup" ng-change="saveCompany()"/>
+                        <label for="week-backup">Once a week</label>
+                        <input type="radio" id="month-backup" name="backup" value="month" class="primary-button" ng-model="company.backup" ng-change="saveCompany()"/>
+                        <label for="month-backup">Once a month</label>
+                        <input type="radio" id="no-backup" name="backup" value="none" class="primary-button" ng-model="company.backup" ng-change="saveCompany()" checked />
+                        <label for="no-backup">Never</label><br/>
+                        <button ng-click="companyBackupNow()" class="primary-button large-button">Backup now</button>
                     </td>
                 </tr>
                 </tbody>

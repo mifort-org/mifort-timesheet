@@ -47,9 +47,6 @@ angular.module('mifortTimesheet.company', ['ngRoute'])
             'Employee'
         ];
 
-        $scope.activateBackup = function () {
-            console.log($scope.company.backup);
-        };
         if($location.path() == '/company'){
             companyService.getCompany($scope.user.companyId).success(function(company) {
                 $scope.company = company;
@@ -67,9 +64,15 @@ angular.module('mifortTimesheet.company', ['ngRoute'])
                 $scope.introSteps.push(
                     {
                         element: '#step5',
-                        intro: "<p>Chose whether you want want to do backups</p>",
+                        intro: "<p>Chose where you want want to store backups</p>",
                         position: 'top'
-                    })
+                    });
+                $scope.introSteps.push(
+                    {
+                        element: '#step6',
+                        intro: "<p>Chose the frequency of backups or just do it right now</p>",
+                        position: 'top'
+                    });
             });
 
             getEmployees();
@@ -123,7 +126,9 @@ angular.module('mifortTimesheet.company', ['ngRoute'])
                 Notification.success('Changes saved');
             });
         };
-
+        $scope.companyBackupNow = function(e) {
+            companyService.companyBackup($scope.user.companyId);
+        };
         $scope.changeRole = function(employee, role) {
             employee. role = role;
             companyService.changeRole(employee).success(function() {
