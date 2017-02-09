@@ -396,5 +396,6 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                     });
 
                 $location.path('timesheet/' + user.name._id);
+                window.location.reload();
             }
         }]);
