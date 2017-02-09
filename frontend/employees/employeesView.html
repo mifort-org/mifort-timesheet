@@ -127,22 +127,26 @@
               ng-if="!groupedAssignment[0].archived"
               class="employee-assignment">
 
-            <a href=""
-               class="collapse-item"
-               ng-class="{'collapsed': !employee.assignments[$index].isCollapsed}"
-               ng-click="employee.assignments[$index].isCollapsed = !employee.assignments[$index].isCollapsed">
-                <span ng-if="groupedAssignment[0].archived">(archived)</span>
-
                 {{groupedAssignment[0].projectName}}
-            </a>
-
-            <span uib-collapse="!employee.assignments[$index].isCollapsed" class="assignment-roles">
                 <span ng-repeat="assignment in groupedAssignment">
-                    {{assignment.role}}
                     <span ng-if="assignment.workload" class="pull-right employee-workload">{{assignment.workload}}h</span>
                     <br/>
                 </span>
-            </span>
+
+            <!--<a href=""-->
+               <!--class="collapse-item"-->
+               <!--ng-class="{'collapsed': !employee.assignments[$index].isCollapsed}"-->
+               <!--ng-click="employee.assignments[$index].isCollapsed = !employee.assignments[$index].isCollapsed">-->
+                <!--<span ng-if="groupedAssignment[0].archived">(archived)</span>-->
+            <!--</a>-->
+
+            <!--<span uib-collapse="!employee.assignments[$index].isCollapsed" class="assignment-roles">-->
+                <!--<span ng-repeat="assignment in groupedAssignment">-->
+                    <!--{{assignment.role}}-->
+                    <!--<span ng-if="assignment.workload" class="pull-right employee-workload">{{assignment.workload}}h</span>-->
+                    <!--<br/>-->
+                <!--</span>-->
+            <!--</span>-->
 
             <br/>
         </span>
