@@ -29,6 +29,8 @@
     font-size: 2.4rem;
     font-weight: 300;
     word-break: break-all; }
+    .employee-card h2.links {
+      cursor: pointer; }
   .employee-card p {
     margin-bottom: 12px;
     color: #a3a3a3; }

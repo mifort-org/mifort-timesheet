@@ -81,4 +81,10 @@ angular.module('mifortTimesheet.employees', ['ngRoute'])
             $scope.hasArchivedProjects = function(assignments) {
                 return _.findWhere(assignments, {archived: true});
             }
+
+            $scope.editEmployeeTimesheet = function(userName) {
+                var user = preferences.get('user');
+
+                $location.path('timesheet/' + user._id);
+            }
         }]);
