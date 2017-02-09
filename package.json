@@ -26,6 +26,7 @@
     "shortid": "^2.2.4",
     "validator": "^4.5.0",
     "winston": "^2.1.1",
+    "html-pdf": "^2.1.0",
 
     "grunt": "^0.4.5",
     "grunt-cli": "^0.1.13",
