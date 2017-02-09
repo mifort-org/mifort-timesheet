@@ -14,14 +14,14 @@
   limitations under the License.
 -->
 
-<span class="navbar-container">
-    <button type="button" class="navbar-toggle collapsed pull-left" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+<span class="navbar-container" ng-controller="CollapseDemoCtrl">
+    <button type="button" class="navbar-toggle collapsed pull-left" ng-click="isNavCollapsed = !isNavCollapsed">
         <span class="sr-only">Toggle navigation</span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
     </button>
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+    <div class="collapse navbar-collapse" uib-collapse="isNavCollapsed">
         <ul class="nav navbar-nav">
             <li ng-repeat="tab in tabs track by $index" ng-if="tab.available">
                 <a href="" ng-click="changeTab(tab)">{{tab.title}}</a>
