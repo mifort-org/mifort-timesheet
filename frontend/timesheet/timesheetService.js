@@ -40,18 +40,18 @@ angular.module('mifortTimesheet.timesheet').factory('timesheetService',
                 return $http.post('api/v1/timesheet', {'timesheet': timesheet, 'logsToDelete': logsToDelete});
             },
             introSteps: [
+                // {
+                //     element: '#step1',
+                //     intro: "<p>Click on arrow will minimize/maximize the section</p>",
+                //     position: 'bottom'
+                // },
                 {
                     element: '#step1',
-                    intro: "<p>Click on arrow will minimize/maximize the section</p>",
-                    position: 'bottom'
-                },
-                {
-                    element: '#step2',
                     intro: "<p>Use periods switch arrows (next and previous) to switch the period</p>",
                     position: 'left'
                 },
                 {
-                    element: '#step3',
+                    element: '#step2',
                     intro: "<p>Table of logs has four columns:" +
                     "<ul class=\"dotted" +
                     "gn\"><li>Date - is not editable but you can add several logs to the current date by pressing the blue plus icon next to Date field." +
@@ -65,7 +65,7 @@ angular.module('mifortTimesheet.timesheet').factory('timesheetService',
                     position: 'bottom'
                 },
                 {
-                    element: '#step4',
+                    element: '#step3',
                     intro: "<p>Use ctrl+down or ctrl+up shortcuts when field on focus to duplicate commet for next or previous log.</p>",
                     position: 'bottom'
                 }
