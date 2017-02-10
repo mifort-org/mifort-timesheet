@@ -86,7 +86,8 @@
 
 .ui-grid-top-panel,
 .ui-grid-header-viewport {
-  overflow: visible; }
+  overflow: visible;
+  background: #fff; }
 
 .ui-grid-filter-container {
   position: absolute;
