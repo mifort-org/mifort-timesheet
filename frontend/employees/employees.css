@@ -164,4 +164,22 @@
 .employee-search-lens {
   padding-top: 8px; }
 
+.add-employee {
+  position: fixed;
+  z-index: 1;
+  right: 50px;
+  bottom: 50px;
+  padding: 47px 0 53px;
+  width: 100px;
+  font-size: 4.2rem;
+  text-align: center;
+  font-weight: 300;
+  color: #fff;
+  line-height: 0;
+  background: url(../common/images/add-project.png) no-repeat center -96px; }
+  .add-employee:hover, .add-employee:focus, .add-employee:active {
+    background-position: center 5px;
+    color: #fff;
+    text-decoration: none; }
+
 /*# sourceMappingURL=employees.css.map */

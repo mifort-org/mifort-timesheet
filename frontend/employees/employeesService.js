@@ -24,6 +24,9 @@ angular.module('mifortTimesheet.employees').factory('employeesService',
             },
             removeEmployee: function(employeeId) {
                 return $http.delete('api/v1/user/' + employeeId);
+            },
+            saveCompany: function(company) {
+                return $http.post('api/v1/company', company);
             }
         }
     }
