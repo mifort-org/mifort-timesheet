@@ -116,7 +116,7 @@
         <span ng-if="!employee.photo" class="employee-initials">{{getInitials(employee.displayName)}}</span>
     </div>
 
-    <h2 ng-click="editEmployeeTimesheet(row.entity.userName)" class="links">{{employee.displayName}}</h2>
+    <h2 ng-click="editEmployeeTimesheet(employee._id)" class="links">{{employee.displayName}}</h2>
 
     <p ng-if="employee.displayName !== employee.email">{{employee.email}}</p>
 

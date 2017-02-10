@@ -82,10 +82,9 @@ angular.module('mifortTimesheet.employees', ['ngRoute'])
                 return _.findWhere(assignments, {archived: true});
             };
 
-            $scope.editEmployeeTimesheet = function(userName) {
-                var user = preferences.get('user');
+            $scope.editEmployeeTimesheet = function(userId) {
 
-                $location.path('timesheet/' + user._id);
+                $location.path('timesheet/' + userId);
                 window.location.reload();
             };
 
