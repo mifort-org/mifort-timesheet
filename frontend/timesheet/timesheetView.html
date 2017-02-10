@@ -22,7 +22,7 @@
 
 <div class="timesheet collapse-wrapper timesheet-collapse-wrapper clearfix">
     <div uib-collapse="isCollapsed">
-        <table ng-show="!loading" class="table table-bordered timesheet" id="{{$first ? 'step3' : ''}}">
+        <table ng-show="!loading" class="table table-bordered timesheet" id="{{$first ? 'step2' : ''}}">
             <thead ng-show="filteredLogs.length > 0">
             <tr>
                 <th ng-repeat="timesheetKey in timesheetKeys track by $index"
@@ -33,7 +33,7 @@
                         <div ng-show="$index == 0"
                              class="timesheet collapse-wrapper timesheet-total clearfix wrapper-timesheet-controls">
 
-                            <div class="timesheet-controls clearfix" id="{{$first ? 'step2' : ''}}">
+                            <div class="timesheet-controls clearfix" id="{{$first ? 'step1' : ''}}">
                                 <button class="previous-period" ng-class="{'disabled' : currentPeriodIndex <= 0}"
                                         ng-click="showPreviousPeriod(projects)"></button>
                                 <span class="period-label"
