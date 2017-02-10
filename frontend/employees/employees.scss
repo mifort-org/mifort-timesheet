@@ -68,6 +68,19 @@
         background: url("../common/images/icons.png") 2px -1700px;
     }
 
+    .delete-type{
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: 13px;
+        height: 12px;
+        background: url(../common/images/icons.png) 0px -1480px;
+        cursor: pointer;
+        &:hover {
+            opacity: .5;
+        }
+    }
+
     .employee-workload-container{
         margin-bottom: 0;
         text-align: right;

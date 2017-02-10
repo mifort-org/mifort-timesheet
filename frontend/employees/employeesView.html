@@ -96,6 +96,7 @@
 
 <section class="employee-card" ng-repeat="employee in employees | filter:activeSearch track by $index">
     <div class="authentication-type"></div>
+    <div class="delete-type" ng-click="removeEmployee(employee)"></div>
 
     <svg class="employee-image-border" height=450>
         <polygon class="hex" height=450 points="65 1, 124.5 37, 124.5 97, 65 131, 5 97, 5 37"

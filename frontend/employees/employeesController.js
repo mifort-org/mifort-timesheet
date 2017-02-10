@@ -25,8 +25,8 @@ angular.module('mifortTimesheet.employees', ['ngRoute'])
         });
     }])
 
-    .controller('employeesController', ['$scope', 'employeesService', 'preferences', '$location',
-        function($scope, employeesService, preferences, $location) {
+    .controller('employeesController', ['$scope', 'employeesService', 'preferences', '$location', 'Notification',
+        function($scope, employeesService, preferences, $location, Notification) {
             var companyId = preferences.get('user').companyId;
 
             $scope.path = $location.path();
@@ -86,6 +86,15 @@ angular.module('mifortTimesheet.employees', ['ngRoute'])
 
                 $location.path('timesheet/' + userId);
                 window.location.reload();
+            };
+
+            $scope.removeEmployee = function(employee) {
+                $scope.companyEmployees = _.filter($scope.companyEmployees, function(companyEmployee){
+                    return companyEmployee._id != employee._id;
+                });
+                employeesService.removeEmployee(employee._id).success(function() {
+                    Notification.success('Changes saved');
+                });
             };
 
         }]);
