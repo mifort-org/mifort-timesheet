@@ -70,4 +70,12 @@
         background: #eaeff7;
         border-bottom-color: #eee; }
 
+.collapse.in {
+  z-index: 150; }
+  .collapse.in .nav-stacked li {
+    font-size: 2rem;
+    line-height: 3; }
+  .collapse.in .nav-stacked .active div {
+    color: #19b5fe; }
+
 /*# sourceMappingURL=tabs.css.map */

@@ -22,10 +22,15 @@
         <span class="icon-bar"></span>
     </button>
     <div class="collapse navbar-collapse" uib-collapse="isNavCollapsed">
-        <ul class="nav navbar-nav">
-            <li ng-repeat="tab in tabs track by $index" ng-if="tab.available">
-                <a href="" ng-click="changeTab(tab)">{{tab.title}}</a>
-            </li>
-        </ul>
+        <!--<ul class="nav navbar-nav">-->
+            <!--<li ng-repeat="tab in tabs track by $index" ng-if="tab.available">-->
+                <!--<a href="" ng-click="changeTab(tab)">{{tab.title}}</a>-->
+            <!--</li>-->
+        <!--</ul>-->
+        <uib-tabset vertical="true">
+                <uib-tab ng-repeat="tab in tabs track by $index" heading="{{tab.title}}" active="tab.active" select="changeTab(tab)" ng-if="tab.available"></uib-tab>
+            </uib-tabset>
+            <div project-summary ng-show="isTimesheetTabActive()">
+            </div>
     </div>
 </span>

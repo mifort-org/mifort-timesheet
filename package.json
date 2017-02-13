@@ -44,7 +44,8 @@
     "grunt-ng-annotate": "^1.0.1",
     "grunt-notify": "^0.4.3",
     "grunt-remove": "^0.1.0",
-    "grunt-usemin": "~3.1.1"
+    "grunt-usemin": "~3.1.1",
+	"underscore": "^1.8.3"
   },
   "devDependencies": {
      "nightwatch": "^0.8.18"
