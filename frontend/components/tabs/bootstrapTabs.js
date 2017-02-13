@@ -17,7 +17,7 @@
 'use strict';
 
 angular.module('mifortTimesheet')
-    .directive('bootstrapTabs', function($location, preferences) {
+    .directive('bootstrapTabs', function($location, $route, preferences) {
         return {
             scope: true,
             link: function (scope, element, attributes) {
@@ -81,8 +81,7 @@ angular.module('mifortTimesheet')
                 });
 
                 scope.isTimesheetTabActive = function () {
-                    var activeTab = _.findWhere(scope.tabs, {active: true});
-                    return activeTab && activeTab.title == "Timesheet";
+                    return $route.current.$$route.controller == "timesheetController";
                 };
 
                 function changeActiveTab(newLocation){

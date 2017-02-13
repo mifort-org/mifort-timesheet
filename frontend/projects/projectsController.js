@@ -212,67 +212,35 @@ angular.module('mifortTimesheet.projects', ['ngRoute'])
                 var assignment = _.findWhere(userLostAssignment.assignments, {projectId: project._id});
                 var assignmentIndex = userLostAssignment.assignments.indexOf(assignment);
 
-                var userGotAssignment = {_id: companyEmployeeId, displayName: companyEmployee.displayName};
-
                 assignment.userId = companyEmployeeId;
 
-                //if user already assigned somewhere
-                // if (userGotAssignment.assignments && userGotAssignment.assignments.length) {
-                //     userGotAssignment.assignments.push(assignment);
-                // }
-                // else {
-                    userGotAssignment.assignments = [assignment];
-                //}
+                var userGotAssignment = {_id: companyEmployeeId, assignments: [assignment], displayName: companyEmployee.displayName};
 
                 var assignedEmployer = _.findWhere(project.assignedEmployers, {_id: userLostAssignment._id});
                 project.assignedEmployers.splice(project.assignedEmployers.indexOf(assignedEmployer), 1);
 
-                // var employee = _.findWhere($scope.companyEmployees, {_id: assignedEmployee._id});
-                // var assignmentIndex2 = employee.assignments.indexOf(_.findWhere(employee.assignments, {projectId: project._id}));
-                // employee.assignments.splice(assignmentIndex2, 1);
-
-
-                var got = _.clone(userGotAssignment);
-                got.assignments = _.filter(got.assignments, function (assignment) {
-                    return assignment.projectId == project._id;
-                });
-
-                project.assignedEmployers.push(got);
-                //}
+                project.assignedEmployers.push(userGotAssignment);
 
                 userLostAssignment.assignments.splice(assignmentIndex, 1);
 
-                var lost = _.clone(userLostAssignment);
-                lost.assignments = _.filter(lost.assignments, function (assignment) {
-                    return assignment.projectId == project._id;
-                });
-
                 //remove assignment for one and add for another
-                $scope.saveAssignment(project, lost);
-                $scope.saveAssignment(project, got);
+                $scope.saveAssignment(project, userLostAssignment);
+                $scope.saveAssignment(project, userGotAssignment);
             };
 
             $scope.addAssignment = function (project, employee) {
                 var userForAssignment = _.findWhere($scope.companyEmployees, {_id: employee._id});
 
                 if (userForAssignment) {
-                    var userWithAssignments = _.findWhere(project.assignedEmployers, {_id: employee._id}),
-                        newAssignment = {
-                            projectId: project._id,
-                            projectName: project.name,
-                            role: project.availablePositions[0],
-                            userId: userForAssignment._id,
-                            workload: ''
-                        };
+                    var newAssignment = {
+                        projectId: project._id,
+                        projectName: project.name,
+                        role: project.availablePositions[0],
+                        userId: userForAssignment._id,
+                        workload: ''
+                    };
 
-                    //if user has assignments
-                    if (userWithAssignments) {
-                        userWithAssignments.assignments.push(newAssignment);
-                    }
-                    else {
-                        userForAssignment.assignments = [newAssignment];
-                        //project.assignedEmployers.push(userForAssignment);
-                    }
+                    userForAssignment.assignments = [newAssignment];
 
                     var got = _.clone(userForAssignment);
                     got.assignments = _.filter(got.assignments, function (assignment) {
@@ -280,7 +248,7 @@ angular.module('mifortTimesheet.projects', ['ngRoute'])
                     });
                     project.assignedEmployers.push(got);
 
-                    $scope.saveAssignment(project, _.clone(userWithAssignments || userForAssignment));
+                    $scope.saveAssignment(project, _.clone(userForAssignment));
                 }
             };
 
@@ -289,9 +257,6 @@ angular.module('mifortTimesheet.projects', ['ngRoute'])
                 $scope.saveAssignment(project, assignedEmployee);
                 var index = project.assignedEmployers.indexOf(_.findWhere(project.assignedEmployers, {_id: assignedEmployee._id}));
                 project.assignedEmployers.splice(index, 1);
-                var employee = _.findWhere($scope.companyEmployees, {_id: assignedEmployee._id});
-                var assignmentIndex2 = employee.assignments.indexOf(_.findWhere(employee.assignments, {projectId: project._id}));
-                employee.assignments.splice(assignmentIndex2, 1);
             };
 
             $scope.notAssignedEmployees = function (project) {
