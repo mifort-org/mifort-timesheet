@@ -87,6 +87,7 @@
 
 .collapse {
     &.in {
+        z-index: 150;
         .nav-stacked {
             li {
                 font-size: 2rem;
