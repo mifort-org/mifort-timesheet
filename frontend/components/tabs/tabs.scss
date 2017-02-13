@@ -84,3 +84,19 @@
         }
     }
 }
+
+.collapse {
+    &.in {
+        .nav-stacked {
+            li {
+                font-size: 2rem;
+                line-height: 3;
+            }
+            .active {
+                div {
+                    color: #19b5fe;
+                }
+            }
+        }
+    }
+}
