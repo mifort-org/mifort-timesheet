@@ -74,9 +74,8 @@
                 <td>
                     <ui-select ng-model="assignedEmployee" class="blank-dropdown">
                         <ui-select-match placeholder="Select employee">{{$select.selected.displayName}}</ui-select-match>
-
-                        <ui-select-choices repeat="companyEmployee in companyEmployees | propsFilter: {displayName: $select.search}">
-                            <div ng-bind-html="companyEmployee.displayName | highlight: $select.search" ng-click="changeUser(project, assignedEmployee, companyEmployee._id, $parent.$parent.$index)"></div>
+                        <ui-select-choices repeat="companyEmployee in notAssignedEmployees(project) | propsFilter: {displayName: $select.search}">
+                            <div ng-bind-html="companyEmployee.displayName | highlight: $select.search" ng-click="changeUser(project, assignedEmployee, companyEmployee._id)"></div>
                         </ui-select-choices>
                     </ui-select>
                 </td>

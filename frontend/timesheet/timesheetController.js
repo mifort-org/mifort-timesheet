@@ -242,16 +242,17 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
 
             function initWatchers(property) {
                 var timer = null;
+                var lastSaveTimeout = null;
+                var lastSavedLogs = angular.copy($scope.logs);
 
                 $scope.$watch(property, function (newValue, oldValue) {
-                    var newLogs = $scope.getCurrentLog(newValue),
-                        oldLogs = $scope.getCurrentLog(oldValue);
+                    var newLogs = $scope.getCurrentLog($scope.logs),
+                        oldLogs = $scope.getCurrentLog(lastSavedLogs);
                     if (newLogs && !oldLogs) return;
 
                     var newLogsData = newLogs.data,
                         oldLogsData = oldLogs.data;
                     if (newLogsData.length >= oldLogsData.length) {
-
                         var newValueToCompare = $scope.getNotEmptyLogs(newLogsData).map(function (log) {
                             return {projectId: log.projectId, time: log.time, comment: log.comment};
                         });
@@ -261,25 +262,9 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                         });
 
                         if (!_.isEqual(newValueToCompare, oldValueToCompare)) {
-
-                            var dates = $scope.getNotEmptyDates();
-                            dates = dates.sort(function (a, b) {
-                                var result = 0;
-                                if (a.date > b.date) {
-                                    result = 1;
-                                }
-                                if (a.date < b.date) {
-                                    result = -1;
-                                }
-
-                                if (!result && a.position > b.position) {
-                                    result = 1;
-                                }
-                                if (!result && a.position < b.position) {
-                                    result = -1;
-                                }
-                                return result;
-                            });
+                            lastSaveTimeout = null;
+                            lastSavedLogs = angular.copy($scope.logs);
+                            var dates = $scope.getSortedLogs();
 
                             var timesheetToSave = angular.copy(dates);
 
@@ -323,9 +308,33 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                                 }, 500);
                             }
                         }
+                        else {
+                            lastSaveTimeout = null;
+                        }
                     }
                 }, true);
             }
+
+            $scope.getSortedLogs = function () {
+                var dates = $scope.getNotEmptyDates();
+                return dates.sort(function (a, b) {
+                    var result = 0;
+                    if (a.date > b.date) {
+                        result = 1;
+                    }
+                    if (a.date < b.date) {
+                        result = -1;
+                    }
+
+                    if (!result && a.position > b.position) {
+                        result = 1;
+                    }
+                    if (!result && a.position < b.position) {
+                        result = -1;
+                    }
+                    return result;
+                });
+            };
 
             $scope.calcNewLogPosition = function (logs, date) {
                 var sameDateDays = $scope.getSameDateDays(logs, date);

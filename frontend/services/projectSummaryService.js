@@ -77,6 +77,9 @@ angular.module('mifortTimesheet.timesheet').factory('projectSummaryService',
         };
 
         self.getDaysCount = function (logs) {
+            logs =  _.filter(logs, function (log) {
+                return log.color == undefined;
+            });
             var uniqueLogs = [];
             logs.forEach(function (day) {
                 if (!_.findWhere(uniqueLogs, {date: day.date})) {
