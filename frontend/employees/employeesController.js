@@ -96,7 +96,7 @@ angular.module('mifortTimesheet.employees', ['ngRoute'])
             };
 
             function getEmployees(){
-                companyService.getCompanyEmployees($scope.user.companyId).success(function(companyEmployees) {
+                employeesService.getCompanyEmployers($scope.user.companyId).success(function(companyEmployees) {
                     $scope.companyEmployees = companyEmployees;
                 });
             }
