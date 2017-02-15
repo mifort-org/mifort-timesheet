@@ -41,6 +41,11 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
             $scope.filteredLogs = [];
             $scope.customUserId = $routeParams.userId;
             $scope.grid = {options: {reportFilters: []}};
+            $scope.activeRequest = false;
+            $scope.pendingChanges = false;
+            $scope.timer = null;
+            $scope.lastSaveTimeout = null;
+            $scope.lastSavedLogs = [];
 
             loginService.getUser($scope.customUserId).success(function (loggedUser) {
                 if (loggedUser) {
@@ -241,51 +246,60 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
             }
 
             function initWatchers(property) {
-                var timer = null;
-                var lastSaveTimeout = null;
-                var lastSavedLogs = angular.copy($scope.logs);
+                $scope.lastSavedLogs = angular.copy($scope.logs);
 
                 $scope.$watch(property, function (newValue, oldValue) {
-                    var newLogs = $scope.getCurrentLog($scope.logs),
-                        oldLogs = $scope.getCurrentLog(lastSavedLogs);
-                    if (newLogs && !oldLogs) return;
+                    //for (var i = 0; i < 2; i++) {
+                    updateTimelog();
+                    //}
+                }, true);
+            }
 
-                    var newLogsData = newLogs.data,
-                        oldLogsData = oldLogs.data;
-                    if (newLogsData.length >= oldLogsData.length) {
-                        var newValueToCompare = $scope.getNotEmptyLogs(newLogsData).map(function (log) {
-                            return {projectId: log.projectId, time: log.time, comment: log.comment};
-                        });
+            function updateTimelog() {
+                var newLogs = $scope.getCurrentLog($scope.logs),
+                    oldLogs = $scope.getCurrentLog($scope.lastSavedLogs);
+                if (newLogs && !oldLogs) return;
 
-                        var oldValueToCompare = $scope.getNotEmptyLogs(oldLogsData).map(function (log) {
-                            return {projectId: log.projectId, time: log.time, comment: log.comment};
-                        });
+                var newLogsData = newLogs.data,
+                    oldLogsData = oldLogs.data;
+                if (newLogsData.length >= oldLogsData.length) {
+                    var newValueToCompare = $scope.getNotEmptyLogs(newLogsData).map(function (log) {
+                        return {projectId: log.projectId, time: log.time, comment: log.comment};
+                    });
 
-                        if (!_.isEqual(newValueToCompare, oldValueToCompare)) {
-                            lastSaveTimeout = null;
-                            lastSavedLogs = angular.copy($scope.logs);
-                            var dates = $scope.getSortedLogs();
+                    var oldValueToCompare = $scope.getNotEmptyLogs(oldLogsData).map(function (log) {
+                        return {projectId: log.projectId, time: log.time, comment: log.comment};
+                    });
 
-                            var timesheetToSave = angular.copy(dates);
+                    if (!_.isEqual(newValueToCompare, oldValueToCompare)) {
+                        var dates = $scope.getSortedLogs();
 
-                            timesheetToSave.map(function (log) {
-                                if (log.time !== '' && log.time !== null) {
-                                    log.time = +log.time;
-                                }
-                                if (log.time == "") {
-                                    log.time = null;
-                                }
-                                return log;
-                            });
+                        var timesheetToSave = angular.copy(dates);
 
-                            if (timer) {
-                                $timeout.cancel(timer);
+                        timesheetToSave.map(function (log) {
+                            if (log.time !== '' && log.time !== null) {
+                                log.time = +log.time;
                             }
+                            if (log.time == "") {
+                                log.time = null;
+                            }
+                            return log;
+                        });
 
-                            var logsToDelete = angular.copy($scope.getLogsToDelete());
+                        if ($scope.timer) {
+                            $timeout.cancel($scope.timer);
+                        }
 
-                            if (logsToDelete.length || timesheetToSave.length) {
-                                timer = $timeout(function () {
+                        var logsToDelete = angular.copy($scope.getLogsToDelete());
+
+                        if (logsToDelete.length || timesheetToSave.length) {
+                            $scope.timer = $timeout(function () {
+                                // for (var index = 0; index < 2; index++) {
+                                if (!$scope.activeRequest) {
+                                    $scope.activeRequest = true;
+
+                                    $scope.lastSavedLogs = angular.copy($scope.logs);
+
                                     timesheetService.updateTimesheet(user._id, timesheetToSave, logsToDelete).success(function (data) {
                                         var periodTimesheet = $scope.getNotEmptyDates(),
                                             noIdLog = _.find(periodTimesheet, function (log) {
@@ -303,16 +317,29 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                                                 }
                                             });
                                         }
+
                                         Notification.success('Changes saved');
+
+                                        $scope.activeRequest = false;
+
+                                        if ($scope.pendingChanges) {
+                                            console.log('pending changes are saving...');
+                                            $scope.pendingChanges = false;
+                                            updateTimelog();
+                                        } else {
+                                            console.log('no pending changes');
+                                        }
                                     });
-                                }, 500);
-                            }
-                        }
-                        else {
-                            lastSaveTimeout = null;
+                                }
+                                else {
+                                    console.log('pending changes = true');
+                                    $scope.pendingChanges = true;
+                                }
+                                // }
+                            }, 500);
                         }
                     }
-                }, true);
+                }
             }
 
             $scope.getSortedLogs = function () {
@@ -393,6 +420,8 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                 dates.splice(dates.indexOf(log), 1);
 
                 $scope.filteredLogs = $scope.getFilteredDates();
+
+                $scope.lastSavedLogs = angular.copy($scope.logs);
             };
 
             $scope.showPreviousPeriod = function (projects) {
