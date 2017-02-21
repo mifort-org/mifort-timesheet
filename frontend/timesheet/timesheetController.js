@@ -41,6 +41,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
             $scope.filteredLogs = [];
             $scope.customUserId = $routeParams.userId;
             $scope.grid = {options: {reportFilters: []}};
+            $scope.pref = preferences;
             $scope.activeRequest = false;
             $scope.pendingChanges = false;
             $scope.timer = null;
@@ -329,6 +330,8 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                                         } else {
                                             console.log('no pending changes');
                                         }
+                                    }).error(function () {
+                                        $scope.activeRequest = false;
                                     });
                                 }
                                 else {
