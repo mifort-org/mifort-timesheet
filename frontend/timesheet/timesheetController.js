@@ -41,7 +41,6 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
             $scope.filteredLogs = [];
             $scope.customUserId = $routeParams.userId;
             $scope.grid = {options: {reportFilters: []}};
-            $scope.pref = preferences;
             $scope.activeRequest = false;
             $scope.pendingChanges = false;
             $scope.timer = null;
