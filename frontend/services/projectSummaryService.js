@@ -69,7 +69,7 @@ angular.module('mifortTimesheet.timesheet').factory('projectSummaryService',
             });
             logs.forEach(function (log) {
                 if (log.time && !_.findWhere(projectsWithTime, {id: log.projectId})) {
-                    projectsWithTime.push({id: log.projectId, name: log.projectName, workload: 8});
+                    projectsWithTime.push({id: log.projectId, name: log.projectName, workload: 0});
                 }
             });
 
