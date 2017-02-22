@@ -395,11 +395,9 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                         return filterValue.name.displayName == userName;
                     });
 
+                $scope.locations = localStorage.setItem('location','Report');
                 $location.path('timesheet/' + user.name._id);
                 window.location.reload();
 
-                console.log(user);
-                // $location.hash('user.name.displayName');
-                console.log(window.location);
             }
         }]);
