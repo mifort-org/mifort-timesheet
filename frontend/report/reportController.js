@@ -29,7 +29,7 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
         function($scope, reportService, preferences, uiGridConstants, topPanelService, $timeout, $location) {
             var companyId = preferences.get('user').companyId,
                 userRole = preferences.get('user').role.toLowerCase(),
-                headerHeight = 38,
+                headerHeight = 38+12,
                 maxVisiblePages = 5,
                 columns = reportService.columns;
 
