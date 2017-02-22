@@ -331,6 +331,30 @@
     }
 }
 
+.back-to {
+    a {
+        min-width: 105px;
+        height: 36px;
+        padding: 0 10px;
+        color: #fff;
+        font-size: 1.8rem;
+        font-weight: 300;
+        background: #00b6f5;
+        border: 0;
+        border-bottom: 5px #0075ab solid;
+        -webkit-border-radius: 2px;
+        -moz-border-radius: 2px;
+        border-radius: 2px;
+        vertical-align: top;
+        outline: 0;
+        &:hover {
+            background: #01c5ff;
+            border-color: #0087d3;
+            text-decoration: none;
+        }
+    }
+}
+
 @media (max-width: 1024px) {
     .tabs-left .wrapper-summary-projects{
         padding-left: 0;
