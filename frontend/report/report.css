@@ -18,9 +18,12 @@
   padding: 25px 27px 30px 27px;
   font-size: 1.6rem; }
   .report-wrapper .popover {
-    width: 200px;
+    width: auto;
     border-color: #a0a0a0;
-    box-shadow: none; }
+    box-shadow: none;
+    display: inline-block;
+    overflow: visible;
+    max-width: none; }
     .report-wrapper .popover hr {
       margin-top: 15px;
       margin-bottom: 15px; }
@@ -39,6 +42,8 @@
       margin-top: 9px;
       padding: 8px 0 5px;
       border-top: 1px solid #eee; }
+    .report-wrapper .popover .filters-container {
+      white-space: nowrap; }
   .report-wrapper .form-group {
     margin-bottom: 0; }
 
