@@ -198,14 +198,19 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                 if(oldValue && newValue && newValue != oldValue){
                     //$scope.reportSettings.filters = [];
                     var dateFilter = _.where(newValue, {field: 'date'})[0],
-                        usedFilters = $scope.reportSettings.filters,
+                        usedFilters = $scope.reportSettings.filters || reportService.getSavedFilters(),
                         dateFilterIndex = _.findIndex(usedFilters, {field: 'date'});
 
                     if(dateFilter && dateFilterIndex != -1){
                         usedFilters[dateFilterIndex] = dateFilter;
                     }
                     else if(dateFilter){
-                        usedFilters.push(dateFilter)
+                        usedFilters.push(dateFilter);
+                    }
+
+                    if(reportService.getSavedFilters()[1]){
+                        var savedFilters = reportService.getSavedFilters();
+                        usedFilters = reportService.getSavedFilters();
                     }
 
                     newValue.forEach(function(filter) {
@@ -230,18 +235,18 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                             return checkedFilter.name._id || checkedFilter.name;
                         });
 
-
                         if(filterToPush.value.length && usedFilterIndex == -1){
                             usedFilters.push(filterToPush);
                         }
                         else if(filterToPush.value.length && usedFilterIndex !== -1){
                             usedFilters[usedFilterIndex] = filterToPush;
                         }
-                        else if(usedFilterIndex !== -1 && filterToPush.field != 'date'){
-                            usedFilters.splice(usedFilterIndex, 1);
-                        }
+                        // else if(usedFilterIndex !== -1 && filterToPush.field != 'date'){
+                        //     usedFilters.splice(usedFilterIndex, 1);
+                        // }
                     });
 
+                    $scope.reportSettings.filters = usedFilters;
                     $scope.getReport();
                 }
             }, true);
@@ -252,6 +257,7 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                 });
 
                 if(dateFilterIndex >= 0){
+                    reportService.saveSavedFilters($scope.reportSettings.filters);
                     reportService.getReport($scope.reportSettings).success(function(data, status, headers) {
                         var columnsOrder = $scope.reports[_.findIndex($scope.reports, {active: true})].columnsOrder;
 
@@ -283,7 +289,7 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                         //call the directive 'cuttedComment' to reRender comments
                         $timeout(function() {
                             $scope.$broadcast('activeReportChanged');
-                        });
+                        }).getSavedFilters();
                     });
                 }
             };
@@ -399,5 +405,6 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                 $location.path('timesheet/' + user.name._id);
                 window.location.reload();
 
-            }
+            };
+
         }]);
