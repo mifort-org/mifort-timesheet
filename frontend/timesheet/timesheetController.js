@@ -247,11 +247,11 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
 
             function initWatchers(property) {
                 $scope.lastSavedLogs = angular.copy($scope.logs);
-
                 $scope.$watch(property, function (newValue, oldValue) {
-                    //for (var i = 0; i < 2; i++) {
+                if($scope.logs.length > 1) {
+                    $scope.lastSavedLogs = angular.copy(oldValue);
+                }
                     updateTimelog();
-                    //}
                 }, true);
             }
 
@@ -294,7 +294,6 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
 
                         if (logsToDelete.length || timesheetToSave.length) {
                             $scope.timer = $timeout(function () {
-                                // for (var index = 0; index < 2; index++) {
                                 if (!$scope.activeRequest) {
                                     $scope.activeRequest = true;
 
@@ -334,10 +333,8 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                                     });
                                 }
                                 else {
-                                    console.log('pending changes = true');
                                     $scope.pendingChanges = true;
                                 }
-                                // }
                             }, 500);
                         }
                     }
