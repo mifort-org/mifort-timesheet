@@ -72,7 +72,8 @@
     border-color: #e0e4ec; }
   .ui-grid .ui-grid-header-cell {
     border-color: #e0e4ec;
-    background: #fff; }
+    background: #fff;
+    resize: both; }
   .ui-grid .ui-grid-row .ui-grid-cell {
     background: #fff;
     border-color: #e0e4ec; }
