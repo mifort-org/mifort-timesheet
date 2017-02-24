@@ -18,7 +18,16 @@
 
 angular.module('mifortTimesheet.report').factory('reportService',
     ['$http', function ($http) {
-        var self = this;
+        var self = this,
+            saveFilters = [];
+
+        self.getSavedFilters = function () {
+            return  saveFilters
+        };
+
+        self.saveSavedFilters = function (filters) {
+              saveFilters  = filters;
+        };
 
         self.getFilters = function (companyId) {
             return $http.get('api/v1/report/filters/' + companyId);

@@ -20,9 +20,12 @@
     font-size: 1.6rem;
 
     .popover{
-        width: 200px;
+        width: auto;
         border-color: #a0a0a0;
         box-shadow: none;
+        display: inline-block;
+        overflow: visible;
+        max-width: none;
 
         hr{
             margin-top: 15px;
@@ -30,6 +33,7 @@
         }
 
         .popover-inner{
+            min-width: 140px;
             max-height: 300px;
             overflow-y: auto;
             overflow-x: hidden;
@@ -51,11 +55,15 @@
             padding: 8px 0 5px;
             border-top: 1px solid #eee;
         }
+        .filters-container {
+            white-space: nowrap;
+        }
     }
 
     .form-group{
         margin-bottom: 0;
     }
+
 }
 
 .report-filter{

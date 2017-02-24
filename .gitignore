@@ -10,3 +10,4 @@ deployment/
 *.bat
 tests_output/
 smoke/
+bower_components/

@@ -30,8 +30,8 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
         });
     }])
 
-    .controller('timesheetController', ['$scope', 'timesheetService', 'calendarService', 'preferences', 'loginService', '$routeParams', '$timeout', 'Notification', "$q", "projectSummaryService", "$filter",
-        function ($scope, timesheetService, calendarService, preferences, loginService, $routeParams, $timeout, Notification, $q, projectSummaryService, $filter) {
+    .controller('timesheetController', ['$scope', 'timesheetService', 'calendarService', 'preferences', 'loginService', '$routeParams', '$timeout', 'Notification', "$q", "projectSummaryService", "$filter", '$location',
+        function ($scope, timesheetService, calendarService, preferences, loginService, $routeParams, $timeout, Notification, $q, projectSummaryService, $filter, $location) {
             var user;
 
             $scope.projects = [];
@@ -784,5 +784,20 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                     return '';
                 }
             };
+
+
+
+            var locations = preferences.get('location');
+            $scope.locations = locations;
+
+            $scope.backTo = function () {
+                console.log($location);
+                if (locations === 'Employees') {
+                    $location.path('/employees');
+                } else if (locations === 'Report') {
+                    $location.path('/report');
+                }
+            };
+
 
         }]);
