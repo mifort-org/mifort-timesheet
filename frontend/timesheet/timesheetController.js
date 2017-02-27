@@ -787,15 +787,18 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
 
             $scope.userRole = preferences.get('user').role.toLowerCase();
 
+            if ($location.$$path === "/timesheet") {
+                $scope.viewUser = false;
+            } else {
+                $scope.viewUser = true;
+            }
 
-            var locations = preferences.get('location');
-            $scope.locations = locations;
+            $scope.locations = preferences.get('location');
 
             $scope.backTo = function () {
-                console.log($location);
-                if (locations === 'Employees') {
+                if ($scope.locations === 'Employees') {
                     $location.path('/employees');
-                } else if (locations === 'Report') {
+                } else if ($scope.locations === 'Report') {
                     $location.path('/report');
                 }
             };
