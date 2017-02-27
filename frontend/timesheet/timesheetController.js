@@ -785,6 +785,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                 }
             };
 
+            $scope.userRole = preferences.get('user').role.toLowerCase();
 
 
             var locations = preferences.get('location');

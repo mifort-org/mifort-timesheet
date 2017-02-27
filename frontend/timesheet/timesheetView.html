@@ -119,7 +119,7 @@
     to any project
 </div>
 
-<div class="back-to">
+<div class="back-to" ng-if="userRole === 'manager' || userRole === 'owner'">
     <a href="" ng-click="backTo()">
         Back to {{locations}}
     </a>
