@@ -403,7 +403,7 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
 
                 $scope.locations = localStorage.setItem('location','Report');
                 $location.path('timesheet/' + user.name._id);
-                window.location.reload();
+                // window.location.reload();
 
             };
 
