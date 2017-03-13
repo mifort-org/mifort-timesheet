@@ -38,7 +38,8 @@ angular.module('mifortTimesheet.company', ['ngRoute'])
             name: null,
             emails: [],
             backup: 'none',
-            lastBackupDate: undefined
+            lastBackupDate: undefined,
+            backupServer: {}
         };
 
         $scope.possibleRoles = [
@@ -53,6 +54,7 @@ angular.module('mifortTimesheet.company', ['ngRoute'])
                 $scope.company.emails = [];
                 $scope.company.backup = $scope.company.backup || 'none';
                 $scope.company.lastBackupDate = $scope.company.lastBackupDate;
+                $scope.company.backupServer = {};
                 $scope.introSteps.push({
                     element: '#step4',
                     intro: "<p>Table with all invited employees and roles.</p>" +
@@ -129,6 +131,7 @@ angular.module('mifortTimesheet.company', ['ngRoute'])
         $scope.companyBackupNow = function(e) {
             companyService.companyBackup($scope.user.companyId);
         };
+
         $scope.changeRole = function(employee, role) {
             employee. role = role;
             companyService.changeRole(employee).success(function() {
@@ -143,6 +146,10 @@ angular.module('mifortTimesheet.company', ['ngRoute'])
             companyService.removeEmployee(employee._id).success(function() {
                 Notification.success('Changes saved');
             });
+        };
+
+        $scope.clearData = function() {
+          $scope.company.backupServer = {};
         };
 
         $scope.$watch('company.emails', function (newValue) {

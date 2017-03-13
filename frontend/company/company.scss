@@ -136,6 +136,23 @@
     button{
         margin-bottom: 25px;
     }
+    .backup-cell {
+        position: relative;
+        input[type='radio'] {
+            min-width: auto;
+            width: 25px;
+            height: 25px;
+            display: inline-block
+        }
+        label {
+            padding: 7px;
+            cursor: pointer;
+            margin-top: 0;
+        }
+        button {
+            margin-top: 20px;
+        }
+    }
 }
 
 .remove-role{

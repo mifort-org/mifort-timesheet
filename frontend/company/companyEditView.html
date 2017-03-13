@@ -91,10 +91,24 @@
                     <td>
                         <label>Backup server</label>
                     </td>
-                    <td id="step5">
-                        <input ng-model="company.backupPath" ng-change="saveCompany()" type="text" placeholder="Path"/>
-                        <input ng-model="company.accessKeyId" ng-change="saveCompany()" type="text" placeholder="Access Key"/>
-                        <input ng-model="company.signature" ng-change="saveCompany()" type="text" placeholder="Signature"/>
+                    <td class="backup-cell">
+                        <input type="radio" id="s3-server" name="backupServer" value="s3" class="primary-button" ng-model="company.backupServer.type" ng-change="clearData(); saveCompany()"/>
+                        <label for="s3-server">Amazon S3</label>
+                        <input type="radio" id="ftp-server" name="backupServer" value="ftp" class="primary-button" ng-model="company.backupServer.type" ng-change="clearData(); saveCompany()"/>
+                        <label for="ftp-server">FTP server</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td id="step5" ng-if="company.backupServer == 's3'">
+                        <input ng-model="company.backupServer.path" ng-change="saveCompany()" type="text" placeholder="Bucket"/>
+                        <input ng-model="company.backupServer.login" ng-change="saveCompany()" type="text" placeholder="Access Key"/>
+                        <input ng-model="company.backupServer.pass" ng-change="saveCompany()" type="text" placeholder="Secret Key"/>
+                    </td>
+                    <td id="step5" ng-if="company.backupServer == 'ftp'">
+                        <input ng-model="company.backupServer.path" ng-change="saveCompany()" type="text" placeholder="Path"/>
+                        <input ng-model="company.backupServer.login" ng-change="saveCompany()" type="text" placeholder="Username"/>
+                        <input ng-model="company.backupServer.pass" ng-change="saveCompany()" type="text" placeholder="Password"/>
                     </td>
                 </tr>
                 <tr>
@@ -102,11 +116,11 @@
                         <label>Backup frequency</label>
                     </td>
                     <td id="step6" class="backup-cell">
-                        <input type="radio" id="week-backup" name="backup" value="week" class="primary-button" ng-model="company.backup" ng-change="saveCompany()"/>
+                        <input type="radio" id="week-backup" name="backup" value="week" class="primary-button" ng-model="company.backupFrequency" ng-change="saveCompany()"/>
                         <label for="week-backup">Once a week</label>
-                        <input type="radio" id="month-backup" name="backup" value="month" class="primary-button" ng-model="company.backup" ng-change="saveCompany()"/>
+                        <input type="radio" id="month-backup" name="backup" value="month" class="primary-button" ng-model="company.backupFrequency" ng-change="saveCompany()"/>
                         <label for="month-backup">Once a month</label>
-                        <input type="radio" id="no-backup" name="backup" value="none" class="primary-button" ng-model="company.backup" ng-change="saveCompany()" checked />
+                        <input type="radio" id="no-backup" name="backup" value="none" class="primary-button" ng-model="company.backupFrequency" ng-change="saveCompany()" checked />
                         <label for="no-backup">Never</label><br/>
                         <button ng-click="companyBackupNow()" class="primary-button large-button">Backup now</button>
                     </td>
