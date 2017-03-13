@@ -28,6 +28,9 @@ var mail = require('./libs/mail');
 var u = require("underscore");
 var backup = require('mongodb-backup');
 var schedule = require('node-schedule');
+var fs = require('fs');
+var anyFile = require('any-file');
+var zlib = require('zlib');
 
 setTimeout(function() {log.info('Company')}, 1);
 // initBackups ();
@@ -90,9 +93,8 @@ exports.restUpdateCompany = function(req, res, next) {
 
     db.companyCollection().findOne({_id: company._id}, function (err, c) {
         var root = './dump';
-        console.log(company.backup);
-        if(c.backup != company.backup) {
-            setBackupSchedule(company._id, company.backup, root);
+        if(c.backupFrequency != company.backupFrequency) {
+            setBackupSchedule(company._id, company.backupFrequency, root);
         }
     });
     save(company, function(err, savedCompany) {
@@ -158,9 +160,9 @@ exports.findById = findById;
 exports.initBackups = function() {
     db.companyCollection().find({}).toArray(function (err, companies) {
         u.each(companies, function (company) {
-            console.log(company.backup);
-            if(company.backup && company.backup != 'none') {
-                setBackupSchedule(company._id, company.backup);
+            if(company.backupFrequency && company.backupFrequency != 'none') {
+                log.info(company.backupFrequency);
+                setBackupSchedule(company._id, company.backupFrequency);
             }
         })
     });
@@ -170,14 +172,14 @@ exports.initBackups = function() {
 exports.companyBackup  = function (req, res, next) {
     var companyId = utils.getCompanyId(req);
     log.debug('-REST call: Find company by id. Company id: %s', companyId.toHexString());
-    companyBackup (companyId);
+    //companyDataToFile (companyId);
+    companyDataUpload(companyId);
     res.json({lastBackupDate: new Date()});
 };
 
 var backupSchedule = {};
 
 function setBackupSchedule (companyId, period, root) {
-    log.info('root1: ' + root);
    db.companyCollection().findOne({_id: companyId}, function (err, doc) {
        var start;
        if (doc.lastBackupDate) {
@@ -185,14 +187,13 @@ function setBackupSchedule (companyId, period, root) {
        } else {
            start = new Date;
        }
-
+       log.info('start: ' + start);
        var weekDay = start.getDay();
        var day = start.getDate();
        var hour = start.getHours();
        log.info('day: ' + day);
        log.info('weekDay: ' + weekDay);
        log.info('hour: ' + hour);
-       log.info('root2: ' + root);
 
        switch(period) {
            case 'none':
@@ -200,11 +201,11 @@ function setBackupSchedule (companyId, period, root) {
                break;
            case 'month':
                //set('0'+ hour + day + ' * *');
-               set('* * * 1 * *');
+               set('0 * * * * *');
                break;
            case 'week':
                //set('0'+ hour + '* *' + weekDay);
-               set('* * * 1 * *');
+               set('30 * * * * *');
                break;
            default:
                log.error('backup period is wrong. Company id: %s',
@@ -217,13 +218,12 @@ function setBackupSchedule (companyId, period, root) {
        }
        function set (time) {
            clear();
+           log.debug('setSchedule: ' + time);
            backupSchedule[companyId] = schedule.scheduleJob(time, function(){
-               companyBackup(companyId, root)
+               companyDataUpload(companyId);
            });
        }
    });
-
-
 };
 
 //private part
@@ -352,58 +352,118 @@ function isWeekend(date) {
     return moment.utc(date).day() % 6 == 0;
 }
 
-function companyBackup (companyId, root) {
+function companyDataToFile (companyId, root) {
     var uri = 'mongodb://localhost:27017/homogen';
     var today = new Date;
     today = today.toISOString().match(/\d{4}-\d{2}-\d{2}/)[0];
-    root = './dump/' + companyId;
-    log.info(root);
-    var projects = [];
+    var fileName = today + '.txt';
+    var file = root + '/' + fileName;
+
+    fs.writeFile(file, '', function(err) {
+        if(err) {
+            return console.log(err);
+        }
+
+        collectData('company', {_id: companyId}, file, addDataToFile);
+        collectData('project', {companyId: {$eq: companyId}}, file, addDataToFile);
+        collectData('user', {companyId: {$eq: companyId}}, file, addDataToFile);
+        getCompanyProjects(companyId, function(projects) {
+            collectData('timelog', {projectId: {$in: projects}}, file, addDataToFile);
+        });
+
+        log.info('The file was saved!');
+    });
+
+
+    return fileName;
+}
+
+function getCompanyProjects(companyId, callback) {
     db.projectCollection().find({companyId: {$eq: companyId}}).toArray(function (err, logs) {
         if (err) {
             throw err;
         }
+
+        var projects = [];
         u.each(logs, function (project) {
             log.debug(project._id);
             projects.push(project._id);
         });
-        log.debug('all Projects' + projects);
-        backup({
-            uri: uri, // mongodb://<dbuser>:<dbpassword>@<dbdomain>.mongolab.com:<dbport>/<dbdatabase>
-            root: root,
-            collections: ['companies'],
-            query: {
-                _id: {$eq: companyId}
+        callback(projects);
+    });
+}
+
+function addDataToFile (file, data, collection) {
+    fs.appendFile(file, data, function (err) {
+        if (err) {
+            throw err;
+        }
+        log.info('The "' + collection + ' collection data" was appended to file!');
+    });
+}
+
+function collectData(collectionName, query, file, callback) {
+    var collection = collectionName + 'Collection';
+    db[collection]().find(query).toArray(function(err, result) {
+        if (err) {
+            throw err;
+        } else {
+            var str = '{' + collectionName + ': [';
+            for (var i = 0; i < result.length; i++) {
+                var data = JSON.stringify(result[i]);
+                str += data;
+                if (i + 1 !== result.length) {
+                    str += ',';
+                }
             }
-        });
-        backup({
-            uri: uri, // mongodb://<dbuser>:<dbpassword>@<dbdomain>.mongolab.com:<dbport>/<dbdatabase>
-            root: root,
-            collections: ['projects'],
-            query: {
-                companyId: {$eq: companyId}
-            }
-        });
-        backup({
-            uri: uri, // mongodb://<dbuser>:<dbpassword>@<dbdomain>.mongolab.com:<dbport>/<dbdatabase>
-            root: root,
-            collections: ['users'],
-            query: {
-                companyId: {$eq: companyId}
-            }
-        });
-        backup({
-            uri: uri, // mongodb://<dbuser>:<dbpassword>@<dbdomain>.mongolab.com:<dbport>/<dbdatabase>
-            root: root,
-            collections: ['timelogs'],
-            query: {
-                projectId: {$in: projects}
+            str += ']}';
+            callback(file, str, collectionName);
+        }
+    });
+}
+
+function compressFile(fileName) {
+    var gzip = zlib.createGzip();
+    var inp = fs.createReadStream(outputStream);
+    var out = fs.createWriteStream('./dump/input.txt.gz');
+
+    inp.pipe(gzip).pipe(out);
+}
+
+function companyDataUpload(companyId) {
+    var root = './dump';
+    var fileName = companyDataToFile(companyId, root);
+    console.log('filename: ' + fileName);
+    var path;
+    var login;
+    var pass;
+    var type;
+    db.companyCollection().findOne({_id: companyId}, function (err, company) {
+       path = company.backupServer.path;
+       login = company.backupServer.login;
+       pass = company.backupServer.pass;
+       type = company.backupServer.type;
+
+        var af = new anyFile();
+        var localTmp = './ftpServer';
+        var templates = {
+            s3: 's3://' + login + ':' + pass + '@s3.amazon.com/' + path + '/' + fileName,
+            ftp: 'ftp://' + login + ':' + pass + '@' + path + '/' + fileName,
+            local: root + '/' + fileName,
+            localTo: localTmp + '/' + fileName
+        };
+        log.info('local' + templates.local);
+        log.info('localTo' + templates.localTo);
+        af.from(templates['local']).to(templates['localTo'], function(err, res) {
+            if (res) {
+                log.debug("File copied!");
+            } else {
+                log.debug("File not copied!");
             }
         });
     });
-    var date = new Date ();
-    db.companyCollection().updateOne({_id: companyId}, {$set: {lastBackupDate: date}});
+    db.companyCollection().updateOne({_id: companyId}, {$set: {lastBackupDate: today}});
     log.debug('-REST result: backup. Company: %s',
-        companyId + " " + date);
+      companyId + " " + today);
 }
 
