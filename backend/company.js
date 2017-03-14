@@ -31,6 +31,8 @@ var schedule = require('node-schedule');
 var fs = require('fs');
 var anyFile = require('any-file');
 var zlib = require('zlib');
+var async = require('async');
+var backupFolder = './dump';
 
 setTimeout(function() {log.info('Company')}, 1);
 // initBackups ();
@@ -92,9 +94,8 @@ exports.restUpdateCompany = function(req, res, next) {
     company.updatedOn = new Date();
 
     db.companyCollection().findOne({_id: company._id}, function (err, c) {
-        var root = './dump';
         if(c.backupFrequency != company.backupFrequency) {
-            setBackupSchedule(company._id, company.backupFrequency, root);
+            setBackupSchedule(company._id, company.backupFrequency);
         }
     });
     save(company, function(err, savedCompany) {
@@ -166,20 +167,28 @@ exports.initBackups = function() {
             }
         })
     });
-    log.info('Backups init!')
+    log.info('Backups initiated!')
 };
 
 exports.companyBackup  = function (req, res, next) {
     var companyId = utils.getCompanyId(req);
     log.debug('-REST call: Find company by id. Company id: %s', companyId.toHexString());
-    //companyDataToFile (companyId);
-    companyDataUpload(companyId);
-    res.json({lastBackupDate: new Date()});
+    companyDataToFile(companyId, function (fileName) {
+        success = companyDataUpload(companyId, fileName, function (uploaded) {
+            console.log(uploaded);
+            if (uploaded === false) {
+                res.status(400).json({msg: 'Data wasn\'t saved to server'});
+            } else {
+                res.json({lastBackupDate: new Date()});
+            }
+        });
+
+    });
 };
 
 var backupSchedule = {};
 
-function setBackupSchedule (companyId, period, root) {
+function setBackupSchedule (companyId, period) {
    db.companyCollection().findOne({_id: companyId}, function (err, doc) {
        var start;
        if (doc.lastBackupDate) {
@@ -195,22 +204,13 @@ function setBackupSchedule (companyId, period, root) {
        log.info('weekDay: ' + weekDay);
        log.info('hour: ' + hour);
 
-       switch(period) {
-           case 'none':
-               clear();
-               break;
-           case 'month':
-               //set('0'+ hour + day + ' * *');
-               set('0 * * * * *');
-               break;
-           case 'week':
-               //set('0'+ hour + '* *' + weekDay);
-               set('30 * * * * *');
-               break;
-           default:
-               log.error('backup period is wrong. Company id: %s',
-                   savedCompany._id.toHexString());
-       }
+       var periods = {
+           month: function () {/*set('0 * * * * *'); */set('0 '+ hour + ' ' + day + ' * *');},
+           week: function () {/*set('30 * * * * *'); */set('0 '+ hour + ' * * ' + weekDay);},
+           none: clear
+       };
+       periods[period]();
+
        function clear() {
            if (backupSchedule[companyId]) {
                backupSchedule[companyId].cancel();
@@ -220,7 +220,9 @@ function setBackupSchedule (companyId, period, root) {
            clear();
            log.debug('setSchedule: ' + time);
            backupSchedule[companyId] = schedule.scheduleJob(time, function(){
-               companyDataUpload(companyId);
+               companyDataToFile(companyId, function (fileName) {
+                   companyDataUpload(companyId, fileName);
+               });
            });
        }
    });
@@ -352,30 +354,45 @@ function isWeekend(date) {
     return moment.utc(date).day() % 6 == 0;
 }
 
-function companyDataToFile (companyId, root) {
-    var uri = 'mongodb://localhost:27017/homogen';
+function companyDataToFile (companyId, callback) {
     var today = new Date;
-    today = today.toISOString().match(/\d{4}-\d{2}-\d{2}/)[0];
+    today = today.toISOString().match(/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}/)[0].replace(/:/, '-');
     var fileName = today + '.txt';
-    var file = root + '/' + fileName;
-
+    var file = backupFolder + '/' + fileName;
     fs.writeFile(file, '', function(err) {
         if(err) {
-            return console.log(err);
+            throw err;
         }
-
-        collectData('company', {_id: companyId}, file, addDataToFile);
-        collectData('project', {companyId: {$eq: companyId}}, file, addDataToFile);
-        collectData('user', {companyId: {$eq: companyId}}, file, addDataToFile);
-        getCompanyProjects(companyId, function(projects) {
-            collectData('timelog', {projectId: {$in: projects}}, file, addDataToFile);
+        async.waterfall([
+            function (callback) {
+                collectDataToString('company', {_id: companyId}, file, callback);
+            },
+            addDataToFile,
+            function (callback) {
+                collectDataToString('project', {companyId: {$eq: companyId}}, file, callback);
+            },
+            addDataToFile,
+            function (callback) {
+                collectDataToString('user', {companyId: {$eq: companyId}}, file, callback);
+            },
+            addDataToFile,
+            function(callback) {
+                getCompanyProjects(file, callback);
+            },
+            function (projects, callback) {
+                collectDataToString('timelog', {projectId: {$in: projects}}, file, callback)
+            },
+            addDataToFile,
+            function(callback) {
+                compressFile(fileName, callback)
+            }
+        ], function (err, fileName) {
+                if (err) {
+                    throw err;
+                }
+            callback(fileName);
         });
-
-        log.info('The file was saved!');
     });
-
-
-    return fileName;
 }
 
 function getCompanyProjects(companyId, callback) {
@@ -383,26 +400,26 @@ function getCompanyProjects(companyId, callback) {
         if (err) {
             throw err;
         }
-
         var projects = [];
         u.each(logs, function (project) {
             log.debug(project._id);
             projects.push(project._id);
         });
-        callback(projects);
+        callback(null, projects);
     });
 }
 
-function addDataToFile (file, data, collection) {
+function addDataToFile (file, data, collection, callback) {
     fs.appendFile(file, data, function (err) {
         if (err) {
             throw err;
         }
         log.info('The "' + collection + ' collection data" was appended to file!');
+        callback(null);
     });
 }
 
-function collectData(collectionName, query, file, callback) {
+function collectDataToString(collectionName, query, file, callback) {
     var collection = collectionName + 'Collection';
     db[collection]().find(query).toArray(function(err, result) {
         if (err) {
@@ -417,53 +434,52 @@ function collectData(collectionName, query, file, callback) {
                 }
             }
             str += ']}';
-            callback(file, str, collectionName);
+            callback(null, file, str, collectionName);
         }
     });
 }
 
-function compressFile(fileName) {
+function compressFile(fileName, callback) {
     var gzip = zlib.createGzip();
-    var inp = fs.createReadStream(outputStream);
-    var out = fs.createWriteStream('./dump/input.txt.gz');
-
-    inp.pipe(gzip).pipe(out);
+    var inp = fs.createReadStream(backupFolder + '/' + fileName);
+    var newFileName = fileName + '.gzip';
+    var file = backupFolder + '/' + newFileName;
+    var out = fs.createWriteStream(file);
+    var stream = inp.pipe(gzip).pipe(out);
+    stream.on('finish', function () {
+        log.info('The File compressed! New file name: ' + newFileName);
+        callback(null, newFileName);
+    });
 }
 
-function companyDataUpload(companyId) {
-    var root = './dump';
-    var fileName = companyDataToFile(companyId, root);
-    console.log('filename: ' + fileName);
-    var path;
-    var login;
-    var pass;
-    var type;
+function companyDataUpload(companyId, fileName, callback) {
     db.companyCollection().findOne({_id: companyId}, function (err, company) {
-       path = company.backupServer.path;
-       login = company.backupServer.login;
-       pass = company.backupServer.pass;
-       type = company.backupServer.type;
-
+        var uploaded;
+        var path = company.backupServer.path;
+        var login = company.backupServer.login;
+        var pass = company.backupServer.pass;
+        var type = company.backupServer.type;
         var af = new anyFile();
         var localTmp = './ftpServer';
         var templates = {
             s3: 's3://' + login + ':' + pass + '@s3.amazon.com/' + path + '/' + fileName,
             ftp: 'ftp://' + login + ':' + pass + '@' + path + '/' + fileName,
-            local: root + '/' + fileName,
+            local: backupFolder + '/' + fileName,
             localTo: localTmp + '/' + fileName
         };
-        log.info('local' + templates.local);
-        log.info('localTo' + templates.localTo);
-        af.from(templates['local']).to(templates['localTo'], function(err, res) {
+        af.from(templates['local']).to(templates[type], function(err, res) {
             if (res) {
-                log.debug("File copied!");
+                var today = new Date;
+                db.companyCollection().updateOne({_id: companyId}, {$set: {lastBackupDate: today}});
+                log.debug('-REST result: backup. Company: %s',
+                  companyId + " " + today);
+                callback(true);
             } else {
                 log.debug("File not copied!");
+                log.debug(err);
+                callback(false);
             }
         });
     });
-    db.companyCollection().updateOne({_id: companyId}, {$set: {lastBackupDate: today}});
-    log.debug('-REST result: backup. Company: %s',
-      companyId + " " + today);
 }
 
