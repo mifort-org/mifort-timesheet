@@ -177,6 +177,14 @@ exports.validateGetCompanyById = function(req, res, next) {
     returnErrors(req, res, next);
 };
 
+exports.validateBackupCompanyById = function(req, res, next) {
+    req.checkBody('serverType', "Server type not chosen" ).optional().notEmpty();
+    req.checkBody('path', "Field is empty" ).optional().notEmpty();
+    req.checkBody('pass', "Field is empty" ).optional().notEmpty();
+    req.checkBody('login', "Field is empty" ).optional().notEmpty();
+    returnErrors(req, res, next);
+};
+
 //Timesheet Rest API validation
 exports.validateGetTimesheetByDates = function(req, res, next) {
     req.checkParams(reqParams.userIdParam,

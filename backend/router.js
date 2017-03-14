@@ -116,8 +116,8 @@ companyRouter.get('/:companyId',
         validators.validateGetCompanyById,
         authorization.authorizeGetCompanyById,
         company.restFindById);
-companyRouter.get('/backup/:companyId',
-        validators.validateGetCompanyById,
+companyRouter.post('/backup/:companyId',
+        validators.validateBackupCompanyById,
         authorization.authorizeGetCompanyById,
         company.companyBackup);
 
