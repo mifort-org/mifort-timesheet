@@ -19,7 +19,7 @@
 
     <h1>Company Edit</h1>
 
-    <form name="companyCreateForm" ng-submit="companyCreateForm.$valid && saveCompany()">
+    <form name="companyCreateForm" ng-submit="companyCreateForm.$valid">
         <table>
             <tbody>
             <tr>
@@ -92,20 +92,20 @@
                         <label>Backup server</label>
                     </td>
                     <td class="backup-cell">
-                        <input type="radio" id="s3-server" name="backupServer" value="s3" class="primary-button" ng-model="company.backupServer.type" ng-change="clearData(); saveCompany()"/>
+                        <input type="radio" id="s3-server" name="backupServer" value="s3" class="primary-button" ng-model="company.backupServer.type" ng-change="saveCompany()"/>
                         <label for="s3-server">Amazon S3</label>
-                        <input type="radio" id="ftp-server" name="backupServer" value="ftp" class="primary-button" ng-model="company.backupServer.type" ng-change="clearData(); saveCompany()"/>
+                        <input type="radio" id="ftp-server" name="backupServer" value="ftp" class="primary-button" ng-model="company.backupServer.type" ng-change="saveCompany()"/>
                         <label for="ftp-server">FTP server</label>
                     </td>
                 </tr>
                 <tr>
                     <td></td>
-                    <td id="step5" ng-if="company.backupServer == 's3'">
+                    <td id="step5" ng-if="company.backupServer.type == 's3'">
                         <input ng-model="company.backupServer.path" ng-change="saveCompany()" type="text" placeholder="Bucket"/>
                         <input ng-model="company.backupServer.login" ng-change="saveCompany()" type="text" placeholder="Access Key"/>
                         <input ng-model="company.backupServer.pass" ng-change="saveCompany()" type="text" placeholder="Secret Key"/>
                     </td>
-                    <td id="step5" ng-if="company.backupServer == 'ftp'">
+                    <td id="step5" ng-if="company.backupServer.type == 'ftp'">
                         <input ng-model="company.backupServer.path" ng-change="saveCompany()" type="text" placeholder="Path"/>
                         <input ng-model="company.backupServer.login" ng-change="saveCompany()" type="text" placeholder="Username"/>
                         <input ng-model="company.backupServer.pass" ng-change="saveCompany()" type="text" placeholder="Password"/>

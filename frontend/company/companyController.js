@@ -39,7 +39,9 @@ angular.module('mifortTimesheet.company', ['ngRoute'])
             emails: [],
             backup: 'none',
             lastBackupDate: undefined,
-            backupServer: {}
+            backupServer: {
+                type: undefined
+            }
         };
 
         $scope.possibleRoles = [
@@ -54,7 +56,7 @@ angular.module('mifortTimesheet.company', ['ngRoute'])
                 $scope.company.emails = [];
                 $scope.company.backup = $scope.company.backup || 'none';
                 $scope.company.lastBackupDate = $scope.company.lastBackupDate;
-                $scope.company.backupServer = {};
+                $scope.company.backupServer = $scope.company.backupServer || {type: undefined};
                 $scope.introSteps.push({
                     element: '#step4',
                     intro: "<p>Table with all invited employees and roles.</p>" +
@@ -129,7 +131,16 @@ angular.module('mifortTimesheet.company', ['ngRoute'])
             });
         };
         $scope.companyBackupNow = function(e) {
-            companyService.companyBackup($scope.user.companyId);
+            var body = {
+                _id: $scope.user.companyId,
+                serverType: $scope.company.backupServer.type,
+                login: $scope.company.backupServer.login,
+                pass: $scope.company.backupServer.pass,
+                path: $scope.company.backupServer.path,
+            };
+            companyService.companyBackup($scope.user.companyId, body).success(function () {
+                Notification.success('Successful backup');
+            });
         };
 
         $scope.changeRole = function(employee, role) {
@@ -146,10 +157,6 @@ angular.module('mifortTimesheet.company', ['ngRoute'])
             companyService.removeEmployee(employee._id).success(function() {
                 Notification.success('Changes saved');
             });
-        };
-
-        $scope.clearData = function() {
-          $scope.company.backupServer = {};
         };
 
         $scope.$watch('company.emails', function (newValue) {
