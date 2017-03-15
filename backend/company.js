@@ -29,7 +29,10 @@ var u = require("underscore");
 var backup = require('mongodb-backup');
 var schedule = require('node-schedule');
 var fs = require('fs');
-var anyFile = require('any-file');
+var AnyFs = require('anyfs');
+var FtpAdapter = require('anyfs-ftp-adapter');
+var S3Adapter = require('anyfs-s3-adapter');
+var VinylFsPlugin = require('./libs/anyfs_fs_plugin');
 var zlib = require('zlib');
 var async = require('async');
 var backupFolder = './dump';
@@ -175,7 +178,6 @@ exports.companyBackup  = function (req, res, next) {
     log.debug('-REST call: Find company by id. Company id: %s', companyId.toHexString());
     companyDataToFile(companyId, function (fileName) {
         success = companyDataUpload(companyId, fileName, function (uploaded) {
-            console.log(uploaded);
             if (uploaded === false) {
                 res.status(400).json({msg: 'Data wasn\'t saved to server'});
             } else {
@@ -453,8 +455,7 @@ function compressFile(fileName, callback) {
 }
 
 function companyDataUpload(companyId, fileName, callback) {
-    db.companyCollection().findOne({_id: companyId}, function (err, company) {
-        var uploaded;
+    /*db.companyCollection().findOne({_id: companyId}, function (err, company) {
         var path = company.backupServer.path;
         var login = company.backupServer.login;
         var pass = company.backupServer.pass;
@@ -480,6 +481,42 @@ function companyDataUpload(companyId, fileName, callback) {
                 callback(false);
             }
         });
+    });*/
+    //AnyFs.addPlugin(new VinylFsPlugin());
+    var fs1 = new AnyFs(new S3Adapter({
+        key: 'appkey',
+        secret: 'appsecret',
+        token: 'token',
+    }));
+
+    var fs2 = new AnyFs(new S3Adapter({
+        key: 'appkey',
+        secret: 'appsecret',
+        token: 'token',
+    }));
+
+// Copy files across filesystems(requires the vinyl-fs plugin)
+    var file = './dump/' + fileName;
+    /*fs1.src(file)
+      .pipe(fs1.dest('./ftpServer'));
+    */
+    var adapter = new FtpAdapter({
+        host: "localhost",
+        port: 1313,
+    });
+    var fs3 = new AnyFs(adapter);
+    fs3.addPlugin(new VinylFsPlugin());
+
+    fs3.src(file)
+      .pipe(fs3.dest('./ftpServer/' + fileName));
+
+    fs3.mkdir('./doc', function(err) {
+        console.log('++');
+        if (err) {
+            console.log(err);
+        } else {
+            console.log('mkdir ok');
+        }
     });
 }
 
