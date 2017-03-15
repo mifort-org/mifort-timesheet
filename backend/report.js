@@ -38,6 +38,8 @@ var REPORT_COLUMNS = {
     comment: 'Comment'
 };
 
+var imagesSrc = 'file:///D:/project/mifort-timesheet/images';
+
 var reportDownloadUrlPrefix = '/api/v1/report/download/'; // /api/v1 prefix shoulв be shared
 
 //Rest API
@@ -132,7 +134,6 @@ exports.restCommonReportPDF = function(req, res, next) {
                 calendar.push([day, logs[0].template.time]);
             }
         });
-        console.log(calendar);
 
     });
 
@@ -140,7 +141,7 @@ exports.restCommonReportPDF = function(req, res, next) {
         if (err) {
             throw err;
         }
-        createPdfFile (logs, calendar, function (fileName) {
+        createHTMLPage (logs, calendar, function (fileName) {
             log.debug('-REST Result: Download common report. PDF file is generated. Company id: %s',
                 filterObj.companyId.toHexString());
             res.json({url: reportDownloadUrlPrefix + fileName});
@@ -329,10 +330,8 @@ function convertFiltersToQuery(filters, projectIds) {
 
     if(projectIds) {
         if (typeof(projectIds) == 'object') {
-            console.log('obj');
             query.projectId = {$in: projectIds};
         } else {
-            console.log('not obj');
             query.projectId = utils.convertToMongoId(projectIds);
         }
     }
@@ -450,24 +449,42 @@ function createCSVFile(outputStream, reportColumns, callback) {
     });
 }
 
-function createPdfFile (logs, calendar, callback) {
+function createHTMLPage (logs, calendar, callback) {
     var fileName = 'report_' + shortid.generate() + '.pdf';
     var projectName = 'mifort';
-    // console.log(logs);
     logs = cleanUpAndUnifyData(logs);
 
     var htmlPage = generateHtmlData(logs, projectName, calendar);
-
+   // writeHTMLFile(htmlPage);
     writePdf (htmlPage, fileName, function () {
         callback(fileName)
     })
 }
+// only for easier template editing
+function writeHTMLFile(data) {
+  var fileName = 'report_' + shortid.generate() + '.html';
+  var file = './report_files' + fileName;
+  fs.writeFile(file, '', function(err) {
+    if(err) {
+      log.error(err);
+    }
+    fs.appendFile(file, data, function (err) {
+      if (err) {
+        log.error(err);
+      }
+    });
+  });
+}
 
 function writePdf (html, fileName, callback) {
-    var options = { format: 'Letter'};
+    var options = {
+        format: 'Letter',
+        base: imagesSrc // Base path that's used to load files (images, css, js) when they aren't referenced using a host
+    };
     pdf.create(html, options).toFile('./report_files/' + fileName, function(err, res) {
-        if (err) return console.log(err);
-        console.log(res); // { filename: '/app/businesscard.pdf' }
+        if (err) {
+          log.error(err);
+        }
         callback();
     });
 }
@@ -477,7 +494,8 @@ function generateHtmlData (logs, name, calendar) {
     var project = {
         name: name,
         users: [],
-        totalTime: 0
+        totalTime: 0,
+        logo: './images/logo-timesheet.png'
     };
     var workHours = 0;
 
@@ -491,8 +509,6 @@ function generateHtmlData (logs, name, calendar) {
 
     u.chain(logs).pluck('user').uniq().each(function(usr) {
         var userLogs = u.where(logs, {user: usr});
-        console.log(usr);
-        console.log(userLogs);
         var user = {};
         user.name = usr;
         user.days = [];

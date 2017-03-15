@@ -27,14 +27,16 @@
         .content-table {width: 90%; margin:10% auto; text-align: center; font-size: 30px}
         .content-table th,.content-table td {font-size: 22px; padding:10px 0}
         .content-table td:first-child, .content-table th:first-child {width: 45%;text-align: left;}
-        .content-table thead th{font-weight: bold}
+        .content-table thead th{font-weight: bold; text-align: center;}
         .content-table tr:last-child{font-weight: bold}
         .worker{position: relative}
         .worker::after{content: " "; border-bottom: 1px dotted #000; width: 100%;height: 10px;position: absolute;margin-left: 30px;top: 18px;}
+        .logo {max-width: 4cm; max-height: 2cm; padding: 1cm; margin: 0 auto; display: block;}
     </style>
 </head>
 <body>
 <div class="page">
+    <img class="logo" src="<%=project.logo%>">
     <h1><%=project.name%></h1>
     <table class='content-table'>
         <thead>
