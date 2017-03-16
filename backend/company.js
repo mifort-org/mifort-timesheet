@@ -30,11 +30,11 @@ var backup = require('mongodb-backup');
 var schedule = require('node-schedule');
 var fs = require('fs');
 var AnyFs = require('anyfs');
-var FtpAdapter = require('anyfs-ftp-adapter');
-var S3Adapter = require('anyfs-s3-adapter');
-var VinylFsPlugin = require('./libs/anyfs_fs_plugin');
+var FtpAdapter = require('./libs/ftp_adapter');
+var ftp = require('ftp');
 var zlib = require('zlib');
 var async = require('async');
+
 var backupFolder = './dump';
 
 setTimeout(function() {log.info('Company')}, 1);
@@ -482,41 +482,39 @@ function companyDataUpload(companyId, fileName, callback) {
             }
         });
     });*/
-    //AnyFs.addPlugin(new VinylFsPlugin());
-    var fs1 = new AnyFs(new S3Adapter({
-        key: 'appkey',
-        secret: 'appsecret',
-        token: 'token',
-    }));
 
-    var fs2 = new AnyFs(new S3Adapter({
-        key: 'appkey',
-        secret: 'appsecret',
-        token: 'token',
-    }));
+    /*var fs1 = new AnyFs(new FtpAdapter({
+        host: 'drivehq.com',
+        user: 'Eireen',
+        pass: '3462539',
+        port: '21'
+     }));*/
 
-// Copy files across filesystems(requires the vinyl-fs plugin)
-    var file = './dump/' + fileName;
-    /*fs1.src(file)
-      .pipe(fs1.dest('./ftpServer'));
-    */
-    var adapter = new FtpAdapter({
-        host: "localhost",
-        port: 1313,
+    console.log(fileName);
+    console.log('./' + backupFolder + '/' + fileName);
+    var pathFrom = './' + backupFolder + '/' + fileName;
+    var Client = require('ftp');
+
+    var c = new Client();
+    var path = '/new_dir';
+    c.on('ready', function() {
+        c.mkdir(path, true, function(err) {
+            if (err) throw err;
+            console.log('Directory successfully created!');
+            c.put(pathFrom, '/new_dir/' + fileName, function (err) {
+                if (err) throw err;
+                console.log('File successfully uploaded!');
+            });
+            c.end();
+        });
     });
-    var fs3 = new AnyFs(adapter);
-    fs3.addPlugin(new VinylFsPlugin());
 
-    fs3.src(file)
-      .pipe(fs3.dest('./ftpServer/' + fileName));
-
-    fs3.mkdir('./doc', function(err) {
-        console.log('++');
-        if (err) {
-            console.log(err);
-        } else {
-            console.log('mkdir ok');
-        }
-    });
+    var options = {
+        host: 'ftp.drivehq.com',
+        user: 'Eireen',
+        password: '3462539',
+        port: '21'
+    };
+    c.connect(options);
 }
 
