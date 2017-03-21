@@ -362,7 +362,10 @@
   color: #000;
   background: #fff;
   border: 3px #fff solid;
-  box-shadow: 0 0 0 1px #d9d9d9 inset; }
+  box-shadow: 0 0 0 1px #d9d9d9 inset;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden; }
   .custom-day-button:hover {
     border-color: #e8e8e8;
     text-decoration: none;
