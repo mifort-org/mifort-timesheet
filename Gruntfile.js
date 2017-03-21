@@ -327,7 +327,7 @@ module.exports = function (grunt) {
     });
 
     var tasks = [];
-    if (process.env.GRUNT_ENV === 'production') {
+   // if (process.env.GRUNT_ENV === 'production') {
         tasks = [
             'clean:build',
             'copy:build',
@@ -340,12 +340,12 @@ module.exports = function (grunt) {
             'notify',
             'cachebreaker',
 
-            'remove:frontend',
+            //'remove:frontend',
             'mkdir:frontend',
             'copy:dist',
             'remove:dist'
         ];
-    }
+   // }
 
     grunt.registerTask('build', tasks);
 };

@@ -106,9 +106,11 @@
                         <input ng-model="company.backupServer.pass" ng-change="saveCompany()" type="text" placeholder="Secret Key"/>
                     </td>
                     <td id="step5" ng-if="company.backupServer.type == 'ftp'">
-                        <input ng-model="company.backupServer.path" ng-change="saveCompany()" type="text" placeholder="Path"/>
-                        <input ng-model="company.backupServer.login" ng-change="saveCompany()" type="text" placeholder="Username"/>
-                        <input ng-model="company.backupServer.pass" ng-change="saveCompany()" type="text" placeholder="Password"/>
+                        <input ng-model="company.backupServer.host" ng-change="saveCompany()" type="text" placeholder="Host"/>
+                        <input ng-model="company.backupServer.port" ng-change="saveCompany()" type="text" placeholder="Port"/>
+                        <input ng-model="company.backupServer.dirName" ng-change="saveCompany()" type="text" placeholder="Directory"/>
+                        <input ng-model="company.backupServer.user" ng-change="saveCompany()" type="text" placeholder="Username"/>
+                        <input ng-model="company.backupServer.password" ng-change="saveCompany()" type="password" placeholder="Password"/>
                     </td>
                 </tr>
                 <tr>
