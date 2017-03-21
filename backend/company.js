@@ -454,67 +454,60 @@ function compressFile(fileName, callback) {
     });
 }
 
+
+
 function companyDataUpload(companyId, fileName, callback) {
-    /*db.companyCollection().findOne({_id: companyId}, function (err, company) {
-        var path = company.backupServer.path;
-        var login = company.backupServer.login;
-        var pass = company.backupServer.pass;
-        var type = company.backupServer.type;
-        var af = new anyFile();
-        var localTmp = './ftpServer';
-        var templates = {
-            s3: 's3://' + login + ':' + pass + '@s3.amazon.com/' + path + '/' + fileName,
-            ftp: 'ftp://' + login + ':' + pass + '@' + path + '/' + fileName,
-            local: backupFolder + '/' + fileName,
-            localTo: localTmp + '/' + fileName
-        };
-        af.from(templates['local']).to(templates[type], function(err, res) {
-            if (res) {
-                var today = new Date;
-                db.companyCollection().updateOne({_id: companyId}, {$set: {lastBackupDate: today}});
-                log.debug('-REST result: backup. Company: %s',
-                  companyId + " " + today);
-                callback(true);
-            } else {
-                log.debug("File not copied!");
-                log.debug(err);
-                callback(false);
-            }
-        });
-    });*/
-
-    /*var fs1 = new AnyFs(new FtpAdapter({
-        host: 'drivehq.com',
-        user: 'Eireen',
-        pass: '3462539',
-        port: '21'
-     }));*/
-
-    console.log(fileName);
-    console.log('./' + backupFolder + '/' + fileName);
-    var pathFrom = './' + backupFolder + '/' + fileName;
-    var Client = require('ftp');
-
-    var c = new Client();
-    var path = '/new_dir';
-    c.on('ready', function() {
-        c.mkdir(path, true, function(err) {
-            if (err) throw err;
-            console.log('Directory successfully created!');
-            c.put(pathFrom, '/new_dir/' + fileName, function (err) {
-                if (err) throw err;
-                console.log('File successfully uploaded!');
-            });
-            c.end();
-        });
-    });
-
+  db.companyCollection().findOne({_id: companyId}, function (err, company) {
+    if (err) {
+      throw err;
+    }
     var options = {
-        host: 'ftp.drivehq.com',
-        user: 'Eireen',
-        password: '3462539',
-        port: '21'
+      host: company.backupServer.host,
+      user: company.backupServer.user,
+      password: company.backupServer.password,
+      port: company.backupServer.port || 21,
+      dirName: company.backupServer.dirName
     };
-    c.connect(options);
+    ftpUpload(options, fileName)
+  });
+
+}
+
+function ftpUpload(options, fileName) {
+  console.log(fileName);
+  console.log(backupFolder + '/' + fileName);
+  var pathFrom = backupFolder + '/' + fileName;
+  var ftpClient = require('ftp');
+  var client = new ftpClient();
+  var dirName = options.dirName;
+
+  console.log(options);
+  console.log(fileName);
+
+
+  client.on('ready', function() {
+    client.mkdir('/' + dirName, true, function(err) {
+      if (err) throw err;
+      console.log('Directory successfully created!');
+      var pathTo = '/' + dirName + '/' + fileName;
+      pathFrom = './dump/2017-03-21T09-48.txt';
+      pathTo = '/doc/2017-03-21T09-48.txt';
+      console.log(pathFrom);
+      console.log(pathTo);
+      client.put(pathFrom, pathTo, function (err) {
+        if (err) throw err;
+        console.log('File successfully uploaded!');
+      });
+      client.end();
+    });
+  });
+
+  /*var options = {
+   host: 'ftp.drivehq.com',
+   user: 'Eireen',
+   password: '3462539',
+   port: '21'
+   };*/
+  client.connect(options);
 }
 
