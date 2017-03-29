@@ -58,7 +58,7 @@
             </thead>
             <tbody>
             <tr ng-if="currentPeriodIndex >= 0"
-                ng-repeat="log in filteredLogs | orderBy:'date' track by $index"
+                ng-repeat="log in filteredLogs track by $index"
                 ng-style="{background: log.color}"
                 ng-class="{'is-today': isToday(log.date),
                            'is-last-todays-record': isLastTodaysRecord(projects[0].periods[currentPeriodIndex].timesheet, $index)}">
