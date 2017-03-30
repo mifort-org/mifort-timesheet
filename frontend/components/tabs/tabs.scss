@@ -76,7 +76,9 @@
             padding: 17px 25px;
             color: #000;
             display: block;
-
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
             &:hover{
                 background: #eaeff7;
                 border-bottom-color: #eee;

@@ -65,7 +65,10 @@
       margin-right: 0;
       padding: 17px 25px;
       color: #000;
-      display: block; }
+      display: block;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis; }
       .tabs-left li div:hover {
         background: #eaeff7;
         border-bottom-color: #eee; }
