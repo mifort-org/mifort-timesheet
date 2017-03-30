@@ -50,16 +50,10 @@ angular.module('mifortTimesheet')
                         (indexOfDot > -1 && event.key == '.')) {
                         event.preventDefault(); //stop character from entering input
                     }
-                });
-                input.onkeypress = function(e) {
-                    e = e || event;
-                    if (e.ctrlKey || e.altKey || e.metaKey) return;
-                    var chr = getChar(e);
-                    if (chr == null) return;
-                    if (chr < '0' || chr > '9') {
+                    if (event.keyCode==32) {
                         return false;
                     }
-                }
+                });
             },
             templateUrl: function (element) {
                 var activeTemplate;
