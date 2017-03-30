@@ -97,6 +97,11 @@ angular.module('mifortTimesheet', [
                 return topPanelService.isVisibleLink(linkName);
             };
 
+            $scope.openHomePage = function() {
+                $location.url($location.path());
+                $location.path('/timesheet');
+            };
+
             $scope.logout = function() {
                 preferences.clear();
 
