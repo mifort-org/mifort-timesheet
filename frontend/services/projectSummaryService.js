@@ -26,11 +26,10 @@ angular.module('mifortTimesheet.timesheet').factory('projectSummaryService',
 
         self.getLoggedTime = function (projectId, logs) {
             if (!projectId) return 0;
-
             var total = 0;
             var logs = _.filter(logs, {projectId: projectId});
             logs.forEach(function (log) {
-                if (log.time) {
+                if (log.time && (Number(log.time) > 0)) {
                     total += +log.time;
                 }
             });
@@ -39,9 +38,8 @@ angular.module('mifortTimesheet.timesheet').factory('projectSummaryService',
 
         self.getTotalLoggedTime = function (logs) {
             var total = 0;
-
             logs.forEach(function (log) {
-                if (log.time) {
+                if (log.time  && (Number(log.time) > 0)) {
                     total += self.formatTime(log.time);
                 }
             });

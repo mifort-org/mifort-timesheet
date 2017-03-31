@@ -24,6 +24,7 @@ angular.module('mifortTimesheet')
                 var input = element.find('input');
                 var timePlaceholder = '';
                 var hoursInput = element.find('.timesheet-hours');
+
                 input.on('blur', function(){
                     var time = $(this).val();
 
@@ -54,13 +55,12 @@ angular.module('mifortTimesheet')
                         return false;
                     }
                 });
-               /* hoursInput.on('cut copy paste', function(event) {
-                    console.log($(this).val());
-                    if(parseInt($(this).val()) < 0) {
-                        return false;
-                    }
-                });*/
-
+                hoursInput.on('input',function(event) {
+                   if(+$(this).val() < 0) {
+                       scope.log.time = '';
+                       $(this).val('');
+                   }
+                });
             },
             templateUrl: function (element) {
                 var activeTemplate;
