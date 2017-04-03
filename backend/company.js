@@ -203,9 +203,10 @@ function setBackupSchedule (companyId, period) {
        log.info('day: ' + day);
        log.info('weekDay: ' + weekDay);
        log.info('hour: ' + hour);
+       log.info('period: ' + period);
 
        var periods = {
-           month: function () {/*set('0 * * * * *'); */set('0 '+ hour + ' ' + day + ' * *');},
+           month: function () {/*set('0 * * * * *');*/ set('0 '+ hour + ' ' + day + ' * *');},
            week: function () {/*set('30 * * * * *'); */set('0 '+ hour + ' * * ' + weekDay);},
            none: clear
        };
@@ -357,7 +358,7 @@ function isWeekend(date) {
 function companyDataToFile (companyId, callback) {
     var today = new Date;
     today = today.toISOString().match(/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}/)[0].replace(/:/, '-');
-    var fileName = today + '.txt';
+    var fileName = companyId + '-' + today + '.txt';
     var file = backupFolder + '/' + fileName;
     fs.writeFile(file, '', function(err) {
         if(err) {
@@ -472,7 +473,7 @@ function companyDataUpload(companyId, fileName, callback) {
         bucket: company.backupServer.path,
         accessKey: company.backupServer.login,
         secretKey: company.backupServer.pass,
-        dirName: company.backupServer.dirName,
+        dirName: company.backupServer.dirName + (company.backupServer.dirName ? '/' : ''),
         region: company.backupServer.region
       };
       s3Upload(options, fileName, callback);
@@ -535,7 +536,7 @@ function s3Upload(options, fileName, callback) {
     localFile: './dump/' + fileName,
     s3Params: {
       Bucket: options.bucket,
-      Key: options.dirName + '/' + fileName
+      Key: options.dirName + fileName
     }
   };
   var uploader = client.uploadFile(uploadParameters);
