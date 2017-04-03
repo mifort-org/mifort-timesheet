@@ -98,10 +98,12 @@
                         <label for="ftp-server">FTP server</label>
                     </td>
                 </tr>
-                <tr>
+                <tr ng-model-options="{ debounce: 200 }">
                     <td></td>
                     <td id="step5" ng-if="company.backupServer.type == 's3'">
                         <input ng-model="company.backupServer.path" ng-change="saveCompany()" type="text" placeholder="Bucket"/>
+                        <input ng-model="company.backupServer.region" ng-change="saveCompany()" type="text" placeholder="Region"/>
+                        <input ng-model="company.backupServer.dirName" ng-change="saveCompany()" type="text" placeholder="Directory"/>
                         <input ng-model="company.backupServer.login" ng-change="saveCompany()" type="text" placeholder="Access Key"/>
                         <input ng-model="company.backupServer.pass" ng-change="saveCompany()" type="text" placeholder="Secret Key"/>
                     </td>

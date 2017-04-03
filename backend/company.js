@@ -26,14 +26,12 @@ var log = require('./libs/logger');
 var constants = require('./libs/config_constants');
 var mail = require('./libs/mail');
 var u = require("underscore");
-var backup = require('mongodb-backup');
 var schedule = require('node-schedule');
 var fs = require('fs');
-var AnyFs = require('anyfs');
-var FtpAdapter = require('./libs/ftp_adapter');
-var ftp = require('ftp');
 var zlib = require('zlib');
 var async = require('async');
+var s3 = require('s3');
+var AWS = require('aws-sdk');
 
 var backupFolder = './dump';
 
@@ -177,7 +175,7 @@ exports.companyBackup  = function (req, res, next) {
     var companyId = utils.getCompanyId(req);
     log.debug('-REST call: Find company by id. Company id: %s', companyId.toHexString());
     companyDataToFile(companyId, function (fileName) {
-        success = companyDataUpload(companyId, fileName, function (uploaded) {
+        companyDataUpload(companyId, fileName, function (uploaded) {
             if (uploaded === false) {
                 res.status(400).json({msg: 'Data wasn\'t saved to server'});
             } else {
@@ -223,12 +221,12 @@ function setBackupSchedule (companyId, period) {
            log.debug('setSchedule: ' + time);
            backupSchedule[companyId] = schedule.scheduleJob(time, function(){
                companyDataToFile(companyId, function (fileName) {
-                   companyDataUpload(companyId, fileName);
+                   companyDataUpload(companyId, fileName, function (){});
                });
            });
        }
    });
-};
+}
 
 //private part
 function findById(id, callback) {
@@ -454,26 +452,35 @@ function compressFile(fileName, callback) {
     });
 }
 
-
-
 function companyDataUpload(companyId, fileName, callback) {
   db.companyCollection().findOne({_id: companyId}, function (err, company) {
     if (err) {
       throw err;
     }
-    var options = {
-      host: company.backupServer.host,
-      user: company.backupServer.user,
-      password: company.backupServer.password,
-      port: company.backupServer.port || 21,
-      dirName: company.backupServer.dirName
-    };
-    ftpUpload(options, fileName)
+    var options;
+    if (company.backupServer.type === 'ftp') {
+      options = {
+        host: company.backupServer.host,
+        user: company.backupServer.user,
+        password: company.backupServer.password,
+        port: company.backupServer.port || 21,
+        dirName: company.backupServer.dirName
+      };
+      ftpUpload(options, fileName, callback);
+    } else if (company.backupServer.type === 's3') {
+      options = {
+        bucket: company.backupServer.path,
+        accessKey: company.backupServer.login,
+        secretKey: company.backupServer.pass,
+        dirName: company.backupServer.dirName,
+        region: company.backupServer.region
+      };
+      s3Upload(options, fileName, callback);
+    }
   });
-
 }
 
-function ftpUpload(options, fileName) {
+function ftpUpload(options, fileName, callback) {
   console.log(fileName);
   console.log(backupFolder + '/' + fileName);
   var pathFrom = backupFolder + '/' + fileName;
@@ -495,8 +502,12 @@ function ftpUpload(options, fileName) {
       console.log(pathFrom);
       console.log(pathTo);
       client.put(pathFrom, pathTo, function (err) {
-        if (err) throw err;
+        if (err) {
+          log.error(err);
+          return callback(false);
+        }
         console.log('File successfully uploaded!');
+        callback(true);
       });
       client.end();
     });
@@ -511,3 +522,29 @@ function ftpUpload(options, fileName) {
   client.connect(options);
 }
 
+function s3Upload(options, fileName, callback) {
+  var awsS3Client = new AWS.S3({
+    accessKeyId: options.accessKey,
+    secretAccessKey: options.secretKey,
+    region: options.region
+  });
+  var client = s3.createClient({
+    s3Client: awsS3Client
+  });
+  var uploadParameters = {
+    localFile: './dump/' + fileName,
+    s3Params: {
+      Bucket: options.bucket,
+      Key: options.dirName + '/' + fileName
+    }
+  };
+  var uploader = client.uploadFile(uploadParameters);
+  uploader.on('error', function(err) {
+    log.error("Unable to upload " + fileName + ":", err.stack);
+    callback(false);
+  });
+  uploader.on('end', function() {
+    log.info("Upload completed for " + fileName);
+    callback(true);
+  });
+}
