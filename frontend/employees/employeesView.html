@@ -130,7 +130,7 @@
 
                 {{groupedAssignment[0].projectName}}
                 <span ng-repeat="assignment in groupedAssignment">
-                    <span ng-if="assignment.workload" class="pull-right employee-workload">{{assignment.workload}}h</span>
+                    <span ng-if="assignment.workload" class="pull-right employee-workload">{{+assignment.workload}}h</span>
                     <br/>
                 </span>
 
