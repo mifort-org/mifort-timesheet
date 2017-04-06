@@ -802,6 +802,18 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                     $location.path('/report');
                 }
             };
-
+            $scope.readyForApprove = function() {
+                var dates = $scope.getSortedLogs();
+                var timesheetToSave = angular.copy(dates);
+                timesheetToSave.forEach(function(object) {
+                    object.readyForApprove = true;
+                });
+                var logsToDelete = angular.copy($scope.getLogsToDelete());
+                timesheetService.updateTimesheet(user._id, timesheetToSave, logsToDelete).success(function (data) {
+                    Notification.success('Changes saved');
+                }).error(function () {
+                    Notification.error('Changes not saved');
+                });
+            };
 
         }]);
