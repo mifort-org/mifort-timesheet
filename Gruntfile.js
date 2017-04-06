@@ -96,7 +96,8 @@ module.exports = function (grunt) {
                         'frontend/timesheet/timesheet.css',
                         'frontend/calendar/calendar.css',
                         'frontend/report/report.css',
-                        'frontend/employees/employees.css'
+                        'frontend/employees/employees.css',
+                        'frontend/employees/employeesReport.css'
                     ],
                     'dist/styles/print.css': [
                         'frontend/common/sass/print.css'
@@ -143,7 +144,10 @@ module.exports = function (grunt) {
                     'frontend/report/reportController.js',
                     'frontend/report/reportService.js',
                     'frontend/employees/employeesController.js',
-                    'frontend/employees/employeesService.js'
+                    'frontend/employees/employeesService.js',
+                    'frontend/employees/employeesReportController.js',
+                    'frontend/employees/employeesReportService.js'
+
                 ],
                 dest: 'dist/scripts/scripts.js'
             },
