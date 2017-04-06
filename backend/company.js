@@ -428,8 +428,7 @@ function collectDataToString(collectionName, query, file, callback) {
         } else {
             var str = '{' + collectionName + ': [';
             for (var i = 0; i < result.length; i++) {
-                var data = JSON.stringify(result[i]);
-                str += data;
+                str += JSON.stringify(result[i]);
                 if (i + 1 !== result.length) {
                     str += ',';
                 }
@@ -449,6 +448,7 @@ function compressFile(fileName, callback) {
     var stream = inp.pipe(gzip).pipe(out);
     stream.on('finish', function () {
         log.info('The File compressed! New file name: ' + newFileName);
+        deleteDumpFile(fileName);
         callback(null, newFileName);
     });
 }
@@ -482,44 +482,29 @@ function companyDataUpload(companyId, fileName, callback) {
 }
 
 function ftpUpload(options, fileName, callback) {
-  console.log(fileName);
-  console.log(backupFolder + '/' + fileName);
   var pathFrom = backupFolder + '/' + fileName;
   var ftpClient = require('ftp');
   var client = new ftpClient();
   var dirName = options.dirName;
-
-  console.log(options);
-  console.log(fileName);
-
 
   client.on('ready', function() {
     client.mkdir('/' + dirName, true, function(err) {
       if (err) throw err;
       console.log('Directory successfully created!');
       var pathTo = '/' + dirName + '/' + fileName;
-      pathFrom = './dump/2017-03-21T09-48.txt';
-      pathTo = '/doc/2017-03-21T09-48.txt';
-      console.log(pathFrom);
-      console.log(pathTo);
       client.put(pathFrom, pathTo, function (err) {
         if (err) {
           log.error(err);
           return callback(false);
         }
         console.log('File successfully uploaded!');
+        deleteDumpFile(fileName);
         callback(true);
       });
       client.end();
     });
   });
 
-  /*var options = {
-   host: 'ftp.drivehq.com',
-   user: 'Eireen',
-   password: '3462539',
-   port: '21'
-   };*/
   client.connect(options);
 }
 
@@ -533,7 +518,7 @@ function s3Upload(options, fileName, callback) {
     s3Client: awsS3Client
   });
   var uploadParameters = {
-    localFile: './dump/' + fileName,
+    localFile: backupFolder + '/' + fileName,
     s3Params: {
       Bucket: options.bucket,
       Key: options.dirName + fileName
@@ -546,6 +531,30 @@ function s3Upload(options, fileName, callback) {
   });
   uploader.on('end', function() {
     log.info("Upload completed for " + fileName);
+    deleteDumpFile(fileName);
     callback(true);
+  });
+}
+
+exports.companyExport  = function (req, res, next) {
+  var companyId = utils.getCompanyId(req);
+  log.debug('-REST call: Export company logs. Company id: %s', companyId.toHexString());
+  companyDataToFile(companyId, function (fileName) {
+    res.download(backupFolder + '/' +fileName, function(err) {
+      if (err) {
+        log.warn('Company export failed, companyId: %s', companyId);
+      }
+      log.info('Company export successful, companyId: %s', companyId);
+      deleteDumpFile(fileName);
+    });
+  });
+};
+
+function deleteDumpFile(fileName) {
+  fs.unlink(backupFolder + '/' + fileName, function(err) {
+    if (err) {
+      log.warn('Dump file deletion failed, fileName: %s', fileName);
+    }
+    log.info('Dump file deleted, fileName: %s', fileName);
   });
 }

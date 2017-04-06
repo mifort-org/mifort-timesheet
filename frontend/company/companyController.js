@@ -30,8 +30,8 @@ angular.module('mifortTimesheet.company', ['ngRoute'])
         });
     }])
 
-    .controller('companyController', ['$scope', '$location', 'companyService', 'preferences', '$rootScope', 'Notification',
-        function ($scope, $location, companyService, preferences, $rootScope, Notification) {
+    .controller('companyController', ['$scope', '$location', '$window', 'companyService', 'preferences', '$rootScope', 'Notification',
+        function ($scope, $location, $window, companyService, preferences, $rootScope, Notification) {
         $scope.user = preferences.get('user');
 
         $scope.company = {
@@ -140,6 +140,12 @@ angular.module('mifortTimesheet.company', ['ngRoute'])
             };
             companyService.companyBackup($scope.user.companyId, body).success(function () {
                 Notification.success('Successful backup');
+            });
+        };
+
+        $scope.companyExport = function(e) {
+            companyService.companyExport($scope.user.companyId).then(function () {
+                Notification.success('Successful export');
             });
         };
 

@@ -17,7 +17,7 @@
 'use strict';
 
 angular.module('mifortTimesheet.company').factory('companyService',
-    ['$http', function($http) {
+    ['$http', '$window', '$q', function($http, $window, $q) {
         return {
             createCompany: function(company) {
                 return $http.put('api/v1/company', company);
@@ -39,6 +39,9 @@ angular.module('mifortTimesheet.company').factory('companyService',
             },
             companyBackup: function(companyId, serverParams) {
                 return $http.post('api/v1/company/backup/' + companyId, serverParams);
+            },
+            companyExport: function(companyId) {
+                return $q.resolve($window.location = 'api/v1/company/export/' + companyId);
             }
         };
     }

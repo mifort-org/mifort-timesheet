@@ -120,6 +120,10 @@ companyRouter.post('/backup/:companyId',
         validators.validateBackupCompanyById,
         authorization.authorizeGetCompanyById,
         company.companyBackup);
+companyRouter.get('/export/:companyId',
+        validators.validateBackupCompanyById,
+        authorization.authorizeGetCompanyById,
+        company.companyExport);
 
 //report
 var report = require('./report');
