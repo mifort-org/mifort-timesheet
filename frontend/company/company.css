@@ -88,12 +88,43 @@
     margin-bottom: 25px;
     padding: 10px 15px;
     border: 1px #e0e4ec solid; }
+  .company-wrapper span.dropdown.region-select {
+    width: 70%;
+    height: 38px;
+    margin-bottom: 25px;
+    border: 1px #e0e4ec solid; }
   .company-wrapper textarea {
     min-height: 120px;
     line-height: 1.2;
     resize: vertical; }
   .company-wrapper button {
     margin-bottom: 25px; }
+  .company-wrapper .backup-cell {
+    position: relative; }
+    .company-wrapper .backup-cell input[type='radio'] {
+      min-width: auto;
+      width: 25px;
+      height: 25px;
+      display: inline-block; }
+    .company-wrapper .backup-cell label {
+      padding: 7px;
+      cursor: pointer;
+      margin-top: 0; }
+    .company-wrapper .backup-cell button {
+      margin: 20px 0; }
+  .company-wrapper .pre-backup-cell {
+    position: relative; }
+    .company-wrapper .pre-backup-cell input[type='checkbox'] {
+      min-width: auto;
+      width: 25px;
+      height: 25px;
+      display: inline-block; }
+    .company-wrapper .pre-backup-cell label {
+      padding: 7px;
+      cursor: pointer;
+      margin-top: 0; }
+    .company-wrapper .pre-backup-cell button {
+      margin-bottom: 20px; }
 
 .remove-role {
   position: absolute;

@@ -189,44 +189,27 @@ exports.companyBackup  = function (req, res, next) {
 var backupSchedule = {};
 
 function setBackupSchedule (companyId, period) {
-   db.companyCollection().findOne({_id: companyId}, function (err, doc) {
-       var start;
-       if (doc.lastBackupDate) {
-           start = doc.lastBackupDate;
-       } else {
-           start = new Date;
-       }
-       log.info('start: ' + start);
-       var weekDay = start.getDay();
-       var day = start.getDate();
-       var hour = start.getHours();
-       log.info('day: ' + day);
-       log.info('weekDay: ' + weekDay);
-       log.info('hour: ' + hour);
-       log.info('period: ' + period);
+    var periods = {
+        month: function () {set('0 0 1 * *');},
+        week: function () {set('0 0 * * 0');},
+        none: clear
+    };
+    periods[period]();
 
-       var periods = {
-           month: function () {/*set('0 * * * * *');*/ set('0 '+ hour + ' ' + day + ' * *');},
-           week: function () {/*set('30 * * * * *'); */set('0 '+ hour + ' * * ' + weekDay);},
-           none: clear
-       };
-       periods[period]();
-
-       function clear() {
-           if (backupSchedule[companyId]) {
-               backupSchedule[companyId].cancel();
-           }
-       }
-       function set (time) {
-           clear();
-           log.debug('setSchedule: ' + time);
-           backupSchedule[companyId] = schedule.scheduleJob(time, function(){
-               companyDataToFile(companyId, function (fileName) {
-                   companyDataUpload(companyId, fileName, function (){});
-               });
-           });
-       }
-   });
+    function clear() {
+        if (backupSchedule[companyId]) {
+            backupSchedule[companyId].cancel();
+        }
+    }
+    function set (time) {
+        clear();
+        log.debug('setSchedule: ' + time);
+        backupSchedule[companyId] = schedule.scheduleJob(time, function(){
+            companyDataToFile(companyId, function (fileName) {
+                companyDataUpload(companyId, fileName, function (){});
+            });
+        });
+    }
 }
 
 //private part
@@ -358,41 +341,46 @@ function isWeekend(date) {
 function companyDataToFile (companyId, callback) {
     var today = new Date;
     today = today.toISOString().match(/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}/)[0].replace(/:/, '-');
-    var fileName = companyId + '-' + today + '.txt';
-    var file = backupFolder + '/' + fileName;
-    fs.writeFile(file, '', function(err) {
+    db.companyCollection().findOne({_id: {$eq: companyId}}, function (err, company) {
+      if (err) {
+        throw err;
+      }
+      var fileName = company.name + '_' + today + '.txt';
+      var file = backupFolder + '/' + fileName;
+      fs.writeFile(file, '', function(err) {
         if(err) {
-            throw err;
+          throw err;
         }
         async.waterfall([
-            function (callback) {
-                collectDataToString('company', {_id: companyId}, file, callback);
-            },
-            addDataToFile,
-            function (callback) {
-                collectDataToString('project', {companyId: {$eq: companyId}}, file, callback);
-            },
-            addDataToFile,
-            function (callback) {
-                collectDataToString('user', {companyId: {$eq: companyId}}, file, callback);
-            },
-            addDataToFile,
-            function(callback) {
-                getCompanyProjects(file, callback);
-            },
-            function (projects, callback) {
-                collectDataToString('timelog', {projectId: {$in: projects}}, file, callback)
-            },
-            addDataToFile,
-            function(callback) {
-                compressFile(fileName, callback)
-            }
+          function (callback) {
+            collectDataToString('company', {_id: companyId}, file, callback);
+          },
+          addDataToFile,
+          function (callback) {
+            collectDataToString('project', {companyId: {$eq: companyId}}, file, callback);
+          },
+          addDataToFile,
+          function (callback) {
+            collectDataToString('user', {companyId: {$eq: companyId}}, file, callback);
+          },
+          addDataToFile,
+          function(callback) {
+            getCompanyProjects(file, callback);
+          },
+          function (projects, callback) {
+            collectDataToString('timelog', {projectId: {$in: projects}}, file, callback)
+          },
+          addDataToFile,
+          function(callback) {
+            compressFile(fileName, callback)
+          }
         ], function (err, fileName) {
-                if (err) {
-                    throw err;
-                }
-            callback(fileName);
+          if (err) {
+            throw err;
+          }
+          callback(fileName);
         });
+      });
     });
 }
 
@@ -474,7 +462,7 @@ function companyDataUpload(companyId, fileName, callback) {
         accessKey: company.backupServer.login,
         secretKey: company.backupServer.pass,
         dirName: company.backupServer.dirName + (company.backupServer.dirName ? '/' : ''),
-        region: company.backupServer.region
+        region: company.backupServer.region.endpoint
       };
       s3Upload(options, fileName, callback);
     }

@@ -34,6 +34,21 @@ angular.module('mifortTimesheet.company', ['ngRoute'])
         function ($scope, $location, $window, companyService, preferences, $rootScope, Notification) {
         $scope.user = preferences.get('user');
 
+        $scope.s3Regions = [
+            { name: 'US East (N. Virginia)', endpoint: 'us-east-1' },
+            { name: 'US East (Ohio)', endpoint: 'us-east-2' },
+            { name: 'US West (N. California)', endpoint: 'us-west-1' },
+            { name: 'US West (Oregon)', endpoint: 'us-west-2' },
+            { name: 'Asia Pacific (Mumbai)', endpoint: 'ap-south-1' },
+            { name: 'Asia Pacific (Seoul)', endpoint: 'ap-northeast-2' },
+            { name: 'Asia Pacific (Singapore)', endpoint: 'ap-southeast-1' },
+            { name: 'Asia Pacific (Sydney)', endpoint: 'ap-southeast-2' },
+            { name: 'Asia Pacific (Tokyo)', endpoint: 'ap-northeast-1' },
+            { name: 'EU (Frankfurt)', endpoint: 'eu-central-1' },
+            { name: 'EU (Ireland)', endpoint: 'eu-west-1' },
+            { name: 'EU (London)', endpoint: 'eu-west-2' },
+        ];
+
         $scope.company = {
             name: null,
             emails: [],
@@ -163,6 +178,11 @@ angular.module('mifortTimesheet.company', ['ngRoute'])
             companyService.removeEmployee(employee._id).success(function() {
                 Notification.success('Changes saved');
             });
+        };
+
+        $scope.setS3Region = function(region) {
+            $scope.company.backupServer.region = region;
+            $scope.saveCompany();
         };
 
         $scope.$watch('company.emails', function (newValue) {

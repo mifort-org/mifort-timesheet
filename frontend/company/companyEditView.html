@@ -89,6 +89,26 @@
                 <tbody>
                 <tr>
                     <td>
+                        <label>Backup</label>
+                    </td>
+                    <td class="pre-backup-cell">
+                        <input type="checkbox" ng-model="backupInfoVisible">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Export company record</label>
+                    </td>
+                    <td class="pre-backup-cell">
+                        <button ng-click="companyExport()" class="primary-button large-button">Export</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <table ng-if="backupInfoVisible">
+                <tbody>
+                <tr>
+                    <td>
                         <label>Backup server</label>
                     </td>
                     <td class="backup-cell">
@@ -102,7 +122,16 @@
                     <td></td>
                     <td id="step5" ng-if="company.backupServer.type == 's3'">
                         <input ng-model="company.backupServer.path" ng-change="saveCompany()" type="text" placeholder="Bucket"/>
-                        <input ng-model="company.backupServer.region" ng-change="saveCompany()" type="text" placeholder="Region"/>
+                        <span class="blank-dropdown blank-dropdown-small region-select" uib-dropdown on-toggle="toggled(open)">
+                            <a href id="simple-dropdown" uib-dropdown-toggle>
+                                {{company.backupServer.region.name}}
+                            </a>
+                            <ul uib-dropdown-menu aria-labelledby="simple-dropdown">
+                                <li ng-repeat="region in s3Regions">
+                                    <a href ng-click="setS3Region(region)">{{region.name}}</a>
+                                </li>
+                            </ul>
+                        </span>
                         <input ng-model="company.backupServer.dirName" ng-change="saveCompany()" type="text" placeholder="Directory"/>
                         <input ng-model="company.backupServer.login" ng-change="saveCompany()" type="text" placeholder="Access Key"/>
                         <input ng-model="company.backupServer.pass" ng-change="saveCompany()" type="password" placeholder="Secret Key"/>
@@ -127,7 +156,6 @@
                         <input type="radio" id="no-backup" name="backup" value="none" class="primary-button" ng-model="company.backupFrequency" ng-change="saveCompany()" checked />
                         <label for="no-backup">Never</label><br/>
                         <button ng-click="companyBackupNow()" class="primary-button large-button">Backup now</button>
-                        <button ng-click="companyExport()" class="primary-button large-button">Export logs</button>
                     </td>
                 </tr>
                 </tbody>

@@ -127,6 +127,13 @@
         border: 1px #e0e4ec solid;
     }
 
+    span.dropdown.region-select{
+        width: 70%;
+        height: 38px;
+        margin-bottom: 25px;
+        border: 1px #e0e4ec solid;
+    }
+
     textarea{
         min-height: 120px;
         line-height: 1.2;
@@ -150,7 +157,24 @@
             margin-top: 0;
         }
         button {
-            margin-top: 20px;
+            margin: 20px 0;
+        }
+    }
+    .pre-backup-cell {
+        position: relative;
+        input[type='checkbox'] {
+            min-width: auto;
+            width: 25px;
+            height: 25px;
+            display: inline-block
+        }
+        label {
+            padding: 7px;
+            cursor: pointer;
+            margin-top: 0;
+        }
+        button {
+            margin-bottom: 20px;
         }
     }
 }
