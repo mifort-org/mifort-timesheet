@@ -118,18 +118,6 @@ angular.module('mifortTimesheet.employeesReport').factory('employeesReportServic
                 filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" col-name="time" col-title="Time"></span></div>',
                 cellTemplate: '<div class="report-time-cell">{{row.entity[col.field]}}</div>'
             },
-            timer: {
-                field: 'timer',
-                width: 82,
-                minWidth: 82,
-                headerCellClass: 'time-header',
-                paddingRight: 0,
-                enableColumnResizing: true,
-                enableColumnMenu: false,
-                enableFiltering: false,
-                filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" col-name="time" col-title="Timer"></span></div>',
-                cellTemplate: '<div class="report-time-cell">{{row.entity[col.field]}}</div>'
-            },
             comment: {
                 field: 'comment',
                 enableColumnResizing: true,
