@@ -136,6 +136,56 @@ angular.module('mifortTimesheet.employeesReport').factory('employeesReportServic
                 filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" col-name="time" col-title="Comments"></span></div>',
                 cellTemplate: '<span cutted-comment></span>'
             }
+
+        };
+        self.employeeColuns = {
+            actualTime: {
+                field: 'actualTime',
+                width: 200,
+                minWidth: 200,
+                headerCellClass: 'time-header',
+                paddingRight: 0,
+                enableColumnResizing: true,
+                enableColumnMenu: false,
+                enableFiltering: false,
+                filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" col-name="actualTime" col-title="ActualTime"></span></div>',
+                cellTemplate: '<div class="report-time-cell">{{row.entity[col.field]}}</div>'
+            },
+
+            expectedTime: {
+                field: 'expectedTime',
+                width: 200,
+                minWidth: 200,
+                headerCellClass: 'time-header',
+                paddingRight: 0,
+                enableColumnResizing: true,
+                enableColumnMenu: false,
+                enableFiltering: false,
+                filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" col-name="expectedTime" col-title="expectedTime"></span></div>',
+                cellTemplate: '<div class="report-time-cell">{{row.entity[col.field]}}</div>'
+            },
+            status: {
+                field: 'status',
+                width: 200,
+                minWidth: 200,
+                headerCellClass: 'time-header',
+                paddingRight: 0,
+                enableColumnResizing: true,
+                enableColumnMenu: false,
+                enableFiltering: false,
+                filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" col-name="status" col-title="status"></span></div>',
+                cellTemplate: '<div class="report-time-cell">{{row.entity[col.field]}}</div>'
+            },
+            comments: {
+                field: 'comments',
+                enableColumnResizing: true,
+                enableColumnMenu: false,
+                enableSorting: false,
+                enableFiltering: false,
+                filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" col-name="time" col-title="Comments"></span></div>',
+                cellTemplate: '<span cutted-comment></span>'
+            }
+
         };
         self.introSteps = [
             {
