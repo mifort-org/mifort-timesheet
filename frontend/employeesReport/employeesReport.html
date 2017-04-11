@@ -14,16 +14,6 @@
   limitations under the License.
 -->
 
-<div ng-if="userIsManager" id="step2" class="aggregation-wrapper">
-    <span class="aggregation-label">Aggregation by:</span>
-
-    <ul class="aggregation-options">
-        <li ng-repeat="report in reports">
-            <a ng-class="{'active': report.active}" ng-click="changeActiveReport($index)" href="">{{report.title}}</a>
-        </li>
-    </ul>
-</div>
-
 <div class="report-wrapper">
     <div class="form-group clearfix">
         <span id="step3" class="aggregation-controls-wrapper">

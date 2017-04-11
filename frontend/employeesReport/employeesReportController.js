@@ -279,10 +279,6 @@ angular.module('mifortTimesheet.employeesReport', ['ngRoute'])
                                 console.log(employeesReportService.employeeColuns[columnEmpoyee]);
                                 $scope.timesheetGridOptions.columnDefs.push(employeesReportService.employeeColuns[columnEmpoyee]);
                             }
-                           /* $scope.timesheetGridOptions.columnDefs.push(employeesReportService.employeeColuns.actualTime);
-                            $scope.timesheetGridOptions.columnDefs.push(employeesReportService.employeeColuns.expectedTime);
-                            $scope.timesheetGridOptions.columnDefs.push(employeesReportService.employeeColuns.status);
-                            $scope.timesheetGridOptions.columnDefs.push(employeesReportService.employeeColuns.comments);*/
                         }
 
                         $scope.gridHeight = {

@@ -139,6 +139,21 @@ angular.module('mifortTimesheet.employeesReport').factory('employeesReportServic
 
         };
         self.employeeColuns = {
+            userName: {
+                field: 'userName',
+                displayName: 'Employee Name',
+                minWidth: 190,
+                width: 190,
+                headerCellClass: 'name-header',
+                enableColumnResizing: true,
+                enableColumnMenu: false,
+                filterHeaderTemplate: '<div ng-if="$parent.grid.appScope.userIsManager" class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" col-name="users" col-title="Employee Name"></span></div>',
+                cellTemplate: '<div class="ui-grid-cell-contents">' +
+                '<a href="" ng-if="$parent.grid.appScope.userIsManager" ng-click="$parent.grid.appScope.editEmployeeTimesheet(row.entity.userName)">{{row.entity.userName}}</a>' +
+                '<span ng-if="!$parent.grid.appScope.userIsManager">{{row.entity.userName}}</span>' +
+                '</div>',
+                headerCellTemplate: self.getHeaderTemplate('<span ng-if="$parent.grid.appScope.userIsManager" class="header-filter ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" col-name="users" col-title="Employee Name"></span></span>')
+            },
             actualTime: {
                 field: 'actualTime',
                 width: 200,
