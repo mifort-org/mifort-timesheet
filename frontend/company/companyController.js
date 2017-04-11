@@ -111,9 +111,19 @@ angular.module('mifortTimesheet.company', ['ngRoute'])
         };
 
         $scope.changeRole = function(employee, role) {
-            employee. role = role;
-            companyService.changeRole(employee).success(function() {
-                Notification.success('Changes saved');
+            if (employee.role == role) {return;}
+
+            var owners = $scope.companyEmployees.filter(function (emp) {
+              return emp.role == 'Owner'
+            });
+
+            if(owners.length <= 1 && employee.role == 'Owner'){
+              return Notification.error('Company should have at least one owner');
+            }
+
+            companyService.changeRole({_id: employee._id, role: role}).success(function () {
+              employee.role = role;
+              Notification.success('Changes saved');
             });
         };
 

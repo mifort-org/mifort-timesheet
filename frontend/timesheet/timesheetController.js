@@ -49,6 +49,8 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
 
             loginService.getUser($scope.customUserId).success(function (loggedUser) {
                 if (loggedUser) {
+                    preferences.set('user', loggedUser);
+
                     $scope.loading = true;
 
                     var uniqueProjectAssignments = [],

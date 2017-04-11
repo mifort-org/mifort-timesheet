@@ -74,11 +74,13 @@ angular.module('mifortTimesheet', [
                 }
 
                 $rootScope.isLoggedIn = true;
-                projectsService.getProjects(user.companyId).success(function(projects) {
-                    if (projects.length) {
-                        $scope.projects = projects;
-                    }
-                });
+                if (user.role === 'Owner' || user.role === 'Manager') {
+                    projectsService.getProjects(user.companyId).success(function(projects) {
+                        if (projects.length) {
+                            $scope.projects = projects;
+                        }
+                    });
+                }
             }
             else{
                 $location.path('login');
