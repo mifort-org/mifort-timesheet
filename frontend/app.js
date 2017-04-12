@@ -63,8 +63,8 @@ angular.module('mifortTimesheet', [
         });
     })
 
-    .controller('mifortTimesheetController', ['$scope', '$location', '$http', 'preferences', 'companyService', 'topPanelService', '$rootScope', 'notifyingService', 'Notification', 'projectsService',
-        function($scope, $location, $http, preferences, companyService, topPanelService, $rootScope, notifyingService, Notification, projectsService) {
+    .controller('mifortTimesheetController', ['$scope', '$location', '$http', 'preferences', 'companyService', 'topPanelService', '$rootScope', 'notifyingService', 'Notification', 'projectsService', '$window',
+        function($scope, $location, $http, preferences, companyService, topPanelService, $rootScope, notifyingService, Notification, projectsService, $window) {
             var user = preferences.get('user');
             if(user){
                 if(user.companyId){
@@ -72,8 +72,9 @@ angular.module('mifortTimesheet', [
                     $rootScope.companyId = user.companyId;
                 }
 
-              $http.get('api/v1/user/users?email=' + user.email).success(function(users) {
-                console.log(users)
+              $http.get('api/v1/user/users/' + user.email).success(function(users) {
+                console.log(users);
+                $scope.users = users;
               });
 
                 $rootScope.isLoggedIn = true;
@@ -127,6 +128,13 @@ angular.module('mifortTimesheet', [
             $scope.startIntro = function() {
                 $rootScope.introIsActive = true;
                 notifyingService.notify('startIntro');
+            };
+
+            $scope.changeAccount = function (user) {
+              $http.post('api/v1/user/users/account', user).success(function(user) {
+                preferences.set('user', user);
+                $window.location.href = '/timesheet';
+              });
             };
 
             $scope.$on('handleError', function(event, errorCode) {

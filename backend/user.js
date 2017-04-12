@@ -20,7 +20,6 @@ var db = require('./libs/mongodb_settings');
 var utils = require('./libs/utils');
 var companies = require('./company');
 var log = require('./libs/logger');
-var passport = require('passport');
 
 //Rest API
 exports.restGetCurrent = function(req, res) {
@@ -186,6 +185,31 @@ exports.restAddNewUser = function(req, res, next) {
         });
 };
 
+
+exports.restGetListByEmail = function(req, res, next) {
+  var users = db.userCollection();
+  users.find({email: req.params.email}).toArray(
+    function(err, users) {
+      if(err) {
+        next(err);
+      } else {
+        /*req.logIn(users[1], function () {
+         console.log("User Changed!");
+         });*/
+        res.json(users);
+        next();
+      }
+    }
+  );
+};
+
+exports.restChangeAccount = function(req, res, next) {
+  req.logIn(req.body, function () {
+    res.json(req.body);
+    next();
+  });
+};
+
 //Public API
 exports.save = function(user, callback) {
     var users = db.userCollection();
@@ -234,22 +258,6 @@ exports.findById = function(id, callback) {
 };
 
 exports.findByExample = findByExample;
-
-exports.restGetByEmail = function(req, res, next) {
-  var users = db.userCollection();
-  users.find({email: req.query.email}).toArray(
-    function(err, users) {
-      if(err) {
-        next(err);
-      } else {
-        req.user = users[0];
-        var auth = require('./libs/authentication');
-        auth.changeUser(null, users[0]._id);
-        res.json(users);
-      }
-    }
-  );
-};
 
 //private
 function findByExample(query, callback) {

@@ -71,8 +71,11 @@ exports.projectRouter = projectRouter;
 var user = require('./user');
 var userRouter = express.Router();
 
-userRouter.get('/users',
-        user.restGetByEmail);
+userRouter.get('/users/:email',
+        validators.validateGetListByEmail,
+        user.restGetListByEmail);
+userRouter.post('/users/account',
+        user.restChangeAccount);
 userRouter.get('/:userId',
         validators.validateUserIdParam,
         authorization.authorizeGetUserById,

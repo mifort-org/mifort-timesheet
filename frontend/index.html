@@ -89,6 +89,10 @@
     <a href="" class="main-control logout-icon" ng-click="logout()">
         <span>Logout</span>
     </a>
+    <a href="">
+        <span>Accounts:</span>
+            <a href="" ng-repeat="user in users" ng-click="changeAccount(user)">{{user.companyId}} </a>
+    </a>
 </nav>
 
 <div ng-if="isLoggedIn && companyId" bootstrap-tabs company-name="{{companyName}}" class="main-tabs"></div>
