@@ -72,6 +72,10 @@ angular.module('mifortTimesheet', [
                     $rootScope.companyId = user.companyId;
                 }
 
+              $http.get('api/v1/user/users?email=' + user.email).success(function(users) {
+                console.log(users)
+              });
+
                 $rootScope.isLoggedIn = true;
                 if (user.role === 'Owner' || user.role === 'Manager') {
                     projectsService.getProjects(user.companyId).success(function(projects) {

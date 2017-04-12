@@ -20,6 +20,7 @@ var db = require('./libs/mongodb_settings');
 var utils = require('./libs/utils');
 var companies = require('./company');
 var log = require('./libs/logger');
+var passport = require('passport');
 
 //Rest API
 exports.restGetCurrent = function(req, res) {
@@ -233,6 +234,22 @@ exports.findById = function(id, callback) {
 };
 
 exports.findByExample = findByExample;
+
+exports.restGetByEmail = function(req, res, next) {
+  var users = db.userCollection();
+  users.find({email: req.query.email}).toArray(
+    function(err, users) {
+      if(err) {
+        next(err);
+      } else {
+        req.user = users[0];
+        var auth = require('./libs/authentication');
+        auth.changeUser(null, users[0]._id);
+        res.json(users);
+      }
+    }
+  );
+};
 
 //private
 function findByExample(query, callback) {
