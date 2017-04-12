@@ -33,12 +33,7 @@ angular.module('mifortTimesheet.employeesReport').factory('employeesReportServic
             return $http.get('api/v1/report/filters/' + companyId);
         };
         self.getReport = function (reportSettings) {
-            if (reportSettings.groupBy && reportSettings.groupBy.length) {
                 return $http.post('api/v1/report/aggregation', reportSettings);
-            }
-            else {
-                return $http.post('api/v1/report/common', reportSettings);
-            }
         };
         self.downloadCsv = function (reportSettings) {
             return $http.post('api/v1/report/common/download/csv', reportSettings);
@@ -108,14 +103,14 @@ angular.module('mifortTimesheet.employeesReport').factory('employeesReportServic
             },
             time: {
                 field: 'time',
-                width: 82,
-                minWidth: 82,
+                displayName: 'Expected Time',
+                width: 150,
+                minWidth: 150,
                 headerCellClass: 'time-header',
-                paddingRight: 0,
                 enableColumnResizing: true,
                 enableColumnMenu: false,
                 enableFiltering: false,
-                filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" col-name="time" col-title="Time"></span></div>',
+                filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" col-name="time" col-title="Expected Time"></span></div>',
                 cellTemplate: '<div class="report-time-cell">{{row.entity[col.field]}}</div>'
             },
             comment: {
@@ -139,27 +134,11 @@ angular.module('mifortTimesheet.employeesReport').factory('employeesReportServic
 
         };
         self.employeeColuns = {
-            userName: {
-                field: 'userName',
-                displayName: 'Employee Name',
-                minWidth: 190,
-                width: 190,
-                headerCellClass: 'name-header',
-                enableColumnResizing: true,
-                enableColumnMenu: false,
-                filterHeaderTemplate: '<div ng-if="$parent.grid.appScope.userIsManager" class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" col-name="users" col-title="Employee Name"></span></div>',
-                cellTemplate: '<div class="ui-grid-cell-contents">' +
-                '<a href="" ng-if="$parent.grid.appScope.userIsManager" ng-click="$parent.grid.appScope.editEmployeeTimesheet(row.entity.userName)">{{row.entity.userName}}</a>' +
-                '<span ng-if="!$parent.grid.appScope.userIsManager">{{row.entity.userName}}</span>' +
-                '</div>',
-                headerCellTemplate: self.getHeaderTemplate('<span ng-if="$parent.grid.appScope.userIsManager" class="header-filter ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" col-name="users" col-title="Employee Name"></span></span>')
-            },
             actualTime: {
                 field: 'actualTime',
-                width: 200,
-                minWidth: 200,
+                width: 120,
+                minWidth: 120,
                 headerCellClass: 'time-header',
-                paddingRight: 0,
                 enableColumnResizing: true,
                 enableColumnMenu: false,
                 enableFiltering: false,
@@ -167,22 +146,10 @@ angular.module('mifortTimesheet.employeesReport').factory('employeesReportServic
                 cellTemplate: '<div class="report-time-cell">{{row.entity[col.field]}}</div>'
             },
 
-            expectedTime: {
-                field: 'expectedTime',
-                width: 200,
-                minWidth: 200,
-                headerCellClass: 'time-header',
-                paddingRight: 0,
-                enableColumnResizing: true,
-                enableColumnMenu: false,
-                enableFiltering: false,
-                filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" col-name="expectedTime" col-title="expectedTime"></span></div>',
-                cellTemplate: '<div class="report-time-cell">{{row.entity[col.field]}}</div>'
-            },
             status: {
                 field: 'status',
-                width: 200,
-                minWidth: 200,
+                width: 140,
+                minWidth: 140,
                 headerCellClass: 'time-header',
                 paddingRight: 0,
                 enableColumnResizing: true,
@@ -191,15 +158,6 @@ angular.module('mifortTimesheet.employeesReport').factory('employeesReportServic
                 filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" col-name="status" col-title="status"></span></div>',
                 cellTemplate: '<div class="report-time-cell">{{row.entity[col.field]}}</div>'
             },
-            comments: {
-                field: 'comments',
-                enableColumnResizing: true,
-                enableColumnMenu: false,
-                enableSorting: false,
-                enableFiltering: false,
-                filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" col-name="time" col-title="Comments"></span></div>',
-                cellTemplate: '<span cutted-comment></span>'
-            }
 
         };
         self.introSteps = [

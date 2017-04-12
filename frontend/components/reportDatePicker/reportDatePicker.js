@@ -27,10 +27,11 @@ angular.module('mifortTimesheet')
                             startDate = moment(new Date(newValue.startDate)).format('MM/DD/YYYY'),
                             endDate = moment(new Date(newValue.endDate)).format('MM/DD/YYYY'),
                             gridOptions = scope.timesheetGridOptions || scope.grid.options,
+                            workDays = Math.round((newValue.endDate - newValue.startDate)/ 86400000),
                             dateFilterIndex = _.findIndex(gridOptions.reportFilters, function(reportFilter) {
                                 return reportFilter.field == 'date';
                             });
-
+                            console.log(Math.round((newValue.endDate - newValue.startDate)/ 86400000));
                             if(dateFilterIndex < 0){
                                     dateFilterIndex = gridOptions.reportFilters.length || 0;
                                     dateFilter = {

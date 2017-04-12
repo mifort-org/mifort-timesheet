@@ -69,8 +69,10 @@ angular.module('mifortTimesheet.employeesReport', ['ngRoute'])
                     asc: false
                 },
                 filters: [],
-                pageSize: 10,
-                page: 1
+                pageSize: 100,
+                page: 1,
+                groupBy: ['userName'],
+                isCommentNeeded: true
             };
 
             if(!$scope.userIsManager){
@@ -82,40 +84,13 @@ angular.module('mifortTimesheet.employeesReport', ['ngRoute'])
 
             $scope.reports = [
                 {
-                    title: 'Log',
-                    active: true,
-                    setSettings: function() {
-                        $scope.reportSettings.groupBy = [];
-                        $scope.reportSettings.isCommentNeeded = false;
-                    },
-                    columnsOrder: ['date', 'userName', 'projectName', 'time', 'comment']
-                },
-                {
-                    title: 'Project',
-                    active: false,
-                    setSettings: function() {
-                        $scope.reportSettings.groupBy = ['projectName'];
-                        $scope.reportSettings.isCommentNeeded = false;
-                    },
-                    columnsOrder: ['projectName', 'time']
-                },
-                {
                     title: 'Employee',
-                    active: false,
+                    active: true,
                     setSettings: function() {
                         $scope.reportSettings.groupBy = ['userName'];
                         $scope.reportSettings.isCommentNeeded = true;
                     },
                     columnsOrder: ['userName', 'time', 'comments', 'userName']
-                },
-                {
-                    title: 'Project & Employee',
-                    active: false,
-                    setSettings: function() {
-                        $scope.reportSettings.groupBy = ['userName', 'projectName'];
-                        $scope.reportSettings.isCommentNeeded = true;
-                    },
-                    columnsOrder: ['projectName', 'userName', 'time', 'comments']
                 }
             ];
 
@@ -268,17 +243,15 @@ angular.module('mifortTimesheet.employeesReport', ['ngRoute'])
                             $scope.timesheetGridOptions.columnDefs = [];
                             $scope.timesheetGridOptions.columnDefs.length = columnsOrder.length;
 
-                            /*for(var column in data[0]){
+                            for(var column in data[0]){
                                 if(columns[column]){
                                     var indexToPush = _.indexOf(columnsOrder, column);
 
                                     $scope.timesheetGridOptions.columnDefs[indexToPush] = columns[column];
                                 }
-                            }*/
-                            for(var columnEmpoyee in employeesReportService.employeeColuns) {
-                                console.log(employeesReportService.employeeColuns[columnEmpoyee]);
-                                $scope.timesheetGridOptions.columnDefs.push(employeesReportService.employeeColuns[columnEmpoyee]);
                             }
+                            $scope.timesheetGridOptions.columnDefs.splice(2, 0, employeesReportService.employeeColuns.actualTime);
+                            $scope.timesheetGridOptions.columnDefs.push(employeesReportService.employeeColuns.status);
                         }
 
                         $scope.gridHeight = {
