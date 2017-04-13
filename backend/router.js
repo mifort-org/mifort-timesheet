@@ -123,6 +123,7 @@ companyRouter.get('/:companyId',
         authorization.authorizeGetCompanyById,
         company.restFindById);
 companyRouter.delete('/:companyId',
+        authorization.authorizeDeleteCompany,
         company.restDeleteCompany);
 
 //report

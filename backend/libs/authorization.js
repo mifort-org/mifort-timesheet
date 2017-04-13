@@ -114,6 +114,17 @@ exports.authorizeActivateProject = function(req, res, next) {
     });
 };
 
+exports.authorizeDeleteCompany = function(req, res, next) {
+  var user = req.user;
+  var companyId = utils.getCompanyId(req);
+
+  if(isOwnerForCompany(user, companyId)) {
+    next();
+  } else {
+    send403(res);
+  }
+};
+
 //Timesheet
 exports.authorizeSaveTimesheet = function(req, res, next) {
     var timelogs = req.body.timesheet;
@@ -373,6 +384,14 @@ function isManagerForCompany(user, companyId) {
     }
 
     return user.role === constants.OWNER_ROLE || user.role === constants.MANAGER_ROLE;
+}
+
+function isOwnerForCompany(user, companyId) {
+  if(!user.companyId.equals(companyId)) {
+    return false;
+  }
+
+  return user.role === constants.OWNER_ROLE;
 }
 
 function canReadProject(user, project) {
