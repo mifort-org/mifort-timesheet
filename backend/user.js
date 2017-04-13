@@ -193,11 +193,7 @@ exports.restGetListByEmail = function(req, res, next) {
       if(err) {
         next(err);
       } else {
-        /*req.logIn(users[1], function () {
-         console.log("User Changed!");
-         });*/
         res.json(users);
-        next();
       }
     }
   );
@@ -206,7 +202,6 @@ exports.restGetListByEmail = function(req, res, next) {
 exports.restChangeAccount = function(req, res, next) {
   req.logIn(req.body, function () {
     res.json(req.body);
-    next();
   });
 };
 
@@ -259,6 +254,8 @@ exports.findById = function(id, callback) {
 
 exports.findByExample = findByExample;
 
+exports.findByCompanyId = findByCompanyId;
+
 //private
 function findByExample(query, callback) {
     var users = db.userCollection();
@@ -305,4 +302,12 @@ function updateTimesheetUserName(user) {
                 log.info('User name in timesheet collection is successfully updated.', updateInfo.result);
             }
         });
+}
+
+function findByCompanyId(companyId, callback) {
+  var users = db.userCollection();
+  users.find({companyId: companyId})
+    .toArray(function(err, companyUsers) {
+      callback(err, companyUsers);
+    });
 }

@@ -72,7 +72,7 @@ angular.module('mifortTimesheet', [
                     $rootScope.companyId = user.companyId;
                 }
 
-              $http.get('api/v1/user/users/' + user.email).success(function(users) {
+              $http.get('api/v1/user/accounts/' + user.email).success(function(users) {
                 console.log(users);
                 $scope.users = users;
               });
@@ -131,9 +131,9 @@ angular.module('mifortTimesheet', [
             };
 
             $scope.changeAccount = function (user) {
-              $http.post('api/v1/user/users/account', user).success(function(user) {
+              $http.post('api/v1/user/account', user).success(function(user) {
                 preferences.set('user', user);
-                $window.location.href = '/timesheet';
+                $window.location.href = '/';
               });
             };
 

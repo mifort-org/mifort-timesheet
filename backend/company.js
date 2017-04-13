@@ -107,6 +107,31 @@ exports.restUpdateCompany = function(req, res, next) {
     });
 };
 
+exports.restDeleteCompany = function(req, res, next) {
+  var companyId = utils.getCompanyId(req);
+  log.debug('-REST call: Delete company. Company id: %s', companyId.toHexString());
+
+  findById(companyId, function(err, company, next) {
+    if(err) {
+      err.code = 400;
+      next(err);
+    } else {
+      company.updatedOn = new Date();
+      company.deleted = true;
+      save(company, function(err, savedCompany) {
+        if(err) {
+          next(err);
+        } else {
+          deleteUsersByCompanyId(savedCompany);
+          res.json(savedCompany);
+          log.debug('-REST result: Deleted company. Company id: %s',
+            savedCompany._id.toHexString());
+        }
+      });
+    }
+  });
+};
+
 //Public API
 exports.save = save;
 
@@ -176,6 +201,27 @@ function createUsersByEmails(company) {
 
         })
     }
+}
+
+function deleteUsersByCompanyId(company) {
+  var companyId = company._id;
+
+  users.findByCompanyId(companyId, function(err, companyUsers) {
+    if(err) {
+      log.warn('Cannot find users by company id.', {error: err});
+    } else {
+      companyUsers.forEach(function (user) {
+        user.deleted = true;
+        users.save(user, function(err, savedUser) {
+          if(err) {
+            log.error('Cannot delete user by company id.', {error: err});
+          } else {
+            log.info('User deleted with e-mail %s', savedUser.email);
+          }
+        });
+      });
+    }
+  });
 }
 
 function addIdToDayTypes(company) {

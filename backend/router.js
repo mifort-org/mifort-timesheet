@@ -71,11 +71,6 @@ exports.projectRouter = projectRouter;
 var user = require('./user');
 var userRouter = express.Router();
 
-userRouter.get('/users/:email',
-        validators.validateGetListByEmail,
-        user.restGetListByEmail);
-userRouter.post('/users/account',
-        user.restChangeAccount);
 userRouter.get('/:userId',
         validators.validateUserIdParam,
         authorization.authorizeGetUserById,
@@ -106,6 +101,11 @@ userRouter.put('/',
         validators.validateAddNewUser,
         authorization.authorizeAddNewUser,
         user.restAddNewUser);
+userRouter.get('/accounts/:email',
+        validators.validateGetListByEmail,
+        user.restGetListByEmail);
+userRouter.post('/account',
+        user.restChangeAccount);
 
 //company
 var company = require('./company');
@@ -122,6 +122,8 @@ companyRouter.get('/:companyId',
         validators.validateGetCompanyById,
         authorization.authorizeGetCompanyById,
         company.restFindById);
+companyRouter.delete('/:companyId',
+        company.restDeleteCompany);
 
 //report
 var report = require('./report');

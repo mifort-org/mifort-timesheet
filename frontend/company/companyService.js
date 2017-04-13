@@ -36,6 +36,9 @@ angular.module('mifortTimesheet.company').factory('companyService',
             },
             saveCompany: function(company) {
                 return $http.post('api/v1/company', company);
+            },
+            deleteCompany: function(companyId) {
+              return $http.delete('api/v1/company/' + companyId);
             }
         }
     }
