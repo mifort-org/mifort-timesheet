@@ -142,6 +142,7 @@ angular.module('mifortTimesheet.company', ['ngRoute'])
             preferences.clear();
 
             $http.get('logout').then(function() {
+              $('.modal-backdrop').remove(); //otherwise it does not disappear
               $location.path('login');
             });
           });

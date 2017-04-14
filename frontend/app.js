@@ -73,7 +73,6 @@ angular.module('mifortTimesheet', [
                 }
 
               $http.get('api/v1/user/accounts/' + user.email).success(function(accounts) {
-                console.log(accounts);
                 $scope.accounts = accounts;
               });
 
