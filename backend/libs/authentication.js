@@ -70,8 +70,7 @@ passport.use(new GoogleStrategy({
                                 log.info('Login %s: user is updated!', user.displayName);
                             }
                         });
-                      exports.changeUser = done;
-                      return done(null, user);
+                        return done(null, user);
                     } else {
                         var user = {
                             email: email,
