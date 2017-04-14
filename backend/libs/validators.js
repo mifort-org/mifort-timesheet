@@ -143,9 +143,18 @@ exports.validateGetListByEmail = function(req, res, next) {
     util.format(invalidFormatMessageTemplate, reqParams.emailParam))
     .notEmpty().isEmail();
 
-  if (req.user.email != req.params.email){
-      return res.status(400);
+  returnErrors(req, res, next);
+};
+
+exports.validateChangeAccount = function(req, res, next) {
+  var user = req.body;
+  if(!user) {
+    res.status(emptyBody.code).json({msg: emptyBody.message});
+    return;
   }
+
+  req.checkBody('email', 'E-mail is not valid').notEmpty().isEmail();
+  req.checkBody('companyId', 'Company is not valid').notEmpty().isMongoId();
 
   returnErrors(req, res, next);
 };

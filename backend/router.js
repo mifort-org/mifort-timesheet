@@ -103,8 +103,11 @@ userRouter.put('/',
         user.restAddNewUser);
 userRouter.get('/accounts/:email',
         validators.validateGetListByEmail,
+        authorization.authorizeGetListByEmail,
         user.restGetListByEmail);
 userRouter.post('/account',
+        validators.validateChangeAccount,
+        authorization.authorizeChangeAccount,
         user.restChangeAccount);
 
 //company
@@ -123,6 +126,7 @@ companyRouter.get('/:companyId',
         authorization.authorizeGetCompanyById,
         company.restFindById);
 companyRouter.delete('/:companyId',
+        validators.validateGetCompanyById,
         authorization.authorizeDeleteCompany,
         company.restDeleteCompany);
 

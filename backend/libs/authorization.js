@@ -298,6 +298,28 @@ exports.authorizeAddNewUser = function(req, res, next) {
     }
 };
 
+exports.authorizeGetListByEmail = function(req, res, next) {
+    var currentUser = req.user;
+    var email = utils.getEmailParam(req);
+
+    if(currentUser.email === email) {
+        next();
+    } else {
+        send403(res);
+    }
+};
+
+exports.authorizeChangeAccount = function(req, res, next) {
+  var currentUser = req.user;
+  var email = req.body.email;
+
+  if(currentUser.email === email) {
+    next();
+  } else {
+    send403(res);
+  }
+};
+
 //Company
 exports.authorizeUpdateCompany = function(req, res, next) {
     var user = req.user;
