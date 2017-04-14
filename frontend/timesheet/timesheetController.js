@@ -30,8 +30,8 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
         });
     }])
 
-    .controller('timesheetController', ['$scope', 'timesheetService', 'calendarService', 'preferences', 'loginService', '$routeParams', '$timeout', 'Notification', "$q", "projectSummaryService", "$filter", '$location',
-        function ($scope, timesheetService, calendarService, preferences, loginService, $routeParams, $timeout, Notification, $q, projectSummaryService, $filter, $location) {
+    .controller('timesheetController', ['$scope', 'timesheetService', 'calendarService', 'preferences', 'loginService', '$routeParams', '$timeout', 'Notification', "$q", "projectSummaryService", "$filter", '$location', '$http', '$rootScope',
+        function ($scope, timesheetService, calendarService, preferences, loginService, $routeParams, $timeout, Notification, $q, projectSummaryService, $filter, $location, $http, $rootScope) {
             var user;
 
             $scope.projects = [];
@@ -63,6 +63,14 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                         uniqueProjectAssignments.push(assignment.projectId);
                     });
                     uniqueProjectAssignments = _.uniq(uniqueProjectAssignments);
+
+
+                    //get accounts
+                    $http.get('api/v1/user/accounts/' + user.email).success(function(accounts) {
+                      $rootScope.accounts = accounts.filter(function (acc) {
+                        return acc.companyId != user.companyId;
+                      });
+                    });
 
                     //get timesheets
                     if (!uniqueProjectAssignments.length) {
