@@ -30,8 +30,8 @@ angular.module('mifortTimesheet.company', ['ngRoute'])
         });
     }])
 
-    .controller('companyController', ['$scope', '$location', 'companyService', 'preferences', '$rootScope', 'Notification', '$window',
-        function ($scope, $location, companyService, preferences, $rootScope, Notification, $window) {
+    .controller('companyController', ['$scope', '$location', 'companyService', 'preferences', '$rootScope', 'Notification', '$window', '$http',
+        function ($scope, $location, companyService, preferences, $rootScope, Notification, $window, $http) {
         $scope.user = preferences.get('user');
 
         $scope.company = {
@@ -138,8 +138,12 @@ angular.module('mifortTimesheet.company', ['ngRoute'])
 
         $scope.deleteCompany = function(companyId) {
           companyService.deleteCompany(companyId).success(function(company) {
-            console.log(company);
-            //$window.location.href = '/';
+            Notification.success('Company deleted');
+            preferences.clear();
+
+            $http.get('logout').then(function() {
+              $location.path('login');
+            });
           });
         };
 

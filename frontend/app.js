@@ -66,15 +66,15 @@ angular.module('mifortTimesheet', [
     .controller('mifortTimesheetController', ['$scope', '$location', '$http', 'preferences', 'companyService', 'topPanelService', '$rootScope', 'notifyingService', 'Notification', 'projectsService', '$window',
         function($scope, $location, $http, preferences, companyService, topPanelService, $rootScope, notifyingService, Notification, projectsService, $window) {
             var user = preferences.get('user');
-            if(user){
+            if(user && !user.deleted){
                 if(user.companyId){
                     console.log($scope);
                     $rootScope.companyId = user.companyId;
                 }
 
-              $http.get('api/v1/user/accounts/' + user.email).success(function(users) {
-                console.log(users);
-                $scope.users = users;
+              $http.get('api/v1/user/accounts/' + user.email).success(function(accounts) {
+                console.log(accounts);
+                $scope.accounts = accounts;
               });
 
                 $rootScope.isLoggedIn = true;

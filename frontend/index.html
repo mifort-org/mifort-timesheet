@@ -89,9 +89,9 @@
     <a href="" class="main-control logout-icon" ng-click="logout()">
         <span>Logout</span>
     </a>
-    <a href="">
+    <a href="" ng-show="accounts && accounts.length">
         <span>Accounts:</span>
-        <a href="" ng-repeat="user in users" ng-click="changeAccount(user)">{{user.companyId}}</a>
+        <a href="" ng-repeat="account in accounts" ng-click="changeAccount(account)">{{account.companyId}}</a>
     </a>
 </nav>
 

@@ -143,6 +143,10 @@ exports.validateGetListByEmail = function(req, res, next) {
     util.format(invalidFormatMessageTemplate, reqParams.emailParam))
     .notEmpty().isEmail();
 
+  if (req.user.email != req.params.email){
+      return res.status(400);
+  }
+
   returnErrors(req, res, next);
 };
 

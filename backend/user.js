@@ -188,7 +188,7 @@ exports.restAddNewUser = function(req, res, next) {
 
 exports.restGetListByEmail = function(req, res, next) {
   var users = db.userCollection();
-  users.find({email: req.params.email}).toArray(
+  users.find({email: req.params.email, deleted: {$ne: true}}).toArray(
     function(err, users) {
       if(err) {
         next(err);
@@ -245,7 +245,7 @@ exports.updateAssignmentProjectName = function(project) {
 };
 
 exports.findByEmail = function(email, callback) {
-    findByExample({email: email.toLowerCase()}, callback);
+    findByExample({email: email.toLowerCase(), deleted: {$ne: true}}, callback);
 };
 
 exports.findById = function(id, callback) {
