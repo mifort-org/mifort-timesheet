@@ -19,8 +19,8 @@ module.exports = {
             //go to report
             .click('.tabs-left li:nth-child(5)')
             .pause(1000)
-            .assert.containsText('.ui-grid-canvas .ui-grid-row:nth-child(1) .ui-grid-cell:nth-child(5)', testComment)
-            .assert.containsText('.ui-grid-canvas .ui-grid-row:nth-child(1) .ui-grid-cell:nth-child(4)', '8')
+            .assert.containsText('.ui-grid-canvas .ui-grid-row:nth-child(1)', testComment)
+            .assert.containsText('.ui-grid-canvas .ui-grid-row:nth-child(1)', '8')
             //add sub task
             .click('.tabs-left li:nth-child(6)')
             .waitForElementVisible('.table tbody tr:nth-child(1) .add-timesheet', 1000)
@@ -54,7 +54,6 @@ module.exports = {
             .waitForElementVisible('.main-container', 1000)
             .pause(1000)
             .assert.containsText('.main-container', 'New Project')
-            .assert.containsText('.main-container', 'CEO')
             .end();
     },
 
