@@ -92,6 +92,8 @@ module.exports = {
     'Check company page': function(browser) {
         // New user invitation is checked in previous  test
         var newCompanyName = 'Tralala';
+        var email = 'zaa@mail.net';
+        var emailLast = 'zzz@mail.net';
         browser
             .init()
             .waitForElementVisible('.logo', 2000)
@@ -102,6 +104,20 @@ module.exports = {
             .setValue('#step1', newCompanyName)
             .pause(900)
             .assert.containsText('.logo', newCompanyName)
+            .setValue('#step2', email)
+            .click('#step3')
+            .setValue('#step2', emailLast)
+            .click('#step3')
+            .pause(500)
+            .click('.company-roles tr:last-child #simple-dropdown')
+            .click('.company-roles tr:last-child ul li:nth-child(2)')
+            .click('.tabs-left li:nth-child(3)')
+            .pause(500)
+            .assert.containsText('.main-container section:last-of-type p:first-of-type ', 'Manager')
+            .assert.containsText('.main-container section:last-of-type h2', emailLast)
+            .click('.main-container section:last-of-type .delete-type')
+            .click('.tabs-left li:nth-child(1)')
+            .assert.containsText('.company-roles tr:last-child .employee-role', email)
             .end();
     },
 
