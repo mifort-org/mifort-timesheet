@@ -20,6 +20,7 @@ var db = require('./libs/mongodb_settings');
 var utils = require('./libs/utils');
 var companies = require('./company');
 var log = require('./libs/logger');
+var async = require('async');
 
 //Rest API
 exports.restGetCurrent = function(req, res) {
@@ -191,7 +192,22 @@ exports.restGetListByEmail = function(req, res, next) {
     if(err) {
       next(err);
     } else {
-      res.json(users);
+      var calls = [];
+      users.forEach(function (user) {
+        calls.push(function (callback) {
+          companies.findById(user.companyId, function (err, company) {
+            user.company = company;
+            callback(null, user);
+          })
+        });
+      });
+      async.parallel(calls, function (err, results) {
+        if(!err){
+          res.json(results);
+        } else {
+          next(err);
+        }
+      })
     }
   })
 };

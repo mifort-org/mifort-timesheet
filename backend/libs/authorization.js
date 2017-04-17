@@ -313,7 +313,7 @@ exports.authorizeChangeAccount = function(req, res, next) {
   var currentUser = req.user;
   var email = req.body.email;
 
-  if(currentUser.email === email && currentUser.external.id === req.body.external.id) {
+  if(currentUser.email === email && req.body.external && currentUser.external.id === req.body.external.id) {
     next();
   } else {
     send403(res);

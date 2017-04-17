@@ -68,7 +68,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                     //get accounts
                     $http.get('api/v1/user/accounts/' + user.email).success(function(accounts) {
                       $rootScope.accounts = accounts.filter(function (acc) {
-                        return acc.companyId != user.companyId;
+                        return acc.companyId != user.companyId && acc.external;
                       });
                     });
 

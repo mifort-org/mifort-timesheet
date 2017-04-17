@@ -91,7 +91,7 @@
     </a>
     <a href="" ng-show="$root.accounts && $root.accounts.length">
         <span>Accounts:</span>
-        <a href="" ng-repeat="account in $root.accounts track by $index" ng-click="changeAccount(account)">{{account.displayName}} </a>
+        <a href="" ng-repeat="account in $root.accounts track by $index" ng-click="changeAccount(account)">{{account.company.name}} </a>
     </a>
 </nav>
 
