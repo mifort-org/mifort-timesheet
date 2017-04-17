@@ -43,6 +43,19 @@ angular.module('mifortTimesheet')
                                 }
                                 return count;
                             };
+
+                            scope.getDaysFromInterval = function getDates(startDate, stopDate) {
+                                var dateArray = [];
+                                var currentDate = moment(startDate);
+                                var stopDate = moment(stopDate);
+                                while (currentDate <= stopDate) {
+                                    dateArray.push( moment(currentDate).format('YYYY-MM-DD') );
+                                    currentDate = moment(currentDate).add(1, 'days');
+                                }
+                                return dateArray;
+                            };
+                            var days = scope.getDaysFromInterval(new Date(newValue.startDate),new Date(newValue.endDate));
+                            console.log(days);
                             var workHours = scope.getWorkDays(new Date(newValue.startDate),new Date(newValue.endDate)) * workHoursOnDays;
                             preferences.set('workHours',workHours);
 
