@@ -167,19 +167,9 @@ angular.module('mifortTimesheet.employeesReport').factory('employeesReportServic
                 position: 'bottom'
             },
             {
-                element: '#step2',
-                intro: "<p>Switch tabs to change the column to be aggregated.</p>",
-                position: 'bottom'
-            },
-            {
                 element: '#step3',
                 intro: "<p>Use aggregation field to set the period of time to show.</p>",
                 position: 'bottom'
-            },
-            {
-                element: '#print',
-                intro: "<p>You could print or export the report by pressing the top panel buttons Print/CSV.</p>",
-                position: 'left'
             }
         ];
         return self;
