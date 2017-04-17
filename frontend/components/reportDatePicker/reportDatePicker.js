@@ -27,11 +27,25 @@ angular.module('mifortTimesheet')
                             startDate = moment(new Date(newValue.startDate)).format('MM/DD/YYYY'),
                             endDate = moment(new Date(newValue.endDate)).format('MM/DD/YYYY'),
                             gridOptions = scope.timesheetGridOptions || scope.grid.options,
-                            workDays = Math.round((newValue.endDate - newValue.startDate)/ 86400000),
+                            workHoursOnDays = 8,
                             dateFilterIndex = _.findIndex(gridOptions.reportFilters, function(reportFilter) {
                                 return reportFilter.field == 'date';
                             });
-                            console.log(Math.round((newValue.endDate - newValue.startDate)/ 86400000));
+
+                            scope.getWorkDays = function(startDate, endDate) {
+                                var count = 0;
+                                var curDate = startDate;
+                                while (curDate <= endDate) {
+                                    var dayOfWeek = curDate.getDay();
+                                    if(!((dayOfWeek == 6) || (dayOfWeek == 0)))
+                                        count++;
+                                    curDate.setDate(curDate.getDate() + 1);
+                                }
+                                return count;
+                            };
+                            var workHours = scope.getWorkDays(new Date(newValue.startDate),new Date(newValue.endDate)) * workHoursOnDays;
+                            preferences.set('workHours',workHours);
+
                             if(dateFilterIndex < 0){
                                     dateFilterIndex = gridOptions.reportFilters.length || 0;
                                     dateFilter = {
@@ -43,9 +57,7 @@ angular.module('mifortTimesheet')
 
                             gridOptions.reportFilters[dateFilterIndex].start = startDate;
                             gridOptions.reportFilters[dateFilterIndex].end = endDate;
-
                             element.find('input').val(startDate + ' - ' + endDate);
-
                             preferences.set('reportFilter', newValue);
                     }
                 });

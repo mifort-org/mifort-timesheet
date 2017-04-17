@@ -237,7 +237,9 @@ angular.module('mifortTimesheet.employeesReport', ['ngRoute'])
                         var columnsOrder = $scope.reports[_.findIndex($scope.reports, {active: true})].columnsOrder;
 
                         $scope.reportData = data;
-
+                        $timeout(function(){
+                            document.getElementById("actual-time").innerHTML = preferences.get("workHours");
+                        });
                         //add columns to grid
                         if(data.length){
                             $scope.timesheetGridOptions.columnDefs = [];
@@ -248,6 +250,7 @@ angular.module('mifortTimesheet.employeesReport', ['ngRoute'])
                                     var indexToPush = _.indexOf(columnsOrder, column);
 
                                     $scope.timesheetGridOptions.columnDefs[indexToPush] = columns[column];
+
                                 }
                             }
                             $scope.timesheetGridOptions.columnDefs.splice(2, 0, employeesReportService.employeeColuns.actualTime);
@@ -352,7 +355,6 @@ angular.module('mifortTimesheet.employeesReport', ['ngRoute'])
                     return true;
                 }
             };
-
             $scope.showFirstDots = function() {
                 if($scope.totalPages > maxVisiblePages &&
                     ($scope.reportSettings.page > 4)){

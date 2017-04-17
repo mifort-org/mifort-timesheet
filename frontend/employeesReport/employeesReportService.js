@@ -17,18 +17,16 @@
 'use strict';
 
 angular.module('mifortTimesheet.employeesReport').factory('employeesReportService',
-    ['$http', function ($http) {
+    ['$http', function ($http,$scope) {
         var self = this,
             saveFilters = [];
-
         self.getSavedFilters = function () {
             return  saveFilters
         };
-
         self.saveSavedFilters = function (filters) {
             saveFilters  = filters;
         };
-
+        self.name = localStorage.getItem('workHours');
         self.getFilters = function (companyId) {
             return $http.get('api/v1/report/filters/' + companyId);
         };
@@ -136,28 +134,28 @@ angular.module('mifortTimesheet.employeesReport').factory('employeesReportServic
         self.employeeColuns = {
             actualTime: {
                 field: 'actualTime',
-                width: 120,
-                minWidth: 120,
+                width: 150,
+                minWidth: 150,
                 headerCellClass: 'time-header',
                 enableColumnResizing: true,
                 enableColumnMenu: false,
                 enableFiltering: false,
                 filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" col-name="actualTime" col-title="ActualTime"></span></div>',
-                cellTemplate: '<div class="report-time-cell">{{row.entity[col.field]}}</div>'
+                cellTemplate: '<div class="report-time-cell" id="actual-time">{{row.workHours}}</div>'
             },
 
             status: {
                 field: 'status',
-                width: 140,
-                minWidth: 140,
+                width: 150,
+                minWidth: 150,
                 headerCellClass: 'time-header',
                 paddingRight: 0,
                 enableColumnResizing: true,
                 enableColumnMenu: false,
                 enableFiltering: false,
                 filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" col-name="status" col-title="status"></span></div>',
-                cellTemplate: '<div class="report-time-cell">{{row.entity[col.field]}}</div>'
-            },
+                cellTemplate: '<div class="report-time-cell">Not Ready</div>'
+            }
 
         };
         self.introSteps = [
