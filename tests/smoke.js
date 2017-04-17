@@ -117,6 +117,7 @@ module.exports = {
             .assert.containsText('.main-container section:last-of-type h2', emailLast)
             .click('.main-container section:last-of-type .delete-type')
             .click('.tabs-left li:nth-child(1)')
+            .pause(500)
             .assert.containsText('.company-roles tr:last-child .employee-role', email)
             .end();
     },
