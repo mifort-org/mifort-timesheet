@@ -187,16 +187,13 @@ exports.restAddNewUser = function(req, res, next) {
 
 
 exports.restGetListByEmail = function(req, res, next) {
-  var users = db.userCollection();
-  users.find({email: req.params.email, deleted: {$ne: true}}).toArray(
-    function(err, users) {
-      if(err) {
-        next(err);
-      } else {
-        res.json(users);
-      }
+  findAllByEmail(req.params.email, function (err, users) {
+    if(err) {
+      next(err);
+    } else {
+      res.json(users);
     }
-  );
+  })
 };
 
 exports.restChangeAccount = function(req, res, next) {
@@ -256,6 +253,8 @@ exports.findByExample = findByExample;
 
 exports.findByCompanyId = findByCompanyId;
 
+exports.findAllByEmail = findAllByEmail;
+
 //private
 function findByExample(query, callback) {
     var users = db.userCollection();
@@ -310,4 +309,13 @@ function findByCompanyId(companyId, callback) {
     .toArray(function(err, companyUsers) {
       callback(err, companyUsers);
     });
+}
+
+function findAllByEmail(email, callback) {
+  var users = db.userCollection();
+  users.find({email: email, deleted: {$ne: true}}).toArray(
+    function(err, users) {
+        callback(err, users);
+    }
+  );
 }
