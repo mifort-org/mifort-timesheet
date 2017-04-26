@@ -309,15 +309,23 @@ exports.authorizeGetListByEmail = function(req, res, next) {
     }
 };
 
-exports.authorizeChangeAccount = function(req, res, next) {
+exports.authorizeChangeAccount = function (req, res, next) {
   var currentUser = req.user;
-  var email = req.body.email;
-
-  if(currentUser.email === email && req.body.external && currentUser.external.id === req.body.external.id) {
-    next();
-  } else {
-    send403(res);
-  }
+  var userId = utils.getUserId(req);
+  var users = db.userCollection();
+  users.findOne({_id: userId},
+    function (err, findedUser) {
+      if (err) {
+        send403(res);
+      } else {
+        var email = findedUser.email;
+        if (currentUser.email === email && findedUser.external && currentUser.external.id === findedUser.external.id) {
+          next();
+        } else {
+          send403(res);
+        }
+      }
+    });
 };
 
 //Company

@@ -73,15 +73,14 @@ passport.use(new GoogleStrategy({
                     });
                   });
               return done(null, accounts[0]);
-              } else {
-                var user = {
-                  email: email,
-                  external: profile,
-                  displayName: profile.displayName,
-                  role: constants.OWNER_ROLE
-                };
-                createUser(user, done);
               }
+              var user = {
+                email: email,
+                external: profile,
+                displayName: profile.displayName,
+                role: constants.OWNER_ROLE
+              };
+              createUser(user, done);
             }
           });
         });

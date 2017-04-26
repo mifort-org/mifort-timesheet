@@ -104,8 +104,8 @@ userRouter.get('/accounts/:email',
         validators.validateGetListByEmail,
         authorization.authorizeGetListByEmail,
         user.restGetListByEmail);
-userRouter.post('/account',
-        validators.validateChangeAccount,
+userRouter.post('/account/:userId',
+        validators.validateUserIdParam,
         authorization.authorizeChangeAccount,
         user.restChangeAccount);
 

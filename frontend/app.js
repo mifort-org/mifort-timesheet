@@ -126,7 +126,7 @@ angular.module('mifortTimesheet', [
             };
 
             $scope.changeAccount = function (user) {
-              $http.post('api/v1/user/account', user).success(function(user) {
+              $http.post('api/v1/user/account/' + user._id).success(function(user) {
                 preferences.set('user', user);
                 $window.location.href = '/';
               });

@@ -114,21 +114,19 @@ exports.restDeleteCompany = function(req, res, next) {
   findById(companyId, function(err, company, next) {
     if(err) {
       err.code = 400;
-      next(err);
-    } else {
-      company.updatedOn = new Date();
-      company.deleted = true;
-      save(company, function(err, savedCompany) {
-        if(err) {
-          next(err);
-        } else {
-          deleteUsersByCompanyId(savedCompany);
-          res.json(savedCompany);
-          log.debug('-REST result: Deleted company. Company id: %s',
-            savedCompany._id.toHexString());
-        }
-      });
+      return next(err);
     }
+    company.updatedOn = new Date();
+    company.deleted = true;
+    save(company, function(err, savedCompany) {
+      if(err) {
+        return next(err);
+      }
+      deleteUsersByCompanyId(savedCompany._id);
+      res.json(savedCompany);
+      log.debug('-REST result: Deleted company. Company id: %s',
+        savedCompany._id.toHexString());
+    });
   });
 };
 
@@ -203,23 +201,16 @@ function createUsersByEmails(company) {
     }
 }
 
-function deleteUsersByCompanyId(company) {
-  var companyId = company._id;
+function deleteUsersByCompanyId(companyId) {
+  if (!companyId){
+    return log.warn('Cannot delete users by company id.');
+  }
 
-  users.findByCompanyId(companyId, function(err, companyUsers) {
+  users.deleteByCompanyId(companyId, function (err, result) {
     if(err) {
-      log.warn('Cannot find users by company id.', {error: err});
+      log.error('Cannot delete users by company id.', {error: err});
     } else {
-      companyUsers.forEach(function (user) {
-        user.deleted = true;
-        users.save(user, function(err, savedUser) {
-          if(err) {
-            log.error('Cannot delete user by company id.', {error: err});
-          } else {
-            log.info('User deleted with e-mail %s', savedUser.email);
-          }
-        });
-      });
+      log.info('Users deleted');
     }
   });
 }

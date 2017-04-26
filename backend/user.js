@@ -212,10 +212,18 @@ exports.restGetListByEmail = function(req, res, next) {
   })
 };
 
-exports.restChangeAccount = function(req, res, next) {
-  req.logIn(req.body, function () {
-    res.json(req.body);
-  });
+exports.restChangeAccount = function (req, res, next) {
+  var userIdParam = utils.getUserId(req);
+  findByExample({_id: userIdParam},
+    function (err, findedUser) {
+      if (err) {
+        next(err);
+      } else {
+        req.logIn(findedUser, function () {
+          res.json(findedUser);
+        });
+      }
+    });
 };
 
 //Public API
@@ -267,10 +275,9 @@ exports.findById = function(id, callback) {
 
 exports.findByExample = findByExample;
 
-exports.findByCompanyId = findByCompanyId;
-
 exports.findAllByEmail = findAllByEmail;
 
+exports.deleteByCompanyId = deleteByCompanyId;
 //private
 function findByExample(query, callback) {
     var users = db.userCollection();
@@ -319,12 +326,12 @@ function updateTimesheetUserName(user) {
         });
 }
 
-function findByCompanyId(companyId, callback) {
+
+function deleteByCompanyId(companyId, callback) {
   var users = db.userCollection();
-  users.find({companyId: companyId})
-    .toArray(function(err, companyUsers) {
-      callback(err, companyUsers);
-    });
+  users.update({companyId: companyId}, {$set: {deleted: true}}, {multi: true}, function (err, result) {
+    callback(err, result);
+  });
 }
 
 function findAllByEmail(email, callback) {

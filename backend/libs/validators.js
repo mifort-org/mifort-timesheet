@@ -146,19 +146,6 @@ exports.validateGetListByEmail = function(req, res, next) {
   returnErrors(req, res, next);
 };
 
-exports.validateChangeAccount = function(req, res, next) {
-  var user = req.body;
-  if(!user) {
-    res.status(emptyBody.code).json({msg: emptyBody.message});
-    return;
-  }
-
-  req.checkBody('email', 'E-mail is not valid').notEmpty().isEmail();
-  req.checkBody('companyId', 'Company is not valid').notEmpty().isMongoId();
-
-  returnErrors(req, res, next);
-};
-
 //Company Rest API validation
 exports.validateUpdateCompany = function(req, res, next) {
     var company = req.body;
