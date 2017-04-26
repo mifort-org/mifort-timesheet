@@ -412,7 +412,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
             $scope.removeRow = function (log, project, periodIndex) {
                 var dates = $scope.getCurrentLogData();
 
-                if (log._id) {
+                if (log._id && (log.time || log.comment)) {
                     timesheetService.removeTimesheet(log).success(function () {
                         Notification.success('Changes saved');
                     });
