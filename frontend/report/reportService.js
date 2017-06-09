@@ -19,7 +19,8 @@
 angular.module('mifortTimesheet.report').factory('reportService',
     ['$http', function ($http) {
         var self = this,
-            saveFilters = [];
+            saveFilters = [],
+            lastDefinedColumns = [];
 
         self.getSavedFilters = function () {
             return  saveFilters
@@ -27,6 +28,14 @@ angular.module('mifortTimesheet.report').factory('reportService',
 
         self.saveSavedFilters = function (filters) {
               saveFilters  = filters;
+        };
+
+        self.getLastDefinedColumns = function () {
+            return lastDefinedColumns;
+        };
+
+        self.saveLastDefinedColumns = function (columns) {
+            lastDefinedColumns = columns;
         };
 
         self.getFilters = function (companyId) {

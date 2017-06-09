@@ -146,7 +146,7 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                 enableHorizontalScrollbar: 0,
                 enableVerticalScrollbar: uiGridConstants.scrollbars.NEVER,
                 rowHeight: 30,
-                columnDefs: [],
+                columnDefs: reportService.getLastDefinedColumns(),
                 data: 'reportData',
                 reportFilters: [],
 
@@ -265,16 +265,20 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
 
                         //add columns to grid
                         if(data.length){
-                            $scope.timesheetGridOptions.columnDefs = [];
-                            $scope.timesheetGridOptions.columnDefs.length = columnsOrder.length;
+                            reportService.saveLastDefinedColumns([]);
+                            var newColumns = [];
+                            newColumns.length = columnsOrder.length;
 
                             for(var column in data[0]){
                                 if(columns[column]){
                                     var indexToPush = _.indexOf(columnsOrder, column);
 
-                                    $scope.timesheetGridOptions.columnDefs[indexToPush] = columns[column];
+                                    newColumns[indexToPush] = columns[column];
                                 }
                             }
+
+                            $scope.timesheetGridOptions.columnDefs = newColumns;
+                            reportService.saveLastDefinedColumns(newColumns);
                         }
 
                         $scope.gridHeight = {
