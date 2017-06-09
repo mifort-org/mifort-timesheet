@@ -87,12 +87,12 @@ angular.module('mifortTimesheet.projects', ['ngRoute'])
 
             projectsService.getProjects(companyId).success(function (projects) {
                 if (projects.length) {
-                    $scope.projects = projects;
+                    $scope.projects = _.sortBy(projects, 'name');
                     $scope.availablePositions = projects[0].availablePositions;
 
                     $scope.projects.forEach(function (project) {
                         projectsService.getAssignedEmployers(project._id).success(function (assignedEmployers) {
-                            project.assignedEmployers = assignedEmployers || [];
+                            project.assignedEmployers = _.sortBy(assignedEmployers, 'displayName') || [];
                             project.isCollapsed = !project.active;
                             project.projectEdit = false;
                             project.loading = false;
