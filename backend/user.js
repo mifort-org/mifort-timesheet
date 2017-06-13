@@ -20,6 +20,7 @@ var db = require('./libs/mongodb_settings');
 var utils = require('./libs/utils');
 var companies = require('./company');
 var log = require('./libs/logger');
+var async = require('async');
 
 //Rest API
 exports.restGetCurrent = function(req, res) {
@@ -185,6 +186,46 @@ exports.restAddNewUser = function(req, res, next) {
         });
 };
 
+
+exports.restGetListByEmail = function(req, res, next) {
+  findAllByEmail(req.params.email, function (err, users) {
+    if(err) {
+      next(err);
+    } else {
+      var calls = [];
+      users.forEach(function (user) {
+        calls.push(function (callback) {
+          companies.findById(user.companyId, function (err, company) {
+            user.company = company;
+            callback(null, user);
+          })
+        });
+      });
+      async.parallel(calls, function (err, results) {
+        if(!err){
+          res.json(results);
+        } else {
+          next(err);
+        }
+      })
+    }
+  })
+};
+
+exports.restChangeAccount = function (req, res, next) {
+  var userIdParam = utils.getUserId(req);
+  findByExample({_id: userIdParam},
+    function (err, findedUser) {
+      if (err) {
+        next(err);
+      } else {
+        req.logIn(findedUser, function () {
+          res.json(findedUser);
+        });
+      }
+    });
+};
+
 //Public API
 exports.save = function(user, callback) {
     var users = db.userCollection();
@@ -225,7 +266,7 @@ exports.updateAssignmentProjectName = function(project) {
 };
 
 exports.findByEmail = function(email, callback) {
-    findByExample({email: email.toLowerCase()}, callback);
+    findByExample({email: email.toLowerCase(), deleted: {$ne: true}}, callback);
 };
 
 exports.findById = function(id, callback) {
@@ -234,6 +275,9 @@ exports.findById = function(id, callback) {
 
 exports.findByExample = findByExample;
 
+exports.findAllByEmail = findAllByEmail;
+
+exports.deleteByCompanyId = deleteByCompanyId;
 //private
 function findByExample(query, callback) {
     var users = db.userCollection();
@@ -280,4 +324,21 @@ function updateTimesheetUserName(user) {
                 log.info('User name in timesheet collection is successfully updated.', updateInfo.result);
             }
         });
+}
+
+
+function deleteByCompanyId(companyId, callback) {
+  var users = db.userCollection();
+  users.update({companyId: companyId}, {$set: {deleted: true}}, {multi: true}, function (err, result) {
+    callback(err, result);
+  });
+}
+
+function findAllByEmail(email, callback) {
+  var users = db.userCollection();
+  users.find({email: email, deleted: {$ne: true}}).toArray(
+    function(err, users) {
+        callback(err, users);
+    }
+  );
 }

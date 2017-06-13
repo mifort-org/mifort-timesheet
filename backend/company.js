@@ -107,6 +107,29 @@ exports.restUpdateCompany = function(req, res, next) {
     });
 };
 
+exports.restDeleteCompany = function(req, res, next) {
+  var companyId = utils.getCompanyId(req);
+  log.debug('-REST call: Delete company. Company id: %s', companyId.toHexString());
+
+  findById(companyId, function(err, company, next) {
+    if(err) {
+      err.code = 400;
+      return next(err);
+    }
+    company.updatedOn = new Date();
+    company.deleted = true;
+    save(company, function(err, savedCompany) {
+      if(err) {
+        return next(err);
+      }
+      deleteUsersByCompanyId(savedCompany._id);
+      res.json(savedCompany);
+      log.debug('-REST result: Deleted company. Company id: %s',
+        savedCompany._id.toHexString());
+    });
+  });
+};
+
 //Public API
 exports.save = save;
 
@@ -176,6 +199,20 @@ function createUsersByEmails(company) {
 
         })
     }
+}
+
+function deleteUsersByCompanyId(companyId) {
+  if (!companyId){
+    return log.warn('Cannot delete users by company id.');
+  }
+
+  users.deleteByCompanyId(companyId, function (err, result) {
+    if(err) {
+      log.error('Cannot delete users by company id.', {error: err});
+    } else {
+      log.info('Users deleted');
+    }
+  });
 }
 
 function addIdToDayTypes(company) {

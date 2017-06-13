@@ -30,8 +30,8 @@ angular.module('mifortTimesheet.company', ['ngRoute'])
         });
     }])
 
-    .controller('companyController', ['$scope', '$location', 'companyService', 'preferences', '$rootScope', 'Notification',
-        function ($scope, $location, companyService, preferences, $rootScope, Notification) {
+    .controller('companyController', ['$scope', '$location', 'companyService', 'preferences', '$rootScope', 'Notification', '$http',
+        function ($scope, $location, companyService, preferences, $rootScope, Notification, $http) {
         $scope.user = preferences.get('user');
 
         $scope.company = {
@@ -134,6 +134,18 @@ angular.module('mifortTimesheet.company', ['ngRoute'])
             companyService.removeEmployee(employee._id).success(function() {
                 Notification.success('Changes saved');
             });
+        };
+
+        $scope.deleteCompany = function(companyId) {
+          companyService.deleteCompany(companyId).success(function(company) {
+            Notification.success('Company deleted');
+            preferences.clear();
+
+            $http.get('logout').then(function() {
+              $('.modal-backdrop').remove(); //otherwise it does not disappear
+              $location.path('login');
+            });
+          });
         };
 
         $scope.$watch('company.emails', function (newValue) {

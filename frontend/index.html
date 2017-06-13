@@ -89,12 +89,36 @@
     <a href="" class="main-control logout-icon" ng-click="logout()">
         <span>Logout</span>
     </a>
+    <a href="" ng-show="$root.accounts && $root.accounts.length" data-toggle="modal" data-target="#myAccountsModal">
+        <span><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Accounts</span>
+    </a>
 </nav>
 
 <div ng-if="isLoggedIn && companyId" bootstrap-tabs company-name="{{companyName}}" class="main-tabs"></div>
 
 <div class="main-container" ng-view ng-class="{'login-wrapper': isNotLoggedIn}"></div>
 
+<!-- Modal -->
+<div id="myAccountsModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-body">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h2>My accounts</h2>
+                <div class="list-group">
+                    <a href="#" class="list-group-item" ng-repeat="account in $root.accounts track by $index"
+                       ng-click="changeAccount(account)"><h2>{{account.company.name}}</h2></a>
+                </div>
+                <button type="button" class="primary-button" data-dismiss="modal">
+                    Cancel
+                </button>
+            </div>
+        </div>
+
+    </div>
+</div>
 
 <!--<script src="scripts/vendors.min.js?rel=2b0d0262cc"></script>-->
 

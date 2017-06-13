@@ -50,6 +50,10 @@ exports.getFileName = function(req) {
     return getParameter(req, reqParams.fileNameParam);
 };
 
+exports.getEmailParam = function(req) {
+    return getParameter(req, reqParams.emailParam);
+};
+
 //parse json. Date and ObjectId
 exports.jsonParse = function(key, value) {
     if (typeof value === 'string') {

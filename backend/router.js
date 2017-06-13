@@ -100,6 +100,14 @@ userRouter.put('/',
         validators.validateAddNewUser,
         authorization.authorizeAddNewUser,
         user.restAddNewUser);
+userRouter.get('/accounts/:email',
+        validators.validateGetListByEmail,
+        authorization.authorizeGetListByEmail,
+        user.restGetListByEmail);
+userRouter.post('/account/:userId',
+        validators.validateUserIdParam,
+        authorization.authorizeChangeAccount,
+        user.restChangeAccount);
 
 //company
 var company = require('./company');
@@ -116,6 +124,10 @@ companyRouter.get('/:companyId',
         validators.validateGetCompanyById,
         authorization.authorizeGetCompanyById,
         company.restFindById);
+companyRouter.delete('/:companyId',
+        validators.validateGetCompanyById,
+        authorization.authorizeDeleteCompany,
+        company.restDeleteCompany);
 
 //report
 var report = require('./report');

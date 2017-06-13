@@ -15,6 +15,9 @@
 -->
 
 <div class="company-wrapper">
+    <a class="delete-company-button"  data-toggle="modal" data-target="#myModal">
+        <span class="glyphicon glyphicon-trash"></span>
+    </a>
     <div timesheet-intro></div>
 
     <h1>Company Edit</h1>
@@ -87,4 +90,27 @@
             </tbody>
         </table>
     </form>
+
+
+    <!-- Modal -->
+    <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-body">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h2>Are you sure you want to delete the company "{{company.name}}"?</h2>
+                    <button type="button" class="secondary-button" data-dismiss="modal" ng-click="deleteCompany(company._id)">
+                        Delete
+                    </button>
+
+                    <button type="button" class="primary-button" data-dismiss="modal">
+                        Cancel
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
 </div>

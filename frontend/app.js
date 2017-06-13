@@ -63,10 +63,10 @@ angular.module('mifortTimesheet', [
         });
     })
 
-    .controller('mifortTimesheetController', ['$scope', '$location', '$http', 'preferences', 'companyService', 'topPanelService', '$rootScope', 'notifyingService', 'Notification', 'projectsService',
-        function($scope, $location, $http, preferences, companyService, topPanelService, $rootScope, notifyingService, Notification, projectsService) {
+    .controller('mifortTimesheetController', ['$scope', '$location', '$http', 'preferences', 'companyService', 'topPanelService', '$rootScope', 'notifyingService', 'Notification', 'projectsService', '$window',
+        function($scope, $location, $http, preferences, companyService, topPanelService, $rootScope, notifyingService, Notification, projectsService, $window) {
             var user = preferences.get('user');
-            if(user){
+            if(user && !user.deleted){
                 if(user.companyId){
                     console.log($scope);
                     $rootScope.companyId = user.companyId;
@@ -123,6 +123,13 @@ angular.module('mifortTimesheet', [
             $scope.startIntro = function() {
                 $rootScope.introIsActive = true;
                 notifyingService.notify('startIntro');
+            };
+
+            $scope.changeAccount = function (user) {
+              $http.post('api/v1/user/account/' + user._id).success(function(user) {
+                preferences.set('user', user);
+                $window.location.href = '/';
+              });
             };
 
             $scope.$on('handleError', function(event, errorCode) {
