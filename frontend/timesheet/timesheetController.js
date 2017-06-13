@@ -59,10 +59,12 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                     $scope.customUserName = loggedUser.displayName;
                     user = loggedUser;
 
-                    user.assignments.forEach(function (assignment) {
-                        uniqueProjectAssignments.push(assignment.projectId);
-                    });
-                    uniqueProjectAssignments = _.uniq(uniqueProjectAssignments);
+                    if (user.assignments && user.assignments.length) {
+                        user.assignments.forEach(function (assignment) {
+                            uniqueProjectAssignments.push(assignment.projectId);
+                        });
+                        uniqueProjectAssignments = _.uniq(uniqueProjectAssignments);
+                    }
 
 
                     //get accounts
@@ -75,6 +77,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                     //get timesheets
                     if (!uniqueProjectAssignments.length) {
                         $scope.noAssignments = true;
+                        $scope.loading = false;
                     }
 
                     uniqueProjectAssignments.forEach(function (assignment, index) {
