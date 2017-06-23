@@ -182,7 +182,7 @@ angular.module('mifortTimesheet.projects', ['ngRoute'])
                     $scope.projects.unshift(project);
                     Notification.success('Changes saved');
                 });
-
+                document.getElementsByClassName("main-container")[0].scrollTop="0";
             };
 
             $scope.saveAssignment = function (project, assignedEmployee, employee, previousEmployeeId, assignmentIndex) {
