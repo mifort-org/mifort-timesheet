@@ -1,0 +1,242 @@
+/*!
+ * Copyright 2015 mifort.org
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+.employee-card{
+    position: relative;
+    display: inline-block;
+    width: 320px;
+    padding: 30px;
+    margin: 0 15px 30px 15px;
+    font-size: 1.8rem;
+    font-weight: 300;
+    text-align: center;
+    background: #fff;
+    vertical-align: top;
+
+    h2{
+        padding: 12px 0;
+        font-size: 2.4rem;
+        font-weight: 300;
+        word-break: break-all;
+        &.links {
+            cursor: pointer;
+        }
+    }
+
+    p{
+        margin-bottom: 12px;
+        color: #a3a3a3;
+    }
+
+    label{
+        font-size: 1.2rem;
+        color: #19b5fe;
+
+        &.hidden-label{
+            visibility: hidden;
+        }
+    }
+
+    input{
+        width: 100%;
+        color: #000;
+        text-align: center;
+        border: 0;
+        border-bottom: 1px #e8e8e8 solid;
+        outline: none;
+    }
+
+    .authentication-type{
+        position: absolute;
+        top: 30px;
+        right: 30px;
+        width: 25px;
+        height: 25px;
+        background: url("../common/images/icons.png") 2px -1700px;
+    }
+
+    .delete-type{
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: 13px;
+        height: 12px;
+        background: url(../common/images/icons.png) 0px -1480px;
+        cursor: pointer;
+        &:hover {
+            opacity: .5;
+        }
+    }
+
+    .employee-workload-container{
+        margin-bottom: 0;
+        text-align: right;
+        color: #000;
+    }
+}
+
+.employee-search{
+    .employee-assignments{
+        border: 0;
+    }
+
+    h2{
+        padding-bottom: 8px;
+    }
+
+    p{
+        margin-bottom: 8px;
+    }
+}
+
+
+.employee-workload{
+    color: #19b5fe;
+    font-size: 2.4rem;
+}
+
+.clip-svg{
+    width: 0;
+    height: 0;
+}
+
+.employee-card .employee-image-border,
+.employee-card .employee-image-subborder{
+    position: absolute;
+    z-index: 2;
+    left: 50%;
+    width: 132px;
+    height: 136px;
+    margin-left: -65px;
+    padding-top: 2px;
+    overflow: visible;
+}
+
+.employee-image-subborder{
+    z-index: 2;
+}
+
+.polygon-each-img-wrap .polygon-clip-hexagon{
+    width: 132px;
+    height: 132px;
+}
+
+.polygon-each-img-wrap{
+    position: relative;
+    z-index: 3;
+    width: 132px;
+    height: 132px;
+    margin: 3px auto;
+    text-align: center;
+
+    -webkit-clip-path: polygon(50% 0%, 95% 27%, 95% 70%, 50% 95%, 5% 70%, 5% 27%);
+    clip-path: polygon(50% 0%, 95% 27%, 95% 70%, 50% 95%, 5% 70%, 5% 27%);
+    -webkit-clip-path: url("#polygon-clip-hexagon");
+    clip-path: url("#polygon-clip-hexagon");
+}
+
+.employee-assignments{
+    padding: 12px 0;
+    text-align: left;
+    border: 1px #e8e8e8 solid;
+    border-left: 0;
+    border-right: 0;
+
+    &.archived-assignments{
+        padding-top: 0;
+        font-size: 1.4rem;
+        line-height: 19px;
+        border-top: 0;
+    }
+
+    .employee-assignment{
+        display: block;
+    }
+
+    a{
+        display: inline-block;
+        width: 100%;
+        color: #000;
+        text-decoration: none;
+
+        &.collapse-item{
+            background-position: -25px -313px;
+
+            &.collapsed{
+                background-position: -12px -633px;
+            }
+        }
+
+        &.archived-assignment{
+            color: #999;
+        }
+    }
+
+    .assignment-roles{
+        color: #000;
+        margin: 10px 0 0 20px;
+        padding-left: 10px;
+        border-left: 1px #e8e8e8 solid;
+    }
+
+    .employee-workload{
+        font-size: 1.8rem;
+    }
+}
+
+.employee-initials{
+    height: 136px;
+    display: table-cell;
+    width: 132px;
+    padding-bottom: 8px;
+    color: #19b5fe;
+    font-size: 5.4rem;
+    font-weight: 500;
+    vertical-align: middle;
+    background: #f3f3f3;
+}
+
+.employee-search-controls{
+    display: flex;
+    padding-top: 10px;
+    justify-content: space-around;
+}
+
+.employee-search-lens{
+    padding-top: 8px;
+}
+
+.add-employee {
+    position: fixed;
+    z-index: 1;
+    right: 50px;
+    bottom: 50px;
+    padding: 47px 0 53px;
+    width: 100px;
+    font-size: 4.2rem;
+    text-align: center;
+    font-weight: 300;
+    color: #fff;
+    line-height: 0;
+    background: url(../common/images/add-project.png) no-repeat center -96px;
+    &:hover,
+    &:focus,
+    &:active {
+        background-position: center 5px;
+        color: #fff;
+        text-decoration: none;
+    }
+}

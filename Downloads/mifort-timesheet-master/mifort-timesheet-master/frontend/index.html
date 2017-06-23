@@ -1,0 +1,197 @@
+<!--
+  Copyright 2015 mifort.org
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<!DOCTYPE html>
+<html lang="en" ng-app="mifortTimesheet" ng-controller="mifortTimesheetController">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=700, initial-scale=1"/>
+    <title ng-bind="companyName + ' Timesheet'">Timesheet</title>
+    <base href="/">
+    <link rel="shortcut icon" type="image/x-icon" href="common/images/favicon.ico"/>
+
+    <!-- build:css styles/vendors.min.css -->
+    <link rel="stylesheet" href="bower_components/angular-ui-grid/ui-grid.min.css">
+    <link rel="stylesheet" href="bower_components/angular-ui-notification/dist/angular-ui-notification.min.css">
+    <link rel="stylesheet" href="bower_components/bootstrap-daterangepicker/daterangepicker-bs3.css">
+    <link rel="stylesheet" href="bower_components/ui-select/dist/select.css">
+    <link rel="stylesheet" href="bower_components/intro.js/minified/introjs.min.css">
+    <!-- endbuild -->
+
+    <!-- build:css styles/styles.min.css -->
+    <link rel="stylesheet" href="common/sass/styles.css">
+    <link rel="stylesheet" href="common/sass/bootstrap-mifort.css">
+
+    <link rel="stylesheet" href="components/tabs/tabs.css">
+    <link rel="stylesheet" href="components/projectSummary/projectSummary.css">
+    <link rel="stylesheet" href="components/timesheetIntro/timesheetIntro.css">
+    <link rel="stylesheet" href="company/company.css">
+    <link rel="stylesheet" href="login/login.css">
+    <link rel="stylesheet" href="projects/projects.css">
+    <link rel="stylesheet" href="timesheet/timesheet.css">
+    <link rel="stylesheet" href="calendar/calendar.css">
+    <link rel="stylesheet" href="report/report.css">
+    <link rel="stylesheet" href="employees/employees.css">
+    <!-- endbuild -->
+
+    <!-- build:css styles/print.min.css -->
+    <link rel="stylesheet" href="common/sass/print.css" media="print">
+    <!-- endbuild -->
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,600,400italic,600italic,700,700italic&subset=cyrillic-ext,latin">
+</head>
+
+<body ng-class="{'intro-active': introIsActive}">
+
+<div class="page-loading" ng-if="!isNotLoggedIn && !isLoggedIn">
+    <img src="common/images/animation-wait.gif" alt=""/>
+</div>
+
+<nav class="main-controls" ng-if="isLoggedIn">
+    <span ng-if="isLoggedIn && companyId" bootstrap-tabs company-name="{{companyName}}"></span>
+
+    <a class="logo" href="" ng-click="openHomePage();">
+        <img class="timesheet-icon" src="../common/images/logo-small.png" alt=""/>
+        <span ng-bind="companyName + ' Timesheet'">Timesheet</span>
+    </a>
+
+    <!--TODO: to array of objects-->
+    <a href="javascript:window.print()" ng-if="isVisible('print') && isLoggedIn" class="main-control print-icon" id="print">
+        <span>Print</span>
+    </a>
+    <span dropdown-filter-pdf>
+    </span>
+    <a href="" ng-click="openLink('csv')" ng-if="isVisible('csv') && isLoggedIn" class="main-control csv-icon">
+        <span>CSV</span>
+    </a>
+    <a href="" ng-click="openLink('project')" ng-if="isVisible('project') && isLoggedIn" class="main-control project-icon">
+        <span>Add Project</span>
+    </a>
+    <a href="" ng-click="$root.startIntro()" ng-if="isLoggedIn" class="main-control info-icon" >
+        <span>Info</span>
+    </a>
+    <a href="" ng-click="openLink('profile')" ng-if="isVisible('profile')" class="main-control profile-icon">
+        <span>Profile</span>
+    </a>
+    <a href="" class="main-control logout-icon" ng-click="logout()">
+        <span>Logout</span>
+    </a>
+    <a href="" ng-show="$root.accounts && $root.accounts.length" data-toggle="modal" data-target="#myAccountsModal">
+        <span><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Accounts</span>
+    </a>
+</nav>
+
+<div ng-if="isLoggedIn && companyId" bootstrap-tabs company-name="{{companyName}}" class="main-tabs"></div>
+
+<div class="main-container" ng-view ng-class="{'login-wrapper': isNotLoggedIn}"></div>
+
+<!-- Modal -->
+<div id="myAccountsModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-body">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h2>My accounts</h2>
+                <div class="list-group">
+                    <a href="#" class="list-group-item" ng-repeat="account in $root.accounts track by $index"
+                       ng-click="changeAccount(account)"><h2>{{account.company.name}}</h2></a>
+                </div>
+                <button type="button" class="primary-button" data-dismiss="modal">
+                    Cancel
+                </button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!--<script src="scripts/vendors.min.js?rel=2b0d0262cc"></script>-->
+
+<!--<script src="scripts/scripts.min.js?rel=a958eaa8a6"></script>-->
+
+
+<!-- build:js scripts/vendors.min.js -->
+<!--JS libraries-->
+<script src="bower_components/jquery/dist/jquery.min.js"></script>
+<script src="bower_components/angular/angular.min.js"></script>
+<script src="bower_components/angular-route/angular-route.min.js"></script>
+<script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+<script src="bower_components/underscore/underscore-min.js"></script>
+<script src="bower_components/moment/min/moment.min.js"></script>
+<script src="bower_components/angular-moment/angular-moment.min.js"></script>
+<script src="bower_components/angular-ui-grid/ui-grid.min.js"></script>
+<script src="bower_components/angular-click-outside/clickoutside.directive.js"></script>
+<script src="bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
+<script src="bower_components/ng-bs-daterangepicker/dist/ng-bs-daterangepicker.min.js"></script>
+<script src="bower_components/angular-ui-notification/dist/angular-ui-notification.min.js"></script>
+<script src="bower_components/ui-select/dist/select.js"></script>
+<script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+<script src="bower_components/intro.js/minified/intro.min.js"></script>
+<script src="bower_components/angular-intro.js/build/angular-intro.min.js"></script>
+<script src="bower_components/angular-filter/dist/angular-filter.min.js"></script>
+<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- endbuild -->
+
+<!-- build:js scripts/scripts.min.js -->
+<script src="app.js"></script>
+
+<!--Custom components-->
+<script src="components/tabs/bootstrapTabs.js"></script>
+<script src="components/projectSummary/projectSummary.js"></script>
+<script src="components/tableCell/tableCell.js"></script>
+<script src="components/projectRow/projectRow.js"></script>
+<script src="components/preferences/preferences.js"></script>
+<script src="components/preferences/preferencesService.js"></script>
+<script src="components/customDay/customDay.js"></script>
+<script src="components/filters/propsFilter.js"></script>
+<script src="components/filters/toDateFilter.js"></script>
+<script src="components/filters/longTextFilter.js"></script>
+<script src="components/filters/fixedFilter.js"></script>
+<script src="components/dropdownFilter/dropdownFilter.js"></script>
+<script src="components/dropdownFilterPdf/dropdownFilterPdf.js"></script>
+<script src="components/reportDatePicker/reportDatePicker.js"></script>
+<script src="components/timesheetIntro/timesheetIntro.js"></script>
+<script src="components/cuttedComment/cuttedComment.js"></script>
+<script src="components/timeMask/timeMask.js"></script>
+<script src="components/timesheetComment/timesheetComment.js"></script>
+
+<!--Main-->
+<script src="login/loginController.js"></script>
+<script src="login/loginService.js"></script>
+
+<script src="company/companyController.js"></script>
+<script src="company/companyService.js"></script>
+
+<script src="projects/projectsController.js"></script>
+<script src="projects/projectsService.js"></script>
+
+<script src="timesheet/timesheetController.js"></script>
+<script src="timesheet/timesheetService.js"></script>
+<script src="services/projectSummaryService.js"></script>
+
+<script src="calendar/calendarController.js"></script>
+<script src="calendar/calendarService.js"></script>
+
+<script src="report/reportController.js"></script>
+<script src="report/reportService.js"></script>
+
+<script src="employees/employeesController.js"></script>
+<script src="employees/employeesService.js"></script>
+<!-- endbuild -->
+</body>
+</html>
