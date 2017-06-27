@@ -26,8 +26,7 @@ angular.module('mifortTimesheet')
                 var hoursInput = element.find('.timesheet-hours');
 
                 input.on('blur', function(){
-                    var time = $(this).val();
-
+                    var time = Number($(this).val()).toFixed(2);
                     if(time != ''){
                         $(this).val(time);
                     }
