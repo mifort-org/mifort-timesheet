@@ -33,6 +33,14 @@ angular.module('mifortTimesheet')
                     $(this).attr('placeholder', timePlaceholder);
                 });
 
+                input.on("input", function () {
+                    var v = $(this).val();
+                    var l = $(this).val().split(".")[1].length;
+                    if (l > 2) {
+                        $(this).val(v.substring(0, v.length - 1));
+                    }
+                });
+
                 input.on('focus', function(){
                     var time = $(this).val();
 
