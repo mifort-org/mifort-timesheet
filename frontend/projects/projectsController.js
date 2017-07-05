@@ -87,7 +87,9 @@ angular.module('mifortTimesheet.projects', ['ngRoute'])
 
             projectsService.getProjects(companyId).success(function (projects) {
                 if (projects.length) {
-                    $scope.projects = _.sortBy(projects, 'name');
+                    $scope.projects = _.sortBy(projects, function (project){
+                        return project.name.toLowerCase();
+                    });
                     $scope.availablePositions = projects[0].availablePositions;
 
                     $scope.projects.forEach(function (project) {
@@ -104,7 +106,7 @@ angular.module('mifortTimesheet.projects', ['ngRoute'])
                 }
 
             });
-            $scope.Sort = function (){
+            /*$scope.Sort = function (){
                 projectsService.getProjects(companyId).success(function (projects) {
                     if (projects.length) {
                         $scope.projects = _.sortBy(projects, 'name');
@@ -124,7 +126,7 @@ angular.module('mifortTimesheet.projects', ['ngRoute'])
                     }
 
                 });
-            };
+            };*/
             $scope.introSteps = [
                 {
                     element: '#step1',
