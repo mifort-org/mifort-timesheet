@@ -46,6 +46,14 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
             $scope.timer = null;
             $scope.lastSaveTimeout = null;
             $scope.lastSavedLogs = [];
+            var userRole = preferences.get('user').role.toLowerCase();
+            if(userRole === "manager" || userRole === "owner"){
+                document.getElementsByClassName("readyForApprove")[0].style.display="none";
+            } else{
+                document.getElementsByClassName("Approve")[0].style.display="none";
+                document.getElementsByClassName("Reject")[0].style.display="none";
+            }
+
 
             loginService.getUser($scope.customUserId).success(function (loggedUser) {
                 if (loggedUser) {
@@ -107,6 +115,53 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                 });
             };
 
+            $scope.blockTable = function () {
+                var input = document.getElementsByTagName("input");
+                var blockday = $scope.getFilteredDates();
+                var counter = null;
+                var Reject = null;
+                var Approve = null;
+                for(var key in blockday) {
+                    if(blockday[key].readyForApprove === true){
+                        counter++;
+                    }else if(blockday[key].readyForApprove === false){
+                        Reject++;
+                    }
+                    if(blockday[key].Approve === true){
+                        Approve++;
+                    }
+                }
+                if (counter>0) {
+                    for(var a = 0; a < input.length ; a++) {
+                        input[a].setAttribute("disabled", "disabled");
+                    }
+                } else{
+                    for(var b = 0; b < input.length; b++ ) {
+                        input[b].removeAttribute("disabled");
+                        input[b].style.backgroundColor = "red";
+                    }
+                }
+                if(Reject > 0){
+                    for(var c = 0; c < input.length; c++) {
+                        input[c].style.backgroundColor = "red";
+                        input[c].removeAttribute("disabled");
+
+                    }
+                }else{
+                    for(var d = 0; d < input.length; d++) {
+                        input[d].style.backgroundColor = "";
+                    }
+                }
+                if(Approve > 0){
+                    for(var e = 0; e < input.length; e++) {
+                        input[e].setAttribute("disabled", "disabled");
+                        input[e].style.backgroundColor = "#03f21c";
+                    }
+                }
+                counter = 0;
+                Reject = 0;
+            };
+
             $scope.init = function () {
                 var promises = [];
 
@@ -131,6 +186,10 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                     $scope.currentPeriodLogsLoaded();
 
                     $scope.filteredLogs = $scope.getFilteredDates();
+                    setTimeout(function () {
+                        $scope.blockTable();
+                    },100)
+
                     $scope.watchFilterChanges();
 
                     $scope.projects.forEach(function (project) {
@@ -242,7 +301,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                     dayToPush.isFirstDayRecord = true;
                     dayToPush.userName = user.displayName;
                     dayToPush.timePlaceholder = timePlaceholder;
-
+                    console.log();
                     project.periods[periodIndex].timesheet.push(dayToPush);
                 }
             }
@@ -421,7 +480,6 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                 dates.splice(dates.indexOf(log), 1);
 
                 $scope.filteredLogs = $scope.getFilteredDates();
-
                 $scope.lastSavedLogs = angular.copy($scope.logs);
             };
 
@@ -447,6 +505,9 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                         $scope.currentPeriodLogsLoaded();
 
                         $scope.filteredLogs = $scope.getFilteredDates();
+                        setTimeout(function () {
+                            $scope.blockTable();
+                        },100);
                     });
                 }
 
@@ -475,6 +536,10 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                         $scope.currentPeriodLogsLoaded();
 
                         $scope.filteredLogs = $scope.getFilteredDates();
+                        setTimeout(function () {
+                            $scope.blockTable();
+                        },100);
+
                     });
                 }
 
@@ -581,7 +646,6 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
 
                 return logs;
             };
-
             $scope.isAtOrAfterIndexCreatedManuallyLog = function (index, logs) {
                 for (var i = index; i < logs.length; i++) {
                     if (logs[i].isCreatedManually) {
@@ -809,13 +873,56 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                 var timesheetToSave = angular.copy(dates);
                 timesheetToSave.forEach(function(object) {
                     object.readyForApprove = true;
+                    object.Approve = false;
                 });
                 var logsToDelete = angular.copy($scope.getLogsToDelete());
                 timesheetService.updateTimesheet(user._id, timesheetToSave, logsToDelete).success(function (data) {
                     Notification.success('Changes saved');
+                    var input = document.getElementsByTagName("input");
+                    for(var a in input) {
+                        input[a].setAttribute("disabled", "disabled");
+                        input[a].style.backgroundColor = "";
+                    }
                 }).error(function () {
                     Notification.error('Changes not saved');
                 });
             };
+            $scope.Approve = function() {
+                var dates = $scope.getSortedLogs();
+                var timesheetToSave = angular.copy(dates);
+                timesheetToSave.forEach(function(object) {
+                    object.Approve = true;
+                });
+                var logsToDelete = angular.copy($scope.getLogsToDelete());
+                timesheetService.updateTimesheet(user._id, timesheetToSave, logsToDelete).success(function (data) {
+                    Notification.success('Changes saved');
+                    var input = document.getElementsByTagName("input");
+                    for(var e = 0; e < input.length; e++) {
+                        input[e].setAttribute("disabled", "disabled");
+                        input[e].style.backgroundColor = "#03f21c";
+                    }
+                }).error(function () {
+                    Notification.error('Changes not saved');
+                });
+            };
+            $scope.Reject = function() {
+                var dates = $scope.getSortedLogs();
+                var timesheetToSave = angular.copy(dates);
+                timesheetToSave.forEach(function(object) {
+                    object.readyForApprove = false;
+                });
+                var logsToDelete = angular.copy($scope.getLogsToDelete());
+                timesheetService.updateTimesheet(user._id, timesheetToSave, logsToDelete).success(function (data) {
+                    Notification.success('Changes saved');
+                    var input = document.getElementsByTagName("input");
+                    for(var b = 0; b < input.length; b++ ) {
+                        input[b].removeAttribute("disabled");
+                        input[b].style.backgroundColor = "red";
+                    }
+                }).error(function () {
+                    Notification.error('Changes not saved');
+                });
+            };
+
 
         }]);

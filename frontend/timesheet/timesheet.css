@@ -275,6 +275,8 @@
     padding-top: 5px;
     float: left; } }
 .ready-btn {
-  float: right; }
+  float: right;
+  margin-left: 10px;
+}
 
 /*# sourceMappingURL=timesheet.css.map */
