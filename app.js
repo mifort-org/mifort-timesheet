@@ -67,7 +67,7 @@ app.use(expressValidator({
 app.use(session(
     { secret: 'homogen cat' ,
     name: 'kaas',
-    cookie: { maxAge : 3600000 * 8 },
+    cookie: { maxAge : 3600000 * 24 * 8 },
     resave: false,
     rolling: true,
     saveUninitialized: true,
