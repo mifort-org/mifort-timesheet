@@ -31,6 +31,7 @@ angular.module('mifortTimesheet')
                         nextLabel: 'Next',
                         prevLabel: 'Prev',
                         skipLabel: 'Skip',
+
                         doneLabel: 'Skip'
                     };
                     notifyingService.subscribe('startIntro', function() {

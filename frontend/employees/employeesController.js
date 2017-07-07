@@ -25,8 +25,8 @@ angular.module('mifortTimesheet.employees', ['ngRoute'])
         });
     }])
 
-    .controller('employeesController', ['$scope', 'employeesService', 'preferences', '$location', 'Notification',
-        function($scope, employeesService, preferences, $location, Notification) {
+    .controller('employeesController', ['$scope', 'employeesService', 'preferences', '$location', 'Notification','notifyingService','$rootScope',
+        function($scope, employeesService, preferences, $location, Notification,notifyingService, $rootScope) {
             var companyId = preferences.get('user').companyId;
 
             $scope.path = $location.path();
@@ -47,6 +47,25 @@ angular.module('mifortTimesheet.employees', ['ngRoute'])
                 var initials = name.match(/\b\w/g);
                 initials = (initials.shift() + initials.pop()).toUpperCase();
                  return initials;
+            };
+
+            $rootScope.startIntro = function() {
+                var intro = introJs();
+                intro.setOptions({
+                    steps: [
+                        {
+                            element: '.employee-search',
+                            intro: "Magic"
+                        },
+                        {
+                            element: '.employee-card',
+                            intro: "Ok, <i>wasn't</i> that fun?",
+                            position: 'right'
+                        }
+                    ]
+                });
+
+                intro.start();
             };
 
             $scope.calculateWorkload = function(employee) {
@@ -108,7 +127,6 @@ angular.module('mifortTimesheet.employees', ['ngRoute'])
                     Notification.success('Changes saved');
                 });
             };
-
 
             $scope.$watch('company.emails', function (newValue) {
                 if (newValue && typeof newValue == 'string') {

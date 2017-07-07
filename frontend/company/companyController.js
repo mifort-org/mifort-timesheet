@@ -94,7 +94,24 @@ angular.module('mifortTimesheet.company', ['ngRoute'])
                 $location.path('/calendar');
             });
         };
-
+        function DefaultCompanyName() {
+            var tab = document.getElementsByClassName("tabs-left");
+            var DefaultCompanyName = tab[0].getElementsByClassName("ng-binding");
+            DefaultCompanyName[0].innerHTML = "Company Name";
+        }
+        setTimeout(function () {
+            if(document.getElementById("step1").value.length===0){
+                DefaultCompanyName();
+            }
+        },30);
+        document.getElementById("step1").oninput = function () {
+            if(this.value.length===0){
+                DefaultCompanyName();
+            }else{
+                var text = this.value;
+                document.getElementsByClassName("tabs-left")[0].getElementsByClassName("ng-binding")[0].innerHTML = text;
+            }
+        };
         $scope.saveCompany = function () {
             companyService.saveCompany($scope.company).success(function (data) {
                 Notification.success('Changes saved');

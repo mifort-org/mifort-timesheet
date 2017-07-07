@@ -15,7 +15,6 @@
  */
 
 'use strict';
-
 angular.module('mifortTimesheet.login', ['ngRoute'])
 
     .config(['$routeProvider', function ($routeProvider) {

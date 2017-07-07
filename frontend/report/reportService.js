@@ -166,7 +166,12 @@ angular.module('mifortTimesheet.report').factory('reportService',
             },
             {
                 element: '#print',
-                intro: "<p>You could print or export the report by pressing the top panel buttons Print/CSV.</p>",
+                intro: "<p>You could print or export the report by pressing the top panel buttons Print.</p>",
+                position: 'left'
+            },
+            {
+                element: '.csv-icon',
+                intro: "<p>You could print or export the report by pressing the top panel buttons CSV.</p>",
                 position: 'left'
             }
         ];

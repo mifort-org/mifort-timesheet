@@ -114,13 +114,14 @@ angular.module('mifortTimesheet', [
 
             $scope.openLink = function(linkName, id) {
                 topPanelService.prepForBroadcast(linkName, id);
+                document.getElementsByClassName("main-container")[0].scrollTop="0";
             };
 
             $scope.$on('companyNameChanged', function(response, companyName) {
                 $scope.companyName = companyName;
             });
 
-            $scope.startIntro = function() {
+            $rootScope.startIntro = function() {
                 $rootScope.introIsActive = true;
                 notifyingService.notify('startIntro');
             };

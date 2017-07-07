@@ -116,15 +116,16 @@ angular.module('mifortTimesheet')
                 };
 
                 scope.showColorPicker = function(dayIndex) {
-                    scope.company.dayTypes[dayIndex].pickerVisible = true;
-                };
+                    setTimeout(function () {
+                        scope.company.dayTypes[dayIndex].pickerVisible = true;
+                    },50);
 
+                };
                 function paintHexagons() {
                     $(element).find('.hexagon').each(function(index) {
                         var hexagon = $(this),
                             hexagonColor = scope.company.dayTypes[$(this).index()].color,
                             selector = '.custom-days-wrapper .hexagon-wrapper .hexagon-' + index;
-
                         hexagon.addClass('hexagon-' + index);
                         $('head').append("<style>" +
                             selector + ":after{border-top-color: " + hexagonColor + ";}" +
@@ -151,9 +152,10 @@ angular.module('mifortTimesheet')
                     });
 
                     addHexagonsListener();
-                    paintHexagons()
+                    // paintHexagons();
                 };
             },
             templateUrl: 'components/customDay/customDay.html'
+
         };
     });

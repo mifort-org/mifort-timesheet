@@ -87,7 +87,9 @@ angular.module('mifortTimesheet.projects', ['ngRoute'])
 
             projectsService.getProjects(companyId).success(function (projects) {
                 if (projects.length) {
-                    $scope.projects = _.sortBy(projects, 'name');
+                    $scope.projects = _.sortBy(projects, function (project){
+                        return project.name.toLowerCase();
+                    });
                     $scope.availablePositions = projects[0].availablePositions;
 
                     $scope.projects.forEach(function (project) {
@@ -102,8 +104,29 @@ angular.module('mifortTimesheet.projects', ['ngRoute'])
                 else {
                     $scope.projects = [];
                 }
-            });
 
+            });
+            /*$scope.Sort = function (){
+                projectsService.getProjects(companyId).success(function (projects) {
+                    if (projects.length) {
+                        $scope.projects = _.sortBy(projects, 'name');
+                        $scope.availablePositions = projects[0].availablePositions;
+
+                        $scope.projects.forEach(function (project) {
+                            projectsService.getAssignedEmployers(project._id).success(function (assignedEmployers) {
+                                project.assignedEmployers = _.sortBy(assignedEmployers, 'displayName') || [];
+                                project.isCollapsed = !project.active;
+                                project.projectEdit = false;
+                                project.loading = false;
+                            });
+                        });
+                    }
+                    else {
+                        $scope.projects = [];
+                    }
+
+                });
+            };*/
             $scope.introSteps = [
                 {
                     element: '#step1',
@@ -111,7 +134,7 @@ angular.module('mifortTimesheet.projects', ['ngRoute'])
                     "<p>Each project table has three columns: </p>" +
                     "<ul class=\"dotted-list\"><li><strong>Assignment</strong> - contains the dropdown list with all possible assignments for current company (i.e. Developer, QA, Manager, Team Lead etc.). </li>" +
                     "<li><strong>Workload</strong> - set\'s the employee\'s default workload for the current project. </li>" +
-                    "<li><strong>Person</strong> - contains the search/dropdown with all company\'s employees. Each assigned employee could be deassigned by pressing the red cross button next to that employees table row. " +
+                    "<li><strong>Person</strong> -F contains the search/dropdown with all company\'s employees. Each assigned employee could be deassigned by pressing the red cross button next to that employees table row. " +
                     "Each employee could be assigned on any project any number of times with any roles.</li></ul>",
                     position: 'bottom'
                 },
@@ -161,7 +184,7 @@ angular.module('mifortTimesheet.projects', ['ngRoute'])
                     $scope.projects.unshift(project);
                     Notification.success('Changes saved');
                 });
-
+                document.getElementsByClassName("main-container")[0].scrollTop="0";
             };
 
             $scope.saveAssignment = function (project, assignedEmployee, employee, previousEmployeeId, assignmentIndex) {

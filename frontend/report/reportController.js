@@ -18,7 +18,7 @@
 
 angular.module('mifortTimesheet.report', ['ngRoute'])
 
-    .config(['$routeProvider', function($routeProvider) {
+    .config(['$routeProvider', function ($routeProvider) {
         $routeProvider.when('/report', {
             templateUrl: 'report/reportView.html',
             controller: 'reportController'
@@ -26,26 +26,26 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
     }])
 
     .controller('reportController', ['$scope', 'reportService', 'preferences', 'uiGridConstants', 'topPanelService', '$timeout', '$location',
-        function($scope, reportService, preferences, uiGridConstants, topPanelService, $timeout, $location) {
+        function ($scope, reportService, preferences, uiGridConstants, topPanelService, $timeout, $location) {
             var companyId = preferences.get('user').companyId,
                 userRole = preferences.get('user').role.toLowerCase(),
-                headerHeight = 38+12,
+                headerHeight = 38 + 12,
                 maxVisiblePages = 5,
                 columns = reportService.columns;
 
             $scope.introSteps = reportService.introSteps;
 
-            if(userRole == 'owner' || userRole == 'manager'){
+            if (userRole == 'owner' || userRole == 'manager') {
                 $scope.userIsManager = true;
             }
-            else{
+            else {
                 $scope.userIsManager = false;
             }
 
-            $scope.getAggregatedComments = function(comments) {
-                if(comments && comments.length){
+            $scope.getAggregatedComments = function (comments) {
+                if (comments && comments.length) {
                     //remove empty comments
-                    var cleanComments = comments.filter(function(e) {
+                    var cleanComments = comments.filter(function (e) {
                         return e ? e.replace(/(\r\n|\n|\r)/gm, "") : ""
                     });
 
@@ -73,7 +73,7 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                 page: 1
             };
 
-            if(!$scope.userIsManager){
+            if (!$scope.userIsManager) {
                 $scope.reportSettings.filters.push({
                     field: "userName",
                     value: [preferences.get('user').displayName]
@@ -84,7 +84,7 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                 {
                     title: 'Log',
                     active: true,
-                    setSettings: function() {
+                    setSettings: function () {
                         $scope.reportSettings.groupBy = [];
                         $scope.reportSettings.isCommentNeeded = false;
                     },
@@ -93,7 +93,7 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                 {
                     title: 'Project',
                     active: false,
-                    setSettings: function() {
+                    setSettings: function () {
                         $scope.reportSettings.groupBy = ['projectName'];
                         $scope.reportSettings.isCommentNeeded = false;
                     },
@@ -102,7 +102,7 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                 {
                     title: 'Employee',
                     active: false,
-                    setSettings: function() {
+                    setSettings: function () {
                         $scope.reportSettings.groupBy = ['userName'];
                         $scope.reportSettings.isCommentNeeded = true;
                     },
@@ -111,18 +111,81 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                 {
                     title: 'Project & Employee',
                     active: false,
-                    setSettings: function() {
+                    setSettings: function () {
                         $scope.reportSettings.groupBy = ['userName', 'projectName'];
                         $scope.reportSettings.isCommentNeeded = true;
                     },
                     columnsOrder: ['projectName', 'userName', 'time', 'comments']
                 }
             ];
+            function local_active() {
+                var key_name = ["Employee Name", "Project Name"];
+                var counter = 0;
+                for (var i in key_name) {
+                    var k = key_name[i];
+                    if (localStorage[k]) {
+                        var self = JSON.parse(localStorage[k]);
+                        var reg = /filtered/;
+                        for (var l in self) {
+                            if (l.search(reg) != -1) {
+                                if (self[l] === true) {
+                                    counter++;
+                                }
+                            }
+                        }
+                    }
+                    if (counter > 0) {
+                        document.getElementsByClassName("report-filter")[i].classList.add("active");
+                    } else {
+                        document.getElementsByClassName("report-filter")[i].classList.remove("active");
+                    }
+                    counter = 0;
+                }
+            }
 
-            $scope.changeActiveReport = function(activeIndex) {
+            setTimeout(function () {
+                local_active();
+            }, 400);
+            var data_filter = {};
+            document.onclick = function (e) {
+                var target = e.target;
+                var id;
+                if (target.type === "checkbox") {
+                    var name = target.parentNode.parentNode.firstElementChild.innerHTML;
+                    var check = target.parentNode.parentNode.getElementsByTagName("input");
+                    for (var c in check) {
+                        if (check[c].type === "checkbox")
+                            data_filter[check[c].id] = check[c].checked;
+                    }
+                    id = target.id;
+                    data_filter[id] = target.checked;
+                    localStorage.setItem(name, JSON.stringify(data_filter));
+                    // document.getElementsByClassName(target.tagName);
+                }
+                if (target.className === "report-filter" || target.className === "report-filter active") {
+                    var filter_bt = document.getElementsByClassName("popover-content");
+                    var parent = target.parentNode.parentNode.parentNode.parentNode;
+                    var key = parent.children[1].children[1].firstElementChild.innerHTML;
+                    var value_filter = JSON.parse(localStorage[key]);
+
+                    setTimeout(function () {
+                        for (var k in value_filter) {
+                            document.getElementById(k).checked = value_filter[k];
+                        }
+                    }, 10);
+                }
+                setTimeout(function () {
+                    if (document.getElementsByClassName('popover ').length === 0) {
+                        data_filter = {};
+                    }
+                }, 160);
+                local_active();
+            };
+
+            $scope.changeActiveReport = function (activeIndex) {
                 $scope.reportSettings.page = 1;
 
-                $scope.reports.map(function(report) {
+                $scope.reports.map(function (report) {
                     report.active = false;
 
                     return report;
@@ -150,25 +213,25 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                 data: 'reportData',
                 reportFilters: [],
 
-                onRegisterApi: function(gridApi) {
+                onRegisterApi: function (gridApi) {
                     $scope.gridApi = gridApi;
                     $scope.gridApi.core.on.sortChanged($scope, $scope.sortChanged);
                     $scope.getReport();
                 }
             };
 
-            $scope.sortChanged = function(grid, sortColumns) {
+            $scope.sortChanged = function (grid, sortColumns) {
                 $scope.reportSettings.page = 1;
 
-                if(sortColumns.length === 0 || (sortColumns[0] && !sortColumns[0].sort)){
+                if (sortColumns.length === 0 || (sortColumns[0] && !sortColumns[0].sort)) {
                     $scope.reportSettings.sort = {
                         field: 'date',
                         asc: false
                     };
 
                     $scope.getReport();
-                }else{
-                    switch(sortColumns[0].sort.direction){
+                } else {
+                    switch (sortColumns[0].sort.direction) {
                         case uiGridConstants.ASC:
                             $scope.reportSettings.sort = {
                                 field: sortColumns[0].field,
@@ -190,36 +253,36 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                 }
             };
 
-            reportService.getFilters(companyId).success(function(data) {
+            reportService.getFilters(companyId).success(function (data) {
                 $scope.timesheetGridOptions.reportFilters = $scope.timesheetGridOptions.reportFilters.concat(data);
             });
 
-            $scope.$watch('timesheetGridOptions.reportFilters', function(newValue, oldValue) {
-                if(oldValue && newValue && newValue != oldValue){
+            $scope.$watch('timesheetGridOptions.reportFilters', function (newValue, oldValue) {
+                if (oldValue && newValue && newValue != oldValue) {
                     //$scope.reportSettings.filters = [];
                     var dateFilter = _.where(newValue, {field: 'date'})[0],
                         usedFilters = $scope.reportSettings.filters || reportService.getSavedFilters(),
                         dateFilterIndex = _.findIndex(usedFilters, {field: 'date'});
 
-                    if(dateFilter && dateFilterIndex != -1){
+                    if (dateFilter && dateFilterIndex != -1) {
                         usedFilters[dateFilterIndex] = dateFilter;
                     }
-                    else if(dateFilter){
+                    else if (dateFilter) {
                         usedFilters.push(dateFilter);
                     }
 
-                    if(reportService.getSavedFilters()[1]){
+                    if (reportService.getSavedFilters()[1]) {
                         var savedFilters = reportService.getSavedFilters();
                         usedFilters = reportService.getSavedFilters();
                     }
 
-                    newValue.forEach(function(filter) {
+                    newValue.forEach(function (filter) {
                         var filterToPush = {
                             field: filter.field
                         };
 
                         //proper names for backend
-                        switch(filterToPush.field){
+                        switch (filterToPush.field) {
                             case 'projects':
                                 filterToPush.field = 'projectName';
                                 break;
@@ -231,14 +294,14 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                         var checkedFilters = _.where(filter.value, {isChecked: true}),
                             usedFilterIndex = _.findIndex(usedFilters, {field: filterToPush.field});
 
-                        filterToPush.value = checkedFilters.map(function(checkedFilter) {
+                        filterToPush.value = checkedFilters.map(function (checkedFilter) {
                             return checkedFilter.name._id || checkedFilter.name;
                         });
 
-                        if(filterToPush.value.length && usedFilterIndex == -1){
+                        if (filterToPush.value.length && usedFilterIndex == -1) {
                             usedFilters.push(filterToPush);
                         }
-                        else if(filterToPush.value.length && usedFilterIndex !== -1){
+                        else if (filterToPush.value.length && usedFilterIndex !== -1) {
                             usedFilters[usedFilterIndex] = filterToPush;
                         }
                         // else if(usedFilterIndex !== -1 && filterToPush.field != 'date'){
@@ -251,26 +314,26 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                 }
             }, true);
 
-            $scope.getReport = function() {
-                var dateFilterIndex = _.findIndex($scope.reportSettings.filters, function(reportFilter) {
+            $scope.getReport = function () {
+                var dateFilterIndex = _.findIndex($scope.reportSettings.filters, function (reportFilter) {
                     return reportFilter.field == 'date';
                 });
 
-                if(dateFilterIndex >= 0){
+                if (dateFilterIndex >= 0) {
                     reportService.saveSavedFilters($scope.reportSettings.filters);
-                    reportService.getReport($scope.reportSettings).success(function(data, status, headers) {
+                    reportService.getReport($scope.reportSettings).success(function (data, status, headers) {
                         var columnsOrder = $scope.reports[_.findIndex($scope.reports, {active: true})].columnsOrder;
 
                         $scope.reportData = data;
 
                         //add columns to grid
-                        if(data.length){
+                        if (data.length) {
                             reportService.saveLastDefinedColumns([]);
                             var newColumns = [];
                             newColumns.length = columnsOrder.length;
 
-                            for(var column in data[0]){
-                                if(columns[column]){
+                            for (var column in data[0]) {
+                                if (columns[column]) {
                                     var indexToPush = _.indexOf(columnsOrder, column);
 
                                     newColumns[indexToPush] = columns[column];
@@ -285,127 +348,127 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                             height: ((data.length) * ($scope.timesheetGridOptions.rowHeight + 1)) + headerHeight + "px"
                         };
 
-                        if(headers()['x-total-count']){
+                        if (headers()['x-total-count']) {
                             $scope.totalCount = headers()['x-total-count'];
                             $scope.totalPages = Math.ceil($scope.totalCount / $scope.reportSettings.pageSize);
                         }
-                    }).finally(function() {
+                    }).finally(function () {
                         //call the directive 'cuttedComment' to reRender comments
-                        $timeout(function() {
+                        $timeout(function () {
                             $scope.$broadcast('activeReportChanged');
                         }).getSavedFilters();
                     });
                 }
             };
 
-            $scope.openPage = function(pageIndex) {
+            $scope.openPage = function (pageIndex) {
                 $scope.reportSettings.page = pageIndex;
                 $scope.getReport();
             };
 
-            $scope.nextPage = function() {
-                if($scope.reportSettings.page < $scope.totalPages){
+            $scope.nextPage = function () {
+                if ($scope.reportSettings.page < $scope.totalPages) {
                     $scope.reportSettings.page++;
                     $scope.getReport();
                 }
             };
 
-            $scope.prevPage = function() {
-                if($scope.reportSettings.page > 1){
+            $scope.prevPage = function () {
+                if ($scope.reportSettings.page > 1) {
                     $scope.reportSettings.page--;
                     $scope.getReport();
                 }
             };
 
-            $scope.range = function(n) {
+            $scope.range = function (n) {
                 return new Array(n);
             };
 
-            $scope.downloadCsv = function() {
-                if($scope.reportSettings.groupBy && $scope.reportSettings.groupBy.length){
-                    reportService.downloadAggregationCsv($scope.reportSettings).success(function(data) {
+            $scope.downloadCsv = function () {
+                if ($scope.reportSettings.groupBy && $scope.reportSettings.groupBy.length) {
+                    reportService.downloadAggregationCsv($scope.reportSettings).success(function (data) {
                         window.location = data.url;
                     });
                 }
-                else{
-                    reportService.downloadCsv($scope.reportSettings).success(function(data) {
+                else {
+                    reportService.downloadCsv($scope.reportSettings).success(function (data) {
                         window.location = data.url;
                     });
                 }
             };
 
-            $scope.downloadPdf = function(id) {
-                if($scope.reportSettings.groupBy && $scope.reportSettings.groupBy.length){
-                    reportService.downloadAggregationPdf($scope.reportSettings).success(function(data) {
+            $scope.downloadPdf = function (id) {
+                if ($scope.reportSettings.groupBy && $scope.reportSettings.groupBy.length) {
+                    reportService.downloadAggregationPdf($scope.reportSettings).success(function (data) {
                         window.location = data.url;
                     });
                 }
-                else{
+                else {
                     $scope.reportSettings.projectId = id;
-                    reportService.downloadPdf($scope.reportSettings).success(function(data) {
+                    reportService.downloadPdf($scope.reportSettings).success(function (data) {
                         window.location = data.url;
                     });
                 }
             };
 
-            $scope.perPageChanged = function(perPage) {
+            $scope.perPageChanged = function (perPage) {
                 $scope.reportSettings.pageSize = perPage;
                 $scope.reportSettings.page = 1;
                 $scope.getReport();
             };
 
-            $scope.$on('handleBroadcast', function() {
-                if(topPanelService.linkName == 'csv'){
+            $scope.$on('handleBroadcast', function () {
+                if (topPanelService.linkName == 'csv') {
                     $scope.downloadCsv();
                 } else if (topPanelService.linkName == 'pdf') {
                     $scope.downloadPdf(topPanelService.projectId);
                 }
             });
 
-            $scope.showOriginalPage = function(pageNumber) {
-                if($scope.reportSettings.page + 2 >= pageNumber &&
-                    $scope.reportSettings.page - 2 <= pageNumber){
+            $scope.showOriginalPage = function (pageNumber) {
+                if ($scope.reportSettings.page + 2 >= pageNumber &&
+                    $scope.reportSettings.page - 2 <= pageNumber) {
                     return true;
                 }
-                else if(($scope.reportSettings.page < 3 && pageNumber <= maxVisiblePages) ||
-                    ($scope.reportSettings.page + 1 >= $scope.totalPages && pageNumber + 4 >= $scope.totalPages)){
-                    return true;
-                }
-            };
-
-            $scope.showFirstPage = function() {
-                if($scope.totalPages > maxVisiblePages &&
-                    ($scope.reportSettings.page > 4 || $scope.reportSettings.page - 3 > 0)){
+                else if (($scope.reportSettings.page < 3 && pageNumber <= maxVisiblePages) ||
+                    ($scope.reportSettings.page + 1 >= $scope.totalPages && pageNumber + 4 >= $scope.totalPages)) {
                     return true;
                 }
             };
 
-            $scope.showFirstDots = function() {
-                if($scope.totalPages > maxVisiblePages &&
-                    ($scope.reportSettings.page > 4)){
+            $scope.showFirstPage = function () {
+                if ($scope.totalPages > maxVisiblePages &&
+                    ($scope.reportSettings.page > 4 || $scope.reportSettings.page - 3 > 0)) {
                     return true;
                 }
             };
 
-            $scope.showLastPage = function() {
-                if($scope.totalPages > maxVisiblePages && $scope.reportSettings.page + 3 <= $scope.totalPages){
+            $scope.showFirstDots = function () {
+                if ($scope.totalPages > maxVisiblePages &&
+                    ($scope.reportSettings.page > 4)) {
                     return true;
                 }
             };
 
-            $scope.showLastDots = function() {
-                if($scope.reportSettings.page + 4 <= $scope.totalPages){
+            $scope.showLastPage = function () {
+                if ($scope.totalPages > maxVisiblePages && $scope.reportSettings.page + 3 <= $scope.totalPages) {
                     return true;
                 }
             };
 
-            $scope.editEmployeeTimesheet = function(userName) {
+            $scope.showLastDots = function () {
+                if ($scope.reportSettings.page + 4 <= $scope.totalPages) {
+                    return true;
+                }
+            };
+
+            $scope.editEmployeeTimesheet = function (userName) {
                 var usersFilter = _.findWhere($scope.timesheetGridOptions.reportFilters, {field: 'users'}),
-                    user = _.find(usersFilter.value, function(filterValue) {
+                    user = _.find(usersFilter.value, function (filterValue) {
                         return filterValue.name.displayName == userName;
                     });
 
-                $scope.locations = localStorage.setItem('location','Report');
+                $scope.locations = localStorage.setItem('location', 'Report');
                 $location.path('timesheet/' + user.name._id);
                 // window.location.reload();
 

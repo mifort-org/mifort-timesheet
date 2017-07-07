@@ -265,7 +265,7 @@ angular.module('mifortTimesheet.calendar', ['ngRoute'])
 
             $scope.introSteps = [
                 {
-                    element: '#step1',
+                    element: '.calendar-container',
                     intro: "<p>In this section you could see the list of months." +
                     "Each day contain the date and the default workload of this day.</p>" +
                     "<p>By default all weekend days are colored with light blue color.</p>" +
@@ -286,7 +286,6 @@ angular.module('mifortTimesheet.calendar', ['ngRoute'])
                     position: 'left'
                 }
             ];
-
             $scope.splitCalendar = function(shouldBeSplitted, period, splitStartDate) {
                 if(period == 'month' && splitStartDate.getDate() > 28){
                     alert('Please choose the correct date for split');

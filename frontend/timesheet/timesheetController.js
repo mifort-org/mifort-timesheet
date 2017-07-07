@@ -394,8 +394,17 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                     return log.date == date;
                 });
             };
-
+            // function AddTimesheetBt() {
+            //     var add_timesheet = document.getElementsByClassName("add-timesheet");
+            //     console.log(add_timesheet.length);
+            //     for(var i; i<add_timesheet.length;i++){
+            //         add_timesheet[i].onclick=function () {
+            //             console.log(123);
+            //         }
+            //     }
+            // }
             $scope.addLog = function (log) {
+
                 var projectId = $scope.getDefaultProject()._id;
                 var project = $scope.getProjectById(projectId);
                 var newRow = angular.copy(project.template),
@@ -410,7 +419,6 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                 newRow.role = log.role;
                 newRow.isFirstDayRecord = false;
                 newRow.position = $scope.calcNewLogPosition(currentPeriod, log.date);
-
                 $scope.setDefaultProject(newRow);
 
                 newRow.hasLog = true;
@@ -419,7 +427,6 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
 
                 $scope.filteredLogs = $scope.getFilteredDates();
             };
-
             $scope.removeRow = function (log, project, periodIndex) {
                 var dates = $scope.getCurrentLogData();
 
