@@ -25,8 +25,8 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
         });
     }])
 
-    .controller('reportController', ['$scope', 'reportService', 'preferences', 'uiGridConstants', 'topPanelService', '$timeout', '$location',
-        function ($scope, reportService, preferences, uiGridConstants, topPanelService, $timeout, $location) {
+    .controller('reportController', ['$scope', 'reportService', 'preferences', 'uiGridConstants', 'topPanelService', '$timeout', '$location', 'Notification',
+        function ($scope, reportService, preferences, uiGridConstants, topPanelService, $timeout, $location, Notification) {
             var companyId = preferences.get('user').companyId,
                 userRole = preferences.get('user').role.toLowerCase(),
                 headerHeight = 38 + 12,
@@ -340,6 +340,8 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                                 }
                             }
 
+                            newColumns.push(columns.emailReminder);
+
                             $scope.timesheetGridOptions.columnDefs = newColumns;
                             reportService.saveLastDefinedColumns(newColumns);
                         }
@@ -415,6 +417,18 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                 $scope.reportSettings.pageSize = perPage;
                 $scope.reportSettings.page = 1;
                 $scope.getReport();
+            };
+
+            $scope.sendReminder = function (userId) {
+                var settings = {
+                    companyId: companyId,
+                    userId: userId,
+                };
+                reportService.sendReminder(settings).success(function (data) {
+                    Notification.success('Reminder successfully sent');
+                }).error(function (err) {
+                    Notification.error('Reminder failed: ', err.message || err);
+                });
             };
 
             $scope.$on('handleBroadcast', function () {

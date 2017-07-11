@@ -55,3 +55,26 @@
          }
      });
  };
+
+ exports.sendMail = function(to, subject, message, callback) {
+   request.post({ url: 'https://api.mailgun.net/v3/mifort.org/messages',
+       formData: {
+         from: 'Mifort Timesheet <timesheet@mifort.org>',
+         to: to,
+         subject: subject,
+         html: message
+       },
+       auth: {
+         'user': 'api',
+         'pass': MAIL_API_KEY
+       }
+     },
+     function(err, httpResponse, body){
+       if(err) {
+         log.error('Cannot send e-mail to %s', to, err);
+       } else {
+         log.debug('Email sending complete: %s', to);
+       }
+       callback(err, httpResponse, body);
+     });
+ };

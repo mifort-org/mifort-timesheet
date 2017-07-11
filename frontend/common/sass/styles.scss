@@ -359,6 +359,11 @@ input[type=number]::-webkit-outer-spin-button{
             border-bottom-width: 0;
         }
     }
+
+    &.full-size-button{
+        width: 100%;
+        height: 100%;
+    }
 }
 
 .secondary-button{

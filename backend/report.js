@@ -22,6 +22,7 @@ var shortid = require('shortid');
 var db = require('./libs/mongodb_settings');
 var log = require('./libs/logger');
 var utils = require('./libs/utils');
+var mail = require('./libs/mail');
 
 var projects = require('./project');
 var company = require('./company');
@@ -269,6 +270,23 @@ exports.restAggregationReportCSV = function(req, res, next) {
             log.debug('-REST result: aggregation report download CSV. Company id: %s',
                 filterObj.companyId.toHexString());
         });
+    });
+};
+
+exports.sendTimesheetReminder = function (req, res, next) {
+    var filterObj = req.body;
+    log.debug('-REST call: send timesheet reminder. Company id: %s, user id: %s',
+      filterObj.companyId.toHexString(),
+      filterObj.userId.toHexString());
+
+    users = db.userCollection();
+    users.findOne({ _id: filterObj.userId}, function (err, user) {
+       mail.sendMail(user.email, 'Timesheet reminder', '<p>Don\'t forget to fill out your timesheet</p>', function (err, response, body) {
+           if (err) {
+               return next(err);
+           }
+           res.end();
+       });
     });
 };
 

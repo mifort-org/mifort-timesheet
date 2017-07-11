@@ -81,6 +81,9 @@ angular.module('mifortTimesheet.report').factory('reportService',
                 '</div>' +
                 '<div class="header-area">' + filterHeaderTemplate + '</div>';
         };
+        self.sendReminder = function (reminderSetting) {
+            return $http.post('api/v1/report/remind', reminderSetting);
+        };
         self.columns = {
             date: {
                 field: 'date',
@@ -144,6 +147,17 @@ angular.module('mifortTimesheet.report').factory('reportService',
                 enableFiltering: false,
                 filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" col-name="time" col-title="Comments"></span></div>',
                 cellTemplate: '<span cutted-comment></span>'
+            },
+            emailReminder: {
+                field: 'emailReminder',
+                width: 150,
+                minWidth: 150,
+                enableColumnResizing: true,
+                enableColumnMenu: false,
+                enableSorting: false,
+                enableFiltering: false,
+                filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" col-name="time" col-title="Email Reminder"></span></div>',
+                cellTemplate: '<span><button type="button" class="primary-button full-size-button" ng-click="grid.appScope.sendReminder(row.entity.userId)">Remind</button></span>'
             }
         };
         self.introSteps = [

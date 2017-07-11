@@ -160,6 +160,9 @@ reportRouter.post('/aggregation/download/csv',
 reportRouter.get('/download/:fileName',
         validators.validateGetDownloadReport,
         report.restDownloadFile);
+reportRouter.post('/remind',
+        validators.validateUserIdBody,
+        report.sendTimesheetReminder);
 
 //Admin part
 var admin = require('./admin');

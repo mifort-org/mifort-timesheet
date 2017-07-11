@@ -123,6 +123,11 @@ exports.validateUserIdParam = function(req, res, next) {
     returnErrors(req, res, next);
 };
 
+exports.validateUserIdBody = function(req, res, next) {
+    req.checkBody('userId', util.format(invalidFormatMessageTemplate, 'User id')).notEmpty().isMongoId();
+    returnErrors(req, res, next);
+};
+
 exports.validateAddNewUser = function(req, res, next) {
     var user = req.body;
     if(!user) {

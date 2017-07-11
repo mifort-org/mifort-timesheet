@@ -6106,6 +6106,11 @@ input[type=number]::-webkit-outer-spin-button {
       height: 42px;
       margin-top: 4px;
       border-bottom-width: 0; }
+  .primary-button.full-size-button,
+  .secondary-button.full-size-button,
+  .tertiary-button.full-size-button {
+    width: 100%;
+    height: 100%; }
 
 .secondary-button {
   background: #b9b9b9;
