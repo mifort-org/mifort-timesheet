@@ -503,9 +503,9 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                 return _.findWhere(logs, {index: $scope.currentPeriodIndex});
             };
             function maxSize() {
-                var maxSize = document.getElementsByClassName("timesheet-hours");
-                for(var key in maxSize){
-                    maxSize[key].setAttribute("maxlength","4");
+                var maxSizeArr = document.getElementsByClassName("timesheet-hours");
+                for(var i=0; i< maxSizeArr.length;i++){
+                    maxSizeArr[i].setAttribute("maxlength","4");
                 }
             }
             setTimeout(function () {
