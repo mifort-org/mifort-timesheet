@@ -135,7 +135,7 @@ angular.module('mifortTimesheet.calendar', ['ngRoute'])
                     daysAfterCalendarEnd = $scope.calendar[index - 1] && 6 - moment(new Date($scope.calendar[index - 1].date)).weekday(),
                     generatedDay;
 
-                if(currentDayWeek == 1 && $scope.splittedCalendar[currentDayYear - 1] && moment(currentDate).get('date') == 31){
+                if(currentDayWeek == 1 && moment(currentDate).get('date') > 7){
                     currentDayWeek = 53;
                 }
 
