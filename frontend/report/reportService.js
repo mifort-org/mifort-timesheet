@@ -170,6 +170,11 @@ angular.module('mifortTimesheet.report').factory('reportService',
                 position: 'left'
             },
             {
+                element: '.pdf-icon',
+                intro: "<p>You could export the report by pressing the top panel button PDF.</p>",
+                position: 'left'
+            },
+            {
                 element: '.csv-icon',
                 intro: "<p>You could print or export the report by pressing the top panel buttons CSV.</p>",
                 position: 'left'

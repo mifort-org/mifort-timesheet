@@ -116,10 +116,7 @@ angular.module('mifortTimesheet')
                 };
 
                 scope.showColorPicker = function(dayIndex) {
-                    setTimeout(function () {
-                        scope.company.dayTypes[dayIndex].pickerVisible = true;
-                    },50);
-
+                    scope.company.dayTypes[dayIndex].pickerVisible = true;
                 };
                 function paintHexagons() {
                     $(element).find('.hexagon').each(function(index) {
@@ -152,7 +149,7 @@ angular.module('mifortTimesheet')
                     });
 
                     addHexagonsListener();
-                    // paintHexagons();
+                    paintHexagons();
                 };
             },
             templateUrl: 'components/customDay/customDay.html'

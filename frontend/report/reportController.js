@@ -134,10 +134,12 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                             }
                         }
                     }
-                    if (counter > 0) {
-                        document.getElementsByClassName("report-filter")[i].classList.add("active");
-                    } else {
-                        document.getElementsByClassName("report-filter")[i].classList.remove("active");
+                    if (document.getElementsByClassName("report-filter").length) {
+                        if (counter > 0) {
+                            document.getElementsByClassName("report-filter")[i].classList.add("active");
+                        } else {
+                            document.getElementsByClassName("report-filter")[i].classList.remove("active");
+                        }
                     }
                     counter = 0;
                 }
