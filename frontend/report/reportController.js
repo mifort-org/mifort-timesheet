@@ -134,7 +134,7 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                             }
                         }
                     }
-                    if (document.getElementsByClassName("report-filter").length) {
+                    if (reportService.getLastDefinedColumns().length) {
                         if (counter > 0) {
                             document.getElementsByClassName("report-filter")[i].classList.add("active");
                         } else {
@@ -151,37 +151,39 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
             var data_filter = {};
             document.onclick = function (e) {
                 var target = e.target;
-                var id;
-                if (target.type === "checkbox") {
-                    var name = target.parentNode.parentNode.firstElementChild.innerHTML;
-                    var check = target.parentNode.parentNode.getElementsByTagName("input");
-                    for (var c in check) {
-                        if (check[c].type === "checkbox")
-                            data_filter[check[c].id] = check[c].checked;
-                    }
-                    id = target.id;
-                    data_filter[id] = target.checked;
-                    localStorage.setItem(name, JSON.stringify(data_filter));
-                    // document.getElementsByClassName(target.tagName);
-                }
-                if (target.className === "report-filter" || target.className === "report-filter active") {
-                    var filter_bt = document.getElementsByClassName("popover-content");
-                    var parent = target.parentNode.parentNode.parentNode.parentNode;
-                    var key = parent.children[1].children[1].firstElementChild.innerHTML;
-                    var value_filter = JSON.parse(localStorage[key]);
-
-                    setTimeout(function () {
-                        for (var k in value_filter) {
-                            document.getElementById(k).checked = value_filter[k];
+                    var id;
+                    if (target.type === "checkbox") {
+                        var name = target.parentNode.parentNode.firstElementChild.innerHTML;
+                        var check = target.parentNode.parentNode.getElementsByTagName("input");
+                        for (var c in check) {
+                            if (check[c].type === "checkbox")
+                                data_filter[check[c].id] = check[c].checked;
                         }
-                    }, 10);
-                }
-                setTimeout(function () {
-                    if (document.getElementsByClassName('popover ').length === 0) {
-                        data_filter = {};
+                        id = target.id;
+                        data_filter[id] = target.checked;
+                        localStorage.setItem(name, JSON.stringify(data_filter));
+                        // document.getElementsByClassName(target.tagName);
                     }
-                }, 160);
-                local_active();
+                    if (target.className === "report-filter" || target.className === "report-filter active") {
+                        var filter_bt = document.getElementsByClassName("popover-content");
+                        var parent = target.parentNode.parentNode.parentNode.parentNode;
+                        var key = parent.children[1].children[1].firstElementChild.innerHTML;
+                        var value_filter = {};
+                        if (localStorage[key]) {
+                            value_filter = JSON.parse(localStorage[key]);
+                        }
+
+                        setTimeout(function () {
+                            for (var k in value_filter) {
+                                document.getElementById(k).checked = value_filter[k];
+                            }
+                        }, 10);
+                    }
+                    setTimeout(function () {
+                        if (document.getElementsByClassName('popover ').length === 0) {
+                            data_filter = {};
+                        }
+                    }, 160);
             };
 
             $scope.changeActiveReport = function (activeIndex) {
