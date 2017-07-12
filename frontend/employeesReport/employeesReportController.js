@@ -52,7 +52,6 @@ angular.module('mifortTimesheet.employeesReport', ['ngRoute'])
                     return cleanComments.join(", ")
                 }
             };
-
             $scope.ranges = {
                 'Today': [moment(), moment()],
                 //'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
@@ -131,7 +130,6 @@ angular.module('mifortTimesheet.employeesReport', ['ngRoute'])
                     $scope.getReport();
                 }
             };
-
             $scope.sortChanged = function(grid, sortColumns) {
                 $scope.reportSettings.page = 1;
 
@@ -225,7 +223,6 @@ angular.module('mifortTimesheet.employeesReport', ['ngRoute'])
                     $scope.getReport();
                 }
             }, true);
-
             $scope.getReport = function() {
                 var dateFilterIndex = _.findIndex($scope.reportSettings.filters, function(reportFilter) {
                     return reportFilter.field == 'date';
@@ -237,6 +234,13 @@ angular.module('mifortTimesheet.employeesReport', ['ngRoute'])
                         var columnsOrder = $scope.reports[_.findIndex($scope.reports, {active: true})].columnsOrder;
 
                         $scope.reportData = data;
+                        data.forEach(function (val,i,data) {
+                            if(data[i].size === 0){
+                                data[i].readyForApprove = "Not Ready";
+                            }else{
+                                data[i].readyForApprove === true ? data[i].readyForApprove = "Ready" : data[i].readyForApprove = "Not Ready";
+                            }
+                        });
                         $timeout(function(){
                             document.getElementById("actual-time").innerHTML = preferences.get("workHours");
                         });

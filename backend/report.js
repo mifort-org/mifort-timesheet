@@ -211,6 +211,17 @@ exports.restAggregationReport = function(req, res, next) {
         aggregationArray.push({$limit: pageInfo.size});
 
         var aggregationCallback = function(err, groupEntries) {
+            for(var key in groupEntries){
+                for(var val in groupEntries[key].readyForApprove){
+                    if(groupEntries[key].readyForApprove[val] === false){
+                        groupEntries[key].readyForApprove = false;
+                        break;
+                    } else{
+                        groupEntries[key].readyForApprove = true;
+                        break;
+                    }
+                }
+            }
             log.debug('-REST result: aggregation report. Company id: %s', filterObj.companyId.toHexString());
             res.json(groupEntries);
         };
@@ -293,6 +304,8 @@ function createProjection(filterObj) {
     };
     if(filterObj.isCommentNeeded) {
         projection.comments = '$comments';
+        projection.readyForApprove = '$readyForApprove';
+        projection.size = {$size:'$readyForApprove'};
     }
     if(fieldNames) {
         fieldNames.forEach(function(fieldName) {
@@ -360,7 +373,6 @@ function createAggregationArray(filterObj, projectIds) {
 
     var groupBy = createGroupBy(filterObj.groupBy);
     var projection = createProjection(filterObj);
-
     var aggregationArray = [{$match : query}];
     if(!isObjectEmpty(sorting)) {
         aggregationArray.push({ $sort: sorting });
@@ -370,7 +382,7 @@ function createAggregationArray(filterObj, projectIds) {
     if(filterObj.isCommentNeeded) {
         groupObj.comments = { $push: '$comment' };
     }
-
+    groupObj.readyForApprove = {$push:'$readyForApprove'};
     aggregationArray.push({ $group: groupObj });
     if(!isObjectEmpty(postGroupSort)) {
         aggregationArray.push({ $sort: postGroupSort });

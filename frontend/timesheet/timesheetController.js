@@ -160,6 +160,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                 }
                 counter = 0;
                 Reject = 0;
+                Approve = 0;
             };
 
             $scope.init = function () {
@@ -892,6 +893,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                 var timesheetToSave = angular.copy(dates);
                 timesheetToSave.forEach(function(object) {
                     object.Approve = true;
+                    object.readyForApprove = true;
                 });
                 var logsToDelete = angular.copy($scope.getLogsToDelete());
                 timesheetService.updateTimesheet(user._id, timesheetToSave, logsToDelete).success(function (data) {
@@ -910,6 +912,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                 var timesheetToSave = angular.copy(dates);
                 timesheetToSave.forEach(function(object) {
                     object.readyForApprove = false;
+                    object.Approve = false;
                 });
                 var logsToDelete = angular.copy($scope.getLogsToDelete());
                 timesheetService.updateTimesheet(user._id, timesheetToSave, logsToDelete).success(function (data) {

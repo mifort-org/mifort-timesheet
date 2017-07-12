@@ -154,7 +154,7 @@ angular.module('mifortTimesheet.employeesReport').factory('employeesReportServic
                 enableColumnMenu: false,
                 enableFiltering: false,
                 filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" col-name="status" col-title="status"></span></div>',
-                cellTemplate: '<div class="report-time-cell">Not Ready</div>'
+                cellTemplate: '<div class="report-time-cell">{{row.entity.readyForApprove}}</div>'
             }
 
         };
