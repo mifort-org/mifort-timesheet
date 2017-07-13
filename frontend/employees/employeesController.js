@@ -49,25 +49,6 @@ angular.module('mifortTimesheet.employees', ['ngRoute'])
                  return initials;
             };
 
-            $rootScope.startIntro = function() {
-                var intro = introJs();
-                intro.setOptions({
-                    steps: [
-                        {
-                            element: '.employee-search',
-                            intro: "Magic"
-                        },
-                        {
-                            element: '.employee-card',
-                            intro: "Ok, <i>wasn't</i> that fun?",
-                            position: 'right'
-                        }
-                    ]
-                });
-
-                intro.start();
-            };
-
             $scope.calculateWorkload = function(employee) {
                 var totalWorkload = 0;
 
