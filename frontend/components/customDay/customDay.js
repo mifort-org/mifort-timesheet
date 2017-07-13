@@ -100,23 +100,16 @@ angular.module('mifortTimesheet')
                     }
                 ];
 
-                scope.$watch('company.dayTypes', function(newValue, oldValue) {
-                   if(newValue && oldValue && newValue != oldValue){
-                        scope.saveDayType();
-                    }
-
-                }, true);
-
                 scope.chooseColor = function(colorIndex, day) {
-                    var chosenColor = scope.customColors[colorIndex].color;
-
                     day.pickerVisible = false;
-                    day.color = chosenColor;
+                    day.color = scope.customColors[colorIndex].color;
                     paintHexagons();
+                    scope.saveDayType();
                 };
 
                 scope.showColorPicker = function(dayIndex) {
                     scope.company.dayTypes[dayIndex].pickerVisible = true;
+                    scope.saveDayType();
                 };
                 function paintHexagons() {
                     $(element).find('.hexagon').each(function(index) {
@@ -150,6 +143,7 @@ angular.module('mifortTimesheet')
 
                     addHexagonsListener();
                     paintHexagons();
+                    scope.saveDayType();
                 };
             },
             templateUrl: 'components/customDay/customDay.html'
