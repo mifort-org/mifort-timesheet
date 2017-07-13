@@ -394,13 +394,13 @@ angular.module('mifortTimesheet.calendar', ['ngRoute'])
                 }
             };
 
-            $scope.saveDayType = function(changedDayType, changedDayTypeOldValue) {
+            $scope.saveDayType = _.debounce(function(changedDayType, changedDayTypeOldValue) {
                 applyDefaultValues();
 
                 calendarService.saveCompany($scope.company).success(function(data) {
                     $scope.company.dayTypes = data.dayTypes;
                 });
-            };
+            }, 500);
 
             $scope.calculatePeriods = function() {
                 var firstPeriod = new Date(),
