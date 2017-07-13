@@ -62,6 +62,12 @@ angular.module('mifortTimesheet')
                 scope.range = function(n) {
                     return new Array(n);
                 };
+
+                scope.projectFilterContainsSubstring = function (object, filter) {
+                    var re = new RegExp(filter, 'ig');
+                    return re.test(object.name.role || object.name.displayName || object.name);
+                };
+
             },
             templateUrl: 'components/dropdownFilter/dropdownFilter.html'
         };
