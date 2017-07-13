@@ -143,4 +143,8 @@ angular.module('mifortTimesheet.employees', ['ngRoute'])
                 });
             };
 
+            $scope.clearInvite = function() {
+                $scope.company.emails = [];
+            };
+
         }]);
