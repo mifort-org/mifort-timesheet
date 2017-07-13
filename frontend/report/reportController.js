@@ -362,7 +362,6 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                     });
                 }
             };
-
             $scope.openPage = function (pageIndex) {
                 $scope.reportSettings.page = pageIndex;
                 $scope.getReport();
