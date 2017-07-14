@@ -34,10 +34,13 @@ angular.module('mifortTimesheet')
                 });
 
                 input.on("input", function () {
-                    var v = $(this).val();
-                    var l = $(this).val().split(".")[1].length;
-                    if (l > 2) {
-                        $(this).val(v.substring(0, v.length - 1));
+                    var splitVal = $(this).val().split(".");
+                    if (splitVal.length === 2) {
+                        var v = $(this).val();
+                        var l = splitVal[1].length;
+                        if (l > 2) {
+                            $(this).val(v.substring(0, v.length - 1));
+                        }
                     }
                 });
 
