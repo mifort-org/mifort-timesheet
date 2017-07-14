@@ -65,7 +65,7 @@ angular.module('mifortTimesheet.employees', ['ngRoute'])
                 //delete fields from filter so angular will use it's native search correctly(so it won't leave the empty search properties)
                 for(var field in employeeSearch){
                     if(!employeeSearch[field].length
-                        && (!angular.isObject(employeeSearch[field]) || employeeSearch[field].projectName === '' || employeeSearch[field].role === '')){
+                        && (!angular.isObject(employeeSearch[field]) || employeeSearch[field].projectName === '')){
                         delete employeeSearch[field];
                     }
                 }
