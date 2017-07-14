@@ -17,69 +17,68 @@
 'use strict';
 
 angular.module('mifortTimesheet')
-    .directive('reportDatePicker', function(preferences, $timeout) {
+    .directive('reportDatePicker', function (preferences, $timeout) {
         return {
             scope: true,
-            link: function(scope, element) {
-                scope.$watch('dates', function(newValue, oldValue) {
-                    if(newValue && newValue != oldValue){
+            link: function (scope, element) {
+                scope.$watch('dates', function (newValue, oldValue) {
+                    if (newValue && newValue != oldValue) {
                         var dateFilter,
                             startDate = moment(new Date(newValue.startDate)).format('MM/DD/YYYY'),
                             endDate = moment(new Date(newValue.endDate)).format('MM/DD/YYYY'),
                             gridOptions = scope.timesheetGridOptions || scope.grid.options,
                             workHoursOnDays = 8,
-                            dateFilterIndex = _.findIndex(gridOptions.reportFilters, function(reportFilter) {
+                            dateFilterIndex = _.findIndex(gridOptions.reportFilters, function (reportFilter) {
                                 return reportFilter.field == 'date';
                             });
 
-                            scope.getWorkDays = function(startDate, endDate) {
-                                var count = 0;
-                                var curDate = startDate;
-                                while (curDate <= endDate) {
-                                    var dayOfWeek = curDate.getDay();
-                                    if(!((dayOfWeek == 6) || (dayOfWeek == 0)))
-                                        count++;
-                                    curDate.setDate(curDate.getDate() + 1);
-                                }
-                                return count;
-                            };
-
-                            scope.getDaysFromInterval = function getDates(startDate, stopDate) {
-                                var dateArray = [];
-                                var currentDate = moment(startDate);
-                                var stopDate = moment(stopDate);
-                                while (currentDate <= stopDate) {
-                                    dateArray.push( moment(currentDate).format('YYYY-MM-DD') );
-                                    currentDate = moment(currentDate).add(1, 'days');
-                                }
-                                return dateArray;
-                            };
-                            var days = scope.getDaysFromInterval(new Date(newValue.startDate),new Date(newValue.endDate));
-                            console.log(days);
-                            var workHours = scope.getWorkDays(new Date(newValue.startDate),new Date(newValue.endDate)) * workHoursOnDays;
-                            preferences.set('workHours',workHours);
-
-                            if(dateFilterIndex < 0){
-                                    dateFilterIndex = gridOptions.reportFilters.length || 0;
-                                    dateFilter = {
-                                        "field": "date"
-                                    };
-
-                                    gridOptions.reportFilters.push(dateFilter);
+                        scope.getWorkDays = function (startDate, endDate) {
+                            var count = 0;
+                            var curDate = startDate;
+                            while (curDate <= endDate) {
+                                var dayOfWeek = curDate.getDay();
+                                if (!((dayOfWeek == 6) || (dayOfWeek == 0)))
+                                    count++;
+                                curDate.setDate(curDate.getDate() + 1);
                             }
+                            return count;
+                        };
 
-                            gridOptions.reportFilters[dateFilterIndex].start = startDate;
-                            gridOptions.reportFilters[dateFilterIndex].end = endDate;
-                            element.find('input').val(startDate + ' - ' + endDate);
-                            preferences.set('reportFilter', newValue);
+                        scope.getDaysFromInterval = function getDates(startDate, stopDate) {
+                            var dateArray = [];
+                            var currentDate = moment(startDate);
+                            var stopDate = moment(stopDate);
+                            while (currentDate <= stopDate) {
+                                dateArray.push(moment(currentDate).format('YYYY-MM-DD'));
+                                currentDate = moment(currentDate).add(1, 'days');
+                            }
+                            return dateArray;
+                        };
+                        var days = scope.getDaysFromInterval(new Date(newValue.startDate), new Date(newValue.endDate));
+                        var workHours = scope.getWorkDays(new Date(newValue.startDate), new Date(newValue.endDate)) * workHoursOnDays;
+                        preferences.set('workHours', workHours);
+
+                        if (dateFilterIndex < 0) {
+                            dateFilterIndex = gridOptions.reportFilters.length || 0;
+                            dateFilter = {
+                                "field": "date"
+                            };
+
+                            gridOptions.reportFilters.push(dateFilter);
+                        }
+
+                        gridOptions.reportFilters[dateFilterIndex].start = startDate;
+                        gridOptions.reportFilters[dateFilterIndex].end = endDate;
+                        element.find('input').val(startDate + ' - ' + endDate);
+                        preferences.set('reportFilter', newValue);
                     }
                 });
 
-                if(preferences.get('reportFilter')){
+                if (preferences.get('reportFilter')) {
                     var savedDate = preferences.get('reportFilter');
 
-                    if(savedDate){
-                        $timeout(function() {
+                    if (savedDate) {
+                        $timeout(function () {
                             scope.dates = {
                                 startDate: new Date(savedDate.startDate),
                                 endDate: new Date(savedDate.endDate)
@@ -87,8 +86,8 @@ angular.module('mifortTimesheet')
                         });
                     }
                 }
-                else{
-                    $timeout(function() {
+                else {
+                    $timeout(function () {
                         scope.dates = {
                             startDate: scope.ranges['This month'][0],
                             endDate: scope.ranges['This month'][1]

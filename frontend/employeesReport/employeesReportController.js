@@ -71,7 +71,9 @@ angular.module('mifortTimesheet.employeesReport', ['ngRoute'])
                 pageSize: 100,
                 page: 1,
                 groupBy: ['userName'],
-                isCommentNeeded: true
+                isCommentNeeded: true,
+                isreadyForApproveNeeded: true
+
             };
 
             if(!$scope.userIsManager){
@@ -234,6 +236,7 @@ angular.module('mifortTimesheet.employeesReport', ['ngRoute'])
                         var columnsOrder = $scope.reports[_.findIndex($scope.reports, {active: true})].columnsOrder;
 
                         $scope.reportData = data;
+                        console.log(data);
                         data.forEach(function (val,i,data) {
                             if(data[i].size === 0){
                                 data[i].readyForApprove = "Not Ready";

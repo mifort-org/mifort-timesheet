@@ -211,15 +211,14 @@ exports.restAggregationReport = function(req, res, next) {
         aggregationArray.push({$limit: pageInfo.size});
 
         var aggregationCallback = function(err, groupEntries) {
+            function isTrue(val) {
+                return val === true;
+            }
             for(var key in groupEntries){
-                for(var val in groupEntries[key].readyForApprove){
-                    if(groupEntries[key].readyForApprove[val] === false){
-                        groupEntries[key].readyForApprove = false;
-                        break;
-                    } else{
-                        groupEntries[key].readyForApprove = true;
-                        break;
-                    }
+                if(groupEntries[key].readyForApprove.length === 0){
+                    groupEntries[key].readyForApprove = false;
+                }else{
+                    groupEntries[key].readyForApprove.every(isTrue) ? groupEntries[key].readyForApprove = true : groupEntries[key].readyForApprove = false;
                 }
             }
             log.debug('-REST result: aggregation report. Company id: %s', filterObj.companyId.toHexString());
@@ -304,9 +303,12 @@ function createProjection(filterObj) {
     };
     if(filterObj.isCommentNeeded) {
         projection.comments = '$comments';
+    }
+    if(filterObj.isCommentNeeded) {
         projection.readyForApprove = '$readyForApprove';
         projection.size = {$size:'$readyForApprove'};
     }
+    console.log(filterObj);
     if(fieldNames) {
         fieldNames.forEach(function(fieldName) {
             projection[fieldName] = '$_id.'+fieldName;
@@ -382,7 +384,9 @@ function createAggregationArray(filterObj, projectIds) {
     if(filterObj.isCommentNeeded) {
         groupObj.comments = { $push: '$comment' };
     }
-    groupObj.readyForApprove = {$push:'$readyForApprove'};
+    if(filterObj.isreadyForApproveNeeded) {
+        groupObj.readyForApprove = {$push:'$readyForApprove'};
+    }
     aggregationArray.push({ $group: groupObj });
     if(!isObjectEmpty(postGroupSort)) {
         aggregationArray.push({ $sort: postGroupSort });
