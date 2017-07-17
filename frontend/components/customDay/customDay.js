@@ -145,6 +145,13 @@ angular.module('mifortTimesheet')
                     paintHexagons();
                     scope.saveDayType();
                 };
+
+                scope.validateNumber = function (e) {
+                    if (e.which < 48 || e.which > 57) {
+                        e.preventDefault();
+                    }
+                };
+
             },
             templateUrl: 'components/customDay/customDay.html'
 

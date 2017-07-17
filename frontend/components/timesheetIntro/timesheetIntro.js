@@ -32,7 +32,7 @@ angular.module('mifortTimesheet')
                         prevLabel: 'Prev',
                         skipLabel: 'Skip',
 
-                        doneLabel: 'Skip'
+                        doneLabel: 'Done'
                     };
                     notifyingService.subscribe('startIntro', function() {
                         $('.main-container').animate({ scrollTop: 0 }, 400);

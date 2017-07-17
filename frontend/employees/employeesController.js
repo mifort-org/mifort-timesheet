@@ -49,25 +49,6 @@ angular.module('mifortTimesheet.employees', ['ngRoute'])
                  return initials;
             };
 
-            $rootScope.startIntro = function() {
-                var intro = introJs();
-                intro.setOptions({
-                    steps: [
-                        {
-                            element: '.employee-search',
-                            intro: "Magic"
-                        },
-                        {
-                            element: '.employee-card',
-                            intro: "Ok, <i>wasn't</i> that fun?",
-                            position: 'right'
-                        }
-                    ]
-                });
-
-                intro.start();
-            };
-
             $scope.calculateWorkload = function(employee) {
                 var totalWorkload = 0;
 
@@ -84,7 +65,7 @@ angular.module('mifortTimesheet.employees', ['ngRoute'])
                 //delete fields from filter so angular will use it's native search correctly(so it won't leave the empty search properties)
                 for(var field in employeeSearch){
                     if(!employeeSearch[field].length
-                        && (!angular.isObject(employeeSearch[field]) || employeeSearch[field].projectName === '' || employeeSearch[field].role === '')){
+                        && (!angular.isObject(employeeSearch[field]) || employeeSearch[field].projectName === '')){
                         delete employeeSearch[field];
                     }
                 }
