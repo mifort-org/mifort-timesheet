@@ -36,7 +36,7 @@
 
         <input ng-if="project.projectEdit" type="text" ng-model="project.name" ng-change="changeProjectName(project)" ng-model-options='{ debounce: 500 }'/>
 
-        <a href="" ng-if="project.projectEdit" class="edit-project" ng-click="project.projectEdit = !project.projectEdit">Done</a>
+        <a href="" ng-if="project.projectEdit" class="edit-project" ng-click="project.projectEdit = !project.projectEdit" ng-show="ProjectShow">Done</a>
         <a href="" ng-if="!project.projectEdit" class="edit-project" ng-click="project.projectEdit = !project.projectEdit">Edit</a>
 
         <div id="step3" class="project-actions">

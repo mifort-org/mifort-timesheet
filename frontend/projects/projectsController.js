@@ -164,16 +164,35 @@ angular.module('mifortTimesheet.projects', ['ngRoute'])
             projectsService.getCompanyEmployers(companyId).success(function (employees) {
                 $scope.companyEmployees = employees;
             });
-
-            $scope.changeProjectName = function (project) {
-                projectsService.saveOrCreateProject(project).success(function () {
-                    Notification.success('Changes saved');
-                });
-            };
-
+            $scope.ProjectShow = true;
+            projectsService.getProjects(companyId).success(function (projects) {
+                $scope.changeProjectName = function (project) {
+                    var counter = null;
+                    for(var i = 0; i < projects.length; i++){
+                        if(projects[i].name != project.name){
+                        } else {
+                            counter++;
+                            break;
+                        }
+                    }
+                    if(counter>0){
+                        Notification.error('This name is already taken');
+                        $scope.ProjectShow = false;
+                    } else {
+                        $scope.ProjectShow = true;
+                        projectsService.saveOrCreateProject(project).success(function () {
+                            Notification.success('Changes saved');
+                        });
+                    }
+                };
+            });
             $scope.addProject = function () {
+                projectsService.getProjects(companyId).success(function (projects) {
+                    $scope.projects = projects;
+                });
+                var projectNumber = $scope.projects.length+1;
                 var newProject = {
-                    name: 'New Project',
+                    name: 'New Project'+' '+ projectNumber,
                     companyId: companyId
                 };
 
