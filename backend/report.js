@@ -211,16 +211,9 @@ exports.restAggregationReport = function(req, res, next) {
         aggregationArray.push({$limit: pageInfo.size});
 
         var aggregationCallback = function(err, groupEntries) {
-            function isTrue(val) {
-                return val === true;
-            }
-            for(var key in groupEntries){
-                if(groupEntries[key].readyForApprove.length === 0){
-                    groupEntries[key].readyForApprove = false;
-                }else{
-                    groupEntries[key].readyForApprove.every(isTrue) ? groupEntries[key].readyForApprove = true : groupEntries[key].readyForApprove = false;
-                }
-            }
+            groupEntries.forEach(function(entry) {
+                return entry.readyForApprove = entry.readyForApprove.every(function(readyForApprove) {return readyForApprove;})
+            })
             log.debug('-REST result: aggregation report. Company id: %s', filterObj.companyId.toHexString());
             res.json(groupEntries);
         };
@@ -304,11 +297,10 @@ function createProjection(filterObj) {
     if(filterObj.isCommentNeeded) {
         projection.comments = '$comments';
     }
-    if(filterObj.isCommentNeeded) {
+    if(filterObj.isreadyForApproveNeeded) {
         projection.readyForApprove = '$readyForApprove';
         projection.size = {$size:'$readyForApprove'};
     }
-    console.log(filterObj);
     if(fieldNames) {
         fieldNames.forEach(function(fieldName) {
             projection[fieldName] = '$_id.'+fieldName;

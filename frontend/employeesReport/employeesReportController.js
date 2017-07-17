@@ -75,7 +75,7 @@ angular.module('mifortTimesheet.employeesReport', ['ngRoute'])
                 isreadyForApproveNeeded: true
 
             };
-
+            $scope.pageRange = $scope.reportSettings.pageSize * ($scope.reportSettings.page - 1) + 1 +"-" +$scope.reportSettings.pageSize * $scope.reportSettings.page;
             if(!$scope.userIsManager){
                 $scope.reportSettings.filters.push({
                     field: "userName",
@@ -236,7 +236,6 @@ angular.module('mifortTimesheet.employeesReport', ['ngRoute'])
                         var columnsOrder = $scope.reports[_.findIndex($scope.reports, {active: true})].columnsOrder;
 
                         $scope.reportData = data;
-                        console.log(data);
                         data.forEach(function (val,i,data) {
                             if(data[i].size === 0){
                                 data[i].readyForApprove = "Not Ready";
@@ -334,6 +333,7 @@ angular.module('mifortTimesheet.employeesReport', ['ngRoute'])
             $scope.perPageChanged = function(perPage) {
                 $scope.reportSettings.pageSize = perPage;
                 $scope.reportSettings.page = 1;
+                $scope.pageRange = $scope.reportSettings.pageSize * ($scope.reportSettings.page - 1) + 1 +"-" +$scope.reportSettings.pageSize * $scope.reportSettings.page;
                 $scope.getReport();
             };
 

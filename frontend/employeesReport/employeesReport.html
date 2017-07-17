@@ -44,7 +44,7 @@
             </div>
 
             <div class="pagination">
-                <span class="page-range">{{reportSettings.pageSize * (reportSettings.page - 1) + 1}} - {{reportSettings.pageSize * reportSettings.page}} of {{totalCount}}</span>
+                <span class="page-range">{{pageRange}} of {{totalCount}}</span>
 
                 <a href="" class="prev-page" ng-class="{'disabled': reportSettings.page >= totalCount/reportSettings.pageSize}" ng-click="nextPage()">Next</a>
 

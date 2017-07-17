@@ -192,6 +192,6 @@
         </label>
     </div>
 </script>
-<button class="primary-button ready-btn Approve" ng-click="Approve();" ng-hide="userRole === 'employee'">Approve</button>
-<button class="primary-button ready-btn Reject" ng-click="Reject();" ng-hide="userRole === 'employee'">Reject</button>
-<button class="primary-button ready-btn readyForApprove" ng-click="readyForApprove();" ng-hide="userRole === 'manager' || userRole === 'owner'" >Ready for Approve</button>
+<button class="primary-button ready-btn Approve" ng-click="Approve('Approve');" ng-hide="userRole === 'employee'">Approve</button>
+<button class="primary-button ready-btn Reject" ng-click="Approve('Reject');" ng-hide="userRole === 'employee'">Reject</button>
+<button class="primary-button ready-btn readyForApprove" ng-click="Approve('Ready');" ng-hide="userRole === 'manager' || userRole === 'owner'" >Ready for Approve</button>
