@@ -175,7 +175,7 @@ angular.module('mifortTimesheet.employeesReport', ['ngRoute'])
                     var dateFilter = _.where(newValue, {field: 'date'})[0],
                         usedFilters = $scope.reportSettings.filters || employeesReportService.getSavedFilters(),
                         dateFilterIndex = _.findIndex(usedFilters, {field: 'date'});
-
+                    localStorage["redirectDate"] = JSON.stringify(dateFilter.start);
                     if(dateFilter && dateFilterIndex != -1){
                         usedFilters[dateFilterIndex] = dateFilter;
                     }
