@@ -87,7 +87,7 @@ angular.module('mifortTimesheet.projects', ['ngRoute'])
 
             projectsService.getProjects(companyId).success(function (projects) {
                 if (projects.length) {
-                    $scope.projects = _.sortBy(projects, function (project){
+                    $scope.projects = _.sortBy(projects, function (project) {
                         return project.name.toLowerCase();
                     });
                     $scope.availablePositions = projects[0].availablePositions;
@@ -107,26 +107,26 @@ angular.module('mifortTimesheet.projects', ['ngRoute'])
 
             });
             /*$scope.Sort = function (){
-                projectsService.getProjects(companyId).success(function (projects) {
-                    if (projects.length) {
-                        $scope.projects = _.sortBy(projects, 'name');
-                        $scope.availablePositions = projects[0].availablePositions;
+             projectsService.getProjects(companyId).success(function (projects) {
+             if (projects.length) {
+             $scope.projects = _.sortBy(projects, 'name');
+             $scope.availablePositions = projects[0].availablePositions;
 
-                        $scope.projects.forEach(function (project) {
-                            projectsService.getAssignedEmployers(project._id).success(function (assignedEmployers) {
-                                project.assignedEmployers = _.sortBy(assignedEmployers, 'displayName') || [];
-                                project.isCollapsed = !project.active;
-                                project.projectEdit = false;
-                                project.loading = false;
-                            });
-                        });
-                    }
-                    else {
-                        $scope.projects = [];
-                    }
+             $scope.projects.forEach(function (project) {
+             projectsService.getAssignedEmployers(project._id).success(function (assignedEmployers) {
+             project.assignedEmployers = _.sortBy(assignedEmployers, 'displayName') || [];
+             project.isCollapsed = !project.active;
+             project.projectEdit = false;
+             project.loading = false;
+             });
+             });
+             }
+             else {
+             $scope.projects = [];
+             }
 
-                });
-            };*/
+             });
+             };*/
             $scope.introSteps = [
                 {
                     element: '#step1',
@@ -165,34 +165,32 @@ angular.module('mifortTimesheet.projects', ['ngRoute'])
                 $scope.companyEmployees = employees;
             });
             $scope.ProjectShow = true;
-            projectsService.getProjects(companyId).success(function (projects) {
-                $scope.changeProjectName = function (project) {
-                    var counter = null;
-                    for(var i = 0; i < projects.length; i++){
-                        if(projects[i].name != project.name){
-                        } else {
-                            counter++;
-                            break;
-                        }
-                    }
-                    if(counter>0){
-                        Notification.error('This name is already taken');
-                        $scope.ProjectShow = false;
-                    } else {
-                        $scope.ProjectShow = true;
-                        projectsService.saveOrCreateProject(project).success(function () {
-                            Notification.success('Changes saved');
-                        });
-                    }
-                };
-            });
+
+            $scope.changeProjectName = function (project) {
+                // var counter = null;
+                // for (var i = 0; i < $scope.projects.length; i++) {
+                //     if ($scope.projects[i].name == project.name) {
+                //         counter++;
+                //         break;
+                //     }
+                // }
+                // if (counter) {
+                //     project.projectEdit = true;
+                //     Notification.error('This name is already taken');
+                // } else {
+                projectsService.saveOrCreateProject(project).success(function () {
+                    Notification.success('Changes saved');
+                });
+                // }
+            };
+
             $scope.addProject = function () {
                 projectsService.getProjects(companyId).success(function (projects) {
                     $scope.projects = projects;
                 });
-                var projectNumber = $scope.projects.length+1;
+                var projectNumber = $scope.projects.length + 1;
                 var newProject = {
-                    name: 'New Project'+' '+ projectNumber,
+                    name: 'New Project' + ' ' + projectNumber,
                     companyId: companyId
                 };
 
@@ -203,7 +201,7 @@ angular.module('mifortTimesheet.projects', ['ngRoute'])
                     $scope.projects.unshift(project);
                     Notification.success('Changes saved');
                 });
-                document.getElementsByClassName("main-container")[0].scrollTop="0";
+                document.getElementsByClassName("main-container")[0].scrollTop = "0";
             };
 
             $scope.saveAssignment = function (project, assignedEmployee, employee, previousEmployeeId, assignmentIndex) {
@@ -256,7 +254,11 @@ angular.module('mifortTimesheet.projects', ['ngRoute'])
 
                 assignment.userId = companyEmployeeId;
 
-                var userGotAssignment = {_id: companyEmployeeId, assignments: [assignment], displayName: companyEmployee.displayName};
+                var userGotAssignment = {
+                    _id: companyEmployeeId,
+                    assignments: [assignment],
+                    displayName: companyEmployee.displayName
+                };
 
                 var assignedEmployer = _.findWhere(project.assignedEmployers, {_id: userLostAssignment._id});
                 project.assignedEmployers.splice(project.assignedEmployers.indexOf(assignedEmployer), 1);
@@ -313,8 +315,32 @@ angular.module('mifortTimesheet.projects', ['ngRoute'])
             };
 
             $scope.$on('handleBroadcast', function () {
-                if (topPanelService.linkName = 'project') {
+                if (topPanelService.linkName == 'project') {
                     $scope.addProject();
                 }
             });
+
+            $scope.toggleEditButton = function (project) {
+                project.projectEdit = !project.projectEdit;
+            };
+
+            $scope.checkProjectName = function (project) {
+                var counter = null;
+                for (var i = 0; i < $scope.projects.length; i++) {
+                    if ($scope.projects[i].name == project.name && project._id != $scope.projects[i]._id) {
+                        counter++;
+                        break;
+                    }
+                }
+                if (counter) {
+                    project.projectEdit = true;
+                    Notification.error('This name is already taken');
+                } else if (!project.name) {
+                    Notification.error('No project name');
+                } else {
+                    $scope.changeProjectName(project);
+                    $scope.toggleEditButton(project);
+
+                }
+            };
         }]);

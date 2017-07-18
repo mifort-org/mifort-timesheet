@@ -23,78 +23,78 @@
     </button>
 </div>
 <div class="wrapper-projects">
-<div timesheet-intro></div>
+    <div timesheet-intro></div>
 
-<div class="collapse-wrapper project"
-     ng-repeat="project in projects track by $index"
-     ng-if="project.active == showActiveProjects"
-     id="step1">
-    <h2 ng-class="{'timesheet-collapsed': project.isCollapsed, 'project-archived': !project.active}">
-        <a href="" id="step4" ng-if="!project.projectEdit" class="collapse-item project-name" ng-class="{'collapsed': project.isCollapsed}" ng-click="project.isCollapsed = !project.isCollapsed">
-            {{project.name}}
-        </a>
+    <div class="collapse-wrapper project"
+         ng-repeat="project in projects track by $index"
+         ng-if="project.active == showActiveProjects"
+         id="step1">
+        <h2 ng-class="{'timesheet-collapsed': project.isCollapsed, 'project-archived': !project.active}">
+            <a href="" id="step4" ng-if="!project.projectEdit" class="collapse-item project-name" ng-class="{'collapsed': project.isCollapsed}" ng-click="project.isCollapsed = !project.isCollapsed">
+                {{project.name}}
+            </a>
 
-        <input ng-if="project.projectEdit" type="text" ng-model="project.name" ng-change="changeProjectName(project)" ng-model-options='{ debounce: 500 }'/>
+            <input ng-if="project.projectEdit" type="text" ng-model="project.name" ng-model-options='{ debounce: 500 }'/>
 
-        <a href="" ng-if="project.projectEdit" class="edit-project" ng-click="project.projectEdit = !project.projectEdit" ng-show="ProjectShow">Done</a>
-        <a href="" ng-if="!project.projectEdit" class="edit-project" ng-click="project.projectEdit = !project.projectEdit">Edit</a>
+            <a href="" ng-if="project.projectEdit" class="edit-project" ng-click="checkProjectName(project);">Done</a>
+            <a href="" ng-if="!project.projectEdit" class="edit-project" ng-click="toggleEditButton(project)">Edit</a>
 
-        <div id="step3" class="project-actions">
-            <a href=""
-               class="archive-project"
-               ng-if="project.active"
-               uib-tooltip="Archive Project"
-               ng-click="archiveProject(project)"></a>
+            <div id="step3" class="project-actions">
+                <a href=""
+                   class="archive-project"
+                   ng-if="project.active"
+                   uib-tooltip="Archive Project"
+                   ng-click="archiveProject(project)"></a>
 
-            <a href=""
-               class="dearchive-project"
-               ng-if="!project.active"
-               uib-tooltip="Dearchive Project"
-               ng-click="dearchiveProject(project)"></a>
+                <a href=""
+                   class="dearchive-project"
+                   ng-if="!project.active"
+                   uib-tooltip="Dearchive Project"
+                   ng-click="dearchiveProject(project)"></a>
 
-            <a href=""
-               class="remove-project"
-               ng-if="!project.active"
-               uib-tooltip="Remove Project"
-               ng-click="removeProject(project, $index)"></a>
+                <a href=""
+                   class="remove-project"
+                   ng-if="!project.active"
+                   uib-tooltip="Remove Project"
+                   ng-click="removeProject(project, $index)"></a>
+            </div>
+        </h2>
+
+        <div uib-collapse="project.isCollapsed">
+            <table class="table table-bordered projects-table">
+                <thead>
+                <tr>
+                    <th ng-repeat="projectsKey in projectsKeys track by $index">
+                        {{projectsKey}}
+                    </th>
+                </tr>
+                </thead>
+
+                <tbody ng-repeat="assignedEmployee in project.assignedEmployers track by $index">
+                <tr ng-if="currentProjectIndex >= 0" ng-repeat="assignment in assignedEmployee.assignments track by $index">
+                    <td>
+                        <ui-select ng-model="assignedEmployee" class="blank-dropdown">
+                            <ui-select-match placeholder="Select employee">{{$select.selected.displayName}}</ui-select-match>
+                            <ui-select-choices repeat="companyEmployee in notAssignedEmployees(project) | propsFilter: {displayName: $select.search}">
+                                <div ng-bind-html="companyEmployee.displayName | highlight: $select.search" ng-click="changeUser(project, assignedEmployee, companyEmployee._id)"></div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </td>
+
+                    <td>
+                        <time-mask assigned-employee="assignedEmployee" watch="project.currentPeriodIndex"></time-mask>
+                        <!--<input type="number" ng-model="assignment.workload" ng-change="saveAssignment(project, assignedEmployee)"/>-->
+                        <a href="" class="remove-assignment" ng-click="removeAssignment(project, assignedEmployee, $index)">&times;</a>
+                    </td>
+                </tr>
+                </tbody>
+
+                <tbody>
+                <tr project-row></tr>
+                </tbody>
+            </table>
         </div>
-    </h2>
-
-    <div uib-collapse="project.isCollapsed">
-        <table class="table table-bordered projects-table">
-            <thead>
-            <tr>
-                <th ng-repeat="projectsKey in projectsKeys track by $index">
-                    {{projectsKey}}
-                </th>
-            </tr>
-            </thead>
-
-            <tbody ng-repeat="assignedEmployee in project.assignedEmployers track by $index">
-            <tr ng-if="currentProjectIndex >= 0" ng-repeat="assignment in assignedEmployee.assignments track by $index">
-                <td>
-                    <ui-select ng-model="assignedEmployee" class="blank-dropdown">
-                        <ui-select-match placeholder="Select employee">{{$select.selected.displayName}}</ui-select-match>
-                        <ui-select-choices repeat="companyEmployee in notAssignedEmployees(project) | propsFilter: {displayName: $select.search}">
-                            <div ng-bind-html="companyEmployee.displayName | highlight: $select.search" ng-click="changeUser(project, assignedEmployee, companyEmployee._id)"></div>
-                        </ui-select-choices>
-                    </ui-select>
-                </td>
-
-                <td>
-                    <time-mask assigned-employee="assignedEmployee" watch="project.currentPeriodIndex"></time-mask>
-                    <!--<input type="number" ng-model="assignment.workload" ng-change="saveAssignment(project, assignedEmployee)"/>-->
-                    <a href="" class="remove-assignment" ng-click="removeAssignment(project, assignedEmployee, $index)">&times;</a>
-                </td>
-            </tr>
-            </tbody>
-
-            <tbody>
-            <tr project-row></tr>
-            </tbody>
-        </table>
     </div>
-</div>
 </div>
 
 <a href="" id="step2" ng-click="addProject()" class="add-project">+</a>
