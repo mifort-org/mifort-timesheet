@@ -14,4 +14,4 @@
   limitations under the License.
 -->
 
-<input ng-model-options="{debounce: 400}" class="timesheet-hours form-control time-mask-hours" type="text" ng-model="log.time" min="0" max="24" placeholder="{{log.timePlaceholder ? log.timePlaceholder : ''}}" maxlength="6"/>
+<input ng-model-options="{debounce: 400}" class="timesheet-hours form-control time-mask-hours" type="text" ng-readonly="readonly" ng-class="{'reject':rejectColor, 'approve':approveColor}" ng-model="log.time" min="0" max="24" placeholder="{{log.timePlaceholder ? log.timePlaceholder : ''}}" maxlength="6"/>
