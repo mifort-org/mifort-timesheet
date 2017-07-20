@@ -29,31 +29,31 @@ angular.module('mifortTimesheet')
                         title: scope.companyName,
                         url: 'company',
                         active: false,
-                        available: userRole == 'owner'
+                        available: userRole === 'owner'
                     },
                     {
                         title: 'Projects',
                         url: 'projects',
                         active: false,
-                        available: userRole == 'owner' || userRole == 'manager'
+                        available: userRole === 'owner' || userRole === 'manager'
                     },
                     {
                         title: 'Employees',
                         url: 'employees',
                         active: false,
-                        available: userRole == 'owner' || userRole == 'manager'
+                        available: userRole === 'owner' || userRole === 'manager'
                     },
                     {
                         title: 'Employees Report',
                         url: 'employees-report',
                         active: false,
-                        available: userRole == 'owner' || userRole == 'manager'
+                        available: userRole === 'owner' || userRole === 'manager'
                     },
                     {
                         title: 'Calendar',
                         url: 'calendar',
                         active: false,
-                        available: userRole == 'owner' || userRole == 'manager'
+                        available: userRole === 'owner' || userRole === 'manager'
                     },
                     {
                         title: 'Report',

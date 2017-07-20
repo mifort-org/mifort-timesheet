@@ -35,11 +35,10 @@ angular.module('mifortTimesheet')
                         scope.getWorkDays = function (startDate, endDate) {
                             var count = 0;
                             var curDate = startDate;
-                            while (curDate <= endDate) {
+                            for (curDate; curDate <= endDate; curDate.setDate(curDate.getDate() + 1)) {
                                 var dayOfWeek = curDate.getDay();
                                 if (!((dayOfWeek == 6) || (dayOfWeek == 0)))
                                     count++;
-                                curDate.setDate(curDate.getDate() + 1);
                             }
                             return count;
                         };
@@ -48,9 +47,8 @@ angular.module('mifortTimesheet')
                             var dateArray = [];
                             var currentDate = moment(startDate);
                             var stopDate = moment(stopDate);
-                            while (currentDate <= stopDate) {
+                            for(currentDate; currentDate <= stopDate; currentDate = moment(currentDate).add(1, 'days')){
                                 dateArray.push(moment(currentDate).format('YYYY-MM-DD'));
-                                currentDate = moment(currentDate).add(1, 'days');
                             }
                             return dateArray;
                         };
@@ -69,7 +67,8 @@ angular.module('mifortTimesheet')
 
                         gridOptions.reportFilters[dateFilterIndex].start = startDate;
                         gridOptions.reportFilters[dateFilterIndex].end = endDate;
-                        element.find('input').val(startDate + ' - ' + endDate);
+                        //element.find('input').val(startDate + ' - ' + endDate);
+                        scope.defaultDates = startDate + ' - ' + endDate;
                         preferences.set('reportFilter', newValue);
                     }
                 });
