@@ -375,9 +375,9 @@
 .ready-btn {
     float: right;
 }
-.red{
-  background: red !important;
+.form-control.reject {
+    background: red;
 }
-.green{
-  background: #03f21c !important;
+.form-control.approve {
+    background: #03f21c;
 }
