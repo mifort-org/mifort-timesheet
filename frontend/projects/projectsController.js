@@ -185,9 +185,6 @@ angular.module('mifortTimesheet.projects', ['ngRoute'])
             };
 
             $scope.addProject = function () {
-                projectsService.getProjects(companyId).success(function (projects) {
-                    $scope.projects = projects;
-                });
                 var projectNumber = $scope.projects.length + 1;
                 var newProject = {
                     name: 'New Project' + ' ' + projectNumber,
