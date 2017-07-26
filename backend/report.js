@@ -212,8 +212,11 @@ exports.restAggregationReport = function(req, res, next) {
 
         var aggregationCallback = function(err, groupEntries) {
             groupEntries.forEach(function(entry) {
-                return entry.readyForApprove = entry.readyForApprove.every(function(readyForApprove) {return readyForApprove;})
-            })
+                if(entry.readyForApprove) {
+                    return entry.readyForApprove = entry.readyForApprove.every(function(readyForApprove) {return readyForApprove;});
+                }
+                return false;
+            });
             log.debug('-REST result: aggregation report. Company id: %s', filterObj.companyId.toHexString());
             res.json(groupEntries);
         };
