@@ -54,7 +54,9 @@ angular.module('mifortTimesheet.employees', ['ngRoute'])
 
                 if(employee.assignments){
                     employee.assignments.forEach(function(assignment) {
-                        totalWorkload += +assignment.workload;
+                        if (!assignment.archived) {
+                            totalWorkload += +assignment.workload;
+                        }
                     });
                 }
 
