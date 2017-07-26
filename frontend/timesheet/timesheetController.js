@@ -156,8 +156,11 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                     $scope.approveColor = true;
                     $scope.rejectColor = false;
                 }
-            };
+            }
             $scope.init = function () {
+                if(localStorage["redirectDate"] && !moment(localStorage["redirectDate"], '"MM/DD/YYYY"', true).isValid()) {
+                    delete localStorage["redirectDate"];
+                }
                 var promises = [];
                 $scope.projects.forEach(function (project) {
                     var today = moment();
