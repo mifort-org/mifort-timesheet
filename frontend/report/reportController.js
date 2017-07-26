@@ -120,7 +120,7 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
             ];
             function local_active() {
                 var key_name = ["Employee Name", "Project Name"];
-                var counter = 0;
+                var nameExist = false;
                 for (var i in key_name) {
                     var k = key_name[i];
                     if (localStorage[k]) {
@@ -129,19 +129,20 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                         for (var l in self) {
                             if (l.search(reg) != -1) {
                                 if (self[l] === true) {
-                                    counter++;
+                                    nameExist = true;
                                 }
                             }
                         }
                     }
-                    if (reportService.getLastDefinedColumns().length) {
-                        if (counter > 0) {
+                    var reportFilterElements = document.getElementsByClassName("report-filter");
+                    if (reportFilterElements[i]) {
+                        if (nameExist) {
                             document.getElementsByClassName("report-filter")[i].classList.add("active");
                         } else {
                             document.getElementsByClassName("report-filter")[i].classList.remove("active");
                         }
                     }
-                    counter = 0;
+                    nameExist = 0;
                 }
             }
 
