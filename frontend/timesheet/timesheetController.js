@@ -52,6 +52,14 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
 
             loginService.getUser($scope.customUserId).success(function (loggedUser) {
                 if (loggedUser) {
+                    $scope.loading = true;
+
+                    var uniqueProjectAssignments = [],
+                        loadedProjects = 0;
+
+                    $scope.customUserName = loggedUser.displayName;
+                    user = loggedUser;
+
                     if (!$scope.customUserId) {
                         preferences.set('user', loggedUser);
 
@@ -62,14 +70,6 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                             });
                         });
                     }
-
-                    $scope.loading = true;
-
-                    var uniqueProjectAssignments = [],
-                        loadedProjects = 0;
-
-                    $scope.customUserName = loggedUser.displayName;
-                    user = loggedUser;
 
                     if (user.assignments && user.assignments.length) {
                         user.assignments.forEach(function (assignment) {
