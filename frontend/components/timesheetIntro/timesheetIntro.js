@@ -34,6 +34,11 @@ angular.module('mifortTimesheet')
 
                         doneLabel: 'Done'
                     };
+                    scope.$watch('introSteps', function(n, o){
+                        if (n !== o){
+                            scope.IntroOptions.steps = n;
+                        }
+                    });
                     notifyingService.subscribe('startIntro', function() {
                         $('.main-container').animate({ scrollTop: 0 }, 400);
                         scope.startIntro();
