@@ -25,8 +25,8 @@ angular.module('mifortTimesheet.employees', ['ngRoute'])
         });
     }])
 
-    .controller('employeesController', ['$scope', 'employeesService', 'preferences', '$location', 'Notification','notifyingService','$rootScope',
-        function($scope, employeesService, preferences, $location, Notification,notifyingService, $rootScope) {
+    .controller('employeesController', ['$scope', '$timeout', 'employeesService', 'preferences', '$location', 'Notification','notifyingService','$rootScope',
+        function($scope, $timeout, employeesService, preferences, $location, Notification,notifyingService, $rootScope) {
             var companyId = preferences.get('user').companyId;
 
             $scope.path = $location.path();
@@ -41,7 +41,32 @@ angular.module('mifortTimesheet.employees', ['ngRoute'])
                 });
 
                 $scope.employees = employees;
+                $scope.setIntroSteps();
             });
+
+            $scope.setIntroSteps = function() {
+                $timeout(function(){
+                    $scope.introSteps = [
+                        {
+                            element: angular.element(".employee-card")[0],
+                            intro: "<p>In this section you can enter information to find specific employee.</p>" +
+                            "<p>Press enter key or <b>“Search”<b> button to show employees that were found.</p>",
+                            position: 'right'
+                        },
+                        {
+                            element: angular.element("section.employee-card")[0],
+                            intro: "<p>Here you can see information about particular employee.</p>" +
+                            "<p>Click on this section to open timesheet of appropriate user.</p>",
+                            position: 'left'
+                        },
+                        {
+                            element: angular.element(".add-project-wrapper")[0],
+                            intro: "<p>You can invite a new employee by pressing this button.</p>",
+                            position: 'auto'
+                        }
+                    ];
+                });
+            };
 
             $scope.getInitials = function(name) {
                 var initials = name.match(/\b\w/g);
