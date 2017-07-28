@@ -48,13 +48,18 @@
   width: 42%;
   display: inline-block;
   margin: 0 15px 30px 15px; }
-  .project h2 .edit-project {
-    padding-left: 15px;
-    color: #8e8e8e;
-    font-size: 1.4rem;
-    font-weight: 300; }
-  .project h2.project-archived a {
-    color: #999; }
+  .project h2 {
+    max-width: 100%;
+    overflow: hidden; }
+    .project h2 input {
+      width: 100%; }
+    .project h2 .edit-project {
+      padding-left: 15px;
+      color: #8e8e8e;
+      font-size: 1.4rem;
+      font-weight: 300; }
+    .project h2.project-archived a {
+      color: #999; }
   .project .table th {
     font-weight: 600;
     padding: 9px 20px; }
