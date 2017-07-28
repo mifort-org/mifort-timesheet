@@ -49,6 +49,13 @@
     margin: 0 15px 30px 15px;
 
     h2{
+        max-width: 100%;
+        overflow: hidden;
+
+        input {
+            width: 100%;
+        }
+
         .edit-project{
             padding-left: 15px;
             color: #8e8e8e;
