@@ -152,39 +152,39 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
             var data_filter = {};
             document.onclick = function (e) {
                 var target = e.target;
-                    var id;
-                    if (target.type === "checkbox") {
-                        var name = target.parentNode.parentNode.firstElementChild.innerHTML;
-                        var check = target.parentNode.parentNode.getElementsByTagName("input");
-                        for (var c in check) {
-                            if (check[c].type === "checkbox")
-                                data_filter[check[c].id] = check[c].checked;
-                        }
-                        id = target.id;
-                        data_filter[id] = target.checked;
-                        localStorage.setItem(name, JSON.stringify(data_filter));
-                        // document.getElementsByClassName(target.tagName);
+                var id;
+                if (target.type === "checkbox") {
+                    var name = target.parentNode.parentNode.firstElementChild.innerHTML;
+                    var check = target.parentNode.parentNode.getElementsByTagName("input");
+                    for (var c in check) {
+                        if (check[c].type === "checkbox")
+                            data_filter[check[c].id] = check[c].checked;
                     }
-                    if (target.className === "report-filter" || target.className === "report-filter active") {
-                        var filter_bt = document.getElementsByClassName("popover-content");
-                        var parent = target.parentNode.parentNode.parentNode.parentNode;
-                        var key = parent.children[1].children[1].firstElementChild.innerHTML;
-                        var value_filter = {};
-                        if (localStorage[key]) {
-                            value_filter = JSON.parse(localStorage[key]);
-                        }
+                    id = target.id;
+                    data_filter[id] = target.checked;
+                    localStorage.setItem(name, JSON.stringify(data_filter));
+                    // document.getElementsByClassName(target.tagName);
+                }
+                if (target.className === "report-filter" || target.className === "report-filter active") {
+                    var filter_bt = document.getElementsByClassName("popover-content");
+                    var parent = target.parentNode.parentNode.parentNode.parentNode;
+                    var key = $(parent).find('.header-area.sortable')[0].children[1].firstElementChild.innerHTML;
+                    var value_filter = {};
+                    if (localStorage[key]) {
+                        value_filter = JSON.parse(localStorage[key]);
+                    }
 
-                        setTimeout(function () {
-                            for (var k in value_filter) {
-                                document.getElementById(k).checked = value_filter[k];
-                            }
-                        }, 10);
-                    }
                     setTimeout(function () {
-                        if (document.getElementsByClassName('popover ').length === 0) {
-                            data_filter = {};
+                        for (var k in value_filter) {
+                            document.getElementById(k).checked = value_filter[k];
                         }
-                    }, 160);
+                    }, 10);
+                }
+                setTimeout(function () {
+                    if (document.getElementsByClassName('popover ').length === 0) {
+                        data_filter = {};
+                    }
+                }, 160);
             };
 
             $scope.changeActiveReport = function (activeIndex) {
@@ -309,6 +309,9 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                         else if (filterToPush.value.length && usedFilterIndex !== -1) {
                             usedFilters[usedFilterIndex] = filterToPush;
                         }
+                            else if (filterToPush.field !== 'date' && !filterToPush.value.length && usedFilterIndex !== -1) {
+                                usedFilters.splice(usedFilterIndex, 1);
+                            }
                         // else if(usedFilterIndex !== -1 && filterToPush.field != 'date'){
                         //     usedFilters.splice(usedFilterIndex, 1);
                         // }
@@ -332,22 +335,20 @@ angular.module('mifortTimesheet.report', ['ngRoute'])
                         $scope.reportData = data;
 
                         //add columns to grid
-                        if (data.length) {
-                            reportService.saveLastDefinedColumns([]);
-                            var newColumns = [];
-                            newColumns.length = columnsOrder.length;
 
-                            for (var column in data[0]) {
-                                if (columns[column]) {
-                                    var indexToPush = _.indexOf(columnsOrder, column);
+                        reportService.saveLastDefinedColumns([]);
+                        var newColumns = [];
+                        newColumns.length = columnsOrder.length;
 
-                                    newColumns[indexToPush] = columns[column];
-                                }
+                        for (var i = 0; i < columnsOrder.length; i++) {
+                            var column = columnsOrder[i];
+                            if (columns[column]) {
+                                newColumns[i] = columns[column];
                             }
-
-                            $scope.timesheetGridOptions.columnDefs = newColumns;
-                            reportService.saveLastDefinedColumns(newColumns);
                         }
+
+                        $scope.timesheetGridOptions.columnDefs = newColumns;
+                        reportService.saveLastDefinedColumns(newColumns);
 
                         $scope.gridHeight = {
                             height: ((data.length) * ($scope.timesheetGridOptions.rowHeight + 1)) + headerHeight + "px"
