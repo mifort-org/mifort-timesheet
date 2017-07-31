@@ -32,11 +32,11 @@
         <h2 ng-class="{'timesheet-collapsed': project.isCollapsed, 'project-archived': !project.active}">
             <a href="" id="step4" ng-if="!project.projectEdit" class="collapse-item project-name"
                ng-class="{'collapsed': project.isCollapsed}" ng-click="project.isCollapsed = !project.isCollapsed">
-                {{project.name}}
+                {{checkProjectNameLength(project.name)}}
             </a>
 
             <input ng-if="project.projectEdit" type="text" ng-model="project.name"
-                   ng-model-options='{ debounce: 500 }'/>
+                   ng-model-options='{ debounce: 500 }' maxlength="140"/>
 
             <a href="" ng-if="project.projectEdit" class="edit-project" ng-click="checkProjectName(project);">Done</a>
             <a href="" ng-if="!project.projectEdit" class="edit-project" ng-click="toggleEditButton(project)">Edit</a>
