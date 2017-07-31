@@ -340,4 +340,12 @@ angular.module('mifortTimesheet.projects', ['ngRoute'])
 
                 }
             };
+
+            $scope.checkProjectNameLength = function(projectName){
+                var name = projectName;
+                if(projectName && typeof projectName == 'string' && projectName.length > 140){
+                    name = projectName.slice(0, 140);
+                }
+                return name;
+            };
         }]);
