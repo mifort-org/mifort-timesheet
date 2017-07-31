@@ -408,7 +408,7 @@ angular.module('mifortTimesheet.calendar', ['ngRoute'])
 
             $scope.calculatePeriods = function() {
                 var firstPeriod = new Date(),
-                    newPeriodStartDays = moment(new Date(firstPeriod)).add(1, 'days'),
+                    newPeriodStartDays = moment(new Date(firstPeriod)),
                     newPeriodStartMonths = moment(new Date(firstPeriod)).add(1, 'months');
 
                 $scope.company.periods = [];
