@@ -79,6 +79,10 @@ angular.module('mifortTimesheet.calendar', ['ngRoute'])
                 for(var i = 0; i < daysToGenerate; i++){
                     var dayToPush = _.clone($scope.company.template);
                     dayToPush.date = moment(new Date(startDate)).add(i, 'days').format("MM/DD/YYYY");
+                    var weekday = moment(new Date(startDate)).add(i, 'days').weekday();
+                    if (weekday === 0 || weekday === 6) {
+                        dayToPush.dayId = 1;
+                    }
                     $scope.calendar.push(dayToPush);
                 }
 
