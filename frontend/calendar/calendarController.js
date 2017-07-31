@@ -265,7 +265,7 @@ angular.module('mifortTimesheet.calendar', ['ngRoute'])
 
             $scope.introSteps = [
                 {
-                    element: '.calendar-container',
+                    element: '.calendar-wrapper',
                     intro: "<p>In this section you could see the list of months." +
                     "Each day contain the date and the default workload of this day.</p>" +
                     "<p>By default all weekend days are colored with light blue color.</p>" +
