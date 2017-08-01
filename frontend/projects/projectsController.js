@@ -202,6 +202,11 @@ angular.module('mifortTimesheet.projects', ['ngRoute'])
             };
 
             $scope.saveAssignment = function (project, assignedEmployee, employee, previousEmployeeId, assignmentIndex) {
+                assignedEmployee.assignments.forEach(function(assigned){
+                    if(assigned.workload[0] == '.'){
+                        assigned.workload = '0' + assigned.workload;
+                    }
+                });
                 projectsService.saveAssignment(project._id, assignedEmployee).success(function () {
                     Notification.success('Changes saved');
                 });
