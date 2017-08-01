@@ -106,8 +106,11 @@ angular.module('mifortTimesheet.company', ['ngRoute'])
                 if (this.value.length === 0) {
                     setDefaultCompanyName();
                 } else {
-                    var text = this.value;
-                    document.getElementsByClassName("tabs-left")[0].getElementsByClassName("ng-binding")[0].innerHTML = text;
+                    var text = this.value,
+                        tabElement = document.getElementById("company-name-tab");
+                    if (tabElement){
+                        tabElement.getElementsByTagName('div')[0].innerHTML = text;
+                    }
                 }
             };
 
