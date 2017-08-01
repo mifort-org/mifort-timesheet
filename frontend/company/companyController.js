@@ -30,8 +30,8 @@ angular.module('mifortTimesheet.company', ['ngRoute'])
         });
     }])
 
-    .controller('companyController', ['$scope', '$location', 'companyService', 'preferences', '$rootScope', 'Notification', '$http',
-        function ($scope, $location, companyService, preferences, $rootScope, Notification, $http) {
+    .controller('companyController', ['$scope', '$uibModal', '$location', 'companyService', 'preferences', '$rootScope', 'Notification', '$http',
+        function ($scope, $uibModal, $location, companyService, preferences, $rootScope, Notification, $http) {
             $scope.user = preferences.get('user');
 
             $scope.company = {
@@ -158,14 +158,31 @@ angular.module('mifortTimesheet.company', ['ngRoute'])
             };
 
             $scope.deleteCompany = function (companyId) {
-                companyService.deleteCompany(companyId).success(function (company) {
-                    Notification.success('Company deleted');
-                    preferences.clear();
+                var modalInstance = $uibModal.open({
+                    ariaLabelledBy: 'modal-title',
+                    ariaDescribedBy: 'modal-body',
+                    templateUrl: './company/confirmDeleteModal/confirmDeleteModal.html',
+                    controller: 'confirmDeleteModalCtrl',
+                    windowClass: "confirm-delete-company-modal",
+                    resolve: {
+                        companyName: function () {
+                            return $scope.company.name
+                        }
+                    }
+                });
 
-                    $http.get('logout').then(function () {
-                        $('.modal-backdrop').remove(); //otherwise it does not disappear
-                        $location.path('login');
-                    });
+                modalInstance.result.then(function(isConfirmed){
+                    if (isConfirmed) {
+                        companyService.deleteCompany(companyId).success(function (company) {
+                            Notification.success('Company deleted');
+                            preferences.clear();
+
+                            $http.get('logout').then(function () {
+                                $('.modal-backdrop').remove(); //otherwise it does not disappear
+                                $location.path('login');
+                            });
+                        });
+                    }
                 });
             };
 

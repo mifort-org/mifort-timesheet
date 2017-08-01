@@ -133,6 +133,7 @@ module.exports = function (grunt) {
                     'frontend/login/loginController.js',
                     'frontend/login/loginService.js',
                     'frontend/company/companyController.js',
+                    'frontend/company/confirmDeleteModal/confirmDeleteModal.js',
                     'frontend/company/companyService.js',
                     'frontend/projects/projectsController.js',
                     'frontend/projects/projectsService.js',

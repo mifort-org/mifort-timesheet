@@ -111,10 +111,15 @@
 
 .delete-company-button {
   position: absolute;
-  top: 0px;
-  right: 0px;
+  top: 0;
+  right: 0;
   font-size: 2.5em;
   padding: 10px;
   cursor: pointer; }
+
+.confirm-delete-company-modal .modal-title,
+.confirm-delete-company-modal .modal-body {
+  line-height: 1;
+  text-align: center; }
 
 /*# sourceMappingURL=company.css.map */
