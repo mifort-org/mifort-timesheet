@@ -255,7 +255,7 @@ function constructCompany(periods, defaultValues) {
         },
         periods: periods,
         dayTypes: [
-            Weekend, Corporate, Holiday
+            Weekend, Holiday, Corporate
         ],
         defaultValues: defaultValues,
         availablePositions: constants.DEFAULT_AVAILABLE_POSITIONS

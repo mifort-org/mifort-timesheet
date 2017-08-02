@@ -385,24 +385,26 @@
   clear: left;
   width: 546px; }
 
-.custom-days-removing {
+.remove-day-wrapper {
+  margin-top: 19px;
+  margin-bottom: 36px;
   position: absolute;
-  top: 0;
-  left: 50%;
-  margin-left: -72px; }
-  .custom-days-removing .remove-day-wrapper {
-    margin-top: 19px;
-    margin-bottom: 36px; }
-    .custom-days-removing .remove-day-wrapper:nth-child(2n) {
-      margin-left: 130px; }
-  .custom-days-removing .remove-day {
+  top: -15px; }
+  .remove-day-wrapper:nth-child(2n) {
+    margin-left: 130px; }
+  .remove-day-wrapper.remove-day-left {
+    left: -50%; }
+  .remove-day-wrapper.remove-day-rigth {
+    right: -50%; }
+
+.remove-day {
+  color: #fe6767;
+  font-size: 2.5rem;
+  opacity: 0.5; }
+  .remove-day:hover, .remove-day:active, .remove-day:focus {
+    opacity: 1;
     color: #fe6767;
-    font-size: 2.5rem;
-    opacity: 0.5; }
-    .custom-days-removing .remove-day:hover, .custom-days-removing .remove-day:active, .custom-days-removing .remove-day:focus {
-      opacity: 1;
-      color: #fe6767;
-      text-decoration: none; }
+    text-decoration: none; }
 
 .calendar-today {
   position: relative;

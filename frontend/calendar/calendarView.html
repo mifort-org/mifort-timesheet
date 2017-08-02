@@ -82,12 +82,3 @@
 
     <a href="" class="custom-day-button" ng-click="chooseDayType(day)">None</a>
 </script>
-
-<script type="text/ng-template" id="customDay.html">
-    <div class="edit-custom-day">
-        <form name="custom-day">
-            <input type="text" ng-model="day.name" ng-model-options="{debounce: 1000}"/>
-            <input type="number" ng-model="day.time" ng-keypress="validateNumber($event)" ng-model-options="{debounce: 1000}"/>
-        </form>
-    </div>
-</script>
