@@ -16,7 +16,8 @@
 
 <div class="tabs-left">
     <uib-tabset vertical="true">
-        <uib-tab ng-repeat="tab in tabs track by $index" heading="{{tab.title}}" active="tab.active" select="changeTab(tab)" ng-if="tab.available"></uib-tab>
+        <uib-tab ng-repeat="tab in tabs track by $index" heading="{{tab.title}}" active="tab.active" select="changeTab(tab)"
+                 ng-if="tab.available" ng-attr-id="{{tab.id}}"></uib-tab>
     </uib-tabset>
     <div project-summary ng-show="isTimesheetTabActive()">
     </div>

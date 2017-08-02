@@ -6190,27 +6190,35 @@ input[type=number]::-webkit-outer-spin-button {
     border-color: transparent;
     outline: 0; }
   .blank-dropdown > a, .blank-dropdown .btn {
+    position: relative;
     display: inline-block;
     width: 100%;
     min-height: 33px;
     padding: 8px 19px;
     color: #000;
-    text-decoration: none;
-    background: url("../images/icons.png") right 20px top -303px no-repeat; }
+    text-decoration: none; }
+  .blank-dropdown > a::before, .blank-dropdown .btn::before {
+    content: ' ';
+    width: 15px;
+    height: 11px;
+    display: block;
+    position: absolute;
+    right: 19px;
+    top: 16px;
+    background: url("../images/icons.png") right 1px top -319px no-repeat; }
   .blank-dropdown.blank-dropdown-small {
     padding: 0; }
-    .blank-dropdown.blank-dropdown-small a {
-      background-position: right 20px top -306px; }
-    .blank-dropdown.blank-dropdown-small.open a {
-      background-position: right 20px top -1507px; }
+    .blank-dropdown.blank-dropdown-small a::before {
+      top: 13px; }
   .blank-dropdown.open {
     border-color: #a0a0a0; }
     .blank-dropdown.open a {
       padding: 8px 19px;
-      background-position: right 20px top -1504px;
       white-space: normal;
       -ms-word-break: break-word;
       word-break: break-word; }
+      .blank-dropdown.open a::before {
+        background-position: right 1px top -1519px; }
   .blank-dropdown ul {
     left: -1px;
     right: -1px;

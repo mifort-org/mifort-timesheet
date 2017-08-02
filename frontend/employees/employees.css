@@ -125,7 +125,9 @@
     line-height: 19px;
     border-top: 0; }
   .employee-assignments .employee-assignment {
-    display: block; }
+    display: block;
+    overflow-x: hidden;
+    word-break: break-word; }
   .employee-assignments a {
     display: inline-block;
     width: 100%;

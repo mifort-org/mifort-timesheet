@@ -29,7 +29,8 @@ angular.module('mifortTimesheet')
                         title: scope.companyName,
                         url: 'company',
                         active: false,
-                        available: userRole === 'owner'
+                        available: userRole === 'owner',
+                        id: "company-name-tab"
                     },
                     {
                         title: 'Projects',

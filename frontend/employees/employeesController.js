@@ -25,8 +25,8 @@ angular.module('mifortTimesheet.employees', ['ngRoute'])
         });
     }])
 
-    .controller('employeesController', ['$scope', '$timeout', 'employeesService', 'preferences', '$location', 'Notification','notifyingService','$rootScope',
-        function($scope, $timeout, employeesService, preferences, $location, Notification,notifyingService, $rootScope) {
+    .controller('employeesController', ['$scope', '$uibModal', '$timeout', 'employeesService', 'preferences', '$location', 'Notification','notifyingService','$rootScope',
+        function($scope, $uibModal, $timeout, employeesService, preferences, $location, Notification,notifyingService, $rootScope) {
             var companyId = preferences.get('user').companyId;
 
             $scope.path = $location.path();
@@ -123,14 +123,22 @@ angular.module('mifortTimesheet.employees', ['ngRoute'])
             };
 
             function getEmployees(){
-                employeesService.getCompanyEmployers($scope.user.companyId).success(function(companyEmployees) {
-                    $scope.companyEmployees = companyEmployees;
+                employeesService.getCompanyEmployers($scope.user.companyId).success(function(employees) {
+                    employees.forEach(function(employee) {
+                        if(employee.external && employee.external.photos.length){
+                            employee.photo = employee.external.photos[0].value.split("?")[0] + '?sz=132';
+                        }
+
+                        employee.isCollapsed = true;
+                    });
+
+                    $scope.employees = employees;
                 });
             }
 
             $scope.inviteEmployees = function() {
                 employeesService.saveCompany($scope.company).success(function () {
-                    getEmployees()
+                    getEmployees();
                     $scope.company.emails = [];
                     Notification.success('Changes saved');
                 });
@@ -142,12 +150,29 @@ angular.module('mifortTimesheet.employees', ['ngRoute'])
                 }
             }, true);
 
-            $scope.removeEmployee = function(employee) {
-                $scope.companyEmployees = _.filter($scope.companyEmployees, function(companyEmployee){
-                    return companyEmployee._id != employee._id;
+            $scope.removeEmployee = function (employee) {
+                var modalInstance = $uibModal.open({
+                    ariaLabelledBy: 'modal-title',
+                    ariaDescribedBy: 'modal-body',
+                    templateUrl: './employees/confirmDeleteModal/confirmDeleteModal.html',
+                    controller: 'confirmDeleteEmployeeModal',
+                    windowClass: "confirm-delete-company-modal",
+                    resolve: {
+                        employeeName: function () {
+                            return employee.displayName
+                        }
+                    }
                 });
-                employeesService.removeEmployee(employee._id).success(function() {
-                    Notification.success('Changes saved');
+
+                modalInstance.result.then(function(isConfirmed){
+                    if (isConfirmed) {
+                        $scope.employees = _.filter($scope.employees, function(companyEmployee){
+                            return companyEmployee._id !== employee._id;
+                        });
+                        employeesService.removeEmployee(employee._id).success(function() {
+                            Notification.success('Changes saved');
+                        });
+                    }
                 });
             };
 

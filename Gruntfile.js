@@ -133,6 +133,7 @@ module.exports = function (grunt) {
                     'frontend/login/loginController.js',
                     'frontend/login/loginService.js',
                     'frontend/company/companyController.js',
+                    'frontend/company/confirmDeleteModal/confirmDeleteModal.js',
                     'frontend/company/companyService.js',
                     'frontend/projects/projectsController.js',
                     'frontend/projects/projectsService.js',
@@ -145,9 +146,9 @@ module.exports = function (grunt) {
                     'frontend/report/reportService.js',
                     'frontend/employees/employeesController.js',
                     'frontend/employees/employeesService.js',
+                    'frontend/employees/confirmDeleteModal/confirmDeleteModal.js',
                     'frontend/employees/employeesReportController.js',
                     'frontend/employees/employeesReportService.js'
-
                 ],
                 dest: 'dist/scripts/scripts.js'
             },

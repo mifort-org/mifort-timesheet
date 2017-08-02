@@ -164,6 +164,8 @@
 
     .employee-assignment{
         display: block;
+        overflow-x: hidden;
+        word-break: break-word;
     }
 
     a{
