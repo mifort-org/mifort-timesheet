@@ -151,7 +151,12 @@ angular.module('mifortTimesheet')
                         e.preventDefault();
                     }
                 };
-
+                scope.canBeEdit = function (customDay) {
+                    if(!customDay || customDay.name === "Holiday" || customDay.name === "Weekend") {
+                        return false;
+                    }
+                    return true;
+                };
             },
             templateUrl: 'components/customDay/customDay.html'
 

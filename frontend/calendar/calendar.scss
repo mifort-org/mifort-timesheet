@@ -522,22 +522,21 @@
     clear: left;
     width: 546px;
 }
-
-.custom-days-removing{
-    position: absolute;
-    top: 0;
-    left: 50%;
-    margin-left: -72px;
-
     .remove-day-wrapper{
         margin-top: 19px;
         margin-bottom: 36px;
-
+        position: absolute;
+        top: -15px;
         &:nth-child(2n){
             margin-left: 130px;
         }
+        &.remove-day-left {
+            left: -50%;
+        }
+        &.remove-day-rigth {
+            right: -50%;
+        }
     }
-
     .remove-day{
         color: #fe6767;
         font-size: 2.5rem;
@@ -551,7 +550,7 @@
             text-decoration: none;
         }
     }
-}
+
 
 .calendar-today{
     position: relative;
