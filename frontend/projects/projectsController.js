@@ -206,10 +206,38 @@ angular.module('mifortTimesheet.projects', ['ngRoute'])
                     if(assigned.workload[0] == '.'){
                         assigned.workload = '0' + assigned.workload;
                     }
+                    if(assigned.workload > 8 && assigned.workload <= 24){
+                        Notification.warning('You have filled in more then 8h per assignment for an employee');
+                    }
                 });
-                projectsService.saveAssignment(project._id, assignedEmployee).success(function () {
-                    Notification.success('Changes saved');
+
+                var assignId = assignedEmployee._id,
+                    assignWorkload = 0;
+
+                var assignments = [];
+                $scope.projects.forEach(function(project){
+                    project.assignedEmployers.forEach(function(assignProject){
+                        if (assignProject._id == assignId){
+                            assignments = assignments.concat(assignProject.assignments);
+                        }
+                    })
                 });
+
+                assignments.forEach(function(assign){
+                    assignWorkload += parseInt(assign.workload);
+                });
+
+                if(assignWorkload > 16 && assignWorkload <= 24){
+                    Notification.warning('You have filled in more then 16h per day for an employee');
+                }
+                if(assignWorkload > 24){
+                    Notification.error('You are trying to fill in more then 24h per day for an employee');
+                }
+                else {
+                    projectsService.saveAssignment(project._id, assignedEmployee).success(function () {
+                        Notification.success('Changes saved');
+                    });
+                }
             };
 
             $scope.archiveProject = function (project, projectIndex) {
