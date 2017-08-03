@@ -48,6 +48,9 @@
   .report-wrapper .form-group {
     margin-bottom: 0; }
 
+.popover .popover-content {
+  word-break: break-all; }
+
 .report-filter {
   position: relative;
   display: inline-block;

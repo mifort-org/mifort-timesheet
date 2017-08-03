@@ -65,6 +65,12 @@
     }
 
 }
+.popover{
+    .popover-content{
+        word-break: break-all;
+    }
+}
+
 
 .report-filter{
     position: relative;
