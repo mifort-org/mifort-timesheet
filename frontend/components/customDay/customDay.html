@@ -74,7 +74,7 @@
                       ng-repeat="area in customColors  track by $index"/>
             </map>
             <div class="remove-day-wrapper" ng-if="canBeEdit(day)" ng-class="{'remove-day-left': !($index % 2), 'remove-day-rigth': $index % 2}">
-                <a href="" class="remove-day" ng-click="removeCustomDayTemplate(customDay)">&times;</a>
+                <a href="" class="remove-day" ng-click="removeCustomDayTemplate(day)">&times;</a>
             </div>
         </div>
     </div>
