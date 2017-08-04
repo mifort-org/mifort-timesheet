@@ -499,7 +499,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                 if ($scope.currentPeriodIndex) {
                     $scope.currentPeriodIndex--;
 
-                    loadLogs(projects, lastPeriod);
+                    loadLogs(projects, lastPeriod, $scope.currentPeriodIndex);
                 }
 
                 preferences.set('currentPeriodIndex', $scope.currentPeriodIndex);
@@ -512,7 +512,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                 if ($scope.currentPeriodIndex < projects[0].periods.length - 1) {
                     $scope.currentPeriodIndex++;
 
-                    loadLogs(projects, lastPeriod);
+                    loadLogs(projects, lastPeriod, $scope.currentPeriodIndex);
                 }
 
                 preferences.set('currentPeriodIndex', $scope.currentPeriodIndex);
@@ -539,24 +539,24 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                 var isCurrentExist = $scope.currentDatePeriod !== undefined;
 
                 if(isCurrentExist) {
-                    loadLogs(projects, lastPeriod);
+                    loadLogs(projects, lastPeriod, $scope.currentDatePeriod);
                 }
 
                 preferences.set('currentPeriodIndex', $scope.currentPeriodIndex);
             };
 
-            function loadLogs(projects, lastPeriod) {
+            function loadLogs(projects, lastPeriod, targetPeriod) {
                 var promises = [];
                 projects.forEach(function (project) {
                     project.lastPeriodRecords = project.periods[lastPeriod].timesheet.length;
 
-                    if (!project.periods[$scope.currentPeriodIndex].timesheet) {
-                        promises.push(initPeriod(project, $scope.currentPeriodIndex));
+                    if (!project.periods[targetPeriod].timesheet) {
+                        promises.push(initPeriod(project, targetPeriod));
                     }
                 });
 
                 $q.all(promises).then(function () {
-                    $scope.addLogs($scope.currentPeriodIndex);
+                    $scope.addLogs(targetPeriod);
 
                     $scope.currentPeriodLogsLoaded();
 
