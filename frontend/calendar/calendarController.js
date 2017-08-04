@@ -25,13 +25,13 @@ angular.module('mifortTimesheet.calendar', ['ngRoute', 'constants'])
         });
     }])
 
-    .controller('calendarController', ['$scope', '$filter', 'calendarService', 'moment', 'preferences', 'Notification', '$anchorScroll', '$location', 'appVersion',
-        function($scope, $filter, calendarService, moment, preferences, Notification, $anchorScroll, $location, appVersion) {
+    .controller('calendarController', ['$scope', '$filter', 'calendarService', 'moment', 'preferences', 'Notification', '$anchorScroll', '$location',
+        function($scope, $filter, calendarService, moment, preferences, Notification, $anchorScroll, $location) {
             $scope.daySettingsPopover = {
-                templateUrl: 'daySettimgs.html?rel=' + appVersion
+                templateUrl: 'daySettings'
             };
             $scope.customDayPopover = {
-                templateUrl: 'customDay.html?rel=' + appVersion
+                templateUrl: 'customDay'
             };
             $scope.periodSettings = calendarService.getPeriodSettings();
             $scope.countPeriodSettings = calendarService.getCountPeriodSettings();

@@ -45,7 +45,7 @@ angular.module('mifortTimesheet')
 
                 scope.dynamicPopover = {
                     content: attrs.colTitle,
-                    templateUrl: 'myPopoverTemplate.html?rel=' + appVersion,
+                    templateUrl: 'myPopoverTemplate',
                     projectFilter: scope.getProjectFilter()
                 };
 
