@@ -530,7 +530,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
 
                         if (today.isBetween(momentStart, momentEnd) || today.isSame(momentStart, 'day') || today.isSame(momentEnd, 'day')) {
                             $scope.currentDatePeriod = index;
-                            $scope.currentPeriodIndex = index;
+
                             return true;
                         }
                     });
@@ -539,6 +539,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                 var isCurrentExist = $scope.currentDatePeriod !== undefined;
 
                 if(isCurrentExist) {
+                    $scope.currentPeriodIndex = $scope.currentDatePeriod;
                     loadLogs(projects, lastPeriod, $scope.currentDatePeriod);
                 }
 
