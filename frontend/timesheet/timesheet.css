@@ -21,11 +21,12 @@
       padding-bottom: 5px; }
   .timesheet .table {
     font-size: 1.8em;
-    border-color: #e0e4ec; }
+    border-color: #e0e4ec;
+    table-layout: fixed; }
     .timesheet .table td:first-child,
     .timesheet .table th:first-child {
-      width: 170px;
-      min-width: 170px;
+      width: 185px;
+      min-width: 185px;
       padding: 4px 10px; }
     .timesheet .table th:first-child {
       min-width: 185px; }
@@ -43,7 +44,9 @@
       .timesheet .table td:nth-child(3) {
         padding: 2px; }
       .timesheet .table td .blank-dropdown > a {
-        padding: 14px 19px; }
+        padding: 14px 19px;
+        overflow: hidden;
+        text-overflow: ellipsis; }
     .timesheet .table td.total-logged {
       padding: 15px 15px 15px 47px;
       margin: 7px 0 15px 3px;
