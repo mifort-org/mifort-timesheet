@@ -16,22 +16,22 @@
 
 'use strict';
 
-angular.module('mifortTimesheet.company', ['ngRoute'])
+angular.module('mifortTimesheet.company', ['ngRoute', 'constants'])
 
-    .config(['$routeProvider', function ($routeProvider) {
+    .config(['$routeProvider', 'appVersion', function ($routeProvider, appVersion) {
         $routeProvider.when('/company-create', {
-            templateUrl: 'company/companyView.html',
+            templateUrl: 'company/companyView.html?rel=' + appVersion,
             controller: 'companyController'
         });
 
         $routeProvider.when('/company', {
-            templateUrl: 'company/companyEditView.html',
+            templateUrl: 'company/companyEditView.html?rel=' + appVersion,
             controller: 'companyController'
         });
     }])
 
-    .controller('companyController', ['$scope', '$uibModal', '$location', 'companyService', 'preferences', '$rootScope', 'Notification', '$http',
-        function ($scope, $uibModal, $location, companyService, preferences, $rootScope, Notification, $http) {
+    .controller('companyController', ['$scope', '$uibModal', '$location', 'companyService', 'preferences', '$rootScope', 'Notification', '$http', 'appVersion',
+        function ($scope, $uibModal, $location, companyService, preferences, $rootScope, Notification, $http, appVersion) {
             $scope.user = preferences.get('user');
 
             $scope.company = {
@@ -161,7 +161,7 @@ angular.module('mifortTimesheet.company', ['ngRoute'])
                 var modalInstance = $uibModal.open({
                     ariaLabelledBy: 'modal-title',
                     ariaDescribedBy: 'modal-body',
-                    templateUrl: './company/confirmDeleteModal/confirmDeleteModal.html',
+                    templateUrl: './company/confirmDeleteModal/confirmDeleteModal.html?rel=' + appVersion,
                     controller: 'confirmDeleteModalCtrl',
                     windowClass: "confirm-delete-company-modal",
                     resolve: {

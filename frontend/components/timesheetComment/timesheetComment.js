@@ -17,7 +17,7 @@
 'use strict';
 
 angular.module('mifortTimesheet')
-    .directive('timesheetComment', function() {
+    .directive('timesheetComment', function(appVersion) {
         return {
             scope: true,
             link: function(scope, element) {
@@ -40,6 +40,6 @@ angular.module('mifortTimesheet')
                     }
                 });
             },
-            templateUrl: 'components/timesheetComment/timesheetComment.html'
+            templateUrl: 'components/timesheetComment/timesheetComment.html?rel=' + appVersion
         };
     });

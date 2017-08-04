@@ -17,7 +17,7 @@
 'use strict';
 
 angular.module('mifortTimesheet')
-    .directive('reportDatePicker', function (preferences, $timeout) {
+    .directive('reportDatePicker', function (preferences, $timeout, appVersion) {
         return {
             scope: true,
             link: function (scope, element) {
@@ -94,6 +94,6 @@ angular.module('mifortTimesheet')
                     });
                 }
             },
-            templateUrl: 'components/reportDatePicker/reportDatePicker.html'
+            templateUrl: 'components/reportDatePicker/reportDatePicker.html?rel=' + appVersion
         };
     });

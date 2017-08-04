@@ -16,17 +16,17 @@
 
 'use strict';
 
-angular.module('mifortTimesheet.employees', ['ngRoute'])
+angular.module('mifortTimesheet.employees', ['ngRoute', 'constants'])
 
-    .config(['$routeProvider', function($routeProvider) {
+    .config(['$routeProvider', 'appVersion', function($routeProvider, appVersion) {
         $routeProvider.when('/employees', {
-            templateUrl: 'employees/employeesView.html',
+            templateUrl: 'employees/employeesView.html?rel=' + appVersion,
             controller: 'employeesController'
         });
     }])
 
-    .controller('employeesController', ['$scope', '$uibModal', '$timeout', 'employeesService', 'preferences', '$location', 'Notification','notifyingService','$rootScope',
-        function($scope, $uibModal, $timeout, employeesService, preferences, $location, Notification,notifyingService, $rootScope) {
+    .controller('employeesController', ['$scope', '$uibModal', '$timeout', 'employeesService', 'preferences', '$location', 'Notification','notifyingService','$rootScope', 'appVersion',
+        function($scope, $uibModal, $timeout, employeesService, preferences, $location, Notification, notifyingService, $rootScope, appVersion) {
             var companyId = preferences.get('user').companyId;
 
             $scope.path = $location.path();
@@ -154,7 +154,7 @@ angular.module('mifortTimesheet.employees', ['ngRoute'])
                 var modalInstance = $uibModal.open({
                     ariaLabelledBy: 'modal-title',
                     ariaDescribedBy: 'modal-body',
-                    templateUrl: './employees/confirmDeleteModal/confirmDeleteModal.html',
+                    templateUrl: './employees/confirmDeleteModal/confirmDeleteModal.html?rel=' + appVersion,
                     controller: 'confirmDeleteEmployeeModal',
                     windowClass: "confirm-delete-company-modal",
                     resolve: {

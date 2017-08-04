@@ -12,11 +12,14 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-ng-annotate'); //AngularJS dependency injection annotations
     grunt.loadNpmTasks('grunt-contrib-uglify'); //Minify files with UglifyJS
     grunt.loadNpmTasks('grunt-contrib-cssmin'); //Minify CSS
+    grunt.loadNpmTasks('grunt-string-replace'); //Replaces strings on files by using string or regex patterns
 
     grunt.loadNpmTasks('grunt-notify'); //Automatic desktop notifications for Grunt errors and warnings
     grunt.loadNpmTasks('grunt-cache-breaker'); //Cache-breaker, appends a timestamp or md5 hash to any urls
     grunt.loadNpmTasks('grunt-angular-templates'); //Concatenate & register your AngularJS templates in the $templateCache
 
+    var pkgJson = require('./package.json');
+    var appVersion = pkgJson.version;
 
     grunt.initConfig({
         clean: {
@@ -174,6 +177,22 @@ module.exports = function (grunt) {
                     'frontend/bower_components/angular-filter/dist/angular-filter.min.js'
                 ],
                 dest: 'dist/scripts/vendors.js'
+            }
+        },
+
+        "string-replace": {
+            inline: {
+                files: {
+                    'dist/': 'dist/scripts/scripts.js'
+                },
+                options: {
+                    replacements: [
+                        {
+                            pattern: "'appVersion', 'devVersion'",
+                            replacement: "'appVersion', '" + appVersion + "'"
+                        }
+                    ]
+                }
             }
         },
 
@@ -337,6 +356,7 @@ module.exports = function (grunt) {
             'clean:build',
             'copy:build',
             'concat',
+            'string-replace',
             'ngAnnotate',
             'usemin',
             //'ngtemplates',

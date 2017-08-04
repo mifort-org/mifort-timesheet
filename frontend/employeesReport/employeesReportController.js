@@ -16,11 +16,11 @@
 
 'use strict';
 
-angular.module('mifortTimesheet.employeesReport', ['ngRoute'])
+angular.module('mifortTimesheet.employeesReport', ['ngRoute', 'constants'])
 
-    .config(['$routeProvider', function($routeProvider) {
+    .config(['$routeProvider', 'appVersion' , function($routeProvider, appVersion) {
         $routeProvider.when('/employees-report', {
-            templateUrl: 'employeesReport/employeesReport.html',
+            templateUrl: 'employeesReport/employeesReport.html?rel=' + appVersion,
             controller: 'employeesReportController'
         });
     }])

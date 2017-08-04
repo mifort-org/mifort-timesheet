@@ -17,15 +17,15 @@
 'use strict';
 
 angular.module('mifortTimesheet')
-    .directive('dropdownFilterPdf', function() {
+    .directive('dropdownFilterPdf', function(appVersion) {
         return {
             scope: true,
             link: function(scope) {
                 scope.popoverOpened = false;
                 scope.dynamicPopoverPdf = {
-                    templateUrl: 'components/dropdownFilterPdf/PdfPopoverTemplate.html'
+                    templateUrl: 'components/dropdownFilterPdf/PdfPopoverTemplate.html?rel=' + appVersion
                 };
             },
-            templateUrl: 'components/dropdownFilterPdf/dropdownFilterPdf.html'
+            templateUrl: 'components/dropdownFilterPdf/dropdownFilterPdf.html?rel=' + appVersion
         };
     });

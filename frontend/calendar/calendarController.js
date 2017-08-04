@@ -16,22 +16,22 @@
 
 'use strict';
 
-angular.module('mifortTimesheet.calendar', ['ngRoute'])
+angular.module('mifortTimesheet.calendar', ['ngRoute', 'constants'])
 
-    .config(['$routeProvider', function($routeProvider) {
+    .config(['$routeProvider', 'appVersion', function($routeProvider, appVersion) {
         $routeProvider.when('/calendar', {
-            templateUrl: 'calendar/calendarView.html',
+            templateUrl: 'calendar/calendarView.html?rel=' + appVersion,
             controller: 'calendarController'
         });
     }])
 
-    .controller('calendarController', ['$scope', '$filter', 'calendarService', 'moment', 'preferences', 'Notification', '$anchorScroll', '$location',
-        function($scope, $filter, calendarService, moment, preferences, Notification, $anchorScroll, $location) {
+    .controller('calendarController', ['$scope', '$filter', 'calendarService', 'moment', 'preferences', 'Notification', '$anchorScroll', '$location', 'appVersion',
+        function($scope, $filter, calendarService, moment, preferences, Notification, $anchorScroll, $location, appVersion) {
             $scope.daySettingsPopover = {
-                templateUrl: 'daySettimgs.html'
+                templateUrl: 'daySettimgs.html?rel=' + appVersion
             };
             $scope.customDayPopover = {
-                templateUrl: 'customDay.html'
+                templateUrl: 'customDay.html?rel=' + appVersion
             };
             $scope.periodSettings = calendarService.getPeriodSettings();
             $scope.countPeriodSettings = calendarService.getCountPeriodSettings();

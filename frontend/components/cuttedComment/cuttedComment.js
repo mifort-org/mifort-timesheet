@@ -17,7 +17,7 @@
 'use strict';
 
 angular.module('mifortTimesheet')
-    .directive('cuttedComment', function ($timeout) {
+    .directive('cuttedComment', function ($timeout, appVersion) {
         return {
             scope: true,
             link: function (scope, element, attrs) {
@@ -42,6 +42,6 @@ angular.module('mifortTimesheet')
                     });
                 });
             },
-            templateUrl: 'components/cuttedComment/cuttedComment.html'
+            templateUrl: 'components/cuttedComment/cuttedComment.html?rel=' + appVersion
         };
     });

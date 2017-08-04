@@ -17,7 +17,7 @@
 'use strict';
 
 angular.module('mifortTimesheet')
-    .directive('customDay', function() {
+    .directive('customDay', function(appVersion) {
         return {
             scope: true,
             link: function(scope, element) {
@@ -158,7 +158,7 @@ angular.module('mifortTimesheet')
                     return true;
                 };
             },
-            templateUrl: 'components/customDay/customDay.html'
+            templateUrl: 'components/customDay/customDay.html?rel=' + appVersion
 
         };
     });

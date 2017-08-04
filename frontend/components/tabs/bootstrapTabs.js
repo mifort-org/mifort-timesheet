@@ -17,7 +17,7 @@
 'use strict';
 
 angular.module('mifortTimesheet')
-    .directive('bootstrapTabs', function($location, $route, preferences) {
+    .directive('bootstrapTabs', function($location, $route, preferences, appVersion) {
         return {
             scope: true,
             link: function (scope, element, attributes) {
@@ -103,10 +103,10 @@ angular.module('mifortTimesheet')
                 var activeTemplate;
 
                 if(element.is('span')){
-                    activeTemplate = 'components/tabs/burgerMenu.html';
+                    activeTemplate = 'components/tabs/burgerMenu.html?res=' + appVersion;
                 }
                 else{
-                    activeTemplate = 'components/tabs/bootstrapTabs.html';
+                    activeTemplate = 'components/tabs/bootstrapTabs.html?res=' + appVersion;
                 }
 
                 return activeTemplate
