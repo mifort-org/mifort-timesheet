@@ -25,8 +25,8 @@
     table-layout: fixed; }
     .timesheet .table td:first-child,
     .timesheet .table th:first-child {
-      width: 170px;
-      min-width: 170px;
+      width: 185px;
+      min-width: 185px;
       padding: 4px 10px; }
     .timesheet .table th:first-child {
       min-width: 185px; }
