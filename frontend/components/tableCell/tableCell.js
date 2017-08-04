@@ -17,7 +17,7 @@
 'use strict';
 
 angular.module('mifortTimesheet')
-    .directive('tableCell', function () {
+    .directive('tableCell', function (appVersion) {
         return {
             scope: true,
             link: function (scope, element) {
@@ -67,6 +67,6 @@ angular.module('mifortTimesheet')
                     return moment(new Date(day.date)).isSame(new Date(), 'day');
                 };
             },
-            templateUrl: 'components/tableCell/tableCell.html'
+            templateUrl: 'components/tableCell/tableCell.html?rel=' + appVersion
         };
     });

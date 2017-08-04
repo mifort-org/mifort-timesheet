@@ -16,6 +16,9 @@
 
 'use strict';
 
+angular.module('constants', [])
+    .constant('appVersion', 'devVersion');
+
 angular.module('mifortTimesheet', [
     'ngRoute',
     'ui.bootstrap',
@@ -32,6 +35,7 @@ angular.module('mifortTimesheet', [
     'angular-intro',
     'angular.filter',
 
+    'constants',
     'mifortTimesheet.login',
     'mifortTimesheet.company',
     'mifortTimesheet.projects',

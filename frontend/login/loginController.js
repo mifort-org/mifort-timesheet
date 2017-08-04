@@ -15,11 +15,11 @@
  */
 
 'use strict';
-angular.module('mifortTimesheet.login', ['ngRoute'])
+angular.module('mifortTimesheet.login', ['ngRoute', 'constants'])
 
-    .config(['$routeProvider', function ($routeProvider) {
+    .config(['$routeProvider', 'appVersion', function ($routeProvider, appVersion) {
         $routeProvider.when('/login', {
-            templateUrl: 'login/loginView.html',
+            templateUrl: 'login/loginView.html?rel=' + appVersion,
             controller: 'loginController'
         });
     }])

@@ -16,11 +16,11 @@
 
 'use strict';
 
-angular.module('mifortTimesheet.report', ['ngRoute'])
+angular.module('mifortTimesheet.report', ['ngRoute', 'constants'])
 
-    .config(['$routeProvider', function ($routeProvider) {
+    .config(['$routeProvider', 'appVersion', function ($routeProvider, appVersion) {
         $routeProvider.when('/report', {
-            templateUrl: 'report/reportView.html',
+            templateUrl: 'report/reportView.html?rel=' + appVersion,
             controller: 'reportController'
         });
     }])

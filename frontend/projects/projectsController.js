@@ -16,11 +16,11 @@
 
 'use strict';
 
-angular.module('mifortTimesheet.projects', ['ngRoute'])
+angular.module('mifortTimesheet.projects', ['ngRoute', 'constants'])
 
-    .config(['$routeProvider', function ($routeProvider) {
+    .config(['$routeProvider', 'appVersion', function ($routeProvider, appVersion) {
         $routeProvider.when('/projects', {
-            templateUrl: 'projects/projectsView.html',
+            templateUrl: 'projects/projectsView.html?rel=' + appVersion,
             controller: 'projectsController'
         });
     }])

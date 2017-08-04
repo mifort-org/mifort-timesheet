@@ -17,7 +17,7 @@
 'use strict';
 
 angular.module('mifortTimesheet')
-    .directive('dropdownFilter', function() {
+    .directive('dropdownFilter', function(appVersion) {
         return {
             scope: true,
             link: function(scope, element, attrs) {
@@ -45,7 +45,7 @@ angular.module('mifortTimesheet')
 
                 scope.dynamicPopover = {
                     content: attrs.colTitle,
-                    templateUrl: 'myPopoverTemplate.html',
+                    templateUrl: 'myPopoverTemplate.html?rel=' + appVersion,
                     projectFilter: scope.getProjectFilter()
                 };
 
@@ -69,6 +69,6 @@ angular.module('mifortTimesheet')
                 };
 
             },
-            templateUrl: 'components/dropdownFilter/dropdownFilter.html'
+            templateUrl: 'components/dropdownFilter/dropdownFilter.html?rel=' + appVersion
         };
     });

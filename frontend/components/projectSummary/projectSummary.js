@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('mifortTimesheet')
-    .directive('projectSummary', function ($location, preferences, projectSummaryService) {
+    .directive('projectSummary', function ($location, preferences, projectSummaryService, appVersion) {
         return {
             scope: true,
             link: function (scope, element, attrs) {
@@ -53,7 +53,7 @@ angular.module('mifortTimesheet')
                 scope.$on('$destroy', handler);
             },
             templateUrl: function () {
-                return 'components/projectSummary/projectSummary.html'
+                return 'components/projectSummary/projectSummary.html?rel=' + appVersion
             }
         }
     });

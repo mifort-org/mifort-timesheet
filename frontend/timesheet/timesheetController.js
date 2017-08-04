@@ -16,16 +16,16 @@
 
 'use strict';
 
-angular.module('mifortTimesheet.timesheet', ['ngRoute'])
+angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
 
-    .config(['$routeProvider', function ($routeProvider) {
+    .config(['$routeProvider', 'appVersion', function ($routeProvider, appVersion) {
         $routeProvider.when('/timesheet', {
-            templateUrl: 'timesheet/timesheetView.html',
+            templateUrl: 'timesheet/timesheetView.html?rel=' + appVersion,
             controller: 'timesheetController'
         });
 
         $routeProvider.when('/timesheet/:userId', {
-            templateUrl: 'timesheet/timesheetView.html',
+            templateUrl: 'timesheet/timesheetView.html?rel=' + appVersion,
             controller: 'timesheetController'
         });
     }])

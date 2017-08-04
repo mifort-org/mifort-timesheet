@@ -17,7 +17,7 @@
 'use strict';
 
 angular.module('mifortTimesheet')
-    .directive('timeMask', function () {
+    .directive('timeMask', function (appVersion) {
         return {
             scope: true,
             link: function (scope, element, attrs) {
@@ -76,10 +76,10 @@ angular.module('mifortTimesheet')
                 var activeTemplate;
 
                 if(element.hasClass('timesheet-hours')){
-                    activeTemplate = 'components/timeMask/timeMask.html';
+                    activeTemplate = 'components/timeMask/timeMask.html?rel=' + appVersion;
                 }
                 else{
-                    activeTemplate = 'components/timeMask/workloadMask.html';
+                    activeTemplate = 'components/timeMask/workloadMask.html?rel=' + appVersion;
                 }
 
                 return activeTemplate

@@ -17,12 +17,12 @@
 'use strict';
 
 angular.module('mifortTimesheet')
-    .directive('projectRow', function() {
+    .directive('projectRow', function(appVersion) {
         return {
             scope: true,
             link: function(scope) {
 
             },
-            templateUrl: 'components/projectRow/projectRow.html'
+            templateUrl: 'components/projectRow/projectRow.html?rel=' + appVersion
         };
     });
