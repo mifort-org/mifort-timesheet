@@ -72,7 +72,7 @@ angular.module('mifortTimesheet.projects', ['ngRoute', 'constants'])
                         position: 'left'
                     }
                 ];
-
+            var newProjectIndex;
             $scope.showActiveProjects = true;
 
             $scope.projectsKeys = [
@@ -167,30 +167,20 @@ angular.module('mifortTimesheet.projects', ['ngRoute', 'constants'])
             $scope.ProjectShow = true;
 
             $scope.changeProjectName = function (project) {
-                // var counter = null;
-                // for (var i = 0; i < $scope.projects.length; i++) {
-                //     if ($scope.projects[i].name == project.name) {
-                //         counter++;
-                //         break;
-                //     }
-                // }
-                // if (counter) {
-                //     project.projectEdit = true;
-                //     Notification.error('This name is already taken');
-                // } else {
                 projectsService.saveOrCreateProject(project).success(function () {
                     Notification.success('Changes saved');
                 });
-                // }
             };
 
             $scope.addProject = function () {
-                var projectNumber = $scope.projects.length + 1;
+                if (!newProjectIndex) {
+                    newProjectIndex = $scope.projects.length;
+                }
+                newProjectIndex++;
                 var newProject = {
-                    name: 'New Project' + ' ' + projectNumber,
+                    name: 'New Project' + ' ' + newProjectIndex,
                     companyId: companyId
                 };
-
                 $scope.showActiveProjects = true;
 
                 projectsService.saveOrCreateProject(newProject).success(function (project) {
@@ -198,15 +188,16 @@ angular.module('mifortTimesheet.projects', ['ngRoute', 'constants'])
                     $scope.projects.unshift(project);
                     Notification.success('Changes saved');
                 });
+
                 document.getElementsByClassName("main-container")[0].scrollTop = "0";
             };
 
             $scope.saveAssignment = function (project, assignedEmployee, employee, previousEmployeeId, assignmentIndex) {
-                assignedEmployee.assignments.forEach(function(assigned){
-                    if(assigned.workload[0] == '.'){
+                assignedEmployee.assignments.forEach(function (assigned) {
+                    if (assigned.workload[0] == '.') {
                         assigned.workload = '0' + assigned.workload;
                     }
-                    if(assigned.workload > 8 && assigned.workload <= 24){
+                    if (assigned.workload > 8 && assigned.workload <= 24) {
                         Notification.warning('You have filled in more then 8h per assignment for an employee');
                     }
                 });
@@ -215,22 +206,22 @@ angular.module('mifortTimesheet.projects', ['ngRoute', 'constants'])
                     assignWorkload = 0;
 
                 var assignments = [];
-                $scope.projects.forEach(function(project){
-                    project.assignedEmployers.forEach(function(assignProject){
-                        if (assignProject._id == assignId){
+                $scope.projects.forEach(function (project) {
+                    project.assignedEmployers.forEach(function (assignProject) {
+                        if (assignProject._id == assignId) {
                             assignments = assignments.concat(assignProject.assignments);
                         }
                     })
                 });
 
-                assignments.forEach(function(assign){
+                assignments.forEach(function (assign) {
                     assignWorkload += parseInt(assign.workload);
                 });
 
-                if(assignWorkload > 16 && assignWorkload <= 24){
+                if (assignWorkload > 16 && assignWorkload <= 24) {
                     Notification.warning('You have filled in more then 16h per day for an employee');
                 }
-                if(assignWorkload > 24){
+                if (assignWorkload > 24) {
                     Notification.error('You are trying to fill in more then 24h per day for an employee');
                 }
                 else {
@@ -374,9 +365,9 @@ angular.module('mifortTimesheet.projects', ['ngRoute', 'constants'])
                 }
             };
 
-            $scope.checkProjectNameLength = function(projectName){
+            $scope.checkProjectNameLength = function (projectName) {
                 var name = projectName;
-                if(projectName && typeof projectName == 'string' && projectName.length > 140){
+                if (projectName && typeof projectName == 'string' && projectName.length > 140) {
                     name = projectName.slice(0, 140);
                 }
                 return name;
