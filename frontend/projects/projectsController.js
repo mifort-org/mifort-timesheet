@@ -198,7 +198,10 @@ angular.module('mifortTimesheet.projects', ['ngRoute', 'constants'])
                         assigned.workload = '0' + assigned.workload;
                     }
                     if (assigned.workload > 8 && assigned.workload <= 24) {
-                        Notification.warning('You have filled in more then 8h per assignment for an employee');
+                        Notification.warning({
+                            message: 'You have filled in more then 8h per assignment for an employee',
+                            delay: 6000
+                        });
                     }
                 });
 
@@ -219,10 +222,16 @@ angular.module('mifortTimesheet.projects', ['ngRoute', 'constants'])
                 });
 
                 if (assignWorkload > 16 && assignWorkload <= 24) {
-                    Notification.warning('You have filled in more then 16h per day for an employee');
+                    Notification.warning({
+                        message: 'You have filled in more then 16h per day for an employee',
+                        delay: 6000
+                    });
                 }
                 if (assignWorkload > 24) {
-                    Notification.error('You are trying to fill in more then 24h per day for an employee');
+                    Notification.error({
+                        message:'You are trying to fill in more then 24h per day for an employee',
+                        delay: 6000
+                    });
                 }
                 else {
                     projectsService.saveAssignment(project._id, assignedEmployee).success(function () {
