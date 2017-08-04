@@ -35,7 +35,7 @@
     .table{
         font-size: 1.8em;
         border-color: #e0e4ec;
-
+        table-layout: fixed;
         td,
         th{
             &:first-child{
@@ -73,6 +73,8 @@
 
             .blank-dropdown > a{
                 padding: 14px 19px;
+                overflow: hidden;
+                text-overflow: ellipsis;
             }
         }
 
