@@ -50,7 +50,7 @@ angular.module('mifortTimesheet.timesheet').factory('projectSummaryService',
             if (!project > 0) {
                 return 0;
             }
-            return project.workload * daysCount;
+            return Math.round(project.workload * daysCount * 100)/100;
         };
 
         self.getProjectsWithTime = function (projects, logs) {
