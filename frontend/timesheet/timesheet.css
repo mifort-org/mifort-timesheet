@@ -219,7 +219,7 @@
   font-weight: 500; }
 
 .table th.log-date-header:first-child {
-  min-width: 221px; }
+  width: 221px; }
 
 .wrapper-timesheet-controls .total-logged {
   padding: 5px 0 0 166px; }
