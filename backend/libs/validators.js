@@ -378,7 +378,8 @@ function isFilters(filters) {
             if(filter.field === 'date') {
                 return validator.isDate(filter.start)
                     && validator.isDate(filter.end);
-            } else if(filter.field === 'userId'){
+            }
+            if(filter.field === 'userId'){
                 if(Array.isArray(filter.value)){
                     return filter.value.every(function(val){
                             return validator.isMongoId(val);
@@ -386,9 +387,11 @@ function isFilters(filters) {
                 } else {
                     return false;
                 }
-            } else {
-                return Array.isArray(filter.value);
             }
+            if (filter.field === 'time') {
+                return isObject(filter.value);
+            }
+            return Array.isArray(filter.value);
         });
     }
 
@@ -397,6 +400,10 @@ function isFilters(filters) {
 
 function isString(obj) {
     return typeof obj === 'string';
+}
+
+function isObject(obj) {
+    return typeof obj === 'object';
 }
 
 function isGroupBy(values) {

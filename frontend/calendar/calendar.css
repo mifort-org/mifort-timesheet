@@ -104,7 +104,8 @@
       text-align: left;
       cursor: pointer;
       overflow: hidden;
-      text-overflow: ellipsis; }
+      text-overflow: ellipsis;
+      white-space: nowrap; }
     .custom-days-wrapper dl dt {
       margin-top: 21.5px;
       margin-bottom: 4px;

@@ -3,9 +3,9 @@
 [![david-dm](https://david-dm.org/mifort-org/mifort-timesheet.svg?theme=shields.io)](https://david-dm.org/mifort-org/mifort-timesheet/)
 [![Build Status](https://travis-ci.org/dwyl/learn-travis.svg?branch=master)](https://travis-ci.org/mifort-org/mifort-timesheet)
 
-Mifort Timesheet – the full independent web application, which automate a time tracking process for any company. It's an easy way to fill/manage employee time.
+Mifort Timesheet – the full independent web application, which automates time tracking process for any company. It's an easy way to fill and manage employee's time.
 
-### Fetures & Benefits
+### Features & Benefits
 * Easy time-tracking process
 * Easy roles separation
 * Multiple Project assignments
