@@ -329,7 +329,10 @@ function convertFiltersToQuery(filters, projectIds) {
                         $in: filter.value.map(function(id) {
                             return utils.convertToMongoId(id);
                             })
-                        }
+                        };
+                    break;
+                case 'time':
+                    query.time = filter.value;
                     break;
                 default:
                     query[filter.field] = {$in: filter.value};

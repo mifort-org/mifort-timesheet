@@ -265,9 +265,14 @@ angular.module('mifortTimesheet.report', ['ngRoute', 'constants'])
             $scope.$watch('timesheetGridOptions.reportFilters', function (newValue, oldValue) {
                 if (oldValue && newValue && newValue != oldValue) {
                     //$scope.reportSettings.filters = [];
-                    var dateFilter = _.where(newValue, {field: 'date'})[0],
-                        usedFilters = $scope.reportSettings.filters || reportService.getSavedFilters(),
-                        dateFilterIndex = _.findIndex(usedFilters, {field: 'date'});
+                    var dateFilter = _.where(newValue, {field: 'date'})[0];
+                    var usedFilters = $scope.reportSettings.filters || reportService.getSavedFilters();
+                    var dateFilterIndex = _.findIndex(usedFilters, {field: 'date'});
+                    var timeFilterIndex = _.findIndex(usedFilters, {field: 'time'});
+
+                    if (timeFilterIndex === -1) {
+                        usedFilters.push({field: 'time', value: {$ne: null}});
+                    }
 
                     if (dateFilter && dateFilterIndex != -1) {
                         usedFilters[dateFilterIndex] = dateFilter;
