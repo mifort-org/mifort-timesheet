@@ -887,8 +887,10 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                         userData.readyForApprove = true;
                     }
                     if(button === "reject") {
-                        userData.readyForApprove = false;
-                        userData.Approve = false;
+                        if(userData.Approve === true || userData.readyForApprove === true){
+                            userData.readyForApprove = false;
+                            userData.Approve = false;
+                        }
                     }
                 });
                 var logsToDelete = angular.copy($scope.getLogsToDelete());
