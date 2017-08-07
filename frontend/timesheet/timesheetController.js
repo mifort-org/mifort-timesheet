@@ -499,60 +499,73 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                 if ($scope.currentPeriodIndex) {
                     $scope.currentPeriodIndex--;
 
-                    var promises = [];
-                    projects.forEach(function (project) {
-                        project.lastPeriodRecords = project.periods[lastPeriod].timesheet.length;
-
-                        if (!project.periods[$scope.currentPeriodIndex].timesheet) {
-                            promises.push(initPeriod(project, $scope.currentPeriodIndex));
-                        }
-                    });
-
-                    $q.all(promises).then(function () {
-
-                        $scope.addLogs($scope.currentPeriodIndex);
-
-                        $scope.currentPeriodLogsLoaded();
-
-                        $scope.filteredLogs = $scope.getFilteredDates();
-
-                        blockTable();
-
-                    });
+                    loadLogs(projects, lastPeriod, $scope.currentPeriodIndex);
                 }
 
                 preferences.set('currentPeriodIndex', $scope.currentPeriodIndex);
             };
+
             $scope.showNextPeriod = function (projects) {
                 delete localStorage["redirectDate"];
                 var lastPeriod = $scope.currentPeriodIndex;
+
                 if ($scope.currentPeriodIndex < projects[0].periods.length - 1) {
                     $scope.currentPeriodIndex++;
 
-                    var promises = [];
-                    projects.forEach(function (project) {
-                        project.lastPeriodRecords = project.periods[lastPeriod].timesheet.length;
-
-                        if (!project.periods[$scope.currentPeriodIndex].timesheet) {
-                            promises.push(initPeriod(project, $scope.currentPeriodIndex));
-                        }
-                    });
-
-                    $q.all(promises).then(function () {
-
-                        $scope.addLogs($scope.currentPeriodIndex);
-
-                        $scope.currentPeriodLogsLoaded();
-
-                        $scope.filteredLogs = $scope.getFilteredDates();
-
-                        blockTable();
-
-                    });
+                    loadLogs(projects, lastPeriod, $scope.currentPeriodIndex);
                 }
 
                 preferences.set('currentPeriodIndex', $scope.currentPeriodIndex);
             };
+
+            $scope.showCurrentPeriod = function (projects) {
+                delete localStorage["redirectDate"];
+                var today = moment(),
+                    lastPeriod = $scope.currentPeriodIndex;
+
+                if (!$scope.currentDatePeriod) {
+                    projects[0].periods.some(function (period, index) {
+                        var momentStart = moment(new Date(period.start)),
+                            momentEnd = moment(new Date(period.end));
+
+                        if (today.isBetween(momentStart, momentEnd) || today.isSame(momentStart, 'day') || today.isSame(momentEnd, 'day')) {
+                            $scope.currentDatePeriod = index;
+
+                            return true;
+                        }
+                    });
+                }
+
+                var isCurrentExist = $scope.currentDatePeriod !== undefined;
+
+                if(isCurrentExist) {
+                    $scope.currentPeriodIndex = $scope.currentDatePeriod;
+                    loadLogs(projects, lastPeriod, $scope.currentDatePeriod);
+                }
+
+                preferences.set('currentPeriodIndex', $scope.currentPeriodIndex);
+            };
+
+            function loadLogs(projects, lastPeriod, targetPeriod) {
+                var promises = [];
+                projects.forEach(function (project) {
+                    project.lastPeriodRecords = project.periods[lastPeriod].timesheet.length;
+
+                    if (!project.periods[targetPeriod].timesheet) {
+                        promises.push(initPeriod(project, targetPeriod));
+                    }
+                });
+
+                $q.all(promises).then(function () {
+                    $scope.addLogs(targetPeriod);
+
+                    $scope.currentPeriodLogsLoaded();
+
+                    $scope.filteredLogs = $scope.getFilteredDates();
+
+                    blockTable();
+                });
+            }
 
             $scope.getCurrentLog = function (logs) {
                 return _.findWhere(logs, {index: $scope.currentPeriodIndex});

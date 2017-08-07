@@ -210,6 +210,9 @@
   content: ' ';
   border-left: 3px #3eb5f1 solid; }
 
+.current-period-button {
+  margin-bottom: 15px; }
+
 .timesheet-total {
   padding-left: 15px;
   color: #666;
