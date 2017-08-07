@@ -5906,6 +5906,10 @@ body {
     border-left: 6px solid #74b65f; }
     body .ui-notification.success, body .ui-notification.error {
       color: #727272; }
+    body .ui-notification.minor-warning {
+      border-left-color: #ffff00;
+      background: #fff;
+      color: #000; }
     body .ui-notification.success {
       background: #fff url("../images/icons.png") 20px -1386px no-repeat; }
     body .ui-notification.error {
