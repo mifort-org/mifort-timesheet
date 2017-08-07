@@ -33,7 +33,6 @@ var REPORT_COLUMNS = {
     date: 'Date',
     userName: 'User',
     projectName: 'Project',
-    role: 'Role',
     time: 'Time',
     comment: 'Comment'
 };
