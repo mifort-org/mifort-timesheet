@@ -98,6 +98,12 @@ body{
             color: #727272;
         }
 
+        &.minor-warning{
+            border-left-color: #ffff00;
+            background: #fff;
+            color: #000;
+        }
+
         &.success{
             background: #fff url('../images/icons.png') 20px -1386px no-repeat;
         }

@@ -17,9 +17,8 @@
 'use strict';
 
 angular.module('mifortTimesheet')
-    .directive('timeMask', function (appVersion) {
+    .directive('timeMask', function (appVersion, Notification) {
         return {
-            scope: true,
             link: function (scope, element, attrs) {
                 var input = element.find('input');
                 var timePlaceholder = '';
@@ -43,6 +42,40 @@ angular.module('mifortTimesheet')
                         }
                     }
                 });
+
+                scope.onChangeDayHours = function(){
+                    var currentDate = scope.$parent.log.date,
+                        dailyHours = scope.$parent.$parent.filteredLogs,
+                        hour = 0;
+
+                    dailyHours.forEach(function (dailyHour){
+                        if (dailyHour.date == currentDate) {
+                            hour += +dailyHour.time;
+                        }
+                    });
+
+                    if (hour > 8 && hour <= 16){
+                        Notification({
+                                message: 'You have filled in more then 8h per day',
+                                delay: 4000
+                            }, 'minor-warning'
+                        );
+                    }
+                    else if (hour > 16 && hour <= 24){
+                        Notification({
+                                message: 'You have filled in more then 16h per day',
+                                delay: 4000
+                            }, 'warning'
+                        );
+                    }
+                    else if (hour > 24){
+                        Notification({
+                                message: 'You have filled in more then 24h per day',
+                                delay: 4000
+                            }, 'error'
+                        );
+                    }
+                };
 
                 input.on('focus', function(){
                     var time = $(this).val();
