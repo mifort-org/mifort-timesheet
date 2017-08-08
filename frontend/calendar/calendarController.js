@@ -38,6 +38,7 @@ angular.module('mifortTimesheet.calendar', ['ngRoute', 'constants'])
             $scope.weekDays = calendarService.getWeekDays();
             calendarService.getCompany(preferences.get('user').companyId).success(function (data) {
                 $scope.company = data;
+                $scope.company.emails = [];
                 if (data.periodSetting && data.countPeriodSetting) {
                     $scope.countPeriodSetting = data.countPeriodSetting;
                     $scope.periodSetting = data.periodSetting;
