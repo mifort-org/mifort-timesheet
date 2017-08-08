@@ -127,10 +127,16 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                     $scope.readonly = true;
                     $scope.rejectColor = false;
                     $scope.approveColor = false;
+                    $scope.buttonHide = true;
+                    $scope.dropHide = true;
+                    $scope.arrowHide = true;
                 } else {
                     $scope.readonly = false;
                     $scope.approveColor = false;
                     $scope.rejectColor = true;
+                    $scope.buttonHide = false;
+                    $scope.dropHide = false;
+                    $scope.arrowHide = false;
                 }
                 if(reject === true){
                     $scope.readonly = false;
@@ -144,6 +150,9 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                     $scope.readonly = true;
                     $scope.approveColor = true;
                     $scope.rejectColor = false;
+                    $scope.buttonHide = true;
+                    $scope.dropHide = true;
+                    $scope.arrowHide = true;
                 }
             };
             $scope.init = function () {
@@ -431,28 +440,32 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
             };
 
             $scope.addLog = function (log) {
-                var projectId = $scope.getDefaultProject()._id;
-                var project = $scope.getProjectById(projectId);
-                var newRow = angular.copy(project.template),
-                    currentPeriod = $scope.getCurrentLogData(),
-                    dayPeriodIndex = _.findIndex(currentPeriod, {date: log.date});
+                var logCheck = localStorage.getItem("BlockAddLog");
+                console.log(logCheck);
+                if(log.readyForApprove != true){
+                    var projectId = $scope.getDefaultProject()._id;
+                    var project = $scope.getProjectById(projectId);
+                    var newRow = angular.copy(project.template),
+                        currentPeriod = $scope.getCurrentLogData(),
+                        dayPeriodIndex = _.findIndex(currentPeriod, {date: log.date});
 
-                newRow.date = log.date;
-                newRow.userName = log.userName;
-                newRow.color = log.color;
-                newRow.placeholder = log.placeholder;
-                newRow.timePlaceholder = getTimePlaceholder(project);
-                newRow.role = log.role;
-                newRow.isFirstDayRecord = false;
-                newRow.position = $scope.calcNewLogPosition(currentPeriod, log.date);
+                    newRow.date = log.date;
+                    newRow.userName = log.userName;
+                    newRow.color = log.color;
+                    newRow.placeholder = log.placeholder;
+                    newRow.timePlaceholder = getTimePlaceholder(project);
+                    newRow.role = log.role;
+                    newRow.isFirstDayRecord = false;
+                    newRow.position = $scope.calcNewLogPosition(currentPeriod, log.date);
 
-                $scope.setDefaultProject(newRow);
+                    $scope.setDefaultProject(newRow);
 
-                newRow.hasLog = true;
-                newRow.isCreatedManually = true;
-                currentPeriod.splice(dayPeriodIndex + $scope.getSameDateDays(currentPeriod, log.date).length, 0, newRow);
+                    newRow.hasLog = true;
+                    newRow.isCreatedManually = true;
+                    currentPeriod.splice(dayPeriodIndex + $scope.getSameDateDays(currentPeriod, log.date).length, 0, newRow);
 
-                $scope.filteredLogs = $scope.getFilteredDates();
+                    $scope.filteredLogs = $scope.getFilteredDates();
+                }
             };
 
             $scope.removeRow = function (log, project, periodIndex) {
@@ -900,16 +913,26 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                         $scope.readonly = true;
                         $scope.approveColor = false;
                         $scope.rejectColor = false;
+                        $scope.buttonHide = true;
+                        $scope.dropHide = true;
+                        $scope.arrowHide = true;
+                        localStorage.setItem("BlockAddLog",true);
                     }
                     if(button === "approve") {
                         $scope.readonly = true;
                         $scope.approveColor = true;
                         $scope.rejectColor = false;
+                        $scope.dropHide = true;
+                        $scope.arrowHide = true;
+                        localStorage.setItem("BlockAddLog",true);
                     }
                     if(button === "reject") {
                         $scope.readonly = false;
                         $scope.approveColor = false;
                         $scope.rejectColor = true;
+                        $scope.dropHide = false;
+                        $scope.arrowHide = false;
+                        localStorage.setItem("BlockAddLog",false);
                     }
                 }).error(function () {
                     Notification.error('Changes not saved');
