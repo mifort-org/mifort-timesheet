@@ -311,7 +311,6 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                     updateTimelog();
                 }, true);
             }
-
             function updateTimelog() {
                 var newLogs = $scope.getCurrentLog($scope.logs),
                     oldLogs = $scope.getCurrentLog($scope.lastSavedLogs);
@@ -467,7 +466,6 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                     $scope.filteredLogs = $scope.getFilteredDates();
                 }
             };
-
             $scope.removeRow = function (log, project, periodIndex) {
                 var dates = $scope.getCurrentLogData();
 
