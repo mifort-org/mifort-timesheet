@@ -45,6 +45,22 @@ angular.module('mifortTimesheet.company', ['ngRoute', 'constants'])
                 'Employee'
             ];
 
+            function getRedirectPath() {
+                if ($location.path() == '/company' && !$scope.user.companyId) {
+                    return '/company-create';
+                }
+                if ($location.path() == '/company-create' && $scope.user.companyId) {
+                    return '/company';
+                }
+                return false;
+            }
+
+            var redirectPath = getRedirectPath();
+
+            if (redirectPath) {
+                $location.path(redirectPath);
+            }
+
             if ($location.path() == '/company') {
                 companyService.getCompany($scope.user.companyId).success(function (company) {
                     $scope.company = company;

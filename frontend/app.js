@@ -219,12 +219,16 @@ angular.module('mifortTimesheet', [
                         $location.path('login');
                     }
 
+                    if(rejection.status == 403){
+                        $location.path('timesheet');
+                    }
+
                    $rootScope.$broadcast('handleError', rejection.status);
 
                     defer.reject(rejection);
 
                     return defer.promise;
                 }
-            }
+            };
         }
     ]);
