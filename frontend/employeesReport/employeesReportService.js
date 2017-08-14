@@ -17,16 +17,16 @@
 'use strict';
 
 angular.module('mifortTimesheet.employeesReport').factory('employeesReportService',
-    ['$http', function ($http,$scope) {
+    ['$http', 'preferences', function ($http, preferences, $scope) {
         var self = this,
             saveFilters = [];
         self.getSavedFilters = function () {
-            return  saveFilters
+            return  saveFilters;
         };
         self.saveSavedFilters = function (filters) {
             saveFilters  = filters;
         };
-        self.name = localStorage.getItem('workHours');
+        self.name = preferences.get('workHours');
         self.getFilters = function (companyId) {
             return $http.get('api/v1/report/filters/' + companyId);
         };

@@ -159,19 +159,20 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                 }
             }
             $scope.init = function () {
-                if(localStorage["redirectDate"] && !moment(localStorage["redirectDate"], '"MM/DD/YYYY"', true).isValid()) {
-                    delete localStorage["redirectDate"];
+                var savedRedirectDate = preferences.get("redirectDate");
+                if(savedRedirectDate && !moment(savedRedirectDate, '"MM/DD/YYYY"', true).isValid()) {
+                    preferences.remove("redirectDate");
                 }
                 var promises = [];
                 $scope.projects.forEach(function (project) {
                     var today = moment();
-                    if(localStorage["redirectDate"]){
-                        var redirectDate = JSON.parse(localStorage["redirectDate"]);
+                    if(savedRedirectDate){
+                        var redirectDate = JSON.parse(savedRedirectDate);
                         project.periods.forEach(function (v, i, arr) {
                             if(v.start === redirectDate){
-                                localStorage['currentPeriodIndex']=i;
+                                preferences.set("currentPeriodIndex", i);
                             }
-                        })
+                        });
                     }
                     //scroll into cuttent week
                     project.periods.forEach(function (period, periodIndex) {
@@ -493,7 +494,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
             };
 
             $scope.showPreviousPeriod = function (projects) {
-                delete localStorage["redirectDate"];
+                preferences.remove("redirectDate");
                 var lastPeriod = $scope.currentPeriodIndex;
 
                 if ($scope.currentPeriodIndex) {
@@ -506,7 +507,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
             };
 
             $scope.showNextPeriod = function (projects) {
-                delete localStorage["redirectDate"];
+                preferences.remove("redirectDate");
                 var lastPeriod = $scope.currentPeriodIndex;
 
                 if ($scope.currentPeriodIndex < projects[0].periods.length - 1) {
@@ -519,7 +520,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
             };
 
             $scope.showCurrentPeriod = function (projects) {
-                delete localStorage["redirectDate"];
+                preferences.remove("redirectDate");
                 var today = moment(),
                     lastPeriod = $scope.currentPeriodIndex;
 
@@ -616,7 +617,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                 var filteredLogs = $scope.getFilteredLogs(data);
                 var startDate = moment(new Date($scope.projects[0].periods[$scope.currentPeriodIndex].start)),
                     endDate = moment(new Date($scope.projects[0].periods[$scope.currentPeriodIndex].end));
-                if (localStorage["redirectDate"]) {
+                if (preferences.get("redirectDate")) {
                     var endRedirectDate = $scope.startRedirectDate.split("/");
                     endRedirectDate[1] = String(Number(endRedirectDate[1])+6);
                     endRedirectDate = endRedirectDate.join("/");
@@ -878,10 +879,11 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                         periodStart = periodStart.format("DD MMM");
                     }
                     periodEnd = periodEnd.format("DD MMM");
-                    if (localStorage["redirectDate"]){
-                        var startRedirectDate = JSON.parse(localStorage["redirectDate"]).slice(3,5);
-                        $scope.startRedirectDate = JSON.parse(localStorage["redirectDate"]);
-                        var monthIndex = Number(JSON.parse(localStorage["redirectDate"]).slice(0,2));
+                    var savedRedirectDate = preferences.get("redirectDate");
+                    if (savedRedirectDate){
+                        var startRedirectDate = JSON.parse(savedRedirectDate).slice(3,5);
+                        $scope.startRedirectDate = JSON.parse(savedRedirectDate);
+                        var monthIndex = Number(JSON.parse(savedRedirectDate).slice(0,2));
                         var monthName = $scope.dateMonth[monthIndex-1];
                         var endRedirectDate = Number(startRedirectDate) + 6;
                         if (endRedirectDate < 10){
@@ -892,7 +894,6 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                     } else {
                         return periodStart + ' - ' + periodEnd;
                     }
-
                 }
                 else {
                     return '';

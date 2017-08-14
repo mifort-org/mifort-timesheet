@@ -123,12 +123,12 @@ angular.module('mifortTimesheet.report', ['ngRoute', 'constants'])
                 var nameExist = false;
                 for (var i in key_name) {
                     var k = key_name[i];
-                    if (localStorage[k]) {
-                        var self = JSON.parse(localStorage[k]);
+                    var savedKeyFilter = preferences.get(k);
+                    if (savedKeyFilter) {
                         var reg = /filtered/;
-                        for (var l in self) {
+                        for (var l in savedKeyFilter) {
                             if (l.search(reg) != -1) {
-                                if (self[l] === true) {
+                                if (savedKeyFilter[l] === true) {
                                     nameExist = true;
                                 }
                             }
@@ -162,7 +162,7 @@ angular.module('mifortTimesheet.report', ['ngRoute', 'constants'])
                     }
                     id = target.id;
                     data_filter[id] = target.checked;
-                    localStorage.setItem(name, JSON.stringify(data_filter));
+                    preferences.set(name, data_filter);
                     // document.getElementsByClassName(target.tagName);
                 }
                 if (target.className === "report-filter" || target.className === "report-filter active") {
@@ -170,8 +170,8 @@ angular.module('mifortTimesheet.report', ['ngRoute', 'constants'])
                     var parent = target.parentNode.parentNode.parentNode.parentNode;
                     var key = $(parent).find('.header-area.sortable')[0].children[1].firstElementChild.innerHTML;
                     var value_filter = {};
-                    if (localStorage[key]) {
-                        value_filter = JSON.parse(localStorage[key]);
+                    if (preferences.get(key)) {
+                        value_filter = preferences.get(key);
                     }
 
                     setTimeout(function () {
@@ -477,8 +477,8 @@ angular.module('mifortTimesheet.report', ['ngRoute', 'constants'])
                     user = _.find(usersFilter.value, function (filterValue) {
                         return filterValue.name.displayName == userName;
                     });
-
-                $scope.locations = localStorage.setItem('location', 'Report');
+                preferences.set('location', 'Report');
+                $scope.locations = preferences.get('location');
                 $location.path('timesheet/' + user.name._id);
                 // window.location.reload();
 

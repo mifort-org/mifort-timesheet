@@ -110,7 +110,8 @@ angular.module('mifortTimesheet.employees', ['ngRoute', 'constants'])
             };
 
             $scope.editEmployeeTimesheet = function(userId) {
-                $scope.locations = localStorage.setItem('location','Employees');
+                preferences.set('location','Employees');
+                $scope.locations = preferences.get('location');
                 $location.path('timesheet/' + userId);
                 // window.location.reload();
             };

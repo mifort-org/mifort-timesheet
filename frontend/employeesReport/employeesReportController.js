@@ -175,7 +175,7 @@ angular.module('mifortTimesheet.employeesReport', ['ngRoute', 'constants'])
                     var dateFilter = _.where(newValue, {field: 'date'})[0],
                         usedFilters = $scope.reportSettings.filters || employeesReportService.getSavedFilters(),
                         dateFilterIndex = _.findIndex(usedFilters, {field: 'date'});
-                    localStorage["redirectDate"] = JSON.stringify(dateFilter.start);
+                    preferences.set("redirectDate", dateFilter.start);
                     if(dateFilter && dateFilterIndex != -1){
                         usedFilters[dateFilterIndex] = dateFilter;
                     }
@@ -387,7 +387,8 @@ angular.module('mifortTimesheet.employeesReport', ['ngRoute', 'constants'])
                         return filterValue.name.displayName == userName;
                     });
 
-                $scope.locations = localStorage.setItem('location','Report');
+                preferences.set('location','Report');
+                $scope.locations = preferences.get('location');
                 $location.path('timesheet/' + user.name._id);
                 // window.location.reload();
 
