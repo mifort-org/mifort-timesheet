@@ -5986,7 +5986,6 @@ input[type=number]::-webkit-outer-spin-button {
   position: relative;
   float: left;
   width: calc(100% - 250px);
-  height: calc(100% - 100px);
   min-height: 295px;
   padding: 44px 55px 70px 44px;
   background: #f5f7f9;
@@ -5997,7 +5996,6 @@ input[type=number]::-webkit-outer-spin-button {
 @media screen and (max-width: 1024px) {
   .main-container {
     width: calc(100% - 150px);
-    height: calc(100% - 75px);
     padding: 30px 25px 30px 20px; } }
 @media screen and (max-width: 850px) {
   .main-container {

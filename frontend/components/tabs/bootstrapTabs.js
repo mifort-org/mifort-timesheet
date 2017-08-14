@@ -17,7 +17,7 @@
 'use strict';
 
 angular.module('mifortTimesheet')
-    .directive('bootstrapTabs', function($location, $route, preferences, appVersion) {
+    .directive('bootstrapTabs', function($location, $route, preferences, appVersion, $window, $document, $timeout) {
         return {
             scope: true,
             link: function (scope, element, attributes) {
@@ -98,6 +98,21 @@ angular.module('mifortTimesheet')
                         }
                     });
                 }
+
+                var controlsHeight;
+                var tabsHeight;
+                $timeout(function() {
+                    controlsHeight = $document.find('.main-controls')[0].offsetHeight;
+                    tabsHeight = $document.find('.main-tabset')[0].offsetHeight;
+                });
+
+                angular.element($window).bind("scroll", function() {
+                    if (this.pageYOffset >= (controlsHeight + tabsHeight)) {
+                        element.addClass('fixed-projects');
+                    } else {
+                        element.removeClass('fixed-projects');
+                    }
+                });
             },
             templateUrl: function (element) {
                 var activeTemplate;

@@ -33,8 +33,16 @@
   float: left;
   clear: both; }
 
+.fixed-projects .project-summary {
+  position: fixed;
+  top: 0;
+  width: 250px; }
+
 @media screen and (max-width: 1024px) {
   .main-tabs {
+    width: 150px; }
+
+  .fixed-projects .project-summary {
     width: 150px; } }
 @media screen and (max-width: 850px) {
   .main-tabs {
