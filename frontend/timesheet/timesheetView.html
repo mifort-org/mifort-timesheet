@@ -17,7 +17,11 @@
 <div timesheet-intro></div>
 
 <button ng-click="showCurrentPeriod(projects)" class="primary-button current-period-button">Current period</button>
-
+<button ng-if="(userRole === 'manager' || userRole === 'owner') && viewUser"
+        ng-click="backTo()"
+        class="primary-button current-period-button">
+    Back to {{locations}}
+</button>
 <div class="timesheet collapse-wrapper timesheet-total clearfix" ng-if="customUserId">
     <b>Timesheet of {{customUserName}}</b>
 </div>
@@ -120,13 +124,6 @@
 <div class="timesheet collapse-wrapper no-assignments" ng-show="!projects.length && noAssignments">You are not assigned
     to any project
 </div>
-
-<div class="back-to" ng-if="(userRole === 'manager' || userRole === 'owner') && viewUser">
-    <a href="" ng-click="backTo()">
-        Back to {{locations}}
-    </a>
-</div>
-
 
 <script type="text/ng-template" id="myPopoverTemplate">
     <div>{{dynamicPopover.content}}</div>
