@@ -150,8 +150,8 @@ module.exports = function (grunt) {
                     'frontend/employees/employeesController.js',
                     'frontend/employees/employeesService.js',
                     'frontend/employees/confirmDeleteModal/confirmDeleteModal.js',
-                    'frontend/employees/employeesReportController.js',
-                    'frontend/employees/employeesReportService.js'
+                    'frontend/employeesReport/employeesReportController.js',
+                    'frontend/employeesReport/employeesReportService.js'
                 ],
                 dest: 'dist/scripts/scripts.js'
             },
