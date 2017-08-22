@@ -1,4 +1,4 @@
-#Mifort Timesheet
+# Mifort Timesheet
 
 [![david-dm](https://david-dm.org/mifort-org/mifort-timesheet.svg?theme=shields.io)](https://david-dm.org/mifort-org/mifort-timesheet/)
 [![Build Status](https://travis-ci.org/dwyl/learn-travis.svg?branch=master)](https://travis-ci.org/mifort-org/mifort-timesheet)
