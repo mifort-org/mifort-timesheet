@@ -74,7 +74,7 @@ angular.module('mifortTimesheet.calendar', ['ngRoute', 'constants'])
                 $scope.splittedCalendar = [];
 
                 var startDate = moment(new Date($scope.company.periods[0].start)),
-                    endDate = moment(new Date($scope.company.periods[$scope.company.periods.length - 1].end)),
+                    endDate = moment(new Date($scope.company.periods[$scope.company.periods.length - 1].end)).endOf('month'),
                     daysToGenerate = endDate.diff(startDate, 'days') + 1;
 
                 for(var i = 0; i < daysToGenerate; i++){
@@ -444,7 +444,7 @@ angular.module('mifortTimesheet.calendar', ['ngRoute', 'constants'])
 
                         $scope.company.periods.push({
                             start: nextPeriodStart.format('MM/DD/YYYY'),
-                            end: nextPeriodStart.add(($scope.countPeriodSetting * 7) - 1, 'days').format('MM/DD/YYYY')
+                            end: nextPeriodStart.add(($scope.countPeriodSetting * 7) - 1, 'days').endOf('month').format('MM/DD/YYYY')
                         });
                     }
                 }
@@ -455,7 +455,7 @@ angular.module('mifortTimesheet.calendar', ['ngRoute', 'constants'])
 
                         $scope.company.periods.push({
                             start: nextPeriodStart.format('MM/DD/YYYY'),
-                            end: nextPeriodStart.add($scope.countPeriodSetting, 'months').format('MM/DD/YYYY')
+                            end: nextPeriodStart.add($scope.countPeriodSetting, 'months').endOf('month').format('MM/DD/YYYY')
                         });
                     }
                 }
