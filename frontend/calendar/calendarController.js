@@ -259,14 +259,14 @@ angular.module('mifortTimesheet.calendar', ['ngRoute', 'constants'])
 
             //var daysYear = $scope.calendar;
 
-            function resetPeriodsSplitters(){
+            /*function resetPeriodsSplitters(){
                 $scope.calendar.forEach(function (day) {
                     if (day.date) {
                         day.isPeriodStartDate = false;
                         day.isPeriodEndDate = false;
                     }
                 });
-            }
+            }*/
 
             $scope.introSteps = [
                 {
@@ -407,7 +407,7 @@ angular.module('mifortTimesheet.calendar', ['ngRoute', 'constants'])
                 });
             }, 500);
 
-            $scope.calculatePeriods = function() {
+            /*$scope.calculatePeriods = function() {
                 var firstPeriod = new Date(),
                     newPeriodStartDays = moment(new Date(firstPeriod)),
                     newPeriodStartMonths = moment(new Date(firstPeriod)).add(1, 'months');
@@ -418,7 +418,7 @@ angular.module('mifortTimesheet.calendar', ['ngRoute', 'constants'])
                 updateCalendarDaysWithPeriods();
 
                 preferences.set('currentPeriodIndex', 0);
-            };
+            };*/
 
             $scope.GenerateMoreDays = function() {
 
