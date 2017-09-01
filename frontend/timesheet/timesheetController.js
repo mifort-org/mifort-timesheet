@@ -837,7 +837,6 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
             };
             $scope.dateMonth = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
             $scope.getPeriodLabel = function (period) {
-                console.log(period);
                 if (period) {
                     var periodStart = moment(new Date(period.start)),
                         periodEnd = moment(new Date(period.end));
