@@ -391,6 +391,7 @@ angular.module('mifortTimesheet.report', ['ngRoute', 'constants'])
             };
 
             $scope.range = function (n) {
+                $scope.additionalHeight = $('.popover').height() - 75;
                 return new Array(n);
             };
 

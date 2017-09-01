@@ -60,6 +60,7 @@ angular.module('mifortTimesheet')
                 };
 
                 scope.range = function(n) {
+                    scope.additionalHeight = $('.popover').height() - 75;
                     return new Array(n);
                 };
 
