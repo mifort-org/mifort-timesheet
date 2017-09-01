@@ -372,10 +372,12 @@
 }
 
 .form-control.reject {
-    background: red;
+    border:1px solid red;
+    background: #ffffff;
 }
 .form-control.approve {
-    background: #03f21c;
+    background: #ffffff;
+    border: 1px solid #82ff00;
 }
 .buttonHide{
     display: none;

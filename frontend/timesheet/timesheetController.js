@@ -683,8 +683,6 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                     $scope.dropHide = false;
                     $scope.arrowHide = false;
                 }
-                console.log($scope.readonly,$scope.approveColor);
-                console.log(123);
             };
 
             $scope.getNotEmptyLogs = function (logs) {
@@ -839,6 +837,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
             };
             $scope.dateMonth = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
             $scope.getPeriodLabel = function (period) {
+                console.log(period);
                 if (period) {
                     var periodStart = moment(new Date(period.start)),
                         periodEnd = moment(new Date(period.end));
