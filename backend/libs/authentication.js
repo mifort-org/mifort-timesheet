@@ -57,31 +57,32 @@ passport.use(new GoogleStrategy({
     function(accessToken, refreshToken, profile, done) {
         // asynchronous verification, for effect...
         process.nextTick(function () {
-            var email = profile.emails[0].value;
-            users.findByEmail(email, function(err, user){
-                if(err) {
-                  return done(null, false);
-                } else {
-                    if(user) {
-                        user.external = profile;
-                        user.displayName = profile.displayName;
-                        users.updateExternalInfo(user, function(err, savedUser) { // asynchronous user update
-                            if(!err) {
-                                log.info('Login %s: user is updated!', user.displayName);
-                            }
-                        });
-                        return done(null, user);
-                    } else {
-                        var user = {
-                            email: email,
-                            external: profile,
-                            displayName: profile.displayName,
-                            role: constants.OWNER_ROLE
-                        };
-                        createUser(user, done);
-                    }
-                }
-            });
+          var email = profile.emails[0].value;
+          users.findAllByEmail(email, function(err, accounts){
+            if(err) {
+              return done(null, false);
+            } else {
+              if(accounts && accounts.length) {
+                  accounts.forEach(function (user) {
+                    user.external = profile;
+                    user.displayName = profile.displayName;
+                    users.updateExternalInfo(user, function(err, savedUser) { // asynchronous user update
+                      if(!err) {
+                        log.info('Login %s: user is updated!', user.displayName);
+                      }
+                    });
+                  });
+              return done(null, accounts[0]);
+              }
+              var user = {
+                email: email,
+                external: profile,
+                displayName: profile.displayName,
+                role: constants.OWNER_ROLE
+              };
+              createUser(user, done);
+            }
+          });
         });
       }
 ));

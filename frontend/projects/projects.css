@@ -80,7 +80,20 @@
         -webkit-appearance: none;
         -moz-appearance: none;
         appearance: none; }
-
+.sort{
+  height: 31px;
+  font-size: 1.6em;
+  border: none;
+  background: #fff;
+  box-shadow: 0 0 6px #999;
+  float: left;
+  margin-left: 15px;
+  outline:none;
+}
+.sort:active{
+  margin-top: 1px;
+  margin-bottom: -1px;
+}
 .add-project {
   position: fixed;
   z-index: 1;

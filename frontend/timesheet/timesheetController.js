@@ -30,8 +30,8 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
         });
     }])
 
-    .controller('timesheetController', ['$scope', 'timesheetService', 'calendarService', 'preferences', 'loginService', '$routeParams', '$timeout', 'Notification', "$q", "projectSummaryService", "$filter", '$location',
-        function ($scope, timesheetService, calendarService, preferences, loginService, $routeParams, $timeout, Notification, $q, projectSummaryService, $filter, $location) {
+    .controller('timesheetController', ['$scope', 'timesheetService', 'calendarService', 'preferences', 'loginService', '$routeParams', '$timeout', 'Notification', "$q", "projectSummaryService", "$filter", '$location', '$http', '$rootScope',
+        function ($scope, timesheetService, calendarService, preferences, loginService, $routeParams, $timeout, Notification, $q, projectSummaryService, $filter, $location, $http, $rootScope) {
             var user;
 
             $scope.projects = [];
@@ -62,14 +62,25 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                     $scope.customUserName = loggedUser.displayName;
                     user = loggedUser;
 
-                    user.assignments.forEach(function (assignment) {
-                        uniqueProjectAssignments.push(assignment.projectId);
+                    if (user.assignments && user.assignments.length) {
+                        user.assignments.forEach(function (assignment) {
+                            uniqueProjectAssignments.push(assignment.projectId);
+                        });
+                        uniqueProjectAssignments = _.uniq(uniqueProjectAssignments);
+                    }
+
+
+                    //get accounts
+                    $http.get('api/v1/user/accounts/' + user.email).success(function(accounts) {
+                      $rootScope.accounts = accounts.filter(function (acc) {
+                        return acc.companyId != user.companyId && acc.external;
+                      });
                     });
-                    uniqueProjectAssignments = _.uniq(uniqueProjectAssignments);
 
                     //get timesheets
                     if (!uniqueProjectAssignments.length) {
                         $scope.noAssignments = true;
+                        $scope.loading = false;
                     }
 
                     uniqueProjectAssignments.forEach(function (assignment, index) {
@@ -428,7 +439,15 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
                     return log.date == date;
                 });
             };
-
+            // function AddTimesheetBt() {
+            //     var add_timesheet = document.getElementsByClassName("add-timesheet");
+            //     console.log(add_timesheet.length);
+            //     for(var i; i<add_timesheet.length;i++){
+            //         add_timesheet[i].onclick=function () {
+            //             console.log(123);
+            //         }
+            //     }
+            // }
             $scope.addLog = function (log) {
                 if(!$scope.readonly){
                     if(log.readyForApprove != true){
@@ -460,7 +479,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
             $scope.removeRow = function (log, project, periodIndex) {
                 var dates = $scope.getCurrentLogData();
 
-                if (log._id) {
+                if (log._id && (log.time || log.comment)) {
                     timesheetService.removeTimesheet(log).success(function () {
                         Notification.success('Changes saved');
                     });
@@ -537,7 +556,15 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute'])
             $scope.getCurrentLog = function (logs) {
                 return _.findWhere(logs, {index: $scope.currentPeriodIndex});
             };
-
+            function maxSize() {
+                var maxSizeArr = document.getElementsByClassName("timesheet-hours");
+                for(var i=0; i< maxSizeArr.length;i++){
+                    maxSizeArr[i].setAttribute("maxlength","4");
+                }
+            }
+            setTimeout(function () {
+                maxSize();
+            },200);
             $scope.getCurrentLogData = function () {
                 var log = $scope.getCurrentLog($scope.logs);
                 return log ? log.data : [];

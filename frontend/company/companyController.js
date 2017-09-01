@@ -30,8 +30,8 @@ angular.module('mifortTimesheet.company', ['ngRoute'])
         });
     }])
 
-    .controller('companyController', ['$scope', '$location', 'companyService', 'preferences', '$rootScope', 'Notification',
-        function ($scope, $location, companyService, preferences, $rootScope, Notification) {
+    .controller('companyController', ['$scope', '$location', 'companyService', 'preferences', '$rootScope', 'Notification', '$http',
+        function ($scope, $location, companyService, preferences, $rootScope, Notification, $http) {
         $scope.user = preferences.get('user');
 
         $scope.company = {
@@ -94,7 +94,24 @@ angular.module('mifortTimesheet.company', ['ngRoute'])
                 $location.path('/calendar');
             });
         };
-
+        function DefaultCompanyName() {
+            var tab = document.getElementsByClassName("tabs-left");
+            var DefaultCompanyName = tab[0].getElementsByClassName("ng-binding");
+            DefaultCompanyName[0].innerHTML = "Company Name";
+        }
+        setTimeout(function () {
+            if(document.getElementById("step1").value.length===0){
+                DefaultCompanyName();
+            }
+        },30);
+        document.getElementById("step1").oninput = function () {
+            if(this.value.length===0){
+                DefaultCompanyName();
+            }else{
+                var text = this.value;
+                document.getElementsByClassName("tabs-left")[0].getElementsByClassName("ng-binding")[0].innerHTML = text;
+            }
+        };
         $scope.saveCompany = function () {
             companyService.saveCompany($scope.company).success(function (data) {
                 Notification.success('Changes saved');
@@ -134,6 +151,18 @@ angular.module('mifortTimesheet.company', ['ngRoute'])
             companyService.removeEmployee(employee._id).success(function() {
                 Notification.success('Changes saved');
             });
+        };
+
+        $scope.deleteCompany = function(companyId) {
+          companyService.deleteCompany(companyId).success(function(company) {
+            Notification.success('Company deleted');
+            preferences.clear();
+
+            $http.get('logout').then(function() {
+              $('.modal-backdrop').remove(); //otherwise it does not disappear
+              $location.path('login');
+            });
+          });
         };
 
         $scope.$watch('company.emails', function (newValue) {

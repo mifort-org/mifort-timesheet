@@ -87,7 +87,7 @@
     <div class="edit-custom-day">
         <form name="custom-day">
             <input type="text" ng-model="day.name" ng-model-options="{debounce: 1000}"/>
-            <input type="text" ng-model="day.time" ng-model-options="{debounce: 1000}"/>
+            <input type="number" ng-model="day.time" ng-keypress="validateNumber($event)" ng-model-options="{debounce: 1000}"/>
         </form>
     </div>
 </script>

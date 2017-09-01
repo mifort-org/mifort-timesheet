@@ -100,31 +100,22 @@ angular.module('mifortTimesheet')
                     }
                 ];
 
-                scope.$watch('company.dayTypes', function(newValue, oldValue) {
-                   if(newValue && oldValue && newValue != oldValue){
-                        scope.saveDayType();
-                    }
-
-                }, true);
-
                 scope.chooseColor = function(colorIndex, day) {
-                    var chosenColor = scope.customColors[colorIndex].color;
-
                     day.pickerVisible = false;
-                    day.color = chosenColor;
+                    day.color = scope.customColors[colorIndex].color;
                     paintHexagons();
+                    scope.saveDayType();
                 };
 
                 scope.showColorPicker = function(dayIndex) {
                     scope.company.dayTypes[dayIndex].pickerVisible = true;
+                    scope.saveDayType();
                 };
-
                 function paintHexagons() {
                     $(element).find('.hexagon').each(function(index) {
                         var hexagon = $(this),
                             hexagonColor = scope.company.dayTypes[$(this).index()].color,
                             selector = '.custom-days-wrapper .hexagon-wrapper .hexagon-' + index;
-
                         hexagon.addClass('hexagon-' + index);
                         $('head').append("<style>" +
                             selector + ":after{border-top-color: " + hexagonColor + ";}" +
@@ -151,9 +142,18 @@ angular.module('mifortTimesheet')
                     });
 
                     addHexagonsListener();
-                    paintHexagons()
+                    paintHexagons();
+                    scope.saveDayType();
                 };
+
+                scope.validateNumber = function (e) {
+                    if (e.which < 48 || e.which > 57) {
+                        e.preventDefault();
+                    }
+                };
+
             },
             templateUrl: 'components/customDay/customDay.html'
+
         };
     });

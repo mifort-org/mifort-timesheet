@@ -22,3 +22,4 @@ exports.userIdParam = 'userId';
 exports.companyIdParam ='companyId';
 exports.timelogIdParam = 'timelogId';
 exports.fileNameParam = 'fileName';
+exports.emailParam = 'email';

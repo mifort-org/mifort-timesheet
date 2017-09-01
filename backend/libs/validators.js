@@ -137,6 +137,15 @@ exports.validateAddNewUser = function(req, res, next) {
 
     returnErrors(req, res, next);
 };
+
+exports.validateGetListByEmail = function(req, res, next) {
+  req.checkParams(reqParams.emailParam,
+    util.format(invalidFormatMessageTemplate, reqParams.emailParam))
+    .notEmpty().isEmail();
+
+  returnErrors(req, res, next);
+};
+
 //Company Rest API validation
 exports.validateUpdateCompany = function(req, res, next) {
     var company = req.body;

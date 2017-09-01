@@ -25,8 +25,8 @@ angular.module('mifortTimesheet.employees', ['ngRoute'])
         });
     }])
 
-    .controller('employeesController', ['$scope', 'employeesService', 'preferences', '$location', 'Notification',
-        function($scope, employeesService, preferences, $location, Notification) {
+    .controller('employeesController', ['$scope', 'employeesService', 'preferences', '$location', 'Notification','notifyingService','$rootScope',
+        function($scope, employeesService, preferences, $location, Notification,notifyingService, $rootScope) {
             var companyId = preferences.get('user').companyId;
 
             $scope.path = $location.path();
@@ -65,7 +65,7 @@ angular.module('mifortTimesheet.employees', ['ngRoute'])
                 //delete fields from filter so angular will use it's native search correctly(so it won't leave the empty search properties)
                 for(var field in employeeSearch){
                     if(!employeeSearch[field].length
-                        && (!angular.isObject(employeeSearch[field]) || employeeSearch[field].projectName === '' || employeeSearch[field].role === '')){
+                        && (!angular.isObject(employeeSearch[field]) || employeeSearch[field].projectName === '')){
                         delete employeeSearch[field];
                     }
                 }
@@ -109,7 +109,6 @@ angular.module('mifortTimesheet.employees', ['ngRoute'])
                 });
             };
 
-
             $scope.$watch('company.emails', function (newValue) {
                 if (newValue && typeof newValue == 'string') {
                     $scope.company.emails = newValue.split(/[\s,]+/);
@@ -123,6 +122,10 @@ angular.module('mifortTimesheet.employees', ['ngRoute'])
                 employeesService.removeEmployee(employee._id).success(function() {
                     Notification.success('Changes saved');
                 });
+            };
+
+            $scope.clearInvite = function() {
+                $scope.company.emails = [];
             };
 
         }]);

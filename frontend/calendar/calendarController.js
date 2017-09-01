@@ -135,7 +135,7 @@ angular.module('mifortTimesheet.calendar', ['ngRoute'])
                     daysAfterCalendarEnd = $scope.calendar[index - 1] && 6 - moment(new Date($scope.calendar[index - 1].date)).weekday(),
                     generatedDay;
 
-                if(currentDayWeek == 1 && $scope.splittedCalendar[currentDayYear - 1] && moment(currentDate).get('date') == 31){
+                if(currentDayWeek == 1 && moment(currentDate).get('date') > 7){
                     currentDayWeek = 53;
                 }
 
@@ -265,7 +265,7 @@ angular.module('mifortTimesheet.calendar', ['ngRoute'])
 
             $scope.introSteps = [
                 {
-                    element: '#step1',
+                    element: '.calendar-container',
                     intro: "<p>In this section you could see the list of months." +
                     "Each day contain the date and the default workload of this day.</p>" +
                     "<p>By default all weekend days are colored with light blue color.</p>" +
@@ -286,7 +286,6 @@ angular.module('mifortTimesheet.calendar', ['ngRoute'])
                     position: 'left'
                 }
             ];
-
             $scope.splitCalendar = function(shouldBeSplitted, period, splitStartDate) {
                 if(period == 'month' && splitStartDate.getDate() > 28){
                     alert('Please choose the correct date for split');
@@ -395,13 +394,13 @@ angular.module('mifortTimesheet.calendar', ['ngRoute'])
                 }
             };
 
-            $scope.saveDayType = function(changedDayType, changedDayTypeOldValue) {
+            $scope.saveDayType = _.debounce(function(changedDayType, changedDayTypeOldValue) {
                 applyDefaultValues();
 
                 calendarService.saveCompany($scope.company).success(function(data) {
                     $scope.company.dayTypes = data.dayTypes;
                 });
-            };
+            }, 500);
 
             $scope.calculatePeriods = function() {
                 var firstPeriod = new Date(),

@@ -137,10 +137,10 @@
 
     <div ng-if="dynamicPopover.projectFilter.field !== 'projectName'"
          ng-repeat="n in dynamicPopover.projectFilter.value track by $index"
+         ng-show="projectFilterContainsSubstring(dynamicPopover.projectFilter.value[$index], filtersFilter)"
          class="filters-container">
         <input type="checkbox" id="filtered-value-{{$index}}" ng-model="dynamicPopover.projectFilter.value[$index].isChecked"/>
         <label for="filtered-value-{{$index}}">
-
             {{dynamicPopover.projectFilter.value[$index].name.role || dynamicPopover.projectFilter.value[$index].name.displayName || dynamicPopover.projectFilter.value[$index].name}}
         </label>
     </div>
