@@ -17,7 +17,23 @@
 'use strict';
 
 angular.module('mifortTimesheet')
-    .directive('timesheetComment', function(appVersion) {
+    .directive('timesheetComment',["$timeout", function($timeout) {
+        var localCommentSave = {};
+        var date = Date.now()/1000;
+        var getLocalComment = JSON.parse(localStorage.getItem('commentSave'));
+
+        $timeout(function () {
+            if(getLocalComment){
+                if(date - getLocalComment.time < 3){
+                    for(var key in getLocalComment){
+                        if(key.length === 1){
+                            $("timesheet-comment").eq(+key).find("input").val(getLocalComment[key]);
+                        }
+                    }
+                }
+            }
+        },500);
+        localStorage.removeItem("commentSave");
         return {
             scope: true,
             link: function(scope, element) {
@@ -39,7 +55,14 @@ angular.module('mifortTimesheet')
                         }
                     }
                 });
+                element.find('.timesheet-comment').on('input', function() {
+                    var inputNumber = $(this).parents('tr').index();
+                    var inputValue = $(this).val();
+                    localCommentSave[inputNumber] = inputValue;
+                    localCommentSave["time"]=Date.now()/1000;
+                    localStorage.setItem("commentSave",JSON.stringify(localCommentSave));
+                });
             },
-            templateUrl: 'components/timesheetComment/timesheetComment.html?rel=' + appVersion
+            templateUrl: 'components/timesheetComment/timesheetComment.html'
         };
-    });
+    }]);

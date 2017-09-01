@@ -68,7 +68,7 @@ angular.module('mifortTimesheet.employeesReport', ['ngRoute', 'constants'])
                     asc: false
                 },
                 filters: [],
-                pageSize: 100,
+                pageSize: 10,
                 page: 1,
                 groupBy: ['userName'],
                 isCommentNeeded: true,

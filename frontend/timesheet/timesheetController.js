@@ -318,7 +318,6 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                     updateTimelog();
                 }, true);
             }
-
             function updateTimelog() {
                 var newLogs = $scope.getCurrentLog($scope.logs),
                     oldLogs = $scope.getCurrentLog($scope.lastSavedLogs);
@@ -455,28 +454,32 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
             //     }
             // }
             $scope.addLog = function (log) {
+                if(!$scope.readonly){
+                    if(log.readyForApprove != true){
+                        var projectId = $scope.getDefaultProject()._id;
+                        var project = $scope.getProjectById(projectId);
+                        var newRow = angular.copy(project.template),
+                            currentPeriod = $scope.getCurrentLogData(),
+                            dayPeriodIndex = _.findIndex(currentPeriod, {date: log.date});
 
-                var projectId = $scope.getDefaultProject()._id;
-                var project = $scope.getProjectById(projectId);
-                var newRow = angular.copy(project.template),
-                    currentPeriod = $scope.getCurrentLogData(),
-                    dayPeriodIndex = _.findIndex(currentPeriod, {date: log.date});
+                        newRow.date = log.date;
+                        newRow.userName = log.userName;
+                        newRow.color = log.color;
+                        newRow.placeholder = log.placeholder;
+                        newRow.timePlaceholder = getTimePlaceholder(project);
+                        newRow.role = log.role;
+                        newRow.isFirstDayRecord = false;
+                        newRow.position = $scope.calcNewLogPosition(currentPeriod, log.date);
 
-                newRow.date = log.date;
-                newRow.userName = log.userName;
-                newRow.color = log.color;
-                newRow.placeholder = log.placeholder;
-                newRow.timePlaceholder = getTimePlaceholder(project);
-                newRow.role = log.role;
-                newRow.isFirstDayRecord = false;
-                newRow.position = $scope.calcNewLogPosition(currentPeriod, log.date);
-                $scope.setDefaultProject(newRow);
+                        $scope.setDefaultProject(newRow);
 
-                newRow.hasLog = true;
-                newRow.isCreatedManually = true;
-                currentPeriod.splice(dayPeriodIndex + $scope.getSameDateDays(currentPeriod, log.date).length, 0, newRow);
+                        newRow.hasLog = true;
+                        newRow.isCreatedManually = true;
+                        currentPeriod.splice(dayPeriodIndex + $scope.getSameDateDays(currentPeriod, log.date).length, 0, newRow);
 
-                $scope.filteredLogs = $scope.getFilteredDates();
+                        $scope.filteredLogs = $scope.getFilteredDates();
+                    }
+                }
             };
             $scope.removeRow = function (log, project, periodIndex) {
                 var dates = $scope.getCurrentLogData();
@@ -717,6 +720,16 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                 });
             };
 
+            $scope.showButton = function () {
+                if($scope.readonly || $scope.approveColor){
+                    $scope.dropHide = true;
+                    $scope.arrowHide = true;
+                } else {
+                    $scope.dropHide = false;
+                    $scope.arrowHide = false;
+                }
+            };
+
             $scope.getNotEmptyLogs = function (logs) {
                 return _.filter(logs, function (item) {
                     return item.time || item.comment;
@@ -931,8 +944,10 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                         userData.readyForApprove = true;
                     }
                     if(button === "reject") {
-                        userData.readyForApprove = false;
-                        userData.Approve = false;
+                        if(userData.Approve === true || userData.readyForApprove === true){
+                            userData.readyForApprove = false;
+                            userData.Approve = false;
+                        }
                     }
                 });
                 var logsToDelete = angular.copy($scope.getLogsToDelete());

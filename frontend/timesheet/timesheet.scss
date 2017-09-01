@@ -377,8 +377,20 @@
     float: right;
 }
 .form-control.reject {
-    background: red;
+    border:1px solid red;
+    background: #ffffff;
 }
 .form-control.approve {
-    background: #03f21c;
+    background: #ffffff;
+    border: 1px solid #82ff00;
+}
+.buttonHide{
+     display: none;
+ }
+.dropHide{
+    display: none !important;
+}
+.arrowHide{
+    background: url(../common/images/icons.png) right 20px top -300px no-repeat !important;
+    padding: 14px 19px !important;
 }

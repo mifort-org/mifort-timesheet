@@ -16,12 +16,6 @@
 -->
 <div timesheet-intro></div>
 
-<button ng-click="showCurrentPeriod(projects)" class="primary-button current-period-button">Current period</button>
-<button ng-if="(userRole === 'manager' || userRole === 'owner') && viewUser"
-        ng-click="backTo()"
-        class="primary-button current-period-button">
-    Back to {{locations}}
-</button>
 <div class="timesheet collapse-wrapper timesheet-total clearfix" ng-if="customUserId">
     <b>Timesheet of {{customUserName}}</b>
 </div>
@@ -85,11 +79,11 @@
 
                 <td>
                     <span class="blank-dropdown" uib-dropdown on-toggle="toggled(open)">
-                        <a href id="simple-dropdown" uib-dropdown-toggle>
-                            {{log.projectName}}
+                        <a href id="simple-dropdown" ng-click="showButton()" ng-class="{'arrowHide':arrowHide}" uib-dropdown-toggle>
+                            {{log.projectName | longTextFilter: 15}}
                         </a>
 
-                        <ul uib-dropdown-menu aria-labelledby="simple-dropdown">
+                        <ul uib-dropdown-menu aria-labelledby="simple-dropdown" ng-class="{'dropHide':dropHide}">
                             <li ng-repeat="project in projects">
                                 <a href ng-click="assignProject(project._id, log)">{{project.name}}</a>
                             </li>
@@ -125,7 +119,14 @@
     to any project
 </div>
 
-<script type="text/ng-template" id="myPopoverTemplate">
+<div class="back-to" ng-if="(userRole === 'manager' || userRole === 'owner') && viewUser">
+    <a href="" ng-click="backTo()">
+        Back to {{locations}}
+    </a>
+</div>
+
+
+<script type="text/ng-template" id="myPopoverTemplate.html">
     <div>{{dynamicPopover.content}}</div>
 
     <input type="text" class="filter-input" ng-model="$parent.searchProjectByText" placeholder="Search"
@@ -191,6 +192,6 @@
         </label>
     </div>
 </script>
-<!--<button class="primary-button ready-btn Approve" ng-click="approve('approve');" ng-hide="userRole === 'employee'">Approve</button>-->
-<!--<button class="primary-button ready-btn Reject" ng-click="approve('reject');" ng-hide="userRole === 'employee'">Reject</button>-->
-<!--<button class="primary-button ready-btn readyForApprove" ng-click="approve('ready');" ng-hide="userRole === 'manager' || userRole === 'owner'" >Ready for Approve</button>-->
+<button class="primary-button ready-btn Approve" ng-click="approve('approve');" ng-hide="userRole === 'employee'">Approve</button>
+<button class="primary-button ready-btn Reject" ng-click="approve('reject');" ng-hide="userRole === 'employee'">Reject</button>
+<button class="primary-button ready-btn readyForApprove" ng-click="approve('ready');" ng-hide="userRole === 'manager' || userRole === 'owner'" ng-class="{'buttonHide':buttonHide}">Ready for Approve</button>
