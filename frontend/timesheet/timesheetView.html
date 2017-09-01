@@ -79,7 +79,7 @@
 
                 <td>
                     <span class="blank-dropdown" uib-dropdown on-toggle="toggled(open)">
-                        <a href id="simple-dropdown" ng-class="{'arrowHide':arrowHide}" uib-dropdown-toggle>
+                        <a href id="simple-dropdown" ng-click="showButton()" ng-class="{'arrowHide':arrowHide}" uib-dropdown-toggle>
                             {{log.projectName | longTextFilter: 15}}
                         </a>
 
