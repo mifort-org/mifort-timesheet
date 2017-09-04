@@ -950,6 +950,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                 var dates = $scope.getSortedLogs();
                 var timesheetToSave = angular.copy(dates);
                 timesheetToSave.forEach(function (userData) {
+                    userData.time = parseInt(userData.time, 10);
                     if(button === "ready") {
                         userData.readyForApprove = true;
                         userData.isreadyForApproveNeeded = true;
