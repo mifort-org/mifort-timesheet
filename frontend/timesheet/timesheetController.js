@@ -191,7 +191,9 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                     $scope.currentPeriodLogsLoaded();
 
                     $scope.filteredLogs = $scope.getFilteredDates();
-
+                    if($scope.filteredLogs[1].readyForApprove){
+                        $scope.buttonHide = true;
+                    }
                     blockTable();
 
                     $scope.watchFilterChanges();
@@ -319,6 +321,13 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                 }, true);
             }
             function updateTimelog() {
+                $scope.filteredLogs = $scope.getFilteredDates();
+                if($scope.filteredLogs[1].readyForApprove){
+                    $scope.buttonHide = true;
+                } else {
+                    $scope.buttonHide = false;
+                }
+
                 var newLogs = $scope.getCurrentLog($scope.logs),
                     oldLogs = $scope.getCurrentLog($scope.lastSavedLogs);
                 if (newLogs && !oldLogs) return;
@@ -961,6 +970,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                     console.log(timesheetToSave);
                     if(button === "ready") {
                         $scope.readonly = true;
+                        $scope.buttonHide = true;
                         $scope.approveColor = false;
                         $scope.rejectColor = false;
                     }
