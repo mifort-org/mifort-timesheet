@@ -929,7 +929,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                 if ($scope.locations === 'Employees') {
                     $location.path('/employees');
                 } else if ($scope.locations === 'Report') {
-                    $location.path('/report');
+                    $location.path('/employees-report');
                 }
             };
             $scope.approve = function (button) {
