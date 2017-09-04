@@ -175,7 +175,9 @@ angular.module('mifortTimesheet.employeesReport', ['ngRoute', 'constants'])
                     var dateFilter = _.where(newValue, {field: 'date'})[0],
                         usedFilters = $scope.reportSettings.filters || employeesReportService.getSavedFilters(),
                         dateFilterIndex = _.findIndex(usedFilters, {field: 'date'});
-                    preferences.set("redirectDate", dateFilter.start);
+                    if(dateFilter){
+                        preferences.set("redirectDate", dateFilter.start);
+                    }
                     if(dateFilter && dateFilterIndex != -1){
                         usedFilters[dateFilterIndex] = dateFilter;
                     }
@@ -260,7 +262,7 @@ angular.module('mifortTimesheet.employeesReport', ['ngRoute', 'constants'])
                                 }
                             }
                             $scope.timesheetGridOptions.columnDefs.splice(2, 0, employeesReportService.employeeColuns.actualTime);
-                            $scope.timesheetGridOptions.columnDefs.push(employeesReportService.employeeColuns.status);
+                            $scope.timesheetGridOptions.columnDefs[columnsOrder.length] = employeesReportService.employeeColuns.status;
                         }
 
                         $scope.gridHeight = {
