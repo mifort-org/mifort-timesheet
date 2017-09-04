@@ -413,8 +413,9 @@ function filterTimelog(query, sortObj, pageInfo, res, callback) {
 
 function fillUserValues(companyId, filterValues, next, callback) {
     var users = db.userCollection();
-    users.find({companyId: companyId},
-               {displayName: 1})
+    users.find( {companyId: companyId},
+                {displayName: 1,
+                'external.photos':1})
         .sort({displayName: 1})
         .toArray(function(err, dbusers) {
             if(!err) {
