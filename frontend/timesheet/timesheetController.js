@@ -157,6 +157,10 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                     $scope.approveColor = true;
                     $scope.rejectColor = false;
                 }
+                if(userRole === 'manager' || userRole === 'owner'){
+                    $scope.edit = true;
+                    $scope.readonly = false;
+                }
             }
             $scope.init = function () {
                 var savedRedirectDate = preferences.get("redirectDate");
@@ -463,7 +467,8 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
             //     }
             // }
             $scope.addLog = function (log) {
-                if(!$scope.readonly){
+                console.log(userRole);
+                if(!$scope.readonly && userRole != 'employee'){
                     if(log.readyForApprove != true){
                         var projectId = $scope.getDefaultProject()._id;
                         var project = $scope.getProjectById(projectId);
@@ -491,7 +496,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                 }
             };
             $scope.removeRow = function (log, project, periodIndex) {
-                if(!$scope.readonly){
+                if(!$scope.readonly && userRole != 'employee'){
                     var dates = $scope.getCurrentLogData();
 
                     if (log._id && (log.time || log.comment)) {
