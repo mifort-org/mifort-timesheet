@@ -482,18 +482,20 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                 }
             };
             $scope.removeRow = function (log, project, periodIndex) {
-                var dates = $scope.getCurrentLogData();
+                if(!$scope.readonly){
+                    var dates = $scope.getCurrentLogData();
 
-                if (log._id && (log.time || log.comment)) {
-                    timesheetService.removeTimesheet(log).success(function () {
-                        Notification.success('Changes saved');
-                    });
+                    if (log._id && (log.time || log.comment)) {
+                        timesheetService.removeTimesheet(log).success(function () {
+                            Notification.success('Changes saved');
+                        });
+                    }
+
+                    dates.splice(dates.indexOf(log), 1);
+
+                    $scope.filteredLogs = $scope.getFilteredDates();
+                    $scope.lastSavedLogs = angular.copy($scope.logs);
                 }
-
-                dates.splice(dates.indexOf(log), 1);
-
-                $scope.filteredLogs = $scope.getFilteredDates();
-                $scope.lastSavedLogs = angular.copy($scope.logs);
             };
 
             $scope.showPreviousPeriod = function (projects) {
