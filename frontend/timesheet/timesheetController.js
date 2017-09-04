@@ -167,7 +167,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                 $scope.projects.forEach(function (project) {
                     var today = moment();
                     if(savedRedirectDate){
-                        var redirectDate = JSON.parse(savedRedirectDate);
+                        var redirectDate = savedRedirectDate;
                         project.periods.forEach(function (v, i, arr) {
                             if(v.start === redirectDate){
                                 preferences.set("currentPeriodIndex", i);
@@ -896,9 +896,9 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                     periodEnd = periodEnd.format("DD MMM");
                     var savedRedirectDate = preferences.get("redirectDate");
                     if (savedRedirectDate){
-                        var startRedirectDate = JSON.parse(savedRedirectDate).slice(3,5);
-                        $scope.startRedirectDate = JSON.parse(savedRedirectDate);
-                        var monthIndex = Number(JSON.parse(savedRedirectDate).slice(0,2));
+                        var startRedirectDate = savedRedirectDate.slice(3,5);
+                        $scope.startRedirectDate = savedRedirectDate;
+                        var monthIndex = Number(savedRedirectDate.slice(0,2));
                         var monthName = $scope.dateMonth[monthIndex-1];
                         var endRedirectDate = Number(startRedirectDate) + 6;
                         if (endRedirectDate < 10){
