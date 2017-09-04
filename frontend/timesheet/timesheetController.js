@@ -942,11 +942,13 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                         userData.Approve = false;
                     }
                     if(button === "approve") {
-                        userData.Approve = true;
-                        userData.readyForApprove = true;
+                        if(userData.readyForApprove){
+                            userData.Approve = true;
+                            userData.readyForApprove = true;
+                        }
                     }
                     if(button === "reject") {
-                        if(userData.Approve === true || userData.readyForApprove === true){
+                        if(userData.Approve || userData.readyForApprove){
                             userData.readyForApprove = false;
                             userData.Approve = false;
                         }
@@ -955,20 +957,26 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                 var logsToDelete = angular.copy($scope.getLogsToDelete());
                 timesheetService.updateTimesheet(user._id, timesheetToSave, logsToDelete).success(function (data) {
                     Notification.success('Changes saved');
+                    var timesheetToSave = angular.copy(dates);
+                    console.log(timesheetToSave);
                     if(button === "ready") {
                         $scope.readonly = true;
                         $scope.approveColor = false;
                         $scope.rejectColor = false;
                     }
                     if(button === "approve") {
-                        $scope.readonly = true;
-                        $scope.approveColor = true;
-                        $scope.rejectColor = false;
+                        if(timesheetToSave[0].readyForApprove){
+                            $scope.readonly = true;
+                            $scope.approveColor = true;
+                            $scope.rejectColor = false;
+                        }
                     }
                     if(button === "reject") {
-                        $scope.readonly = false;
-                        $scope.approveColor = false;
-                        $scope.rejectColor = true;
+                        if(timesheetToSave[0].readyForApprove || timesheetToSave[0].Approve){
+                            $scope.readonly = false;
+                            $scope.approveColor = false;
+                            $scope.rejectColor = true;
+                        }
                     }
                 }).error(function () {
                     Notification.error('Changes not saved');
