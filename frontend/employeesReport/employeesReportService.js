@@ -101,14 +101,14 @@ angular.module('mifortTimesheet.employeesReport').factory('employeesReportServic
             },
             time: {
                 field: 'time',
-                displayName: 'Expected Time',
+                displayName: 'Actual Time',
                 width: 150,
                 minWidth: 150,
                 headerCellClass: 'time-header',
                 enableColumnResizing: true,
                 enableColumnMenu: false,
                 enableFiltering: false,
-                filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" col-name="time" col-title="Expected Time"></span></div>',
+                filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" col-name="time" col-title="Actual Time"></span></div>',
                 cellTemplate: '<div class="report-time-cell">{{row.entity[col.field]}}</div>'
             },
             comment: {
@@ -132,16 +132,17 @@ angular.module('mifortTimesheet.employeesReport').factory('employeesReportServic
 
         };
         self.employeeColuns = {
-            actualTime: {
-                field: 'actualTime',
+            expectedTime: {
+                field: 'expectedTime',
+                displayName: 'Expected Time',
                 width: 150,
                 minWidth: 150,
                 headerCellClass: 'time-header',
                 enableColumnResizing: true,
                 enableColumnMenu: false,
                 enableFiltering: false,
-                filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" col-name="actualTime" col-title="ActualTime"></span></div>',
-                cellTemplate: '<div class="report-time-cell" id="actual-time">{{row.workHours}}</div>'
+                filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" col-name="expectedTime" col-title="Expected Time"></span></div>',
+                cellTemplate: '<div class="report-time-cell" id="actual-time">{{row.entity[col.field]}}</div>'
             },
 
             status: {

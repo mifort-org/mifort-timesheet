@@ -244,10 +244,9 @@ angular.module('mifortTimesheet.employeesReport', ['ngRoute', 'constants'])
                             }else{
                                 data[i].readyForApprove === true ? data[i].readyForApprove = "Ready" : data[i].readyForApprove = "Not Ready";
                             }
+                            val.expectedTime = preferences.get("workHours");
                         });
-                        $timeout(function(){
-                            document.getElementById("actual-time").innerHTML = preferences.get("workHours");
-                        });
+
                         //add columns to grid
                         if(data.length){
                             $scope.timesheetGridOptions.columnDefs = [];
@@ -261,7 +260,7 @@ angular.module('mifortTimesheet.employeesReport', ['ngRoute', 'constants'])
 
                                 }
                             }
-                            $scope.timesheetGridOptions.columnDefs.splice(2, 0, employeesReportService.employeeColuns.actualTime);
+                            $scope.timesheetGridOptions.columnDefs.splice(1, 0, employeesReportService.employeeColuns.expectedTime);
                             $scope.timesheetGridOptions.columnDefs[columnsOrder.length] = employeesReportService.employeeColuns.status;
                         }
 
