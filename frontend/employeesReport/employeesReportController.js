@@ -302,6 +302,10 @@ angular.module('mifortTimesheet.employeesReport', ['ngRoute', 'constants'])
             };
 
             $scope.range = function(n) {
+                $scope.additionalHeight = $('.popover').height() - 75;
+                if($scope.additionalHeight < $('.gridStyle').height() - 40){
+                    $scope.additionalHeight = 0;
+                }
                 return new Array(n);
             };
 
