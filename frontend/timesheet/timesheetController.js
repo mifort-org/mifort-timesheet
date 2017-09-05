@@ -157,10 +157,11 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                     $scope.approveColor = true;
                     $scope.rejectColor = false;
                 }
-                if(userRole === 'manager' || userRole === 'owner'){
+                if(userRole === 'owner'){
                     $scope.edit = true;
                     $scope.readonly = false;
                 }
+                console.log(userRole);
             }
             $scope.init = function () {
                 var savedRedirectDate = preferences.get("redirectDate");
@@ -457,59 +458,62 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                     return log.date == date;
                 });
             };
-            // function AddTimesheetBt() {
-            //     var add_timesheet = document.getElementsByClassName("add-timesheet");
-            //     console.log(add_timesheet.length);
-            //     for(var i; i<add_timesheet.length;i++){
-            //         add_timesheet[i].onclick=function () {
-            //             console.log(123);
-            //         }
-            //     }
-            // }
+
             $scope.addLog = function (log) {
                 console.log(userRole);
-                if(!$scope.readonly && userRole != 'employee'){
-                    if(log.readyForApprove != true){
-                        var projectId = $scope.getDefaultProject()._id;
-                        var project = $scope.getProjectById(projectId);
-                        var newRow = angular.copy(project.template),
-                            currentPeriod = $scope.getCurrentLogData(),
-                            dayPeriodIndex = _.findIndex(currentPeriod, {date: log.date});
+                var projectId = $scope.getDefaultProject()._id;
+                var project = $scope.getProjectById(projectId);
+                var newRow = angular.copy(project.template),
+                    currentPeriod = $scope.getCurrentLogData(),
+                    dayPeriodIndex = _.findIndex(currentPeriod, {date: log.date});
 
-                        newRow.date = log.date;
-                        newRow.userName = log.userName;
-                        newRow.color = log.color;
-                        newRow.placeholder = log.placeholder;
-                        newRow.timePlaceholder = getTimePlaceholder(project);
-                        newRow.role = log.role;
-                        newRow.isFirstDayRecord = false;
-                        newRow.position = $scope.calcNewLogPosition(currentPeriod, log.date);
+                newRow.date = log.date;
+                newRow.userName = log.userName;
+                newRow.color = log.color;
+                newRow.placeholder = log.placeholder;
+                newRow.timePlaceholder = getTimePlaceholder(project);
+                newRow.role = log.role;
+                newRow.isFirstDayRecord = false;
+                newRow.position = $scope.calcNewLogPosition(currentPeriod, log.date);
 
-                        $scope.setDefaultProject(newRow);
-
-                        newRow.hasLog = true;
-                        newRow.isCreatedManually = true;
-                        currentPeriod.splice(dayPeriodIndex + $scope.getSameDateDays(currentPeriod, log.date).length, 0, newRow);
-
-                        $scope.filteredLogs = $scope.getFilteredDates();
-                    }
+                if (userRole === 'owner' || userRole === 'manager'){
+                    $scope.setDefaultProject(newRow);
                 }
+                 else if(!$scope.readonly && userRole != 'employee'){
+                    $scope.setDefaultProject(newRow);
+                } else if ($scope.rejectColor){
+                    $scope.setDefaultProject(newRow);
+                }
+
+
+                newRow.hasLog = true;
+                newRow.isCreatedManually = true;
+                currentPeriod.splice(dayPeriodIndex + $scope.getSameDateDays(currentPeriod, log.date).length, 0, newRow);
+
+                $scope.filteredLogs = $scope.getFilteredDates();
             };
+
             $scope.removeRow = function (log, project, periodIndex) {
-                if(!$scope.readonly && userRole != 'employee'){
+
                     var dates = $scope.getCurrentLogData();
 
                     if (log._id && (log.time || log.comment)) {
-                        timesheetService.removeTimesheet(log).success(function () {
-                            Notification.success('Changes saved');
-                        });
+                        if(!$scope.readonly && userRole != 'employee') {
+                            timesheetService.removeTimesheet(log).success(function () {
+                                Notification.success('Changes saved');
+                            });
+                        } else if($scope.rejectColor){
+                            timesheetService.removeTimesheet(log).success(function () {
+                                Notification.success('Changes saved');
+                            });
+                        }
                     }
 
                     dates.splice(dates.indexOf(log), 1);
 
                     $scope.filteredLogs = $scope.getFilteredDates();
                     $scope.lastSavedLogs = angular.copy($scope.logs);
-                }
+
             };
 
             $scope.showPreviousPeriod = function (projects) {
@@ -737,7 +741,10 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
             };
 
             $scope.showButton = function () {
-                if($scope.readonly || $scope.approveColor){
+                if (userRole === 'owner' || userRole === 'manager'){
+                    $scope.dropHide = false;
+                    $scope.arrowHide = false;
+                } else if ($scope.readonly || $scope.approveColor) {
                     $scope.dropHide = true;
                     $scope.arrowHide = true;
                 } else {
