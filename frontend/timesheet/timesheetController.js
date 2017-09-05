@@ -128,7 +128,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                 for(var key in blockday) {
                     if(blockday[key].readyForApprove === true){
                         counter = true;
-                    }else if(blockday[key].readyForApprove === false){
+                    } else if (blockday[key].readyForApprove === false){
                         reject = true;
                     }
                     if(blockday[key].Approve === true){
@@ -164,8 +164,11 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                         $scope.edit = true;
                         $scope.readonly = false;
                     }
+                    if(!blockday[2].readyForApprove && !$scope.approveColor && !$scope.rejectColor){
+                        $scope.readonly = true;
+                        $scope.blockOneApprove = true;
+                    }
                 }
-                console.log(userRole);
             }
             $scope.init = function () {
                 var savedRedirectDate = preferences.get("redirectDate");
@@ -464,7 +467,6 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
             };
 
             $scope.addLog = function (log) {
-                console.log(userRole);
                 var projectId = $scope.getDefaultProject()._id;
                 var project = $scope.getProjectById(projectId);
                 var newRow = angular.copy(project.template),
@@ -479,9 +481,12 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                 newRow.role = log.role;
                 newRow.isFirstDayRecord = false;
                 newRow.position = $scope.calcNewLogPosition(currentPeriod, log.date);
-
+                var blockday = $scope.getFilteredDates();
+                console.log(blockday);
                 if (userRole === 'owner' || userRole === 'manager'){
-                    $scope.setDefaultProject(newRow);
+                    if((!blockday[2].readyForApprove && $scope.rejectColor) || blockday[2].readyForApprove){
+                        $scope.setDefaultProject(newRow);
+                    }
                 }
                  else if(!$scope.readonly && userRole != 'employee'){
                     $scope.setDefaultProject(newRow);
@@ -745,9 +750,20 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
             };
 
             $scope.showButton = function () {
+                var blockday = $scope.getFilteredDates();
+                console.log(blockday[2]);
                 if (userRole === 'owner' || userRole === 'manager'){
-                    $scope.dropHide = false;
-                    $scope.arrowHide = false;
+                    if((!blockday[2].readyForApprove && !$scope.rejectColor) || !blockday[2].readyForApprove){
+                        $scope.dropHide = true;
+                        $scope.arrowHide = true;
+                    } else {
+                        $scope.dropHide = false;
+                        $scope.arrowHide = false;
+                    }
+                    if(!blockday[2].readyForApprove && $scope.rejectColor){
+                        $scope.dropHide = false;
+                        $scope.arrowHide = false;
+                    }
                 } else if ($scope.readonly || $scope.approveColor) {
                     $scope.dropHide = true;
                     $scope.arrowHide = true;
