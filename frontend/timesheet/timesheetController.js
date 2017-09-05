@@ -157,7 +157,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                     $scope.approveColor = true;
                     $scope.rejectColor = false;
                 }
-                if(userRole === 'owner'){
+                if(userRole === 'owner' || userRole === 'manager'){
                     $scope.edit = true;
                     $scope.readonly = false;
                 }
