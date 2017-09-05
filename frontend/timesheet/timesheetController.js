@@ -951,11 +951,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
             $scope.locations = preferences.get('location');
 
             $scope.backTo = function () {
-                if ($scope.locations === 'Employees') {
-                    $location.path('/employees');
-                } else if ($scope.locations === 'Report') {
-                    $location.path('/employees-report');
-                }
+                history.back();
             };
             $scope.approve = function (button) {
                 var dates = $scope.getSortedLogs();
