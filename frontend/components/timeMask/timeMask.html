@@ -15,5 +15,5 @@
 -->
 
 <input ng-model-options="{debounce: 400}" class="timesheet-hours form-control time-mask-hours" type="text"
-       ng-readonly="readonly" ng-class="{'reject':rejectColor, 'approve':approveColor}" ng-model="log.time" min="0" max="24"
+       ng-readonly="readonly" ng-class="{'reject':rejectColor, 'approve':approveColor, 'edit':edit}" ng-model="log.time" min="0" max="24"
        placeholder="{{log.timePlaceholder ? log.timePlaceholder : ''}}" maxlength="6" ng-change="onChangeDayHours()"/>
