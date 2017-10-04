@@ -156,7 +156,7 @@ angular.module('mifortTimesheet', [
                 }
 
                 if(message){
-                    Notification.error(message +' (' + errorCode + ' error)');
+                    Notification.error({message: message +' (' + errorCode + ' error)', delay: null});
                 }
             });
         }])

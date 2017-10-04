@@ -146,7 +146,7 @@ angular.module('mifortTimesheet.company', ['ngRoute', 'constants'])
                 });
 
                 if (owners.length <= 1 && employee.role == 'Owner') {
-                    return Notification.error('Company should have at least one owner');
+                    return Notification.error({message: 'Company should have at least one owner', delay: null});
                 }
 
                 companyService.changeRole({_id: employee._id, role: role}).success(function () {

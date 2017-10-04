@@ -71,7 +71,7 @@ angular.module('mifortTimesheet')
                     else if (hour > 24){
                         Notification({
                                 message: 'You have filled in more then 24h per day',
-                                delay: 999999999
+                                delay: null
                             }, 'error'
                         );
                     }
