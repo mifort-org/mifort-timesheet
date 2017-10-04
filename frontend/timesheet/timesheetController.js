@@ -311,9 +311,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
 
                     //TODO: to template
                     project.template.userId = user._id;
-                    //console.log(project.template.time);
                     delete project.template.time;
-
 
                     dayToPush = _.clone(project.template);
                     dayToPush.date = angular.copy(startDate).add(i, 'days').format("MM/DD/YYYY");
