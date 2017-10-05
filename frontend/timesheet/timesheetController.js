@@ -1018,7 +1018,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                         }
                     }
                 }).error(function () {
-                    Notification.error('Changes not saved');
+                    Notification.error({message: 'Changes not saved', delay: null});
                 });
             };
 

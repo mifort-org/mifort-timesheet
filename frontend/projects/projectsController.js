@@ -230,7 +230,7 @@ angular.module('mifortTimesheet.projects', ['ngRoute', 'constants'])
                 if (assignWorkload > 24) {
                     Notification.error({
                         message:'You are trying to fill in more then 24h per day for an employee',
-                        delay: 4000
+                        delay: null
                     });
                 }
                 else {
@@ -364,9 +364,9 @@ angular.module('mifortTimesheet.projects', ['ngRoute', 'constants'])
                 }
                 if (counter) {
                     project.projectEdit = true;
-                    Notification.error('This name is already taken');
+                    Notification.error({message: 'This name is already taken', delay: null});
                 } else if (!project.name) {
-                    Notification.error('No project name');
+                    Notification.error({message: 'No project name', delay: null});
                 } else {
                     $scope.changeProjectName(project);
                     $scope.toggleEditButton(project);
