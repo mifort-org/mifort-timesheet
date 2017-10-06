@@ -180,6 +180,35 @@ angular.module('mifortTimesheet.report').factory('reportService',
                 position: 'left'
             }
         ];
+        self.introStepsForEmployee = [
+            {
+                element: '#step1',
+                intro: "<p>This is a table of all logs among the application. Each column could be sorted by clicking on column name " +
+                "and each of them has filter that could be opened on the filter button next to column name.</p>" +
+                "<p>User, Project and Assignment columns has dropdown filter with the quick search field and checkboxes to choose the filtered options.</p>",
+                position: 'bottom'
+            },
+            {
+                element: '#step3',
+                intro: "<p>Use aggregation field to set the period of time to show.</p>",
+                position: 'bottom'
+            },
+            {
+                element: '#print',
+                intro: "<p>You could print or export the report by pressing the top panel buttons Print.</p>",
+                position: 'left'
+            },
+            {
+                element: '.pdf-icon',
+                intro: "<p>You could export the report by pressing the top panel button PDF.</p>",
+                position: 'left'
+            },
+            {
+                element: '.csv-icon',
+                intro: "<p>You could print or export the report by pressing the top panel buttons CSV.</p>",
+                position: 'left'
+            }
+        ];
         return self;
     }
     ]);
