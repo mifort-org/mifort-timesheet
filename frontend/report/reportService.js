@@ -180,6 +180,9 @@ angular.module('mifortTimesheet.report').factory('reportService',
                 position: 'left'
             }
         ];
+        self.introStepsForEmployee = self.introSteps.slice(); //copy of introSteps array
+        self.introStepsForEmployee.splice(1, 1) //delete unwanted element
+
         return self;
     }
     ]);
