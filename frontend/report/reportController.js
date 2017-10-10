@@ -33,11 +33,9 @@ angular.module('mifortTimesheet.report', ['ngRoute', 'constants'])
                 maxVisiblePages = 5,
                 columns = reportService.columns;
 
+            $scope.introSteps = reportService.introSteps;
             if (userRole == 'employee') {
-                reportService.introSteps.splice(1, 1);
-                $scope.introSteps = reportService.introSteps;
-            } else {
-                $scope.introSteps = reportService.introSteps;
+                $scope.introSteps.splice(1, 1);
             }
 
             if (userRole == 'owner' || userRole == 'manager') {
