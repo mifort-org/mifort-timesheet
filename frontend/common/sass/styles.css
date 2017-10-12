@@ -5882,7 +5882,7 @@ input[type='number'] {
 :-ms-input-placeholder {
   color: #ccc !important; }
 
-.main-controls input[type=file] {
+.main-controls input[type='file'] {
   display: none;
   width: 0;
   height: 0;
