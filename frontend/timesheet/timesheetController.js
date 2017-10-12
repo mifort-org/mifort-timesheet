@@ -30,8 +30,8 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
         });
     }])
 
-    .controller('timesheetController', ['$scope', 'timesheetService', 'calendarService', 'preferences', 'loginService', '$routeParams', '$timeout', 'Notification', "$q", "projectSummaryService", "$filter", '$location', '$http', '$rootScope',
-        function ($scope, timesheetService, calendarService, preferences, loginService, $routeParams, $timeout, Notification, $q, projectSummaryService, $filter, $location, $http, $rootScope) {
+    .controller('timesheetController', ['$scope', 'timesheetService', 'calendarService', 'preferences', 'loginService', '$routeParams', '$timeout', 'Notification', "$q", "projectSummaryService", "$filter", '$location', '$http', '$rootScope','projectList',
+        function ($scope, timesheetService, calendarService, preferences, loginService, $routeParams, $timeout, Notification, $q, projectSummaryService, $filter, $location, $http, $rootScope, projectList) {
             var user;
 
             $scope.projects = [];
@@ -72,10 +72,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                     }
 
                     if (user.assignments && user.assignments.length) {
-                        user.assignments.forEach(function (assignment) {
-                            uniqueProjectAssignments.push(assignment.projectId);
-                        });
-                        uniqueProjectAssignments = _.uniq(uniqueProjectAssignments);
+                        uniqueProjectAssignments = getUserProjectsId(user);
                     }
 
                     //get timesheets
@@ -84,12 +81,42 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                         $scope.loading = false;
                     }
 
+                    getProjectData(uniqueProjectAssignments,loadedProjects);
+                }
+            });
+
+            function getUserProjectsId(user){
+                var arr = [];
+                user.assignments.forEach(function (assignment) {
+                    arr.push(assignment.projectId);
+                });
+                arr = _.uniq(arr);
+                return arr;
+            }
+
+            function getProjectData(uniqueProjectAssignments,loadedProjects, isCsvLoaded){
+                return new Promise(function(resolve, reject) {
                     uniqueProjectAssignments.forEach(function (assignment, index) {
                         timesheetService.getProject(assignment).success(function (project) {
                             if (project && project.active) {
                                 project.assignments = _.where(user.assignments, {projectId: project._id});
 
-                                $scope.projects.splice(index, 0, project);
+                                if($scope.projects.length > 0) {
+                                    var counter = 0;
+                                    for (var i = 0; i < $scope.projects.length; i++) {
+                                        if ($scope.projects[i]._id == project._id) {
+                                            $scope.projects[i].periods = project.periods;
+                                            counter++
+                                        }
+                                        else if (i == $scope.projects.length - 1 && !counter) {
+                                            $scope.projects.splice(index, 0, project);
+                                            break
+                                        }
+                                    }
+                                }
+                                else {
+                                    $scope.projects.splice(index, 0, project);
+                                }
                             }
 
                             loadedProjects++;
@@ -101,18 +128,34 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                                 return {_id: project._id, name: project.name};
                             });
                             $scope.grid.options.reportFilters = [{field: "projects", value: filterProjects}];
-
                             if (loadedProjects == uniqueProjectAssignments.length) {
-                                $scope.init();
+                                $scope.init(isCsvLoaded);
+                                resolve();
                             }
                         });
                     });
-                }
-            });
+                });
+            }
 
-            $scope.addLogs = function (index) {
+            function updateLogs(isCsvLoaded){
+                var arrayID = getUserProjectsId(user);
+                getProjectData(arrayID, 0, isCsvLoaded).then(function(){
+                    $scope.projects = _.chain($scope.projects).indexBy("_id").values().value();
+                    console.log($scope.projects,$scope.logs)
+                });
+            }
+
+            $scope.addLogs = function (index, isCsvLoaded) {
+                if(($scope.logs && $scope.logs.length > 0) && isCsvLoaded){
+                    $scope.logs.forEach(function(log, logIndex){
+                        if(log.index == index){
+                            $scope.logs.splice(logIndex, 1)
+                        }
+                    });
+                }
                 $scope.logs.push({index: index, data: $scope.groupDatePeriodsProjects(index)});
             };
+
             $scope.currentPeriodLogsLoaded = function () {
                 $scope.$root.$emit('projectsAndLogsLoaded', {
                     projects: $scope.projects,
@@ -120,6 +163,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                     index: $scope.currentPeriodIndex
                 });
             };
+
             function blockTable() {
                 var blockday = $scope.getFilteredDates();
                 var counter = false;
@@ -158,7 +202,8 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                     $scope.rejectColor = false;
                 }
             }
-            $scope.init = function () {
+
+            $scope.init = function (isCsvLoaded) {
                 var savedRedirectDate = preferences.get("redirectDate");
                 if(savedRedirectDate && !moment(savedRedirectDate, '"MM/DD/YYYY"', true).isValid()) {
                     preferences.remove("redirectDate");
@@ -186,7 +231,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                 });
 
                 $q.all(promises).then(function () {
-                    $scope.addLogs($scope.currentPeriodIndex);
+                    $scope.addLogs($scope.currentPeriodIndex, isCsvLoaded);
                     initWatchers("logs");
                     $scope.currentPeriodLogsLoaded();
 
@@ -318,13 +363,48 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                     updateTimelog();
                 }, true);
             }
+
             function updateTimelog() {
                 var newLogs = $scope.getCurrentLog($scope.logs),
                     oldLogs = $scope.getCurrentLog($scope.lastSavedLogs);
                 if (newLogs && !oldLogs) return;
+                var tempObject = {};
+                angular.copy(newLogs.data[0], tempObject);
 
                 var newLogsData = newLogs.data,
                     oldLogsData = oldLogs.data;
+                if ($rootScope.csvInfoUpload) {
+
+                    var userProjectList = projectList.getList();
+                    var isUserAssigned = true;
+                    var isProjectAssigned = false;
+
+                    for (var i = 0; i < $rootScope.csvInfoUpload.length; i++){
+                        for (var z = 0; z < userProjectList.length; z++){
+                            if($rootScope.csvInfoUpload[i].projectName == userProjectList[z].name){
+                                $rootScope.csvInfoUpload[i].projectId = userProjectList[z]._id;
+                                isProjectAssigned = true;
+                            }
+                            if(z == userProjectList.length - 1 && !isProjectAssigned){
+                                isUserAssigned = false;
+                            }
+                        }
+                    }
+
+                    if (isUserAssigned) {
+                        for (var i = 0; i < $rootScope.csvInfoUpload.length; i++) {
+                            tempObject.comment = $rootScope.csvInfoUpload[i].comment;
+                            tempObject.date = $rootScope.csvInfoUpload[i].date;
+                            tempObject.time = $rootScope.csvInfoUpload[i].time;
+                            tempObject.projectName = $rootScope.csvInfoUpload[i].projectName;
+                            tempObject.projectId = $rootScope.csvInfoUpload[i].projectId;
+                            angular.copy(tempObject, $rootScope.csvInfoUpload[i]);
+                        }
+                        newLogsData = newLogsData.concat($rootScope.csvInfoUpload);
+                    }
+                }
+
+
                 if (newLogsData.length >= oldLogsData.length) {
                     var newValueToCompare = $scope.getNotEmptyLogs(newLogsData).map(function (log) {
                         return {projectId: log.projectId, time: log.time, comment: log.comment};
@@ -336,7 +416,9 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
 
                     if (!_.isEqual(newValueToCompare, oldValueToCompare)) {
                         var dates = $scope.getSortedLogs();
-
+                        if($rootScope.csvInfoUpload) {
+                            dates = dates.concat($rootScope.csvInfoUpload);
+                        }
                         var timesheetToSave = angular.copy(dates);
 
                         timesheetToSave.map(function (log) {
@@ -391,6 +473,10 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                                         } else {
                                             console.log('no pending changes');
                                         }
+                                       if($rootScope.csvInfoUpload) {
+                                           updateLogs(true);
+                                       }
+                                        $rootScope.csvInfoUpload = null;
                                     }).error(function () {
                                         $scope.activeRequest = false;
                                     });
@@ -614,6 +700,11 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                 });
                 $scope.grid.options.reportFilters[0].value = filterProjectsByName;
             };
+
+
+            $scope.$on('csvInfoLoaded', function(){
+                updateTimelog();
+            });
 
             $scope.getFilteredDates = function () {
                 var data = $scope.getCurrentLogData();

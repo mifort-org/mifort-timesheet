@@ -78,6 +78,10 @@
     <a href="" ng-click="openLink('csv')" ng-if="isVisible('csv') && isLoggedIn" class="main-control csv-icon">
         <span>CSV</span>
     </a>
+       <label file-csv-reader class="csv-icon-images"  ng-if="isVisible('timesheet') && isLoggedIn">
+           <span>CSV</span>
+       </label>
+
     <a href="" ng-click="openLink('project')" ng-if="isVisible('project') && isLoggedIn" class="main-control project-icon">
         <span>Add Project</span>
     </a>
