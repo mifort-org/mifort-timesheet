@@ -86,11 +86,11 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
 
                     uniqueProjectAssignments.forEach(function (assignment, index) {
                         timesheetService.getProject(assignment).success(function (project) {
-                            if (project && project.active) {
+                             if (project) {
                                 project.assignments = _.where(user.assignments, {projectId: project._id});
 
                                 $scope.projects.splice(index, 0, project);
-                            }
+                             }
 
                             loadedProjects++;
                         }).then(function () {
@@ -157,7 +157,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                     $scope.approveColor = true;
                     $scope.rejectColor = false;
                 }
-                if(userRole === 'owner' || userRole === 'manager'){
+                if(userRole === 'manager'){
                     if(!$scope.approveColor && !$scope.rejectColor && !$scope.readonly){
                         $scope.edit = false;
                     } else {
@@ -483,7 +483,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                 newRow.position = $scope.calcNewLogPosition(currentPeriod, log.date);
                 var blockday = $scope.getFilteredDates();
                 console.log(blockday);
-                if (userRole === 'owner' || userRole === 'manager'){
+                if (userRole === 'manager'){
                     if((!blockday[2].readyForApprove && $scope.rejectColor) || blockday[2].readyForApprove){
                         $scope.setDefaultProject(newRow);
                     }
@@ -752,7 +752,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
             $scope.showButton = function () {
                 var blockday = $scope.getFilteredDates();
                 console.log(blockday[2]);
-                if (userRole === 'owner' || userRole === 'manager'){
+                if (userRole === 'manager'){
                     if((!blockday[2].readyForApprove && !$scope.rejectColor) || !blockday[2].readyForApprove){
                         $scope.dropHide = true;
                         $scope.arrowHide = true;
