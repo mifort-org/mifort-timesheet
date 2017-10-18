@@ -49,7 +49,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
             $scope.readonly = false;
 
             var userRole = preferences.get('user').role.toLowerCase();
-
+            var userName = preferences.get('user').displayName;
             loginService.getUser($scope.customUserId).success(function (loggedUser) {
                 if (loggedUser) {
                     $scope.loading = true;
@@ -166,6 +166,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
 
             function blockTable() {
                 var blockday = $scope.getFilteredDates();
+                var userId = blockday[0];
                 var counter = false;
                 var reject = false;
                 var approve = false;
@@ -201,17 +202,26 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                     $scope.approveColor = true;
                     $scope.rejectColor = false;
                 }
-                if(userRole === 'owner' || userRole === 'manager'){
-                    if(!$scope.approveColor && !$scope.rejectColor && !$scope.readonly){
-                        $scope.edit = false;
-                    } else {
+                if (userName != blockday[0].userName) {
+                    console.log($scope.readonly);
+                    if($scope.readonly && !$scope.approveColor){
                         $scope.edit = true;
                         $scope.readonly = false;
-                    }
-                    if(!blockday[2].readyForApprove && !$scope.approveColor && !$scope.rejectColor){
+                        $scope.blockOneApprove = false;
+                    }else{
                         $scope.readonly = true;
                         $scope.blockOneApprove = true;
                     }
+                    // if (!$scope.approveColor && !$scope.rejectColor && !$scope.readonly) {
+                    //     $scope.edit = false;
+                    // } else {
+                    //     $scope.edit = true;
+                    //     $scope.readonly = false;
+                    // }
+                    // if (!blockday[2].readyForApprove && !$scope.approveColor && !$scope.rejectColor) {
+                    //     $scope.readonly = true;
+                    //     $scope.blockOneApprove = true;
+                    // }
                 }
             }
 
@@ -569,14 +579,16 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                 newRow.position = $scope.calcNewLogPosition(currentPeriod, log.date);
                 var blockday = $scope.getFilteredDates();
                 console.log(blockday);
-                if (userRole === 'owner' || userRole === 'manager'){
-                    if((!blockday[2].readyForApprove && $scope.rejectColor) || blockday[2].readyForApprove){
+                if (userName != blockday[0].userName) {
+                    if ((blockday[2].readyForApprove && !$scope.approveColor)) {
                         $scope.setDefaultProject(newRow);
                     }
                 }
-                 else if(!$scope.readonly && userRole != 'employee'){
+                else if(!$scope.readonly && userRole != 'employee'){
                     $scope.setDefaultProject(newRow);
                 } else if ($scope.rejectColor){
+                    $scope.setDefaultProject(newRow);
+                } else if(!$scope.readonly && !$scope.rejectColor && !$scope.approveColor){
                     $scope.setDefaultProject(newRow);
                 }
 
@@ -589,22 +601,33 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
             };
 
             $scope.removeRow = function (log, project, periodIndex) {
-
+                    var blockday = $scope.getFilteredDates();
                     var dates = $scope.getCurrentLogData();
-
                     if (log._id && (log.time || log.comment)) {
-                        if(!$scope.readonly && userRole != 'employee') {
-                            timesheetService.removeTimesheet(log).success(function () {
-                                Notification.success('Changes saved');
-                            });
-                        } else if($scope.rejectColor){
-                            timesheetService.removeTimesheet(log).success(function () {
-                                Notification.success('Changes saved');
-                            });
+                        if(userName != blockday[0].userName){
+                            if(!$scope.readonly && !$scope.approveColor){
+                                timesheetService.removeTimesheet(log).success(function () {
+                                    Notification.success('Changes saved');
+                                });
+                                dates.splice(dates.indexOf(log), 1);
+                            }
+                        } else {
+                            if(!$scope.readonly) {
+                                timesheetService.removeTimesheet(log).success(function () {
+                                    Notification.success('Changes saved');
+                                });
+                                dates.splice(dates.indexOf(log), 1);
+                            } else if($scope.rejectColor){
+                                timesheetService.removeTimesheet(log).success(function () {
+                                    Notification.success('Changes saved');
+                                });
+                                dates.splice(dates.indexOf(log), 1);
+                            }
                         }
                     }
-
-                    dates.splice(dates.indexOf(log), 1);
+                    if(!$scope.readonly && !$scope.rejectColor && !$scope.approveColor || $scope.rejectColor && !$scope.readonly){
+                        dates.splice(dates.indexOf(log), 1);
+                    }
 
                     $scope.filteredLogs = $scope.getFilteredDates();
                     $scope.lastSavedLogs = angular.copy($scope.logs);
@@ -842,18 +865,24 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
 
             $scope.showButton = function () {
                 var blockday = $scope.getFilteredDates();
-                console.log(blockday[2]);
-                if (userRole === 'owner' || userRole === 'manager'){
-                    if((!blockday[2].readyForApprove && !$scope.rejectColor) || !blockday[2].readyForApprove){
+                if (userName != blockday[0].userName){
+                    // if((!blockday[2].readyForApprove && !$scope.rejectColor) || !blockday[2].readyForApprove){
+                    //     $scope.dropHide = true;
+                    //     $scope.arrowHide = true;
+                    // } else {
+                    //     $scope.dropHide = false;
+                    //     $scope.arrowHide = false;
+                    // }
+                    // if(!blockday[2].readyForApprove && $scope.rejectColor){
+                    //     $scope.dropHide = false;
+                    //     $scope.arrowHide = false;
+                    // }
+                    if($scope.edit && !$scope.approveColor){
+                        $scope.dropHide = false;
+                        $scope.arrowHide = false;
+                    } else if($scope.blockOneApprove || $scope.rejectColor){
                         $scope.dropHide = true;
                         $scope.arrowHide = true;
-                    } else {
-                        $scope.dropHide = false;
-                        $scope.arrowHide = false;
-                    }
-                    if(!blockday[2].readyForApprove && $scope.rejectColor){
-                        $scope.dropHide = false;
-                        $scope.arrowHide = false;
                     }
                 } else if ($scope.readonly || $scope.approveColor) {
                     $scope.dropHide = true;
@@ -1061,6 +1090,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                 history.back();
             };
             $scope.approve = function (button) {
+                var blockday = $scope.getFilteredDates();
                 var dates = $scope.getSortedLogs();
                 var timesheetToSave = angular.copy(dates);
                 timesheetToSave.forEach(function (userData) {
@@ -1071,13 +1101,23 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                         userData.Approve = false;
                     }
                     if(button === "approve") {
-                        if(userData.readyForApprove){
+                        if(userName != blockday[0].userName){
+                            if(userData.readyForApprove){
+                                userData.Approve = true;
+                                userData.readyForApprove = true;
+                            }
+                        } else {
                             userData.Approve = true;
                             userData.readyForApprove = true;
                         }
                     }
                     if(button === "reject") {
-                        if(userData.Approve || userData.readyForApprove){
+                        if(userName != blockday[0].userName){
+                            if(userData.Approve || userData.readyForApprove){
+                                userData.readyForApprove = false;
+                                userData.Approve = false;
+                            }
+                        } else {
                             userData.readyForApprove = false;
                             userData.Approve = false;
                         }
@@ -1095,7 +1135,13 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                         $scope.rejectColor = false;
                     }
                     if(button === "approve") {
-                        if(timesheetToSave[0].readyForApprove){
+                        if(userName != blockday[0].userName){
+                            if(timesheetToSave[0].readyForApprove){
+                                $scope.readonly = true;
+                                $scope.approveColor = true;
+                                $scope.rejectColor = false;
+                            }
+                        } else {
                             $scope.readonly = true;
                             $scope.approveColor = true;
                             $scope.rejectColor = false;
