@@ -123,6 +123,13 @@ angular.module('mifortTimesheet.employees', ['ngRoute', 'constants'])
                 emails: []
             };
 
+            if ($location.path() == '/employees') {
+                employeesService.getCompany($scope.user.companyId).success(function (company) {
+                    $scope.company = company;
+                    $scope.company.emails = [];
+                });
+            };
+
             function getEmployees(){
                 employeesService.getCompanyEmployers($scope.user.companyId).success(function(employees) {
                     employees.forEach(function(employee) {
