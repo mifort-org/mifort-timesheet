@@ -712,15 +712,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
             $scope.getCurrentLog = function (logs) {
                 return _.findWhere(logs, {index: $scope.currentPeriodIndex});
             };
-            function maxSize() {
-                var maxSizeArr = document.getElementsByClassName("timesheet-hours");
-                for(var i=0; i< maxSizeArr.length;i++){
-                    maxSizeArr[i].setAttribute("maxlength","4");
-                }
-            }
-            setTimeout(function () {
-                maxSize();
-            },200);
+
             $scope.getCurrentLogData = function () {
                 var log = $scope.getCurrentLog($scope.logs);
                 return log ? log.data : [];
