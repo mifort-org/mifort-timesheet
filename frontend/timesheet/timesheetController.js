@@ -47,6 +47,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
             $scope.lastSaveTimeout = null;
             $scope.lastSavedLogs = [];
             $scope.readonly = false;
+
             var userRole = preferences.get('user').role.toLowerCase();
 
             loginService.getUser($scope.customUserId).success(function (loggedUser) {
@@ -85,7 +86,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
 
                     uniqueProjectAssignments.forEach(function (assignment, index) {
                         timesheetService.getProject(assignment).success(function (project) {
-                             if(project && project.active) {
+                            if (project && project.active) {
                                 project.assignments = _.where(user.assignments, {projectId: project._id});
                                 $scope.projects.splice(index, 0, project);
                              }
@@ -750,7 +751,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
             $scope.showButton = function () {
                 var blockday = $scope.getFilteredDates();
                 console.log(blockday[2]);
-                if (userRole === 'owner' ||userRole === 'manager'){
+                if (userRole === 'owner' || userRole === 'manager'){
                     if((!blockday[2].readyForApprove && !$scope.rejectColor) || !blockday[2].readyForApprove){
                         $scope.dropHide = true;
                         $scope.arrowHide = true;
