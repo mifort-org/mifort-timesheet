@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-@import "../common/sass/variables";
+@import "../common/sass/variables.scss";
 
 
 .projects-controls{
@@ -54,6 +54,7 @@
 
         input {
             width: 100%;
+            min-height: 34px;
         }
 
         .edit-project{
