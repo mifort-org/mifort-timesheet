@@ -82,7 +82,6 @@ angular.module('mifortTimesheet', [
                     projectsService.getProjects(user.companyId).success(function(projects) {
                         if (projects.length) {
                             $scope.projects = projects;
-                            projectList.setProjectsList(projects);
                         }
                     });
                 }
