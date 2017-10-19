@@ -47,7 +47,6 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
             $scope.lastSaveTimeout = null;
             $scope.lastSavedLogs = [];
             $scope.readonly = false;
-
             var userRole = preferences.get('user').role.toLowerCase();
 
             loginService.getUser($scope.customUserId).success(function (loggedUser) {
@@ -64,7 +63,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                         preferences.set('user', loggedUser);
 
                         //get accounts
-                        $http.get('api/v1/user/accounts/' + user.email).success(function (accounts) {
+                        $http.get('api/v1/user/accounts/' + user.email).success(function(accounts) {
                             $rootScope.accounts = accounts.filter(function (acc) {
                                 return acc.companyId != user.companyId && acc.external;
                             });
@@ -86,10 +85,10 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
 
                     uniqueProjectAssignments.forEach(function (assignment, index) {
                         timesheetService.getProject(assignment).success(function (project) {
-                            if (project && project.active) {
+                             if(project && project.active) {
                                 project.assignments = _.where(user.assignments, {projectId: project._id});
                                 $scope.projects.splice(index, 0, project);
-                            }
+                             }
 
                             loadedProjects++;
                         }).then(function () {
@@ -124,13 +123,13 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                 var counter = false;
                 var reject = false;
                 var approve = false;
-                for (var key in blockday) {
-                    if (blockday[key].readyForApprove === true) {
+                for(var key in blockday) {
+                    if(blockday[key].readyForApprove === true){
                         counter = true;
-                    } else if (blockday[key].readyForApprove === false) {
+                    } else if (blockday[key].readyForApprove === false){
                         reject = true;
                     }
-                    if (blockday[key].Approve === true) {
+                    if(blockday[key].Approve === true){
                         approve = true;
                     }
                 }
@@ -143,7 +142,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                     $scope.approveColor = false;
                     $scope.rejectColor = true;
                 }
-                if (reject === true) {
+                if(reject === true){
                     $scope.readonly = false;
                     $scope.approveColor = false;
                     $scope.rejectColor = true;
@@ -151,19 +150,19 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                     $scope.approveColor = false;
                     $scope.rejectColor = false;
                 }
-                if (approve === true) {
+                if(approve === true){
                     $scope.readonly = true;
                     $scope.approveColor = true;
                     $scope.rejectColor = false;
                 }
-                if (userRole === 'owner' || userRole === 'manager') {
-                    if (!$scope.approveColor && !$scope.rejectColor && !$scope.readonly) {
+                if(userRole === 'owner' || userRole === 'manager'){
+                    if(!$scope.approveColor && !$scope.rejectColor && !$scope.readonly){
                         $scope.edit = false;
                     } else {
                         $scope.edit = true;
                         $scope.readonly = false;
                     }
-                    if (!blockday[2].readyForApprove && !$scope.approveColor && !$scope.rejectColor) {
+                    if(!blockday[2].readyForApprove && !$scope.approveColor && !$scope.rejectColor){
                         $scope.readonly = true;
                         $scope.blockOneApprove = true;
                     }
@@ -171,16 +170,16 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
             }
             $scope.init = function () {
                 var savedRedirectDate = preferences.get("redirectDate");
-                if (savedRedirectDate && !moment(savedRedirectDate, '"MM/DD/YYYY"', true).isValid()) {
+                if(savedRedirectDate && !moment(savedRedirectDate, '"MM/DD/YYYY"', true).isValid()) {
                     preferences.remove("redirectDate");
                 }
                 var promises = [];
                 $scope.projects.forEach(function (project) {
                     var today = moment();
-                    if (savedRedirectDate) {
+                    if(savedRedirectDate){
                         var redirectDate = savedRedirectDate;
                         project.periods.forEach(function (v, i, arr) {
-                            if (v.start === redirectDate) {
+                            if(v.start === redirectDate){
                                 preferences.set("currentPeriodIndex", i);
                             }
                         });
@@ -202,7 +201,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                     $scope.currentPeriodLogsLoaded();
 
                     $scope.filteredLogs = $scope.getFilteredDates();
-                    if ($scope.filteredLogs[1].readyForApprove) {
+                    if($scope.filteredLogs[1].readyForApprove){
                         $scope.buttonHide = true;
                     }
                     blockTable();
@@ -325,15 +324,15 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
             function initWatchers(property) {
                 $scope.lastSavedLogs = angular.copy($scope.logs);
                 $scope.$watch(property, function (newValue, oldValue) {
-                    if ($scope.logs.length > 1) {
-                        $scope.lastSavedLogs = angular.copy(oldValue);
-                    }
+                if($scope.logs.length > 1) {
+                    $scope.lastSavedLogs = angular.copy(oldValue);
+                }
                     updateTimelog();
                 }, true);
             }
             function updateTimelog() {
                 $scope.filteredLogs = $scope.getFilteredDates();
-                if ($scope.filteredLogs[1].readyForApprove) {
+                if($scope.filteredLogs[1].readyForApprove){
                     $scope.buttonHide = true;
                 } else {
                     $scope.buttonHide = false;
@@ -482,14 +481,14 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                 newRow.position = $scope.calcNewLogPosition(currentPeriod, log.date);
                 var blockday = $scope.getFilteredDates();
                 console.log(blockday);
-                if (userRole === 'owner' || userRole === 'manager') {
-                    if ((!blockday[2].readyForApprove && $scope.rejectColor) || blockday[2].readyForApprove) {
+                if (userRole === 'owner' || userRole === 'manager'){
+                    if((!blockday[2].readyForApprove && $scope.rejectColor) || blockday[2].readyForApprove){
                         $scope.setDefaultProject(newRow);
                     }
                 }
-                else if (!$scope.readonly && userRole != 'employee') {
+                 else if(!$scope.readonly && userRole != 'employee'){
                     $scope.setDefaultProject(newRow);
-                } else if ($scope.rejectColor) {
+                } else if ($scope.rejectColor){
                     $scope.setDefaultProject(newRow);
                 }
 
@@ -503,24 +502,24 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
 
             $scope.removeRow = function (log, project, periodIndex) {
 
-                var dates = $scope.getCurrentLogData();
+                    var dates = $scope.getCurrentLogData();
 
-                if (log._id && (log.time || log.comment)) {
-                    if (!$scope.readonly && userRole != 'employee') {
-                        timesheetService.removeTimesheet(log).success(function () {
-                            Notification.success('Changes saved');
-                        });
-                    } else if ($scope.rejectColor) {
-                        timesheetService.removeTimesheet(log).success(function () {
-                            Notification.success('Changes saved');
-                        });
+                    if (log._id && (log.time || log.comment)) {
+                        if(!$scope.readonly && userRole != 'employee') {
+                            timesheetService.removeTimesheet(log).success(function () {
+                                Notification.success('Changes saved');
+                            });
+                        } else if($scope.rejectColor){
+                            timesheetService.removeTimesheet(log).success(function () {
+                                Notification.success('Changes saved');
+                            });
+                        }
                     }
-                }
 
-                dates.splice(dates.indexOf(log), 1);
+                    dates.splice(dates.indexOf(log), 1);
 
-                $scope.filteredLogs = $scope.getFilteredDates();
-                $scope.lastSavedLogs = angular.copy($scope.logs);
+                    $scope.filteredLogs = $scope.getFilteredDates();
+                    $scope.lastSavedLogs = angular.copy($scope.logs);
 
             };
 
@@ -570,7 +569,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
 
                 var isCurrentExist = $scope.currentDatePeriod !== undefined;
 
-                if (isCurrentExist) {
+                if(isCurrentExist) {
                     $scope.currentPeriodIndex = $scope.currentDatePeriod;
                     loadLogs(projects, lastPeriod, $scope.currentDatePeriod);
                 }
@@ -604,13 +603,13 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
             };
             function maxSize() {
                 var maxSizeArr = document.getElementsByClassName("timesheet-hours");
-                for (var i = 0; i < maxSizeArr.length; i++) {
-                    maxSizeArr[i].setAttribute("maxlength", "4");
+                for(var i=0; i< maxSizeArr.length;i++){
+                    maxSizeArr[i].setAttribute("maxlength","4");
                 }
             }
             setTimeout(function () {
                 maxSize();
-            }, 200);
+            },200);
             $scope.getCurrentLogData = function () {
                 var log = $scope.getCurrentLog($scope.logs);
                 return log ? log.data : [];
@@ -650,7 +649,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                     endDate = moment(new Date($scope.projects[0].periods[$scope.currentPeriodIndex].end));
                 if (preferences.get("redirectDate")) {
                     var endRedirectDate = $scope.startRedirectDate.split("/");
-                    endRedirectDate[1] = String(Number(endRedirectDate[1]) + 6);
+                    endRedirectDate[1] = String(Number(endRedirectDate[1])+6);
                     endRedirectDate = endRedirectDate.join("/");
                     startDate = moment(new Date($scope.startRedirectDate));
                     endDate = moment(new Date(endRedirectDate));
@@ -751,15 +750,15 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
             $scope.showButton = function () {
                 var blockday = $scope.getFilteredDates();
                 console.log(blockday[2]);
-                if (userRole === 'owner' || userRole === 'manager') {
-                    if ((!blockday[2].readyForApprove && !$scope.rejectColor) || !blockday[2].readyForApprove) {
+                if (userRole === 'owner' ||userRole === 'manager'){
+                    if((!blockday[2].readyForApprove && !$scope.rejectColor) || !blockday[2].readyForApprove){
                         $scope.dropHide = true;
                         $scope.arrowHide = true;
                     } else {
                         $scope.dropHide = false;
                         $scope.arrowHide = false;
                     }
-                    if (!blockday[2].readyForApprove && $scope.rejectColor) {
+                    if(!blockday[2].readyForApprove && $scope.rejectColor){
                         $scope.dropHide = false;
                         $scope.arrowHide = false;
                     }
@@ -922,7 +921,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                 }
                 return false;
             };
-            $scope.dateMonth = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+            $scope.dateMonth = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
             $scope.getPeriodLabel = function (period) {
                 if (period) {
                     var periodStart = moment(new Date(period.start)),
@@ -935,14 +934,14 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                     }
                     periodEnd = periodEnd.format("DD MMM");
                     var savedRedirectDate = preferences.get("redirectDate");
-                    if (savedRedirectDate) {
-                        var startRedirectDate = savedRedirectDate.slice(3, 5);
+                    if (savedRedirectDate){
+                        var startRedirectDate = savedRedirectDate.slice(3,5);
                         $scope.startRedirectDate = savedRedirectDate;
-                        var monthIndex = Number(savedRedirectDate.slice(0, 2));
-                        var monthName = $scope.dateMonth[monthIndex - 1];
+                        var monthIndex = Number(savedRedirectDate.slice(0,2));
+                        var monthName = $scope.dateMonth[monthIndex-1];
                         var endRedirectDate = Number(startRedirectDate) + 6;
-                        if (endRedirectDate < 10) {
-                            endRedirectDate = "0" + endRedirectDate;
+                        if (endRedirectDate < 10){
+                            endRedirectDate = "0"+endRedirectDate;
                         }
                         endRedirectDate = endRedirectDate + " " + monthName;
                         return startRedirectDate + ' - ' + endRedirectDate;
@@ -973,19 +972,19 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                 var timesheetToSave = angular.copy(dates);
                 timesheetToSave.forEach(function (userData) {
                     userData.time = parseInt(userData.time, 10);
-                    if (button === "ready") {
+                    if(button === "ready") {
                         userData.readyForApprove = true;
                         userData.isreadyForApproveNeeded = true;
                         userData.Approve = false;
                     }
-                    if (button === "approve") {
-                        if (userData.readyForApprove) {
+                    if(button === "approve") {
+                        if(userData.readyForApprove){
                             userData.Approve = true;
                             userData.readyForApprove = true;
                         }
                     }
-                    if (button === "reject") {
-                        if (userData.Approve || userData.readyForApprove) {
+                    if(button === "reject") {
+                        if(userData.Approve || userData.readyForApprove){
                             userData.readyForApprove = false;
                             userData.Approve = false;
                         }
@@ -996,21 +995,21 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                     Notification.success('Changes saved');
                     var timesheetToSave = angular.copy(dates);
                     console.log(timesheetToSave);
-                    if (button === "ready") {
+                    if(button === "ready") {
                         $scope.readonly = true;
                         $scope.buttonHide = true;
                         $scope.approveColor = false;
                         $scope.rejectColor = false;
                     }
-                    if (button === "approve") {
-                        if (timesheetToSave[0].readyForApprove) {
+                    if(button === "approve") {
+                        if(timesheetToSave[0].readyForApprove){
                             $scope.readonly = true;
                             $scope.approveColor = true;
                             $scope.rejectColor = false;
                         }
                     }
-                    if (button === "reject") {
-                        if (timesheetToSave[0].readyForApprove || timesheetToSave[0].Approve) {
+                    if(button === "reject") {
+                        if(timesheetToSave[0].readyForApprove || timesheetToSave[0].Approve){
                             $scope.readonly = false;
                             $scope.approveColor = false;
                             $scope.rejectColor = true;
