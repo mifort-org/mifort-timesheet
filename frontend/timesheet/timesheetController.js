@@ -47,6 +47,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
             $scope.lastSaveTimeout = null;
             $scope.lastSavedLogs = [];
             $scope.readonly = false;
+            var currentLog;
 
             var userRole = preferences.get('user').role.toLowerCase();
             var userName = preferences.get('user').displayName;
@@ -80,8 +81,9 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                         $scope.noAssignments = true;
                         $scope.loading = false;
                     }
-
-                    getProjectData(uniqueProjectAssignments,loadedProjects);
+                    getProjectData(uniqueProjectAssignments,loadedProjects).then(function(){
+                        projectList.setProjectsList($scope.projects);
+                    });
                 }
             });
 
@@ -141,19 +143,16 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                 var arrayID = getUserProjectsId(user);
                 getProjectData(arrayID, 0, isCsvLoaded).then(function(){
                     $scope.projects = _.chain($scope.projects).indexBy("_id").values().value();
-                    console.log($scope.projects,$scope.logs)
                 });
             }
 
             $scope.addLogs = function (index, isCsvLoaded) {
                 if(($scope.logs && $scope.logs.length > 0) && isCsvLoaded){
-                    $scope.logs.forEach(function(log, logIndex){
-                        if(log.index == index){
-                            $scope.logs.splice(logIndex, 1)
-                        }
-                    });
+                    $scope.logs = [];
                 }
+
                 $scope.logs.push({index: index, data: $scope.groupDatePeriodsProjects(index)});
+                currentLog = angular.copy($scope.logs);
             };
 
             $scope.currentPeriodLogsLoaded = function () {
@@ -203,7 +202,6 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                     $scope.rejectColor = false;
                 }
                 if (userName != blockday[0].userName) {
-                    console.log($scope.readonly);
                     if($scope.readonly && !$scope.approveColor){
                         $scope.edit = true;
                         $scope.readonly = false;
@@ -254,7 +252,9 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
 
                 $q.all(promises).then(function () {
                     $scope.addLogs($scope.currentPeriodIndex, isCsvLoaded);
-                    initWatchers("logs");
+                    if(!isCsvLoaded) {
+                        initWatchers("logs");
+                    }
                     $scope.currentPeriodLogsLoaded();
 
                     $scope.filteredLogs = $scope.getFilteredDates();
@@ -388,46 +388,59 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                 }, true);
             }
 
+
+
+            var logsNewObject = {
+                comment: "",
+                date: "",
+                projectName: "",
+                time: null,
+                userId: "",
+                userName: "",
+                role: "",
+                projectId: ""
+            };
+
             function updateTimelog() {
                 $scope.filteredLogs = $scope.getFilteredDates();
-                if($scope.filteredLogs[1].readyForApprove){
-                    $scope.buttonHide = true;
-                } else {
-                    $scope.buttonHide = false;
-                }
+                $scope.buttonHide  = $scope.filteredLogs[1].readyForApprove ? true : false;
 
                 var newLogs = $scope.getCurrentLog($scope.logs),
                     oldLogs = $scope.getCurrentLog($scope.lastSavedLogs);
+               var currentWindowLog = $scope.getCurrentLog(currentLog);
+
                 if (newLogs && !oldLogs) return;
+
                 var tempObject = {};
-                angular.copy(newLogs.data[0], tempObject);
+                angular.copy(logsNewObject, tempObject);
 
                 var newLogsData = newLogs.data,
                     oldLogsData = oldLogs.data;
-                if ($rootScope.csvInfoUpload) {
 
+                if ($rootScope.csvInfoUpload) {
                     var userProjectList = projectList.getList();
-                    var isUserAssigned = true;
-                    var isProjectAssigned = false;
+                    var isProjectAssigned = 0;
 
                     for (var i = 0; i < $rootScope.csvInfoUpload.length; i++){
                         for (var z = 0; z < userProjectList.length; z++){
                             if($rootScope.csvInfoUpload[i].projectName == userProjectList[z].name){
                                 $rootScope.csvInfoUpload[i].projectId = userProjectList[z]._id;
-                                isProjectAssigned = true;
-                            }
-                            if(z == userProjectList.length - 1 && !isProjectAssigned){
-                                isUserAssigned = false;
+                                isProjectAssigned++;
                             }
                         }
                     }
 
-                    if (isUserAssigned) {
+                    if (isProjectAssigned == $rootScope.csvInfoUpload.length) {
+                        var currentUser = preferences.get('user');
+
                         for (var i = 0; i < $rootScope.csvInfoUpload.length; i++) {
                             tempObject.comment = $rootScope.csvInfoUpload[i].comment;
                             tempObject.date = $rootScope.csvInfoUpload[i].date;
                             tempObject.time = $rootScope.csvInfoUpload[i].time;
                             tempObject.projectName = $rootScope.csvInfoUpload[i].projectName;
+                            tempObject.userName = currentUser.displayName;
+                            tempObject.userId = currentUser._id;
+                            tempObject.role = currentUser.role;
                             tempObject.projectId = $rootScope.csvInfoUpload[i].projectId;
                             angular.copy(tempObject, $rootScope.csvInfoUpload[i]);
                         }
@@ -444,8 +457,11 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                     var oldValueToCompare = $scope.getNotEmptyLogs(oldLogsData).map(function (log) {
                         return {projectId: log.projectId, time: log.time, comment: log.comment};
                     });
+                    var currentValueToCompare = $scope.getNotEmptyLogs(currentWindowLog.data).map(function (log) {
+                        return {projectId: log.projectId, time: log.time, comment: log.comment};
+                    });
 
-                    if (!_.isEqual(newValueToCompare, oldValueToCompare)) {
+                    if (!_.isEqual(newValueToCompare, oldValueToCompare) && !_.isEqual(newValueToCompare, currentValueToCompare)) {
                         var dates = $scope.getSortedLogs();
                         if($rootScope.csvInfoUpload) {
                             dates = dates.concat($rootScope.csvInfoUpload);
@@ -578,7 +594,6 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                 newRow.isFirstDayRecord = false;
                 newRow.position = $scope.calcNewLogPosition(currentPeriod, log.date);
                 var blockday = $scope.getFilteredDates();
-                console.log(blockday);
                 if (userName != blockday[0].userName) {
                     if ((blockday[2].readyForApprove && !$scope.approveColor)) {
                         $scope.setDefaultProject(newRow);
@@ -601,36 +616,36 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
             };
 
             $scope.removeRow = function (log, project, periodIndex) {
-                    var blockday = $scope.getFilteredDates();
-                    var dates = $scope.getCurrentLogData();
-                    if (log._id && (log.time || log.comment)) {
-                        if(userName != blockday[0].userName){
-                            if(!$scope.readonly && !$scope.approveColor){
-                                timesheetService.removeTimesheet(log).success(function () {
-                                    Notification.success('Changes saved');
-                                });
-                                dates.splice(dates.indexOf(log), 1);
-                            }
-                        } else {
-                            if(!$scope.readonly) {
-                                timesheetService.removeTimesheet(log).success(function () {
-                                    Notification.success('Changes saved');
-                                });
-                                dates.splice(dates.indexOf(log), 1);
-                            } else if($scope.rejectColor){
-                                timesheetService.removeTimesheet(log).success(function () {
-                                    Notification.success('Changes saved');
-                                });
-                                dates.splice(dates.indexOf(log), 1);
-                            }
+                var blockday = $scope.getFilteredDates();
+                var dates = $scope.getCurrentLogData();
+                if (log._id && (log.time || log.comment)) {
+                    if(userName != blockday[0].userName){
+                        if(!$scope.readonly && !$scope.approveColor){
+                            timesheetService.removeTimesheet(log).success(function () {
+                                Notification.success('Changes saved');
+                            });
+                            dates.splice(dates.indexOf(log), 1);
+                        }
+                    } else {
+                        if(!$scope.readonly) {
+                            timesheetService.removeTimesheet(log).success(function () {
+                                Notification.success('Changes saved');
+                            });
+                            dates.splice(dates.indexOf(log), 1);
+                        } else if($scope.rejectColor){
+                            timesheetService.removeTimesheet(log).success(function () {
+                                Notification.success('Changes saved');
+                            });
+                            dates.splice(dates.indexOf(log), 1);
                         }
                     }
-                    if(!$scope.readonly && !$scope.rejectColor && !$scope.approveColor || $scope.rejectColor && !$scope.readonly){
-                        dates.splice(dates.indexOf(log), 1);
-                    }
+                }
+                else if(!$scope.readonly && !$scope.rejectColor && !$scope.approveColor || $scope.rejectColor && !$scope.readonly){
+                    dates.splice(dates.indexOf(log), 1);
+                }
 
-                    $scope.filteredLogs = $scope.getFilteredDates();
-                    $scope.lastSavedLogs = angular.copy($scope.logs);
+                $scope.filteredLogs = $scope.getFilteredDates();
+                $scope.lastSavedLogs = angular.copy($scope.logs);
 
             };
 
@@ -747,6 +762,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
 
 
             $scope.$on('csvInfoLoaded', function(){
+                $scope.lastSavedLogs = angular.copy($scope.logs);
                 updateTimelog();
             });
 
@@ -1119,7 +1135,6 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                 timesheetService.updateTimesheet(user._id, timesheetToSave, logsToDelete).success(function (data) {
                     Notification.success('Changes saved');
                     var timesheetToSave = angular.copy(dates);
-                    console.log(timesheetToSave);
                     if(button === "ready") {
                         $scope.readonly = true;
                         $scope.buttonHide = true;
