@@ -238,9 +238,11 @@
   .wrapper-summary-projects .general-total-logged {
     padding: 17px 25px; }
   .wrapper-summary-projects .option-total-label {
+    font-size: 14px;
     float: left;
     font-weight: 600; }
   .wrapper-summary-projects .option-total-time {
+    font-size: 14px;
     float: right;
     font-weight: 600; }
   .wrapper-summary-projects .option2 {
