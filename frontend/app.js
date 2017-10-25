@@ -176,7 +176,12 @@ angular.module('mifortTimesheet', [
                     var files = changeEvent.target.files;
                     if (files.length) {
                         $rootScope.csvInfoUpload = [];
+                        var expectedFileExtension = element[0].className.indexOf('txt-icon-images') != -1 ? '.txt' : element[0].className.indexOf('csv-icon-images') != -1 ? '.csv' : '';
                         for (var z = 0; z < files.length; z++) {
+                            var fileExtension = files[z].name.match(/\.[0-9a-z]+$/i);
+                            if(expectedFileExtension != fileExtension[0]){
+                                break
+                            }
                             var file = files[z];
                             var r = new FileReader();
                             var counter = 1;

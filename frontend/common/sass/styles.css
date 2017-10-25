@@ -5901,7 +5901,7 @@ label.csv-icon-images {
     font-size: 1.8em;
     position: absolute;
     top: -32px;
-    left: 30px; }
+    left: 28px; }
   label.csv-icon-images:hover {
     cursor: pointer; }
     label.csv-icon-images:hover:after {
@@ -5909,16 +5909,16 @@ label.csv-icon-images {
 label.txt-icon-images {
   height: 28px;
   width: 64px;
-  background: url("../images/icons.png") 0 -2230px no-repeat;
+  background: url("../images/icons.png") 0 -1757px no-repeat;
   position: relative;
-  right: 40px;
+  right: 47px;
   top: 4px; }
   label.txt-icon-images:after {
     content: 'TXT';
     font-size: 1.8em;
     position: absolute;
     top: -32px;
-    left: 30px; }
+    left: 35px; }
   label.txt-icon-images:hover {
     cursor: pointer; }
     label.txt-icon-images:hover:after {
@@ -6072,8 +6072,8 @@ input[type=number]::-webkit-outer-spin-button {
       text-decoration: underline; }
   label.txt-icon-images {
     top: 6px;
-    right: 60px;
-    width: 20px; }
+    right: 52px;
+    width: 27px; }
     label.txt-icon-images:after {
       content: ''; } }
 .intro-active .main-container {
