@@ -47,7 +47,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
             $scope.lastSaveTimeout = null;
             $scope.lastSavedLogs = [];
             $scope.readonly = false;
-            var currentLog;
+            var currentLog = null;
 
             var userRole = preferences.get('user').role.toLowerCase();
             var userName = preferences.get('user').displayName;
@@ -387,8 +387,6 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                     updateTimelog();
                 }, true);
             }
-
-
 
             var logsNewObject = {
                 comment: "",
@@ -832,9 +830,9 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                         }
                     }
                 }
-
                 return logs;
             };
+
             $scope.isAtOrAfterIndexCreatedManuallyLog = function (index, logs) {
                 for (var i = index; i < logs.length; i++) {
                     if (logs[i].isCreatedManually) {

@@ -79,14 +79,14 @@ label {
         width:64px;
         background: url("../images/icons.png") 0 -2230px  no-repeat;
         position:relative;
-        right: 30px;
+        right: 21px;
         top: 4px;
         &:after{
             content: 'CSV';
             font-size: 1.8em;
             position:absolute;
             top: -32px;
-            left: 30px;
+            left: 28px;
         }
       &:hover {
         cursor: pointer;
@@ -95,7 +95,29 @@ label {
           }
       }
     }
+    &.txt-icon-images{
+        height:28px;
+        width:64px;
+        background: url("../images/icons.png") 0 -1757px  no-repeat;
+        position:relative;
+        right: 47px;
+        top: 4px;
+        &:after{
+            content: 'TXT';
+            font-size: 1.8em;
+            position:absolute;
+            top: -32px;
+            left: 35px;
+        }
+        &:hover {
+            cursor: pointer;
+            &:after{
+                text-decoration: underline ;
+            }
+        }
+    }
 }
+
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button{
     -webkit-appearance: none;
@@ -251,7 +273,7 @@ input[type=number]::-webkit-outer-spin-button{
     label{
         &.csv-icon-images{
             position:relative;
-            right: 30px;
+            right: 24px;
             top: 6px;
             &:after{
                 content: 'CSV';
@@ -262,6 +284,14 @@ input[type=number]::-webkit-outer-spin-button{
             }
             &:hover {
                 text-decoration: underline;
+            }
+        }
+        &.txt-icon-images{
+            top: 6px;
+            right: 48px;
+            &:after{
+                top: -21px;
+                left: 30px;
             }
         }
     }
@@ -281,6 +311,15 @@ input[type=number]::-webkit-outer-spin-button{
             }
             &:hover {
                 text-decoration: underline;
+            }
+        }
+        &.txt-icon-images{
+            top: 6px;
+            right: 52px;
+            width: 27px;
+
+            &:after{
+                content: '';
             }
         }
     }

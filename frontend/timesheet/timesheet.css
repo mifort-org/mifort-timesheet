@@ -281,30 +281,29 @@
   float: right; }
 
 .form-control.reject {
-    border:1px solid red;
-    background: #ffffff;
-}
+  border: 1px solid red;
+  background: #ffffff; }
+
 .form-control.approve {
-    background: #ffffff;
-    border: 1px solid #82ff00;
-}
-.buttonHide{
-    display: none;
-}
-.dropHide{
-    display: none !important;
-}
-.arrowHide{
-    background: url(../common/images/icons.png) right 20px top -300px no-repeat !important;
-    padding: 14px 19px !important;
-}
-.arrowHide::before{
-  background: inherit !important;
-}
-.edit{
-  background-color: #eeeeee;
-}
-.blockOneApprove{
-  background-color: #fff !important;
-}
+  background: #ffffff;
+  border: 1px solid #82ff00; }
+
+.buttonHide {
+  display: none; }
+
+.dropHide {
+  display: none !important; }
+
+.arrowHide {
+  background: url(../common/images/icons.png) right 20px top -300px no-repeat !important;
+  padding: 14px 19px !important; }
+  .arrowHide::before {
+    background: inherit !important; }
+
+.edit {
+  background-color: #eeeeee; }
+
+.blockOneApprove {
+  background-color: #fff !important; }
+
 /*# sourceMappingURL=timesheet.css.map */
