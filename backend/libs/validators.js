@@ -25,6 +25,10 @@ var emptyBody = {
     code: 400,
     message: 'Request body cannot be empty!'
 };
+var timelogValidationError = {
+    code: 400,
+    message: "Timelog validation is failed"
+};
 
 var invalidFormatMessageTemplate = '%s is required and should have a valid format';
 
@@ -233,6 +237,20 @@ exports.validateActivateProject = function(req, res, next) {
     returnErrors(req, res, next);
 };
 
+//SaveOneLog
+exports.validateSaveOneLog = function(req, res, next) {
+    var timelog = req.body;
+    if(!timelog) {
+        return res.status(emptyBody.code).json({msg: emptyBody.message});
+    }
+    if(!isOneLog(timelog)) {
+        return res.status(timelogValidationError.code).json({msg: timelogValidationError.message});
+    }
+
+    returnErrors(req, res, next);
+};
+
+
 //Report validation
 exports.validateCommonReport = function(req, res, next) {
     checkReportFieldsWithPaging(req);
@@ -283,6 +301,7 @@ exports.validateDownloadLogs = function(req, res, next) {
 exports.config = {
     customValidators: {
         isTimesheet: isTimesheet,
+        isOneLog: isOneLog,
         isArray: isArray,
         isAssignments: isAssignments,
         isEmails: isEmails,
@@ -293,39 +312,51 @@ exports.config = {
     }
 };
 
+
+//val ids
+exports.validateIds = function(req, res, next) {
+    req.checkParams(reqParams.count, util.format(invalidFormatMessageTemplate, reqParams.count))
+        .isInt();
+
+    returnErrors(req, res, next);
+};
+
 //Private part
 
 // should be refactored
 function isTimesheet(values) {
     if(Array.isArray(values)) {
-        return values.every(function(val){
-            var isValid = true;
-            if(val._id){
-                isValid = validator.isMongoId(val._id);
-            }
-            if(typeof val.time === 'number'){
-                isValid = isValid
-                    && (0 <= val.time && val.time <= 24);
-            } else if (val.time != null) { // time field is required
-                return false;
-            }
-            if(val.role){
-                isValid = isValid
-                    && (typeof val.role === 'string');
-            }
-            if(val.position) {
-                isValid = isValid && validator.isInt(val.position);
-            }
-            isValid = isValid
-                && validator.isMongoId(val.userId) //required && format
-                && validator.isMongoId(val.projectId) //required && format
-                && validator.isLength(val.projectName, 1) //required
-                && validator.isDate(val.date) //required && format
-                && validator.isLength(val.userName, 1); //required
-            return isValid;
-        });
+        return values.every(isOneLog);
     }
     return false;
+}
+
+//for OneLog
+function isOneLog(val) {
+    var isValid = true;
+    if(val._id){
+        isValid = validator.isMongoId(val._id);
+    }
+    if(typeof val.time === 'number'){
+        isValid = isValid
+            && (0 <= val.time && val.time <= 24);
+    } else if (val.time != null) { // time field is required
+        return false;
+    }
+    if(val.role){
+        isValid = isValid
+            && (typeof val.role === 'string');
+    }
+    if(val.position) {
+        isValid = isValid && validator.isInt(val.position);
+    }
+    isValid = isValid
+        && validator.isMongoId(val.userId) //required && format
+        && validator.isMongoId(val.projectId) //required && format
+        && validator.isLength(val.projectName, 1) //required
+        && validator.isDate(val.date) //required && format
+        && validator.isLength(val.userName, 1); //required
+    return isValid;
 }
 
 function isCorrectPeriods(periods) {

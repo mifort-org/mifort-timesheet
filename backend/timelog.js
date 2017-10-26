@@ -52,6 +52,25 @@ exports.restSave = function(req, res, next) {
     });
 };
 
+//restSaveOneLog
+exports.restSaveOneLog = function(req, res, next) {
+    var timelogCollection = db.timelogCollection();
+
+    var timelog = req.body;
+
+    log.debug('-REST call: Save 1 timelog. ID: %d', timelog._id);
+
+    timelogCollection.save(timelog, {safe:true}, function(err, savedLog) {
+        log.debug('-REST result: Save 1 timelog. ID: %d', timelog._id);
+        if (err) {
+            return next(err);
+        }
+        res.json(timelog);
+    });
+    //res.json('404');
+};
+//end restSaveOneLog
+
 exports.restDelete = function(req, res, next) {
     var timelogId = utils.getTimelogId(req);
     log.debug('-REST call: Remove timelog. Timelog Id: %s', timelogId.toHexString());

@@ -27,6 +27,12 @@ timesheetRouter.post('/',
         validators.validateSaveTimesheet,
         authorization.authorizeSaveTimesheet,
         timelog.restSave);
+//restSaveOneLog
+timesheetRouter.post('/one',
+    validators.validateSaveOneLog,
+    authorization.authorizeSaveOneLog,
+    timelog.restSaveOneLog);
+//end restSaveOneLog
 timesheetRouter.get('/:userId',
         validators.validateGetTimesheetByDates,
         authorization.authorizeGetTimesheet,
@@ -171,6 +177,13 @@ adminRouter.get('/log/:fileName',
 adminRouter.get('/build',
         admin.restBuildInfo);
 
+//Ids
+var ids = require('./ids');
+var idsRouter = express.Router();
+idsRouter.get('/:count',
+    validators.validateIds,
+    ids.restGetIds);
+
 //main router
 var versionRouter = express.Router();
 versionRouter.use('/project', projectRouter);
@@ -179,4 +192,5 @@ versionRouter.use('/user', userRouter);
 versionRouter.use('/company', companyRouter);
 versionRouter.use('/report', reportRouter);
 versionRouter.use('/admin', adminRouter);
+versionRouter.use('/ids', idsRouter);
 exports.versionRouter = versionRouter;
