@@ -115,17 +115,32 @@ exports.restDeleteProject = function(req, res, next) {
     log.debug('-REST call: Delete project. Project id: %s', projectId.toHexString());
 
     var projects = db.projectCollection();
-    projects.remove({_id: projectId}, {single: true},
-      function(err, numberOfDeleted){
-        if(err) {
-            next(err);
-        } else {
-            deleteAssignments(projectId);
-            res.status(204).json({ok: true});
-            log.debug('-REST result:  Delete project. Project id: %s', projectId.toHexString());
-        }
-    });
-}
+
+    projects.find({_id: projectId})
+        .count(function(err, count) {
+            if(count > 0) {
+                projects.update({ _id: projectId },
+                    {$set: {
+                        active: false,
+                        deleted: true
+                    }},
+                    function(err, savedProject) {
+                        projects.findOne({_id: projectId},
+                            function(err, doc) {
+                                if(err) {
+                                    next(err);
+                                } else {
+                                    deleteAssignments(projectId);
+                                    res.status(204).json({ok: true});
+                                }
+                            }
+                        );
+                    });
+            } else {
+                res.json({message: "Project doesn't exist"});
+            }
+        });
+};
 
 //Public API
 exports.saveInDb = function(project, callback) {
@@ -148,7 +163,8 @@ exports.generateDefaultProject = function(company) {
         defaultValues: company.defaultValues,
         availablePositions: constants.DEFAULT_AVAILABLE_POSITIONS,
         companyId: company._id,
-        active: true
+        active: true,
+        deleted: false
     };
 };
 
@@ -234,6 +250,7 @@ function createProject(project, res, next){
         project.createdOn = currentDate;
         project.updatedOn = currentDate;
         project.active = true;
+        project.deleted = false;
         project.availablePositions = company.availablePositions;
 
         projects.insertOne(project, {safe: true},

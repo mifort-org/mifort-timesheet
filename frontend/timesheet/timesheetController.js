@@ -100,7 +100,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                 return new Promise(function(resolve, reject) {
                     uniqueProjectAssignments.forEach(function (assignment, index) {
                         timesheetService.getProject(assignment).success(function (project) {
-                            if (project && project.active) {
+                            if (project) {
                                 project.assignments = _.where(user.assignments, {projectId: project._id});
 
                                 if($scope.projects.length > 0) {
@@ -387,7 +387,6 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                     updateTimelog();
                 }, true);
             }
-
 
 
             var logsNewObject = {
@@ -955,6 +954,12 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                 log.projectName = project ? project.name : '';
                 log.projectId = projectId;
                 log.timePlaceholder = Number(getTimePlaceholder(project));
+            };
+
+            $scope.removeElementFromProjects = function (projectId) {
+                var project = $scope.getProjectById(projectId);
+
+                $scope.projects.splice($scope.projects.indexOf(project), 1);
             };
 
             $scope.getWeekDay = function (date) {

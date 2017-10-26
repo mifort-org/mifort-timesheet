@@ -85,7 +85,7 @@
 
                         <ul uib-dropdown-menu aria-labelledby="simple-dropdown" ng-class="{'dropHide':dropHide}">
                             <li ng-repeat="project in projects">
-                                <a href ng-click="assignProject(project._id, log)">{{project.name}}</a>
+                                <a href ng-click="assignProject(project._id, log)">{{project.active ? project.name : removeElementFromProjects(project._id) }}</a>
                             </li>
                         </ul>
                     </span>
