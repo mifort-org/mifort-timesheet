@@ -152,6 +152,32 @@ exports.authorizeSaveTimesheet = function(req, res, next) {
         next();
     }
 };
+//SaveOneLog
+exports.authorizeSaveOneLog = function(req, res, next) {
+    var timelog = req.body;
+    var user = req.user;
+    if(timelog) {
+        var isYourTimelog = user._id.equals(timelog.userId);
+
+        if(isYourTimelog){
+            next();
+            return;
+        }
+
+        var userId = timelog.userId;
+
+        isManagerForUser(user, [userId],
+            function() { // fail callback
+                send403(res);
+            },
+            function() { //success callback
+                next();
+            });
+    } else {
+        next();
+    }
+};
+
 
 exports.authorizeGetTimesheet = function(req, res, next) {
     var user = req.user;

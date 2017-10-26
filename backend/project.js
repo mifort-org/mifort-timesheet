@@ -41,7 +41,7 @@ exports.restSave = function(req, res, next) {
     var project = req.body;
     log.debug('-REST call: Save(Create/Update) project. Project name: %s', project.name);
 
-    if(project._id) { //update
+    if (project._id) { //update
         updateProject(project, res, next);
     } else { //create
         createProject(project, res, next);
@@ -125,7 +125,7 @@ exports.restDeleteProject = function(req, res, next) {
             log.debug('-REST result:  Delete project. Project id: %s', projectId.toHexString());
         }
     });
-}
+};
 
 //Public API
 exports.saveInDb = function(project, callback) {
@@ -218,34 +218,39 @@ function updateTimesheetProjectName(project) {
         });
 }
 
-function createProject(project, res, next){
+function createProject(project, res, next) {
     var projects = db.projectCollection();
-    companies.findById(project.companyId, function(err, company) {
-        if(err) {
-            err.code = 404;
-            next(err);
-            return;
-        }
-        project.defaultValues = company.defaultValues;
-        project.template = company.template;
-        project.periods = company.periods;
-        project.dayTypes = company.dayTypes;
-        var currentDate = new Date();
-        project.createdOn = currentDate;
-        project.updatedOn = currentDate;
-        project.active = true;
-        project.availablePositions = company.availablePositions;
+    var companiesFromCollection = db.companyCollection();
+    var companyToken = companiesFromCollection.find().toArray();
 
-        projects.insertOne(project, {safe: true},
-            function(err, result) {
-                if(err) {
-                    next(err);
-                } else {
-                    res.json(result.ops[0]);
-                    log.debug('-REST result: Save(Create) project. Project id: %s',
-                        result.ops[0]._id.toHexString());
-                }
-            });
+    companyToken.then(function (result) {
+        companies.findById(result[0]._id, function (err, company) {
+            if (err) {
+                err.code = 404;
+                next(err);
+                return;
+            }
+            project.defaultValues = company.defaultValues;
+            project.template = company.template;
+            project.periods = company.periods;
+            project.dayTypes = company.dayTypes;
+            var currentDate = new Date();
+            project.createdOn = currentDate;
+            project.updatedOn = currentDate;
+            project.active = true;
+            project.availablePositions = company.availablePositions;
+
+            projects.insertOne(project, {safe: true},
+                function (err, result) {
+                    if (err) {
+                        next(err);
+                    } else {
+                        res.json(result.ops[0]);
+                        log.debug('-REST result: Save(Create) project. Project id: %s',
+                            result.ops[0]._id.toHexString());
+                    }
+                });
+        });
     });
 }
 
@@ -298,8 +303,8 @@ function deleteAssignments(projectId) {
         .toArray(function(err, findedUsers) {
             if(findedUsers) {
                 findedUsers.forEach(function(user) {
-                    users.update({_id: user._id},
-                                 { $pull: {assignments: {projectId: projectId} } },
+                    users.update({_id: user._id, 'assignments.projectId': projectId},
+                                 { $set: {'assignments.$.deleted': true}},
                          function(err, updatedUser){
                              if(!err) {
                                  log.info('User assignment is deleted: %s', user._id.toHexString());
