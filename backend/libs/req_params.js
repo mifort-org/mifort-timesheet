@@ -23,3 +23,4 @@ exports.companyIdParam ='companyId';
 exports.timelogIdParam = 'timelogId';
 exports.fileNameParam = 'fileName';
 exports.emailParam = 'email';
+exports.count = 'count';

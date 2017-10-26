@@ -52,7 +52,8 @@
     max-width: 100%;
     overflow: hidden; }
     .project h2 input {
-      width: 100%; }
+      width: 100%;
+      min-height: 34px; }
     .project h2 .edit-project {
       padding-left: 15px;
       color: #8e8e8e;

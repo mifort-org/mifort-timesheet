@@ -68,8 +68,8 @@ angular.module('mifortTimesheet', [
         });
     })
 
-    .controller('mifortTimesheetController', ['$scope', '$location', '$http', 'preferences', 'companyService', 'topPanelService', '$rootScope', 'notifyingService', 'Notification', 'projectsService', '$window',
-        function($scope, $location, $http, preferences, companyService, topPanelService, $rootScope, notifyingService, Notification, projectsService, $window) {
+    .controller('mifortTimesheetController', ['$scope', '$location', '$http', 'preferences', 'companyService', 'topPanelService', '$rootScope', 'notifyingService', 'Notification', 'projectsService', '$window','projectList' ,
+        function($scope, $location, $http, preferences, companyService, topPanelService, $rootScope, notifyingService, Notification, projectsService, $window, projectList) {
             var user = preferences.get('user');
             if(user && !user.deleted){
                 if(user.companyId){
@@ -99,6 +99,10 @@ angular.module('mifortTimesheet', [
                     });
                 }
             });
+
+            $scope.openFile = function(){
+                $('#uploader').click();
+            };
 
             $scope.isVisible = function(linkName) {
                 return topPanelService.isVisibleLink(linkName);
@@ -160,7 +164,70 @@ angular.module('mifortTimesheet', [
                 }
             });
         }])
+    .directive('fileCsvReader', ['$rootScope', function ($rootScope) {
+        return {
+            scope: {
+                fileReader: "="
+            },
+            template:   '<input type="file" id="loadCsv" file-reader="fileContent" multiple />',
 
+            link: function (scope, element) {
+                $(element).on('change', function (changeEvent) {
+                    var files = changeEvent.target.files;
+                    if (files.length) {
+                        $rootScope.csvInfoUpload = [];
+                        var expectedFileExtension = element[0].className.indexOf('txt-icon-images') != -1 ? '.txt' : element[0].className.indexOf('csv-icon-images') != -1 ? '.csv' : '';
+                        for (var z = 0; z < files.length; z++) {
+                            var fileExtension = files[z].name.match(/\.[0-9a-z]+$/i);
+                            if(expectedFileExtension != fileExtension[0]){
+                                break
+                            }
+                            var file = files[z];
+                            var r = new FileReader();
+                            var counter = 1;
+                            r.onload = function (e) {
+                                var contents = e.target.result;
+                                var lines, data;
+                                var userReport = [];
+                                lines = contents.split('\n');
+                                var currentProject, realTime, comments;
+
+                                for (var i = lines.length; i > 0; i--) {
+
+                                    var line = lines[i];
+                                    if (line) {
+                                        var allComments = line.replace(/.*,.*,\d?\.?\d*,/g,'');
+                                        data = line.split(',');
+                                        var taskDate = data[0].replace(/\./g, '/');
+
+                                        currentProject = data[1];
+                                        realTime = Number(data[2]);
+                                        comments = allComments;
+
+                                        userReport.push({
+                                            date: taskDate,
+                                            projectName: currentProject,
+                                            time: realTime,
+                                            comment: comments
+                                        });
+                                    }
+
+                                }
+
+                                $rootScope.csvInfoUpload = $rootScope.csvInfoUpload.concat(userReport);
+                                if (counter == files.length) {
+                                    $rootScope.$broadcast('csvInfoLoaded');
+                                }
+                                counter++;
+
+                            };
+                            r.readAsText(file);
+                        }
+                    }
+                });
+            }
+        };
+    }])
     .factory('topPanelService', ['$location', '$rootScope', function($location, $rootScope) {
         var topPanelService = {};
         topPanelService.linkName = '';
@@ -180,6 +247,10 @@ angular.module('mifortTimesheet', [
                         return true;
                     }
                     break;
+                case '/timesheet':
+                    if(linkName == 'timesheet'){
+                        return true
+                    }
                 default:
                     return false;
             }
@@ -206,7 +277,19 @@ angular.module('mifortTimesheet', [
             }
         };
     })
-
+    .factory('projectList', ['$rootScope',  function ($rootScope) {
+        var currentList = {};
+        var setProjectsList = function(list){
+            currentList = list;
+        };
+        var getList = function(){
+            return currentList;
+        };
+        return {
+            setProjectsList: setProjectsList,
+            getList: getList
+        };
+    }])
     .factory('myHttpInterceptor', ['$q', '$rootScope', '$injector', '$location',
         function($q, $rootScope, $injector, $location) {
             $rootScope.showSpinner = false;

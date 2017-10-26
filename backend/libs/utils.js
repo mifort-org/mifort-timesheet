@@ -98,6 +98,17 @@ exports.convertToMongoId = function(str) {
     return mongoId;
 };
 
+exports.getNewObjectID = function(num) {
+    if(!num) {
+        return [new ObjectID()];
+    }
+    var ids = [];
+    for (var i = 0; i < num; i++) {
+        ids.push(new ObjectID());
+    }
+    return ids;
+}
+
 //private section
 function getObjectIdParam(req, name) {
     var entityObjectId = getParameter(req, name);

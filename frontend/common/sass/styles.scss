@@ -64,6 +64,59 @@ input[type='number']{
     color: #ccc !important;
 }
 
+.main-controls {
+    input[type='file'] {
+        display: none;
+        width: 0;
+        height: 0;
+        opacity: 0;
+        cursor: pointer;
+    }
+}
+label {
+    &.csv-icon-images{
+        height:28px;
+        width:64px;
+        background: url("../images/icons.png") 0 -2230px  no-repeat;
+        position:relative;
+        right: 21px;
+        top: 4px;
+        &:after{
+            content: 'CSV';
+            font-size: 1.8em;
+            position:absolute;
+            top: -32px;
+            left: 28px;
+        }
+      &:hover {
+        cursor: pointer;
+          &:after{
+              text-decoration: underline ;
+          }
+      }
+    }
+    &.txt-icon-images{
+        height:28px;
+        width:64px;
+        background: url("../images/icons.png") 0 -1757px  no-repeat;
+        position:relative;
+        right: 47px;
+        top: 4px;
+        &:after{
+            content: 'TXT';
+            font-size: 1.8em;
+            position:absolute;
+            top: -32px;
+            left: 35px;
+        }
+        &:hover {
+            cursor: pointer;
+            &:after{
+                text-decoration: underline ;
+            }
+        }
+    }
+}
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button{
@@ -217,6 +270,31 @@ input[type=number]::-webkit-outer-spin-button{
         width: calc(100% - 150px);
         padding: 30px 25px 30px 20px;
     }
+    label{
+        &.csv-icon-images{
+            position:relative;
+            right: 24px;
+            top: 6px;
+            &:after{
+                content: 'CSV';
+                font-size: 18px;
+                position:absolute;
+                top: -21px;
+                left: 30px;
+            }
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+        &.txt-icon-images{
+            top: 6px;
+            right: 48px;
+            &:after{
+                top: -21px;
+                left: 30px;
+            }
+        }
+    }
 }
 
 @media screen and (max-width: $grid-float-breakpoint) {
@@ -225,6 +303,27 @@ input[type=number]::-webkit-outer-spin-button{
         min-width: $app-min-width;
         overflow: auto;
     }
+    label{
+        &.csv-icon-images{
+            width: 20px;
+            &:after{
+                content: '';
+            }
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+        &.txt-icon-images{
+            top: 6px;
+            right: 52px;
+            width: 27px;
+
+            &:after{
+                content: '';
+            }
+        }
+    }
+
 }
 
 .intro-active .main-container{

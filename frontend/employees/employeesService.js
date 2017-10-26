@@ -19,6 +19,9 @@
 angular.module('mifortTimesheet.employees').factory('employeesService',
     ['$http', function($http) {
         return {
+            getCompany: function(companyId) {
+                return $http.get('api/v1/company/' + companyId);
+            },
             getCompanyEmployers: function(companyId) {
                 return $http.get('api/v1/user/company/' + companyId);
             },

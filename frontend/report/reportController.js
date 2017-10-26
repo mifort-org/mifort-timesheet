@@ -34,6 +34,9 @@ angular.module('mifortTimesheet.report', ['ngRoute', 'constants'])
                 columns = reportService.columns;
 
             $scope.introSteps = reportService.introSteps;
+            if (userRole == 'employee') {
+                $scope.introSteps.splice(1, 1);
+            }
 
             if (userRole == 'owner' || userRole == 'manager') {
                 $scope.userIsManager = true;

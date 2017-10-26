@@ -23,6 +23,14 @@ angular.module('mifortTimesheet.timesheet').factory('projectSummaryService',
     ['$http', function ($http) {
         var self = this;
 
+        self.projectsList = function (list) {
+            if(list) {
+                var currentList = list;
+            }
+            else {
+                return currentList;
+            }
+        };
 
         self.getLoggedTime = function (projectId, logs) {
             if (!projectId) return 0;

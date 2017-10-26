@@ -180,6 +180,7 @@ angular.module('mifortTimesheet.report').factory('reportService',
                 position: 'left'
             }
         ];
+
         return self;
     }
     ]);
