@@ -75,6 +75,7 @@ angular.module('mifortTimesheet')
                             }, 'error'
                         );
                     }
+                    scope.$parent.$parent.updateTimelog(scope.$parent.log);
                 };
 
                 input.on('focus', function(){

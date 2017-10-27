@@ -36,8 +36,14 @@ angular.module('mifortTimesheet.timesheet').factory('timesheetService',
                     'comment': 'Comment'
                 }
             },
-            updateTimesheet: function(userId, timesheet, logsToDelete) {
+            updateTimesheet: function(timesheet, logsToDelete) {
                 return $http.post('api/v1/timesheet', {'timesheet': timesheet, 'logsToDelete': logsToDelete});
+            },
+            updateOneTimesheet: function(timesheet) {
+                return $http.post('api/v1/timesheet/one', timesheet);
+            },
+            getNewLogIds: function(count){
+                return $http.get('api/v1/ids/' + count);
             },
             introSteps: [
                 // {

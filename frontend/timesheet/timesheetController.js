@@ -48,6 +48,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
             $scope.lastSavedLogs = [];
             $scope.readonly = false;
             var currentLog = null;
+            $scope.idsArray = [];
 
             var userRole = preferences.get('user').role.toLowerCase();
             var userName = preferences.get('user').displayName;
@@ -252,9 +253,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
 
                 $q.all(promises).then(function () {
                     $scope.addLogs($scope.currentPeriodIndex, isCsvLoaded);
-                    if(!isCsvLoaded) {
-                        initWatchers("logs");
-                    }
+
                     $scope.currentPeriodLogsLoaded();
 
                     $scope.filteredLogs = $scope.getFilteredDates();
@@ -273,6 +272,15 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
             };
 
             $scope.introSteps = timesheetService.introSteps;
+
+            function getIdForLogs(){
+                timesheetService.getNewLogIds(40).then(function(data){
+                    $scope.idsArray = $scope.idsArray.concat(data.data);
+                },function(error){
+                    console.error(error);
+                });
+            }
+            getIdForLogs();
 
             function initPeriod(project, periodIndex) {
                 var startDate = project.periods[periodIndex].start,
@@ -378,14 +386,83 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                 }
             }
 
-            function initWatchers(property) {
-                $scope.lastSavedLogs = angular.copy($scope.logs);
-                $scope.$watch(property, function (newValue, oldValue) {
-                if($scope.logs.length > 1) {
-                    $scope.lastSavedLogs = angular.copy(oldValue);
+            function addFileImportInfo(){
+                var dates = $scope.getSortedLogs();
+                var userProjectList = projectList.getList();
+                var isProjectAssigned = 0;
+
+                var tempObject = angular.copy(logsNewObject);
+
+                for (var i = 0; i < $rootScope.csvInfoUpload.length; i++){
+                    for (var z = 0; z < userProjectList.length; z++){
+                        if($rootScope.csvInfoUpload[i].projectName == userProjectList[z].name){
+                            $rootScope.csvInfoUpload[i].projectId = userProjectList[z]._id;
+                            isProjectAssigned++;
+                        }
+                    }
                 }
-                    updateTimelog();
-                }, true);
+
+                if (isProjectAssigned == $rootScope.csvInfoUpload.length) {
+                    var currentUser = preferences.get('user');
+
+                    for (var i = 0; i < $rootScope.csvInfoUpload.length; i++) {
+                        tempObject.comment = $rootScope.csvInfoUpload[i].comment;
+                        tempObject.date = $rootScope.csvInfoUpload[i].date;
+                        tempObject.time = + $rootScope.csvInfoUpload[i].time;
+                        tempObject.projectName = $rootScope.csvInfoUpload[i].projectName;
+                        tempObject.userName = currentUser.displayName;
+                        tempObject.userId = currentUser._id;
+                        tempObject.role = currentUser.role;
+                        tempObject.projectId = $rootScope.csvInfoUpload[i].projectId;
+                        angular.copy(tempObject, $rootScope.csvInfoUpload[i]);
+                    }
+                }
+                if ($scope.timer) {
+                    $timeout.cancel($scope.timer);
+                }
+                var logsToDelete = [];
+                $scope.timer = $timeout(function () {
+                    if (!$scope.activeRequest) {
+                        $scope.activeRequest = true;
+                        timesheetService.updateTimesheet($rootScope.csvInfoUpload, logsToDelete).success(function (data) {
+                            var periodTimesheet = $scope.getNotEmptyDates(),
+                                noIdLog = _.find(periodTimesheet, function (log) {
+                                    return !log._id;
+                                });
+
+                            if (noIdLog) {
+                                dates.forEach(function (item) {
+                                    if (item.time || item.comment) {
+                                        if (!item._id && item.comment === data.comment && item.projectId === data.projectId && item.userId === data.userId) {
+                                            item._id = data._id;
+                                        }
+                                    }
+                                });
+                            }
+
+                            Notification.success('Changes saved');
+
+                            $scope.activeRequest = false;
+
+                            if ($scope.pendingChanges) {
+                                console.log('pending changes are saving...');
+                                $scope.pendingChanges = false;
+                                $scope.updateTimelog();
+                            } else {
+                                console.log('no pending changes');
+                            }
+
+                                $rootScope.csvInfoUpload = null;
+                                updateLogs(true);
+
+                        }).error(function () {
+                            $scope.activeRequest = false;
+                        });
+                    }
+                    else {
+                        $scope.pendingChanges = true;
+                    }
+                }, 500);
             }
 
             var logsNewObject = {
@@ -399,141 +476,67 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                 projectId: ""
             };
 
-            function updateTimelog() {
-                $scope.filteredLogs = $scope.getFilteredDates();
-                $scope.buttonHide  = $scope.filteredLogs[1].readyForApprove ? true : false;
+            function deleteLogs(logToDelete) {
+                timesheetService.removeTimesheet(logToDelete).then(function () {
+                    Notification.success('Changes saved');
+                }, function (error) {
+                    console.error(error);
+                });
+            }
 
-                var newLogs = $scope.getCurrentLog($scope.logs),
-                    oldLogs = $scope.getCurrentLog($scope.lastSavedLogs);
-               var currentWindowLog = $scope.getCurrentLog(currentLog);
-
-                if (newLogs && !oldLogs) return;
-
-                var tempObject = {};
-                angular.copy(logsNewObject, tempObject);
-
-                var newLogsData = newLogs.data,
-                    oldLogsData = oldLogs.data;
-
-                if ($rootScope.csvInfoUpload) {
-                    var userProjectList = projectList.getList();
-                    var isProjectAssigned = 0;
-
-                    for (var i = 0; i < $rootScope.csvInfoUpload.length; i++){
-                        for (var z = 0; z < userProjectList.length; z++){
-                            if($rootScope.csvInfoUpload[i].projectName == userProjectList[z].name){
-                                $rootScope.csvInfoUpload[i].projectId = userProjectList[z]._id;
-                                isProjectAssigned++;
-                            }
-                        }
-                    }
-
-                    if (isProjectAssigned == $rootScope.csvInfoUpload.length) {
-                        var currentUser = preferences.get('user');
-
-                        for (var i = 0; i < $rootScope.csvInfoUpload.length; i++) {
-                            tempObject.comment = $rootScope.csvInfoUpload[i].comment;
-                            tempObject.date = $rootScope.csvInfoUpload[i].date;
-                            tempObject.time = $rootScope.csvInfoUpload[i].time;
-                            tempObject.projectName = $rootScope.csvInfoUpload[i].projectName;
-                            tempObject.userName = currentUser.displayName;
-                            tempObject.userId = currentUser._id;
-                            tempObject.role = currentUser.role;
-                            tempObject.projectId = $rootScope.csvInfoUpload[i].projectId;
-                            angular.copy(tempObject, $rootScope.csvInfoUpload[i]);
-                        }
-                        newLogsData = newLogsData.concat($rootScope.csvInfoUpload);
-                    }
+            $scope.updateTimelog = function(log) {
+                var dates = $scope.getSortedLogs();
+                if(log._id && !log.comment && !log.time) {
+                    deleteLogs(log);
                 }
+                else {
+                    if(!log._id){
+                        log._id = $scope.idsArray.pop();
+                    }
+                    $scope.timer = $timeout(function () {
+                        if (!$scope.activeRequest) {
+                            $scope.activeRequest = true;
+                            log.time = +log.time;
+                            timesheetService.updateOneTimesheet(log).success(function (data) {
+                                var periodTimesheet = $scope.getNotEmptyDates(),
+                                    noIdLog = _.find(periodTimesheet, function (log) {
+                                        return !log._id;
+                                    });
 
-
-                if (newLogsData.length >= oldLogsData.length) {
-                    var newValueToCompare = $scope.getNotEmptyLogs(newLogsData).map(function (log) {
-                        return {projectId: log.projectId, time: log.time, comment: log.comment};
-                    });
-
-                    var oldValueToCompare = $scope.getNotEmptyLogs(oldLogsData).map(function (log) {
-                        return {projectId: log.projectId, time: log.time, comment: log.comment};
-                    });
-                    var currentValueToCompare = $scope.getNotEmptyLogs(currentWindowLog.data).map(function (log) {
-                        return {projectId: log.projectId, time: log.time, comment: log.comment};
-                    });
-
-                    if (!_.isEqual(newValueToCompare, oldValueToCompare) && !_.isEqual(newValueToCompare, currentValueToCompare)) {
-                        var dates = $scope.getSortedLogs();
-                        if($rootScope.csvInfoUpload) {
-                            dates = dates.concat($rootScope.csvInfoUpload);
-                        }
-                        var timesheetToSave = angular.copy(dates);
-
-                        timesheetToSave.map(function (log) {
-                            if (log.time !== '' && log.time !== null) {
-                                log.time = +log.time;
-                            }
-                            if (log.time == "") {
-                                log.time = null;
-                            }
-                            return log;
-                        });
-
-                        if ($scope.timer) {
-                            $timeout.cancel($scope.timer);
-                        }
-
-                        var logsToDelete = angular.copy($scope.getLogsToDelete());
-
-                        if (logsToDelete.length || timesheetToSave.length) {
-                            $scope.timer = $timeout(function () {
-                                if (!$scope.activeRequest) {
-                                    $scope.activeRequest = true;
-
-                                    $scope.lastSavedLogs = angular.copy($scope.logs);
-
-                                    timesheetService.updateTimesheet(user._id, timesheetToSave, logsToDelete).success(function (data) {
-                                        var periodTimesheet = $scope.getNotEmptyDates(),
-                                            noIdLog = _.find(periodTimesheet, function (log) {
-                                                return !log._id;
-                                            });
-
-                                        if (noIdLog) {
-                                            var index = 0;
-                                            dates.forEach(function (item) {
-                                                if (item.time || item.comment) {
-                                                    if (!item._id) {
-                                                        item._id = data.timesheet[index]._id;
-                                                    }
-                                                    index++;
-                                                }
-                                            });
+                                if (noIdLog) {
+                                    dates.forEach(function (item) {
+                                        if (item.time || item.comment) {
+                                            if (!item._id && item.comment === data.comment && item.projectId === data.projectId && item.userId === data.userId) {
+                                                item._id = data._id;
+                                            }
                                         }
-
-                                        Notification.success('Changes saved');
-
-                                        $scope.activeRequest = false;
-
-                                        if ($scope.pendingChanges) {
-                                            console.log('pending changes are saving...');
-                                            $scope.pendingChanges = false;
-                                            updateTimelog();
-                                        } else {
-                                            console.log('no pending changes');
-                                        }
-                                       if($rootScope.csvInfoUpload) {
-                                           updateLogs(true);
-                                       }
-                                        $rootScope.csvInfoUpload = null;
-                                    }).error(function () {
-                                        $scope.activeRequest = false;
                                     });
                                 }
-                                else {
-                                    $scope.pendingChanges = true;
+
+                                Notification.success('Changes saved');
+
+                                $scope.activeRequest = false;
+
+                                if ($scope.pendingChanges) {
+                                    console.log('pending changes are saving...');
+                                    $scope.pendingChanges = false;
+                                    $scope.updateTimelog();
+                                } else {
+                                    console.log('no pending changes');
                                 }
-                            }, 500);
+                                if($scope.idsArray.length < 15){
+                                    getIdForLogs();
+                                }
+                            }).error(function () {
+                                $scope.activeRequest = false;
+                            });
                         }
-                    }
+                        else {
+                            $scope.pendingChanges = true;
+                        }
+                    }, 500);
                 }
-            }
+            };
 
             $scope.getSortedLogs = function () {
                 var dates = $scope.getNotEmptyDates();
@@ -644,7 +647,6 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
 
                 $scope.filteredLogs = $scope.getFilteredDates();
                 $scope.lastSavedLogs = angular.copy($scope.logs);
-
             };
 
             $scope.showPreviousPeriod = function (projects) {
@@ -761,7 +763,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
 
             $scope.$on('csvInfoLoaded', function(){
                 $scope.lastSavedLogs = angular.copy($scope.logs);
-                updateTimelog();
+                addFileImportInfo();
             });
 
             $scope.getFilteredDates = function () {
@@ -944,6 +946,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                 log.projectName = project ? project.name : '';
                 log.projectId = projectId;
                 log.timePlaceholder = Number(getTimePlaceholder(project));
+                $scope.updateTimelog(log);
             };
 
             $scope.getWeekDay = function (date) {
@@ -1095,6 +1098,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
             $scope.backTo = function () {
                 history.back();
             };
+
             $scope.approve = function (button) {
                 var blockday = $scope.getFilteredDates();
                 var dates = $scope.getSortedLogs();
@@ -1130,7 +1134,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                     }
                 });
                 var logsToDelete = angular.copy($scope.getLogsToDelete());
-                timesheetService.updateTimesheet(user._id, timesheetToSave, logsToDelete).success(function (data) {
+                timesheetService.updateTimesheet(timesheetToSave, logsToDelete).success(function (data) {
                     Notification.success('Changes saved');
                     var timesheetToSave = angular.copy(dates);
                     if(button === "ready") {
@@ -1163,5 +1167,22 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                     Notification.error({message: 'Changes not saved', delay: null});
                 });
             };
+
+
+            function asyncDeleteArrayRequest(logsToDelete) {
+                return new Promise(function(resolve, reject){
+                    var promises = [];
+                    for(var i = 0; i < logsToDelete.length ; i++) {
+                        var promise = timesheetService.removeTimesheet(logsToDelete[i]);
+                        promises.push(promise);
+                    }
+                    Promise.all(promises).then(function () {
+                        resolve();
+                    }).catch( function(error){
+                        console.error(error);
+                        reject();
+                    });
+                });
+            }
 
         }]);
