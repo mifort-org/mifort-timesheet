@@ -39,18 +39,18 @@ angular.module('mifortTimesheet.calendar', ['ngRoute', 'constants'])
             calendarService.getCompany(preferences.get('user').companyId).success(function (data) {
                 $scope.company = data;
                 $scope.company.emails = [];
-                if (data.periodSetting && data.countPeriodSetting) {
-                    $scope.countPeriodSetting = data.countPeriodSetting;
-                    $scope.periodSetting = data.periodSetting;
+                if (data.period) {
+                    $scope.countPeriodSetting = 1;
+                    $scope.periodSetting = data.period.unit;
                 } else {
-                    $scope.countPeriodSetting = calendarService.getCountPeriodSettings()[0].count;
-                    $scope.periodSetting = "Week";
+                    $scope.countPeriodSetting = 1;
+                    $scope.periodSetting = "Weekly";
                 }
             }).then(function () {
                 $scope.init();
             });
 
-            $scope.selectedPeriod = $scope.periodSettings[0]; //default period is week
+            $scope.selectedPeriod = $scope.periodSettings[1]; //default period is week
             $scope.splittedCalendar = [];
             $scope.calendarIsOpened = false;
             //check and remove
@@ -259,14 +259,14 @@ angular.module('mifortTimesheet.calendar', ['ngRoute', 'constants'])
 
             //var daysYear = $scope.calendar;
 
-            /*function resetPeriodsSplitters(){
+            function resetPeriodsSplitters(){
                 $scope.calendar.forEach(function (day) {
                     if (day.date) {
                         day.isPeriodStartDate = false;
                         day.isPeriodEndDate = false;
                     }
                 });
-            }*/
+            }
 
             $scope.introSteps = [
                 {
@@ -407,7 +407,7 @@ angular.module('mifortTimesheet.calendar', ['ngRoute', 'constants'])
                 });
             }, 500);
 
-            /*$scope.calculatePeriods = function() {
+            $scope.calculatePeriods = function() {
                 var firstPeriod = new Date(),
                     newPeriodStartDays = moment(new Date(firstPeriod)),
                     newPeriodStartMonths = moment(new Date(firstPeriod)).add(1, 'months');
@@ -418,7 +418,7 @@ angular.module('mifortTimesheet.calendar', ['ngRoute', 'constants'])
                 updateCalendarDaysWithPeriods();
 
                 preferences.set('currentPeriodIndex', 0);
-            };*/
+            };
 
             $scope.GenerateMoreDays = function() {
 
@@ -437,7 +437,7 @@ angular.module('mifortTimesheet.calendar', ['ngRoute', 'constants'])
                     monthsInYear = 12,
                     i;
 
-                if($scope.periodSetting == "Week") {
+                if($scope.periodSetting == "Weekly") {
                     countPeriods = daysInYear  / 7 / $scope.countPeriodSetting;
                     for (i = 0; i < countPeriods; i++) {
                         nextPeriodStart = moment(new Date(newPeriodStartDays)).add($scope.countPeriodSetting * i * 7, 'days');

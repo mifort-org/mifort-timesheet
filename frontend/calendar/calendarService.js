@@ -27,8 +27,9 @@ angular.module('mifortTimesheet.calendar').factory('calendarService',
             },
             getPeriodSettings: function() {
                 return [
-                    'Week',
-                    'Month'
+                    'Dayly',
+                    'Weekly',
+                    'Monthly'
                 ]
             },
             getCountPeriodSettings: function() {

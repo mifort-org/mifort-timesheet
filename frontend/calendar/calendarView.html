@@ -14,20 +14,18 @@
   limitations under the License.
 -->
 
-<!--<div class="periods-options-wrapper">
+<div class="periods-options-wrapper">
     <div class="periods-options">
         <div class="selects-periods-options">
             <span class="periods-options-text">Report every:</span>
-            <select id="periods-count" class="select-periods-options" ng-model="countPeriodSetting"
-                    ng-options="countPeriod.count as countPeriod.count for countPeriod in countPeriodSettings">
-            </select>
+            <input id="periods-count" disabled type="number" class="select-periods-options" ng-model="countPeriodSetting"/>
             <select id="periods-name" class="select-periods-options" ng-model="periodSetting"
                     ng-options="period as period for period in periodSettings">
             </select>
         </div>
         <button ng-click="calculatePeriods()" class="primary-button calculate-periods-button">Apply</button>
     </div>
-</div>-->
+</div>
 
 <div class="calendar-controls-wrapper" ng-show="company">
     <div timesheet-intro></div>

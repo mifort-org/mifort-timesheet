@@ -461,7 +461,10 @@
 .primary-button, .calculate-periods-button {
   min-width: 86px; }
 
-#periods-count, #periods-name {
-  cursor: pointer; }
+#periods-count {
+  width: 60px;
+  cursor: pointer;  }
+#periods-name {
+  cursor: pointer;  }
 
 /*# sourceMappingURL=calendar.css.map */
