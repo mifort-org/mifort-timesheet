@@ -25,8 +25,8 @@ angular.module('mifortTimesheet.projects', ['ngRoute', 'constants'])
         });
     }])
 
-    .controller('projectsController', ['$scope', 'projectsService', 'preferences', 'topPanelService', 'Notification',
-        function ($scope, projectsService, preferences, topPanelService, Notification) {
+    .controller('projectsController', ['$scope', '$q', 'projectsService', 'preferences', 'topPanelService', 'Notification',
+        function ($scope, $q, projectsService, preferences, topPanelService, Notification) {
             var companyId = preferences.get('user').companyId,
                 timer = null,
                 basicSteps = [
@@ -84,6 +84,14 @@ angular.module('mifortTimesheet.projects', ['ngRoute', 'constants'])
                 'QA'
             ];
             $scope.currentProjectIndex = 0;
+
+            $scope.companiesData = preferences.get('companiesData') || {};
+            if(!$scope.companiesData[companyId]){
+                $scope.companiesData[companyId] = {}
+            }
+            if(!$scope.companiesData[companyId].projectAssignments){
+                $scope.companiesData[companyId].projectAssignments = []
+            }
 
             projectsService.getProjects(companyId).success(function (projects) {
                 if (projects.length) {
@@ -192,7 +200,7 @@ angular.module('mifortTimesheet.projects', ['ngRoute', 'constants'])
                 document.getElementsByClassName("main-container")[0].scrollTop = "0";
             };
 
-            $scope.saveAssignment = function (project, assignedEmployee, employee, previousEmployeeId, assignmentIndex) {
+            $scope.saveAssignment = function (project, assignedEmployee, employee) {
                 assignedEmployee.assignments.forEach(function (assigned) {
                     if (assigned.workload[0] == '.') {
                         assigned.workload = '0' + assigned.workload;
@@ -221,12 +229,6 @@ angular.module('mifortTimesheet.projects', ['ngRoute', 'constants'])
                     assignWorkload += parseInt(assign.workload);
                 });
 
-                if (assignWorkload > 16 && assignWorkload <= 24) {
-                    Notification.warning({
-                        message: 'You have filled in more then 16h per day for an employee',
-                        delay: 4000
-                    });
-                }
                 if (assignWorkload > 24) {
                     Notification.error({
                         message:'You are trying to fill in more then 24h per day for an employee',
@@ -234,11 +236,91 @@ angular.module('mifortTimesheet.projects', ['ngRoute', 'constants'])
                     });
                 }
                 else {
-                    projectsService.saveAssignment(project._id, assignedEmployee).success(function () {
-                        Notification.success('Changes saved');
-                    });
+                    if (assignWorkload > 16 && assignWorkload <= 24) {
+                        Notification.warning({
+                            message: 'You have filled in more then 16h per day for an employee',
+                            delay: 4000
+                        });
+                    }
+
+                    $scope.saveAssignmentInLS(project, assignedEmployee);
+                    $scope.prepareAssignmentsQueue();
                 }
             };
+
+            $scope.saveAssignmentInLS = function (project, employee) {
+                var assignments = $scope.companiesData[companyId].projectAssignments;
+
+                var isProjectExists = assignments.some(function(item, index){
+                    if (item.projectId === project._id && item.userId === employee._id) {
+                        assignments[index].employee = employee;
+                        if(assignments[index].isSent){
+                            assignments[index].isChanged = true;
+                            assignments[index].isSaved = false;
+                        }
+
+                        return true;
+                    }
+                });
+
+                if (!isProjectExists) {
+                    assignments.push({
+                        projectId: project._id,
+                        userId: employee._id,
+                        employee: employee
+                    });
+                }
+
+                preferences.set('companiesData', $scope.companiesData);
+            };
+
+            $scope.sendAssignmentsQueue = function(assignments){
+                var promises = [];
+                assignments.forEach(function (assignment) {
+                    if (!assignment.isSent || assignment.isChanged){
+                        //TODO remove assignment.projectId after server api changes
+                        var employee = assignment.employee,
+                            projectId = employee.assignments[0] ? employee.assignments[0].projectId : assignment.projectId;
+
+                        var promise = projectsService.saveAssignment(projectId, employee).then(function () {
+                            if(!assignment.isChanged){
+                                assignment.isSaved = true;
+                            }
+                        });
+
+                        assignment.isSent = true;
+                        assignment.isChanged = false;
+                        preferences.set('companiesData', $scope.companiesData);
+                        promises.push(promise);
+                    }
+                });
+
+                return promises;
+            };
+
+            $scope.prepareAssignmentsQueue = _.debounce(function (isOnLoad) {
+                var assignments = $scope.companiesData[companyId].projectAssignments,
+                    promises = $scope.sendAssignmentsQueue(assignments);
+
+                if (promises.length > 0) {
+                    $q.all(promises).then(function() {
+                        var msgSuccess = isOnLoad ? 'Latest changes were saved' : 'Changes  saved';
+                        Notification.success(msgSuccess);
+                        //TODO remove isSaved flags, refactor assignments to object after server api changes
+                        assignments = assignments.filter(function(item){
+                            return !item.isSaved;
+                        });
+                        $scope.companiesData[companyId].projectAssignments = assignments;
+                        preferences.set('companiesData', $scope.companiesData);
+                    }, function (){
+                        Notification.warning({
+                            message: 'Changes saved locally and will be sent later',
+                            delay: 4000
+                        });
+                    });
+                }
+            }, 2000);
+            $scope.prepareAssignmentsQueue(true);
 
             $scope.archiveProject = function (project, projectIndex) {
                 if (project._id) {
