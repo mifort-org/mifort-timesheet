@@ -94,7 +94,11 @@ exports.restUpdateCompany = function(req, res, next) {
                             periods: savedCompany.periods,
                             defaultValues: savedCompany.defaultValues,
                             dayTypes: savedCompany.dayTypes,
-                            availablePositions: savedCompany.availablePositions}},
+                            availablePositions: savedCompany.availablePositions,
+                            period: {
+                                amount: savedCompany.availablePositions.amount,
+                                unit: savedCompany.availablePositions.unit
+                            }}},
                     {multi: true},
                 function(err, result){
                     log.info('Company projects are updated!')

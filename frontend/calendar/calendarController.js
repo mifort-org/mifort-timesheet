@@ -81,7 +81,13 @@ angular.module('mifortTimesheet.calendar', ['ngRoute', 'constants'])
                     var dayToPush = _.clone($scope.company.template);
                     dayToPush.date = moment(new Date(startDate)).add(i, 'days').format("MM/DD/YYYY");
                     var weekday = moment(new Date(startDate)).add(i, 'days').weekday();
-                    if (weekday === 0 || weekday === 6) {
+                    var daysInMonth = moment(new Date(startDate)).add(i, 'days').daysInMonth();
+                    var dateOfMonth = moment(new Date(startDate)).add(i, 'days').date();
+                    if ($scope.periodSetting == 'Dayly') {
+                        dayToPush.dayId = 1;
+                    }else if($scope.periodSetting == 'Weekly' && (weekday === 0 || weekday === 6)){
+                        dayToPush.dayId = 1;
+                    }else if($scope.periodSetting == 'Monthly' && (dateOfMonth === 1 || dateOfMonth === daysInMonth)){
                         dayToPush.dayId = 1;
                     }
                     $scope.calendar.push(dayToPush);
@@ -94,7 +100,7 @@ angular.module('mifortTimesheet.calendar', ['ngRoute', 'constants'])
                     generateCalendarTables(day, index);
                 });
 
-                applyDefaultValues();
+                //applyDefaultValues();
             }
 
             function updateCalendarDaysWithPeriods(){
@@ -117,7 +123,7 @@ angular.module('mifortTimesheet.calendar', ['ngRoute', 'constants'])
                 });
             }
 
-            function applyDefaultValues() {
+            /*function applyDefaultValues() {
                 if($scope.company.defaultValues){
                     $scope.company.defaultValues.forEach(function(day) {
                         if(day && day.date){
@@ -129,7 +135,7 @@ angular.module('mifortTimesheet.calendar', ['ngRoute', 'constants'])
                         }
                     });
                 }
-            }
+            }*/
 
             function generateCalendarTables(day, index) {
                 var currentDate = new Date(day.date),
@@ -291,7 +297,8 @@ angular.module('mifortTimesheet.calendar', ['ngRoute', 'constants'])
                     position: 'left'
                 }
             ];
-            $scope.splitCalendar = function(shouldBeSplitted, period, splitStartDate) {
+            //Unused function
+            /*$scope.splitCalendar = function(shouldBeSplitted, period, splitStartDate) {
                 if(period == 'month' && splitStartDate.getDate() > 28){
                     alert('Please choose the correct date for split');
                     return;
@@ -342,7 +349,7 @@ angular.module('mifortTimesheet.calendar', ['ngRoute', 'constants'])
 
                 $scope.calendar[$scope.calendar.length - 1].isPeriodEndDate = true;
                 $scope.aggregatePeriods($scope.calendar);
-            };
+            };*/
 
             //used by tableCell directive
             $scope.aggregatePeriods = function(calendar) {
@@ -400,7 +407,7 @@ angular.module('mifortTimesheet.calendar', ['ngRoute', 'constants'])
             };
 
             $scope.saveDayType = _.debounce(function(changedDayType, changedDayTypeOldValue) {
-                applyDefaultValues();
+                //applyDefaultValues();
 
                 calendarService.saveCompany($scope.company).success(function(data) {
                     $scope.company.dayTypes = data.dayTypes;
@@ -412,7 +419,12 @@ angular.module('mifortTimesheet.calendar', ['ngRoute', 'constants'])
                     newPeriodStartDays = moment(new Date(firstPeriod)),
                     newPeriodStartMonths = moment(new Date(firstPeriod)).add(1, 'months');
 
+                generateCalendar();
                 $scope.company.periods = [];
+                $scope.company.period = {
+                    amount: $scope.countPeriodSetting,
+                    unit: $scope.periodSetting
+                };
                 resetPeriodsSplitters();
                 generatePeriods(newPeriodStartDays, newPeriodStartMonths);
                 updateCalendarDaysWithPeriods();
