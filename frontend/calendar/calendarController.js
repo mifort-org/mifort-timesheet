@@ -415,9 +415,7 @@ angular.module('mifortTimesheet.calendar', ['ngRoute', 'constants'])
             }, 500);
 
             $scope.calculatePeriods = function() {
-                var firstPeriod = new Date(),
-                    newPeriodStartDays = moment(new Date(firstPeriod)),
-                    newPeriodStartMonths = moment(new Date(firstPeriod)).add(1, 'months');
+                var firstPeriod = moment();
 
                 generateCalendar();
                 $scope.company.periods = [];
@@ -426,7 +424,7 @@ angular.module('mifortTimesheet.calendar', ['ngRoute', 'constants'])
                     unit: $scope.periodSetting
                 };
                 resetPeriodsSplitters();
-                generatePeriods(newPeriodStartDays, newPeriodStartMonths);
+                generatePeriods(firstPeriod, firstPeriod);
                 updateCalendarDaysWithPeriods();
 
                 preferences.set('currentPeriodIndex', 0);
@@ -460,7 +458,7 @@ angular.module('mifortTimesheet.calendar', ['ngRoute', 'constants'])
                         });
                     }
                 }
-                else{
+                else if($scope.periodSetting == "Monthly"){
                     countPeriods = monthsInYear / $scope.countPeriodSetting;
                     for(i = 0; i < countPeriods; i++){
                         nextPeriodStart = moment(new Date(newPeriodStartMonths)).add($scope.countPeriodSetting * i, 'months');
@@ -468,6 +466,16 @@ angular.module('mifortTimesheet.calendar', ['ngRoute', 'constants'])
                         $scope.company.periods.push({
                             start: nextPeriodStart.format('MM/DD/YYYY'),
                             end: nextPeriodStart.add($scope.countPeriodSetting, 'months').endOf('month').format('MM/DD/YYYY')
+                        });
+                    }
+                }
+                else{
+                    for(i = 0; i < daysInYear; i++){
+                        nextPeriodStart = moment(new Date(newPeriodStartDays)).add(i, 'day');
+
+                        $scope.company.periods.push({
+                            start: nextPeriodStart.format('MM/DD/YYYY'),
+                            end: nextPeriodStart.format('MM/DD/YYYY')
                         });
                     }
                 }

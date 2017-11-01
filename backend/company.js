@@ -96,8 +96,8 @@ exports.restUpdateCompany = function(req, res, next) {
                             dayTypes: savedCompany.dayTypes,
                             availablePositions: savedCompany.availablePositions,
                             period: {
-                                amount: savedCompany.availablePositions.amount,
-                                unit: savedCompany.availablePositions.unit
+                                amount: savedCompany.period.amount,
+                                unit: savedCompany.period.unit
                             }}},
                     {multi: true},
                 function(err, result){
