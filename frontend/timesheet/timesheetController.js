@@ -496,8 +496,9 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                     $scope.timer = $timeout(function () {
                         if (!$scope.activeRequest) {
                             $scope.activeRequest = true;
-                            log.time = +log.time;
-                            timesheetService.updateOneTimesheet(log).success(function (data) {
+                            var logSave = angular.copy(log);
+                            logSave.time = + logSave.time;
+                            timesheetService.updateOneTimesheet(logSave).success(function (data) {
 
                                 Notification.success('Changes saved');
 
