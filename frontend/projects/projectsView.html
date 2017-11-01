@@ -31,7 +31,7 @@
          id="step1">
         <h2 ng-class="{'timesheet-collapsed': project.isCollapsed, 'project-archived': !project.active}">
             <a href="" id="step4" ng-if="!project.projectEdit" class="collapse-item project-name"
-               ng-class="{'collapsed': project.isCollapsed}" ng-click="project.isCollapsed = !project.isCollapsed">
+               ng-class="{'collapsed': project.isCollapsedHorizontal}" ng-click="project.isCollapsedHorizontal = !project.isCollapsedHorizontal">
                 {{checkProjectNameLength(project.name)}}
             </a>
 
@@ -62,7 +62,8 @@
             </div>
         </h2>
 
-        <div uib-collapse="project.isCollapsed">
+
+        <div uib-collapse="project.isCollapsedHorizontal">
             <table class="table table-bordered projects-table">
                 <thead>
                 <tr>
@@ -100,7 +101,7 @@
                 <tr project-row></tr>
                 </tbody>
             </table>
-        </div>
+    </div>
     </div>
 </div>
 <div class="add-project-wrapper">
