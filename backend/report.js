@@ -478,7 +478,8 @@ function createPdfFile (logs, calendar, callback) {
 }
 
 function writePdf (html, fileName, callback) {
-    var options = { format: 'Letter'};
+    var options = { format: 'Letter',
+        phantomPath: './backend/libs/phantomjs-2.1.1/bin/phantomjs.exe'};
     pdf.create(html, options).toFile('./report_files/' + fileName, function(err, res) {
         if (err) return console.log(err);
         console.log(res); // { filename: '/app/businesscard.pdf' }
@@ -501,7 +502,7 @@ function generateHtmlData (logs, name, calendar) {
         }
     });
 
-    var period = calendar[0][0] + " - " + calendar[calendar.length-1][0];
+    var period = calendar[0] + " - " + calendar[calendar.length-1];
 
     u.chain(logs).pluck('user').uniq().each(function(usr) {
         var userLogs = u.where(logs, {user: usr});

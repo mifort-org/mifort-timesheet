@@ -1,5 +1,6 @@
+<div ng-controller="timesheetController">
 <div ng-repeat="project in projects track by $index" class="filters-container">
         <a href='' ng-click="openLink('pdf', project._id)" class="project-list">{{project.name}}</a>
 </div>
 <div ng-if="!projects.length">You are not assigned to any project</div>
-
+</div>
