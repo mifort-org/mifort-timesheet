@@ -73,7 +73,7 @@ angular.module('mifortTimesheet.calendar', ['ngRoute', 'constants'])
                 $scope.calendar = [];
                 $scope.splittedCalendar = [];
 
-                var startDate = moment(new Date($scope.company.periods[0].start)),
+                var startDate = moment(new Date($scope.company.periods[0].start)).startOf('month'),
                     endDate = moment(new Date($scope.company.periods[$scope.company.periods.length - 1].end)).endOf('month'),
                     daysToGenerate = endDate.diff(startDate, 'days') + 1;
 
@@ -424,7 +424,7 @@ angular.module('mifortTimesheet.calendar', ['ngRoute', 'constants'])
                     unit: $scope.periodSetting
                 };
                 resetPeriodsSplitters();
-                generatePeriods(firstPeriod, firstPeriod);
+                generatePeriods(firstPeriod);
                 updateCalendarDaysWithPeriods();
 
                 preferences.set('currentPeriodIndex', 0);
@@ -433,55 +433,39 @@ angular.module('mifortTimesheet.calendar', ['ngRoute', 'constants'])
             $scope.GenerateMoreDays = function() {
 
                 var lastPeriodEnd = $scope.company.periods[$scope.company.periods.length - 1].end,
-                    newPeriodStartDays = moment(new Date(lastPeriodEnd)).add(1, 'days'),
-                    newPeriodStartMonths = moment(new Date(lastPeriodEnd)).add(1, 'months');
+                    newPeriodStartDays = moment(new Date(lastPeriodEnd)).add(1, 'days');
 
-                generatePeriods(newPeriodStartDays, newPeriodStartMonths);
+                generatePeriods(newPeriodStartDays);
                 generateCalendar();
             };
 
-            function generatePeriods(newPeriodStartDays, newPeriodStartMonths) {
-                var nextPeriodStart,
-                    countPeriods,
-                    daysInYear = 365,
-                    monthsInYear = 12,
-                    i;
+            function generatePeriods(newPeriodStartDays) {
+                var startDate = moment(new Date(newPeriodStartDays)),
+                    endDate = moment(new Date(newPeriodStartDays)).add(365, 'days');
 
                 if($scope.periodSetting == "Weekly") {
-                    countPeriods = daysInYear  / 7 / $scope.countPeriodSetting;
-                    for (i = 0; i < countPeriods; i++) {
-                        nextPeriodStart = moment(new Date(newPeriodStartDays)).add($scope.countPeriodSetting * i * 7, 'days');
-
-                        $scope.company.periods.push({
-                            start: nextPeriodStart.format('MM/DD/YYYY'),
-                            end: nextPeriodStart.add(($scope.countPeriodSetting * 7) - 1, 'days').endOf('month').format('MM/DD/YYYY')
-                        });
-                    }
+                    enumerateDaysBetweenDates(startDate, endDate, 'week');
                 }
                 else if($scope.periodSetting == "Monthly"){
-                    countPeriods = monthsInYear / $scope.countPeriodSetting;
-                    for(i = 0; i < countPeriods; i++){
-                        nextPeriodStart = moment(new Date(newPeriodStartMonths)).add($scope.countPeriodSetting * i, 'months');
-
-                        $scope.company.periods.push({
-                            start: nextPeriodStart.format('MM/DD/YYYY'),
-                            end: nextPeriodStart.add($scope.countPeriodSetting, 'months').endOf('month').format('MM/DD/YYYY')
-                        });
-                    }
+                    enumerateDaysBetweenDates(startDate, endDate, 'month');
                 }
                 else{
-                    for(i = 0; i < daysInYear; i++){
-                        nextPeriodStart = moment(new Date(newPeriodStartDays)).add(i, 'day');
-
-                        $scope.company.periods.push({
-                            start: nextPeriodStart.format('MM/DD/YYYY'),
-                            end: nextPeriodStart.format('MM/DD/YYYY')
-                        });
-                    }
+                    enumerateDaysBetweenDates(startDate, endDate, 'days');
                 }
                 $scope.company.countPeriodSetting = $scope.countPeriodSetting;
                 $scope.company.periodSetting = $scope.periodSetting;
             }
+
+            function enumerateDaysBetweenDates(startDate, endDate, step) {
+                var now = startDate.clone().startOf('week');
+
+                while (now.isBefore(endDate) || now.isSame(endDate)) {
+                    $scope.company.periods.push({
+                        start: now.format('MM/DD/YYYY'),
+                        end: now.add(step, 1).format('MM/DD/YYYY')
+                    });
+                }
+            };
 
             $scope.getDayColor = function(dayId) {
                 if(dayId){
