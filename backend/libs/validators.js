@@ -17,6 +17,7 @@
  */
 
 var validator = require('validator');
+const { check, oneOf, validationResult, body, param } = require('express-validator/check');
 var reqParams = require('./req_params');
 var util = require('util');
 var constants = require('./config_constants');
@@ -33,13 +34,34 @@ var timelogValidationError = {
 var invalidFormatMessageTemplate = '%s is required and should have a valid format';
 
 //Project Rest Api validators
+
+//exports.validateSaveProject = function(req, res, next) {
+//    var project = req.body;
+//    if(project) {
+//        req.checkBody('name', 'Project name is required').notEmpty();
+//        console.log('save-save-save');
+//        if(!project._id) {
+//            req.checkBody('companyId', util.format(invalidFormatMessageTemplate, 'companyId'))
+//                .notEmpty().isMongoId();
+//        }
+//
+//        returnErrors(req, res, next);
+//
+//    } else {
+//        res.status(emptyBody.code).json({msg: emptyBody.message});
+//    }
+//};
+
+
+////new version
 exports.validateSaveProject = function(req, res, next) {
     var project = req.body;
     if(project) {
-        req.checkBody('name', 'Project name is required').notEmpty();
+        body('name', 'Project name is required').isEmpty();
+        console.log('save new project');
         if(!project._id) {
-            req.checkBody('companyId', util.format(invalidFormatMessageTemplate, 'companyId'))
-                .notEmpty().isMongoId();
+            body('companyId', util.format(invalidFormatMessageTemplate, 'companyId'))
+                .isEmpty().isMongoId();
         }
 
         returnErrors(req, res, next);
@@ -49,13 +71,24 @@ exports.validateSaveProject = function(req, res, next) {
     }
 };
 
-exports.validateGetProjectById = function(req, res, next) {
-    req.checkParams(reqParams.projectIdParam,
-        util.format(invalidFormatMessageTemplate, reqParams.projectIdParam))
-            .notEmpty().isMongoId();
+//exports.validateGetProjectById = function(req, res, next) {
+//    req.checkParams(reqParams.projectIdParam,
+//        util.format(invalidFormatMessageTemplate, reqParams.projectIdParam))
+//            .notEmpty().isMongoId();
+//    console.log('getID work');
+//
+//    returnErrors(req, res, next);
+//};
 
+// new version
+exports.validateGetProjectById = function(req, res, next) {
+    param(reqParams.projectIdParam,
+        util.format(invalidFormatMessageTemplate, reqParams.projectIdParam))
+        .isEmpty().isMongoId();
+        console.log('getID work');
     returnErrors(req, res, next);
 };
+
 
 exports.validateGetProjectByCompanyId = function(req, res, next) {
     req.check(reqParams.companyIdParam,
@@ -65,13 +98,32 @@ exports.validateGetProjectByCompanyId = function(req, res, next) {
     returnErrors(req, res, next);
 };
 
-exports.validateDeleteProject = function(req, res, next) {
-    req.checkParams(reqParams.projectIdParam,
-        util.format(invalidFormatMessageTemplate, reqParams.projectIdParam))
-            .notEmpty().isMongoId();
+//new version
+exports.validateGetProjectByCompanyId = function(req, res, next) {
+    req.check(reqParams.companyIdParam,
+        util.format(invalidFormatMessageTemplate, reqParams.companyIdParam))
+        .notEmpty().isMongoId();
 
     returnErrors(req, res, next);
-}
+};
+
+//exports.validateDeleteProject = function(req, res, next) {
+//    req.checkParams(reqParams.projectIdParam,
+//        util.format(invalidFormatMessageTemplate, reqParams.projectIdParam))
+//            .notEmpty().isMongoId();
+//
+//    returnErrors(req, res, next);
+//};
+
+//new version
+exports.validateDeleteProject = function(req, res, next) {
+    param(reqParams.projectIdParam,
+        util.format(invalidFormatMessageTemplate, reqParams.projectIdParam))
+        .isEmpty().isMongoId();
+    console.log('delete project new rules');
+
+    returnErrors(req, res, next);
+};
 
 //User Rest API validators
 exports.validateGetUserByProjectId = function(req, res, next) {
