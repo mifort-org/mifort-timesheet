@@ -164,7 +164,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                 });
             };
 
-            function blockTable() {
+            /*function blockTable() {
                 var blockday = $scope.getFilteredDates();
                 var userId = blockday[0];
                 var counter = false;
@@ -222,7 +222,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                     //     $scope.blockOneApprove = true;
                     // }
                 }
-            }
+            }*/
 
             $scope.init = function (isCsvLoaded) {
                 var savedRedirectDate = preferences.get("redirectDate");
@@ -260,7 +260,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                     if($scope.filteredLogs[1].readyForApprove){
                         $scope.buttonHide = true;
                     }
-                    blockTable();
+                    //blockTable();
 
                     $scope.watchFilterChanges();
 
@@ -485,7 +485,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
             }
 
             $scope.updateTimelog = function(log) {
-                var dates = $scope.getSortedLogs();
+
                 if(log._id && !log.comment && !log.time) {
                     deleteLogs(log);
                 }
@@ -496,22 +496,9 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                     $scope.timer = $timeout(function () {
                         if (!$scope.activeRequest) {
                             $scope.activeRequest = true;
-                            log.time = +log.time;
-                            timesheetService.updateOneTimesheet(log).success(function (data) {
-                                var periodTimesheet = $scope.getNotEmptyDates(),
-                                    noIdLog = _.find(periodTimesheet, function (log) {
-                                        return !log._id;
-                                    });
-
-                                if (noIdLog) {
-                                    dates.forEach(function (item) {
-                                        if (item.time || item.comment) {
-                                            if (!item._id && item.comment === data.comment && item.projectId === data.projectId && item.userId === data.userId) {
-                                                item._id = data._id;
-                                            }
-                                        }
-                                    });
-                                }
+                            var logSave = angular.copy(log);
+                            logSave.time = + logSave.time;
+                            timesheetService.updateOneTimesheet(logSave).success(function (data) {
 
                                 Notification.success('Changes saved');
 
@@ -720,7 +707,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
 
                     $scope.filteredLogs = $scope.getFilteredDates();
 
-                    blockTable();
+                    //blockTable();
                 });
             }
 

@@ -44,12 +44,12 @@ angular.module('mifortTimesheet')
                         active: false,
                         available: userRole === 'owner' || userRole === 'manager'
                     },
-                    {
+                    /*{
                         title: 'Employees Report',
                         url: 'employees-report',
                         active: false,
                         available: userRole === 'owner' || userRole === 'manager'
-                    },
+                    },*/
                     {
                         title: 'Calendar',
                         url: 'calendar',
