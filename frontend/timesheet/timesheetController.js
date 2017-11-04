@@ -164,7 +164,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                 });
             };
 
-            /*function blockTable() {
+            function blockTable() {
                 var blockday = $scope.getFilteredDates();
                 var userId = blockday[0];
                 var counter = false;
@@ -222,7 +222,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                     //     $scope.blockOneApprove = true;
                     // }
                 }
-            }*/
+            }
 
             $scope.init = function (isCsvLoaded) {
                 var savedRedirectDate = preferences.get("redirectDate");
@@ -260,7 +260,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                     if($scope.filteredLogs[1].readyForApprove){
                         $scope.buttonHide = true;
                     }
-                    //blockTable();
+                    blockTable();
 
                     $scope.watchFilterChanges();
 
@@ -706,7 +706,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
 
                     $scope.filteredLogs = $scope.getFilteredDates();
 
-                    //blockTable();
+                    blockTable();
                 });
             }
 
