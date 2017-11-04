@@ -144,6 +144,7 @@ exports.generateDefaultProject = function(company) {
         name: company.name,
         template: company.template,
         periods: company.periods,
+        period: company.period,
         dayTypes: company.dayTypes,
         defaultValues: company.defaultValues,
         availablePositions: constants.DEFAULT_AVAILABLE_POSITIONS,
@@ -229,6 +230,7 @@ function createProject(project, res, next){
         project.defaultValues = company.defaultValues;
         project.template = company.template;
         project.periods = company.periods;
+        project.period = company.period;
         project.dayTypes = company.dayTypes;
         var currentDate = new Date();
         project.createdOn = currentDate;

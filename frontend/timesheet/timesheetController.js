@@ -369,6 +369,12 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                     userRole = project.assignments[0].role,
                     timePlaceholder = getTimePlaceholder(project);
 
+                if(project.period.unit == 'Weekly'){
+                    angular.forEach(project.periods, function (val) {
+                        val.end = moment(new Date(val.start)).endOf('week').format('MM/DD/YYYY');
+                    })
+                }
+
                 for (var i = 0; i < daysToGenerate + 1; i++) {
                     var dayToPush;
 
