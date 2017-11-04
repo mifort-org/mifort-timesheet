@@ -415,17 +415,10 @@ angular.module('mifortTimesheet.report', ['ngRoute', 'constants'])
             };
 
             $scope.downloadPdf = function (id) {
-                if ($scope.reportSettings.groupBy && $scope.reportSettings.groupBy.length) {
-                    reportService.downloadAggregationPdf($scope.reportSettings).success(function (data) {
-                        window.location = data.url;
-                    });
-                }
-                else {
-                    $scope.reportSettings.projectId = id;
-                    reportService.downloadPdf($scope.reportSettings).success(function (data) {
-                        window.location = data.url;
-                    });
-                }
+                $scope.reportSettings.projectId = id;
+                reportService.downloadPdf($scope.reportSettings).success(function (data) {
+                    window.location = data.url;
+                });
             };
 
             $scope.perPageChanged = function (perPage) {
