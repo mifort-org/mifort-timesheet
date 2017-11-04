@@ -20,6 +20,8 @@
     <b>Timesheet of {{customUserName}}</b>
 </div>
 
+<button ng-click="showCurrentPeriod(projects)" class="primary-button current-period-button ng-scope">Current period</button>
+
 <div class="timesheet collapse-wrapper timesheet-collapse-wrapper clearfix">
     <div uib-collapse="isCollapsed">
         <table ng-show="!loading" class="table table-bordered timesheet" id="{{$first ? 'step2' : ''}}">
