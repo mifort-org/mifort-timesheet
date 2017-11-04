@@ -61,7 +61,7 @@ exports.jsonParse = function(key, value) {
                           || key === 'start'
                           || key === 'end';
         if (isDateField
-                && moment.utc(value, dateFormat).isValid()) {
+                && isDate(value)) {
             return moment.utc(value, dateFormat).toDate();
         }
         var isIdField = key === '_id' //maybe should be some prefix/postfix ???
@@ -74,6 +74,11 @@ exports.jsonParse = function(key, value) {
     }
     return value;
 };
+
+function isDate (value) {
+    return moment.utc(value, dateFormat).isValid();
+};
+exports.isDate = isDate;
 
 exports.jsonStringify = function(key, value) {
     var keyName = key.toLowerCase();

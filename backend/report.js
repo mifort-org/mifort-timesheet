@@ -181,6 +181,7 @@ exports.restGetFilterValues = function(req, res, next) {
                 function() {
                     fillRoleValues(companyId, filterValues,
                         function() {
+                            console.log(filterValues);
                             res.json(filterValues);
                             log.debug('-REST result: Report filters returned. Company id: %s',
                                 companyId.toHexString());
