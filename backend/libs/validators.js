@@ -19,7 +19,7 @@
 var validator = require('validator');
 var reqParams = require('./req_params');
 var util = require('util');
-var utils = require('utils');
+var utils = require('./utils');
 var constants = require('./config_constants');
 var moment = require('moment');
 
