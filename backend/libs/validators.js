@@ -21,8 +21,6 @@ var reqParams = require('./req_params');
 var util = require('util');
 var utils = require('./utils');
 var constants = require('./config_constants');
-var moment = require('moment');
-
 
 var emptyBody = {
     code: 400,
