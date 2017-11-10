@@ -351,7 +351,7 @@ function isOneLog(val) {
             && (typeof val.role === 'string');
     }
     if(val.position) {
-        isValid = isValid && validator.isInt(val.position);
+        isValid = isValid && Number.isInteger(val.position);
     }
     isValid = isValid
         && isObjectId(val.userId) //required && format
