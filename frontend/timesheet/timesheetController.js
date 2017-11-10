@@ -282,6 +282,21 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
             }
             getIdForLogs();
 
+
+
+
+            function getAllNov (project, periodIndex) {
+                var startDate = project.periods[periodIndex].start,
+                    endDate = project.periods[periodIndex].end;
+                var data = timesheetService.getTimesheetsNov(user._id, startDate, endDate);
+                console.log(data);
+
+                return data;
+            }
+
+
+
+
             function initPeriod(project, periodIndex) {
                 var startDate = project.periods[periodIndex].start,
                     endDate = project.periods[periodIndex].end;
@@ -290,6 +305,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                 project.periods[periodIndex].userTimesheets = [];
 
                 return timesheetService.getTimesheet(user._id, project._id, startDate, endDate).success(function (dataTimesheet) {
+                    console.log(dataTimesheet);
                     project.periods[periodIndex].userTimesheets.push.apply(project.periods[periodIndex].userTimesheets, dataTimesheet.timesheet);
                 }).then(function () {
 
@@ -297,6 +313,27 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                     applyUserTimesheets(project, periodIndex);
                 });
             }
+
+
+
+            function initPeriodNov(project, periodIndex) {
+                var startDate = project.periods[periodIndex].start,
+                    endDate = project.periods[periodIndex].end;
+
+                project.periods[periodIndex].timesheet = [];
+                project.periods[periodIndex].userTimesheets = [];
+
+                return timesheetService.getTimesheet(user._id, project._id, startDate, endDate).success(function (dataTimesheet) {
+                    console.log(dataTimesheet);
+                    project.periods[periodIndex].userTimesheets.push.apply(project.periods[periodIndex].userTimesheets, dataTimesheet.timesheet);
+                }).then(function () {
+
+                    generateDaysTemplates(project, periodIndex);
+                    applyUserTimesheets(project, periodIndex);
+                });
+            }
+
+
 
             function applyUserTimesheets(project, periodIndex) {
                 var period = project.periods[periodIndex];
@@ -691,12 +728,19 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
             };
 
             function loadLogs(projects, lastPeriod, targetPeriod) {
+
+                var timesheetsAllNov = getAllNov (projects[0], targetPeriod);
+                console.log(timesheetsAllNov);
+                console.log(timesheetsAllNov.timesheetsNov);
                 var promises = [];
                 projects.forEach(function (project) {
+                    console.log('project in perebor')
+                    console.log(project);
                     project.lastPeriodRecords = project.periods[lastPeriod].timesheet.length;
+                    var timesheetForProj = _.filter(timesheetsAllNov[0], function(tsh) { return tsh.active == project.companyId });
 
                     if (!project.periods[targetPeriod].timesheet) {
-                        promises.push(initPeriod(project, targetPeriod));
+                        promises.push(initPeriodNov(project, targetPeriod));
                     }
                 });
 

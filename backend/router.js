@@ -34,9 +34,10 @@ timesheetRouter.post('/one',
     timelog.restSaveOneLog);
 //end restSaveOneLog
 timesheetRouter.get('/:userId',
-        validators.validateGetTimesheetByDates,
-        authorization.authorizeGetTimesheet,
-        timelog.restGetByDates);
+        //validators.validateGetTimesheetByDates,
+        //authorization.authorizeGetTimesheet,
+        //timelog.restGetByDates);
+        timelog.restGetByDatesNov);
 timesheetRouter.delete('/:timelogId',
         validators.validateDeleteTimesheet,
         authorization.authorizeDeleteTimesheet,

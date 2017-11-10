@@ -114,6 +114,29 @@ exports.restGetByDates = function(req, res, next) {
     });
 };
 
+exports.restGetByDatesNov = function(req, res, next) {
+    var start = utils.getStartDate(req);
+    var end = utils.getEndDate(req);
+    var userId = utils.getUserId(req);
+
+
+    //log.debug('-REST call: Get timelogs by dates. Start date: %s, End date: %s, User Id: %s, Project Id: %s.',
+    //    start, end, userId.toHexString(), projectId.toHexString());
+
+    var timelogCollection = db.timelogCollection();
+    var query = {
+        userId : userId,
+        date : {$gte: start,
+            $lte: end}
+    };
+
+    timelogCollection.find(query,
+        {sort: [['date','ascending'], ['position','ascending']]})
+        .toArray(function(err, timelogs) {
+            res.json({timesheetsNov: timelogs});
+        });
+};
+
 //Private part
 function findAllByIds(ids, callback) {
     var timelogCollection = db.timelogCollection();
