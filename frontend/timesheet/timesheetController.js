@@ -101,7 +101,8 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                 return new Promise(function(resolve, reject) {
                     uniqueProjectAssignments.forEach(function (assignment, index) {
                         timesheetService.getProject(assignment).success(function (project) {
-                            if (project && project.active) {
+                            if (project) {
+//                                 if (project && project.active) { only active projects
                                 project.assignments = _.where(user.assignments, {projectId: project._id});
 
                                 if($scope.projects.length > 0) {
