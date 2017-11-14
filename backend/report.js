@@ -131,18 +131,16 @@ exports.restCommonReportPDF = function(req, res, next) {
                 calendar.push([day, logs[0].template.time]);
             }
         });
-        console.log(calendar);
 
-    });
-
-    db.timelogCollection().find(query).toArray(function (err, logs) {
-        if (err) {
+        db.timelogCollection().find(query).toArray(function (err, logs) {
+          if (err) {
             throw err;
-        }
-        createPdfFile (logs, calendar, function (fileName) {
+          }
+          createPdfFile (logs, calendar, function (fileName) {
             log.debug('-REST Result: Download common report. PDF file is generated. Company id: %s',
-                filterObj.companyId.toHexString());
+              filterObj.companyId.toHexString());
             res.json({url: reportDownloadUrlPrefix + fileName});
+          });
         });
     });
 };
@@ -181,6 +179,7 @@ exports.restGetFilterValues = function(req, res, next) {
                 function() {
                     fillRoleValues(companyId, filterValues,
                         function() {
+                            console.log(filterValues);
                             res.json(filterValues);
                             log.debug('-REST result: Report filters returned. Company id: %s',
                                 companyId.toHexString());
