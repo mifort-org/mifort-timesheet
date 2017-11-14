@@ -260,7 +260,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                     if($scope.filteredLogs[1].readyForApprove){
                         $scope.buttonHide = true;
                     }
-                    blockTable();
+                    //blockTable();
 
                     $scope.watchFilterChanges();
 
@@ -707,7 +707,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
 
                     $scope.filteredLogs = $scope.getFilteredDates();
 
-                    blockTable();
+                    //blockTable();
                 });
             }
 
