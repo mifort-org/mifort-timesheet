@@ -260,7 +260,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                     if($scope.filteredLogs[1].readyForApprove){
                         $scope.buttonHide = true;
                     }
-                    blockTable();
+                    //blockTable();
 
                     $scope.watchFilterChanges();
 
@@ -744,48 +744,16 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                     });
                 });
 
+                $q.all(promises).then(function () {
                     $scope.addLogs(targetPeriod);
 
                     $scope.currentPeriodLogsLoaded();
 
                     $scope.filteredLogs = $scope.getFilteredDates();
 
-                    blockTable();
-
+                    //blockTable();
+                });
             }
-
-            ////////////
-            //function loadLogs(projects, lastPeriod, targetPeriod) {
-            //
-            //    var timesheetsAllNov = getAllNov (projects[0], targetPeriod);
-            //
-            //
-            //    timesheetsAllNov.then(function (allTimesheets) {
-            //
-            //    });
-            //
-            //    var promises = [];
-            //    projects.forEach(function (project) {
-            //        project.lastPeriodRecords = project.periods[lastPeriod].timesheet.length;
-            //
-            //
-            //        if (!project.periods[targetPeriod].timesheet) {
-            //            promises.push(initPeriodNov(project, targetPeriod));
-            //        }
-            //    });
-            //
-            //    $q.all(promises).then(function () {
-            //        $scope.addLogs(targetPeriod);
-            //
-            //        $scope.currentPeriodLogsLoaded();
-            //
-            //        $scope.filteredLogs = $scope.getFilteredDates();
-            //
-            //        blockTable();
-            //    });
-            //}
-
-            ////////////
 
             $scope.getCurrentLog = function (logs) {
                 return _.findWhere(logs, {index: $scope.currentPeriodIndex});

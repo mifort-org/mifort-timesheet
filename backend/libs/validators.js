@@ -21,8 +21,6 @@ var reqParams = require('./req_params');
 var util = require('util');
 var utils = require('./utils');
 var constants = require('./config_constants');
-var moment = require('moment');
-
 
 var emptyBody = {
     code: 400,
@@ -313,6 +311,7 @@ exports.config = {
         isGroupBy: isGroupBy,
         isDate: utils.isDate,
         isObjectId: isObjectId,
+        isInteger: isInteger,
         isCorrectPeriods: isCorrectPeriods
     }
 };
@@ -321,7 +320,7 @@ exports.config = {
 //val ids
 exports.validateIds = function(req, res, next) {
     req.checkParams(reqParams.count, util.format(invalidFormatMessageTemplate, reqParams.count))
-        .isInt();
+        .isInteger();
 
     returnErrors(req, res, next);
 };
@@ -353,7 +352,7 @@ function isOneLog(val) {
             && (typeof val.role === 'string');
     }
     if(val.position) {
-        isValid = isValid && validator.isInt(val.position);
+        isValid = isValid && Number.isInteger(val.position);
     }
     isValid = isValid
         && isObjectId(val.userId) //required && format
@@ -446,6 +445,10 @@ function isObjectId (value) {
     return value ? validator.isMongoId(value.toString()) : false;
 }
 
+function isInteger (value) {
+    return Number.isInteger(value) ? true : validator.isInt(value);
+}
+
 function isGroupBy(values) {
     if(Array.isArray(values)) {
         return values.every(function(val) {
@@ -477,7 +480,7 @@ function checkReportRequiredFields(req) {
 }
 
 function checkReportFieldsWithPaging(req) {
-    req.checkBody('page', 'Page is required').notEmpty().isInt();
-    req.checkBody('pageSize', 'Page size is required').notEmpty().isInt();
+    req.checkBody('page', 'Page is required').notEmpty().isInteger();
+    req.checkBody('pageSize', 'Page size is required').notEmpty().isInteger();
     checkReportRequiredFields(req);
 }
