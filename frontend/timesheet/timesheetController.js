@@ -216,6 +216,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                     // } else {
                     //     $scope.edit = true;
                     //     $scope.readonly = false;
+                    //
                     // }
                     // if (!blockday[2].readyForApprove && !$scope.approveColor && !$scope.rejectColor) {
                     //     $scope.readonly = true;
