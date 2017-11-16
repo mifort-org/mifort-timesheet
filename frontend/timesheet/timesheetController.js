@@ -282,19 +282,6 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
             }
             getIdForLogs();
 
-
-
-
-            function getAllNov (project, periodIndex) {
-                var startDate = project.periods[periodIndex].start,
-                    endDate = project.periods[periodIndex].end;
-
-                return timesheetService.getTimesheetsNov(user._id, startDate, endDate);
-            }
-
-
-
-
             function initPeriod(project, periodIndex) {
                 var startDate = project.periods[periodIndex].start,
                     endDate = project.periods[periodIndex].end;
@@ -311,22 +298,23 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                 });
             }
 
+            function getAllTimesheets244 (project, periodIndex) {
+                var startDate = project.periods[periodIndex].start,
+                    endDate = project.periods[periodIndex].end;
 
-
-            function initPeriodNov(project, periodIndex, timesheet) {
-
-                project.periods[periodIndex].timesheet = [];
-                project.periods[periodIndex].userTimesheets = timesheet;
-
-
-                //project.periods[periodIndex].userTimesheets.push.apply(project.periods[periodIndex].userTimesheets, timesheet);
-                console.log(project.periods[periodIndex].userTimesheets);
-                generateDaysTemplates(project, periodIndex);
-                applyUserTimesheets(project, periodIndex);
-
+                return timesheetService.getTimesheets244(user._id, startDate, endDate);
             }
 
+            function initPeriod244(project, periodIndex, timesheet) {
 
+                project.periods[periodIndex].timesheet = [];
+                project.periods[periodIndex].userTimesheets = [];
+
+                project.periods[periodIndex].userTimesheets.push.apply(project.periods[periodIndex].userTimesheets, timesheet);
+
+                generateDaysTemplates(project, periodIndex);
+                applyUserTimesheets(project, periodIndex);
+            }
 
             function applyUserTimesheets(project, periodIndex) {
                 var period = project.periods[periodIndex];
@@ -344,7 +332,6 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                         delete day.color;
                         delete day.placeholder;
                         day.timePlaceholder = sameDateDays[0].timePlaceholder;
-
                         //if current iterated log is not the first for this date to push
                         if (project.periods[periodIndex].timesheet[timesheetDayIndex] && project.periods[periodIndex].timesheet[timesheetDayIndex].date == day.date) {
                             if (!period.timesheet[timesheetDayIndex]._id) {
@@ -722,29 +709,26 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
 
             function loadLogs(projects, lastPeriod, targetPeriod) {
 
-                var timesheetsAllNov = getAllNov (projects[0], targetPeriod);
-
-
-                timesheetsAllNov.then(function (res) {
-                    var allTimesheets = res.data.timesheetsNov;
+                getAllTimesheets244(projects[0], targetPeriod).then(function (res) {
+                    var allTimesheets = res.data.timesheet;
+                    console.log('allTimesheets:');
                     console.log(allTimesheets);
 
                     projects.forEach(function (project) {
+                        console.log(project.name);
                         console.log(project);
                         project.lastPeriodRecords = project.periods[lastPeriod].timesheet.length;
 
-                        var timesheet = _.filter(allTimesheets, function(timesheet) { return timesheet.projectId == project._id; });
-                        console.log(timesheet);
+                        if (!project.periods[targetPeriod].timesheet) {
+                            var timesheetForProject = _.filter(allTimesheets, function(timesheet) { return timesheet.projectId == project._id; });
+                            console.log('timesheetForProject for ' + project.name);
+                            console.log(timesheetForProject);
 
-
-                        //if (!project.periods[targetPeriod].timesheet) {
-                        if (true) {
-                            initPeriodNov(project, targetPeriod, timesheet);
+                            initPeriod244(project, targetPeriod, timesheetForProject);
                         }
                     });
                 });
 
-                $q.all(promises).then(function () {
                     $scope.addLogs(targetPeriod);
 
                     $scope.currentPeriodLogsLoaded();
@@ -752,7 +736,6 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                     $scope.filteredLogs = $scope.getFilteredDates();
 
                     //blockTable();
-                });
             }
 
             $scope.getCurrentLog = function (logs) {

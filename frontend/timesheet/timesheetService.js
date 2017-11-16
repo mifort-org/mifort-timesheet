@@ -25,7 +25,7 @@ angular.module('mifortTimesheet.timesheet').factory('timesheetService',
             getTimesheet: function(userId, projectId, startDate, endDate) {
                 return $http.get('api/v1/timesheet/' + userId + '?projectId=' + projectId + '&startDate=' + startDate + '&endDate=' + endDate);
             },
-            getTimesheetsNov: function(userId, startDate, endDate) {
+            getTimesheets244: function(userId, startDate, endDate) {
                 return $http.get('api/v1/timesheet/' + userId + '?startDate=' + startDate + '&endDate=' + endDate);
             },
             removeTimesheet: function(log) {

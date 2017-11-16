@@ -88,39 +88,39 @@ exports.restDelete = function(req, res, next) {
     });
 };
 
-exports.restGetByDates = function(req, res, next) {
+// exports.restGetByDates = function(req, res, next) {
+//     var start = utils.getStartDate(req);
+//     var end = utils.getEndDate(req);
+//     var userId = utils.getUserId(req);
+//     var projectId = utils.getProjectId(req);
+//
+//     log.debug('-REST call: Get timelogs by dates. Start date: %s, End date: %s, User Id: %s, Project Id: %s.',
+//         start, end, userId.toHexString(), projectId.toHexString());
+//
+//     var timelogCollection = db.timelogCollection();
+//     var query = {
+//         userId : userId,
+//         projectId: projectId,
+//         date : {$gte: start,
+//                 $lte: end}
+//     };
+//
+//     timelogCollection.find(query,
+//                            {sort: [['date','ascending'], ['position','ascending']]})
+//             .toArray(function(err, timelogs) {
+//         returnTimelogArray(err, res, timelogs, next);
+//         log.debug('-REST result: Get timelogs by dates. User Id: %s, Timelog result size: %d.',
+//             userId.toHexString(), timelogs.length);
+//     });
+// };
+
+exports.restGetByDates244 = function(req, res, next) {
     var start = utils.getStartDate(req);
     var end = utils.getEndDate(req);
     var userId = utils.getUserId(req);
-    var projectId = utils.getProjectId(req);
-
-    log.debug('-REST call: Get timelogs by dates. Start date: %s, End date: %s, User Id: %s, Project Id: %s.',
-        start, end, userId.toHexString(), projectId.toHexString());
-
-    var timelogCollection = db.timelogCollection();
-    var query = {
-        userId : userId,
-        projectId: projectId,
-        date : {$gte: start,
-                $lte: end}
-    };
-
-    timelogCollection.find(query,
-                           {sort: [['date','ascending'], ['position','ascending']]})
-            .toArray(function(err, timelogs) {
-        returnTimelogArray(err, res, timelogs, next);
-        log.debug('-REST result: Get timelogs by dates. User Id: %s, Timelog result size: %d.',
-            userId.toHexString(), timelogs.length);
-    });
-};
-
-exports.restGetByDatesNov = function(req, res, next) {
-    var start = utils.getStartDate(req);
-    var end = utils.getEndDate(req);
-    var userId = utils.getUserId(req);
 
 
-    //log.debug('-REST call: Get timelogs by dates. Start date: %s, End date: %s, User Id: %s, Project Id: %s.',
+    // log.debug('-REST call: Get timelogs by dates. Start date: %s, End date: %s, User Id: %s, Project Id: %s.',
     //    start, end, userId.toHexString(), projectId.toHexString());
 
     var timelogCollection = db.timelogCollection();
@@ -130,11 +130,13 @@ exports.restGetByDatesNov = function(req, res, next) {
             $lte: end}
     };
 
-    timelogCollection.find(query,
-        {sort: [['date','ascending'], ['position','ascending']]})
-        .toArray(function(err, timelogs) {
-            res.json({timesheetsNov: timelogs});
-        });
+        timelogCollection.find(query,
+                           {sort: [['date','ascending'], ['position','ascending']]})
+            .toArray(function(err, timelogs) {
+        returnTimelogArray(err, res, timelogs, next);
+        log.debug('-REST result: Get timelogs by dates. User Id: %s, Timelog result size: %d.',
+            userId.toHexString(), timelogs.length);
+    });
 };
 
 //Private part
