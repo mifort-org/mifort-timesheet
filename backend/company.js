@@ -183,17 +183,19 @@ function createUsersByEmails(company) {
             users.findByExample(user, function(err, dbUser) {
                 if(err) {
                     log.warn('Cannot find user by email for new company.', {error: err});
-                } else if(!dbUser) {
-                    user.displayName = email;
-                    user.role = constants.EMPLOYEE_ROLE;
-                    users.save(user, function(err, savedUser) {
-                        if(err) {
-                            log.error('Cannot save user by email for new company.', {error: err});
-                        } else {
-                            log.info('User saved with e-mail %s', savedUser.email);
-                            mail.sendInvite(email, company.name);
-                        }
-                    });
+                } else {
+                    mail.sendInvite(email, company.name);
+                    if (!dbUser) {
+                        user.displayName = email;
+                        user.role = constants.EMPLOYEE_ROLE;
+                        users.save(user, function(err, savedUser) {
+                            if(err) {
+                                log.error('Cannot save user by email for new company.', {error: err});
+                            } else {
+                                log.info('User saved with e-mail %s', savedUser.email);
+                            }
+                        });
+                    }
                 }
             });
 
