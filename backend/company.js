@@ -74,31 +74,37 @@ exports.restCreateCompany = function(req, res, next) {
     });
 };
 
-exports.restUpdateCompany = function(req, res, next) {
+exports.restUpdateCompany = function (req, res, next) {
     var company = req.body;
     log.debug('-REST call: Update company. Company id: %s', company._id.toHexString());
-    if(!company.availablePositions) {
+    if (!company.availablePositions) {
         company.availablePositions = constants.DEFAULT_AVAILABLE_POSITIONS;
     }
     addIdToDayTypes(company);
     company.updatedOn = new Date();
-    save(company, function(err, savedCompany) {
-        if(err) {
+    save(company, function (err, savedCompany) {
+        if (err) {
             next(err);
         } else {
             //update all projects
             var projects = db.projectCollection();
-            projects.update(
+            if ((savedCompany.template || savedCompany.periods || savedCompany.defaultValues || savedCompany.dayTypes) != null) {
+                projects.update(
                     {companyId: savedCompany._id},
-                    {$set: {template: savedCompany.template,
+                    {
+                        $set: {
+                            template: savedCompany.template,
                             periods: savedCompany.periods,
                             defaultValues: savedCompany.defaultValues,
                             dayTypes: savedCompany.dayTypes,
-                            availablePositions: savedCompany.availablePositions}},
+                            availablePositions: savedCompany.availablePositions
+                        }
+                    },
                     {multi: true},
-                function(err, result){
-                    log.info('Company projects are updated!')
-                });
+                    function (err, result) {
+                        log.info('Company projects are updated!')
+                    });
+            }
             createUsersByEmails(savedCompany);
             res.json(savedCompany);
             log.debug('-REST result: Update company. Company id: %s',
