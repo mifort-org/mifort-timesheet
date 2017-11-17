@@ -179,7 +179,7 @@ exports.authorizeSaveOneLog = function(req, res, next) {
 };
 
 
-exports.authorizeGetTimesheet = function(req, res, next) {
+exports.authorizeGetTimesheets = function(req, res, next) {
     var user = req.user;
     var userId = utils.getUserId(req);
 
