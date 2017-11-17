@@ -91,7 +91,9 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
             function getUserProjectsId(user){
                 var arr = [];
                 user.assignments.forEach(function (assignment) {
-                    arr.push(assignment.projectId);
+                    if (!assignment.deleted) {
+                        arr.push(assignment.projectId);
+                    }
                 });
                 arr = _.uniq(arr);
                 return arr;
@@ -101,7 +103,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                 return new Promise(function(resolve, reject) {
                     uniqueProjectAssignments.forEach(function (assignment, index) {
                         timesheetService.getProject(assignment).success(function (project) {
-                            if (project && project.active) {
+                            if (project) {
                                 project.assignments = _.where(user.assignments, {projectId: project._id});
 
                                 if($scope.projects.length > 0) {
@@ -229,7 +231,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                 if(savedRedirectDate && !moment(savedRedirectDate, '"MM/DD/YYYY"', true).isValid()) {
                     preferences.remove("redirectDate");
                 }
-                var promises = [];
+
                 $scope.projects.forEach(function (project) {
                     var today = moment();
                     if(savedRedirectDate){
@@ -248,10 +250,20 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                             $scope.currentPeriodIndex = +preferences.get('currentPeriodIndex') || periodIndex || 0;
                         }
                     });
-                    promises.push(initPeriod(project, $scope.currentPeriodIndex));
                 });
 
-                $q.all(promises).then(function () {
+                getAllTimesheets( $scope.projects[0], $scope.currentPeriodIndex).then(function (res) {
+                    var allTimesheets = res.data.timesheet;
+
+                    $scope.projects.forEach(function (project) {
+
+                        if (!project.periods[$scope.currentPeriodIndex].timesheet) {
+                            var timesheetForProject = _.filter(allTimesheets, function(timesheet) { return timesheet.projectId == project._id; });
+
+                            initPeriod(project, $scope.currentPeriodIndex, timesheetForProject);
+                        }
+                    });
+                }).then(function(){
                     $scope.addLogs($scope.currentPeriodIndex, isCsvLoaded);
 
                     $scope.currentPeriodLogsLoaded();
@@ -282,30 +294,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
             }
             getIdForLogs();
 
-            function initPeriod(project, periodIndex) {
-                var startDate = project.periods[periodIndex].start,
-                    endDate = project.periods[periodIndex].end;
-
-                project.periods[periodIndex].timesheet = [];
-                project.periods[periodIndex].userTimesheets = [];
-
-                return timesheetService.getTimesheet(user._id, project._id, startDate, endDate).success(function (dataTimesheet) {
-                    project.periods[periodIndex].userTimesheets.push.apply(project.periods[periodIndex].userTimesheets, dataTimesheet.timesheet);
-                }).then(function () {
-
-                    generateDaysTemplates(project, periodIndex);
-                    applyUserTimesheets(project, periodIndex);
-                });
-            }
-
-            function getAllTimesheets244 (project, periodIndex) {
-                var startDate = project.periods[periodIndex].start,
-                    endDate = project.periods[periodIndex].end;
-
-                return timesheetService.getTimesheets244(user._id, startDate, endDate);
-            }
-
-            function initPeriod244(project, periodIndex, timesheet) {
+            function initPeriod(project, periodIndex, timesheet) {
 
                 project.periods[periodIndex].timesheet = [];
                 project.periods[periodIndex].userTimesheets = [];
@@ -314,6 +303,13 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
 
                 generateDaysTemplates(project, periodIndex);
                 applyUserTimesheets(project, periodIndex);
+            }
+
+            function getAllTimesheets (project, periodIndex) {
+                var startDate = project.periods[periodIndex].start,
+                    endDate = project.periods[periodIndex].end;
+
+                return timesheetService.getTimesheets(user._id, startDate, endDate);
             }
 
             function applyUserTimesheets(project, periodIndex) {
@@ -709,22 +705,16 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
 
             function loadLogs(projects, lastPeriod, targetPeriod) {
 
-                getAllTimesheets244(projects[0], targetPeriod).then(function (res) {
+                getAllTimesheets(projects[0], targetPeriod).then(function (res) {
                     var allTimesheets = res.data.timesheet;
-                    console.log('allTimesheets:');
-                    console.log(allTimesheets);
 
                     projects.forEach(function (project) {
-                        console.log(project.name);
-                        console.log(project);
                         project.lastPeriodRecords = project.periods[lastPeriod].timesheet.length;
 
                         if (!project.periods[targetPeriod].timesheet) {
                             var timesheetForProject = _.filter(allTimesheets, function(timesheet) { return timesheet.projectId == project._id; });
-                            console.log('timesheetForProject for ' + project.name);
-                            console.log(timesheetForProject);
 
-                            initPeriod244(project, targetPeriod, timesheetForProject);
+                            initPeriod(project, targetPeriod, timesheetForProject);
                         }
                     });
                 }).then(function(){
