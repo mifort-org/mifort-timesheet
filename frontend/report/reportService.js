@@ -129,8 +129,7 @@ angular.module('mifortTimesheet.report').factory('reportService',
                 enableColumnResizing: true,
                 enableColumnMenu: false,
                 enableSorting: false,
-                enableFiltering: false,
-                filterHeaderTemplate: '<div class="ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" col-name="time" col-title="Comment"></span></div>',
+                enableFiltering: true,
                 cellTemplate: '<span cutted-comment></span>'
             },
             comments: {
