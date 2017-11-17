@@ -727,8 +727,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                             initPeriod244(project, targetPeriod, timesheetForProject);
                         }
                     });
-                });
-
+                }).then(function(){
                     $scope.addLogs(targetPeriod);
 
                     $scope.currentPeriodLogsLoaded();
@@ -736,6 +735,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                     $scope.filteredLogs = $scope.getFilteredDates();
 
                     //blockTable();
+                });
             }
 
             $scope.getCurrentLog = function (logs) {
