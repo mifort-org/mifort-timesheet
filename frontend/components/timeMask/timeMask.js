@@ -26,7 +26,7 @@ angular.module('mifortTimesheet')
 
                 input.on('blur', function(){
                     var time = Number($(this).val()).toFixed(2);
-                    if(time != ''){
+                    if(time != 0.00){
                         $(this).val(time);
                     }
                     $(this).attr('placeholder', timePlaceholder);
