@@ -174,14 +174,18 @@ exports.restGetFilterValues = function(req, res, next) {
 
     var filterValues = [];
     fillUserValues(companyId, filterValues, next,
-        function() {
+        function () {
             fillProjectValues(companyId, filterValues, next,
-                function() {
-                    fillRoleValues(companyId, filterValues,
-                        function() {
-                            res.json(filterValues);
-                            log.debug('-REST result: Report filters returned. Company id: %s',
-                                companyId.toHexString());
+                function () {
+                    fillLogValues(filterValues, next,
+                        function () {
+                            fillRoleValues(companyId, filterValues,
+                                function () {
+                                    res.json(filterValues);
+                                    log.debug('-REST result: Report filters returned. Company id: %s',
+                                        companyId.toHexString());
+                                }
+                            );
                         }
                     );
                 }
@@ -433,6 +437,19 @@ function fillProjectValues(companyId, filterValues, next, callback) {
         .toArray(function(err, projectDtos){
             if(!err) {
                 filterValues.push({field:'projects', value: projectDtos});
+                callback();
+            } else {
+                next(err);
+            }
+        });
+}
+
+function fillLogValues(filterValues, next, callback) {
+    var logs = db.timelogCollection();
+    logs.find({})
+        .toArray(function (err, dblogs) {
+            if(!err) {
+                filterValues.push({field:'timelogs', value: dblogs});
                 callback();
             } else {
                 next(err);

@@ -128,9 +128,7 @@ angular.module('mifortTimesheet.report').factory('reportService',
                 field: 'comment',
                 enableColumnResizing: true,
                 enableColumnMenu: false,
-                enableSorting: false,
-                enableFiltering: true,
-                cellTemplate: '<span cutted-comment></span>'
+                headerCellTemplate: self.getHeaderTemplate('<span class="header-filter ui-grid-filter-container"><span dropdown-filter class="dropdown-filter" col-name="timelogs" col-title="Comment"></span></span>')
             },
             comments: {
                 field: 'comments',

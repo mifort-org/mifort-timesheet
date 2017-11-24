@@ -302,13 +302,16 @@ angular.module('mifortTimesheet.report', ['ngRoute', 'constants'])
                             case 'users':
                                 filterToPush.field = 'userId';
                                 break;
+                            case 'timelogs':
+                                filterToPush.field = 'comment';
+                                break;
                         }
 
                         var checkedFilters = _.where(filter.value, {isChecked: true}),
                             usedFilterIndex = _.findIndex(usedFilters, {field: filterToPush.field});
 
                         filterToPush.value = checkedFilters.map(function (checkedFilter) {
-                            return checkedFilter.name._id || checkedFilter.name;
+                            return checkedFilter.name.comment || checkedFilter.name._id || checkedFilter.name;
                         });
 
                         if (filterToPush.value.length && usedFilterIndex == -1) {

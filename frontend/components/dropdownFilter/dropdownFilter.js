@@ -65,7 +65,7 @@ angular.module('mifortTimesheet')
 
                 scope.projectFilterContainsSubstring = function (object, filter) {
                     var re = new RegExp(filter, 'ig');
-                    return re.test(object.name.role || object.name.displayName || object.name);
+                    return re.test(object.name.comment || object.name.role || object.name.displayName || object.name);
                 };
 
             },
