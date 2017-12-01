@@ -80,7 +80,7 @@
                 <td>
                     <span class="blank-dropdown" uib-dropdown on-toggle="toggled(open)">
                         <a href id="simple-dropdown" ng-click="showButton()" ng-class="{'arrowHide':arrowHide}" uib-dropdown-toggle>
-                            {{log.projectName | longTextFilter: 15}}
+                            {{log.projectName != '' ? log.projectName : 'No projects' | longTextFilter: 15}}
                         </a>
 
                         <ul uib-dropdown-menu aria-labelledby="simple-dropdown" ng-class="{'dropHide':dropHide}">
