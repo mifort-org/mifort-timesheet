@@ -1036,22 +1036,12 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                         return $scope.projects[i];
                     }
                 }
-
-                $scope.projects[0].projectName = "Empty";
-                return $scope.projects[0];
             };
 
             $scope.setDefaultProject = function (log) {
                 var project = $scope.getDefaultProject();
-                if(project && $scope.projects[0].projectName !== "Empty") {
-                    log.projectId = project._id;
-                    log.projectName = project.name;
-                }
-                 else {
-                    log.projectId = project._id;
-                    log.projectName = "";
-                    log.active = false;
-                 }
+                log.projectId = project._id;
+                log.projectName = project.name;
             };
 
             $scope.addLogToArray = function (log, allLogs) {
