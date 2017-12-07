@@ -315,8 +315,8 @@ function deleteAssignments(projectId) {
         .toArray(function(err, findedUsers) {
             if(findedUsers) {
                 findedUsers.forEach(function(user) {
-                    users.update({_id: user._id, 'assignments.projectId': projectId},
-                                 { $set: {'assignments.$.deleted': true}},
+                    users.update({_id: user._id},
+                                 { $pull: {assignments: {projectId: projectId} } },
                          function(err, updatedUser){
                              if(!err) {
                                  log.info('User assignment is deleted: %s', user._id.toHexString());
