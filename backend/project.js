@@ -72,7 +72,7 @@ exports.restDeactivateProject = function(req, res, next) {
 
     var projects = db.projectCollection();
     projects.update({ _id: projectId},
-                    {$set: { active: false } },
+        {$set: { active: false } },
         function(err, savedProject) {
             if(err) {
                 next(err);
@@ -94,7 +94,7 @@ exports.restActivateProject = function(req, res, next) {
 
     var projects = db.projectCollection();
     projects.update({ _id: projectId},
-                    {$set: { active: true } },
+        {$set: { active: true } },
         function(err, savedProject) {
             if(err) {
                 next(err);
@@ -116,28 +116,17 @@ exports.restDeleteProject = function(req, res, next) {
 
     var projects = db.projectCollection();
 
-    projects.find({_id: projectId})
-        .count(function(err, count) {
-            if(count > 0) {
-                projects.update({ _id: projectId },
-                    {$set: {
-                        active: false,
-                        deleted: true
-                    }},
-                    function(err, savedProject) {
-                        projects.findOne({_id: projectId},
-                            function(err, doc) {
-                                if(err) {
-                                    next(err);
-                                } else {
-                                    deleteAssignments(projectId);
-                                    res.status(204).json({ok: true});
-                                }
-                            }
-                        );
-                    });
+    projects.findOneAndUpdate({_id: projectId},
+        {$set: {
+            active: false,
+            deleted: true
+        }},
+        function(err, doc) {
+            if(err) {
+                next(err);
             } else {
-                res.json({message: "Project doesn't exist"});
+                deleteAssignments(projectId);
+                res.status(204).json({ok: true});
             }
         });
 };
@@ -171,7 +160,7 @@ exports.generateDefaultProject = function(company) {
 exports.findProjectIdsByCompanyId = function(companyId, callback) {
     var projects = db.projectCollection();
     projects.find({companyId: companyId},
-                  {_id: 1})
+        {_id: 1})
         .toArray(function(err, findedProjectIds){
             var projectIdArray = findedProjectIds.map(function(object) {
                 return object._id;
@@ -192,15 +181,15 @@ function returnProjectCallback(err, res, savedProject, next) {
 function updateProject(project, res, next) {
     var projects = db.projectCollection();
     projects.find({_id: project._id,
-                   name: {$ne: project.name}},
-                  {limit: 1})
+            name: {$ne: project.name}},
+        {limit: 1})
         .count(function(err, count) {
             if(count > 0) {
                 projects.update({ _id: project._id },
-                                {$set: {
-                                    name: project.name
-                                },
-                                $currentDate: { updatedOn: true }},
+                    {$set: {
+                        name: project.name
+                    },
+                        $currentDate: { updatedOn: true }},
                     function(err, savedProject) { //need error handler
                         projects.findOne({_id: project._id},
                             function(err, doc) {
@@ -222,9 +211,9 @@ function updateProject(project, res, next) {
 function updateTimesheetProjectName(project) {
     var timesheet = db.timelogCollection();
     timesheet.update({projectId: project._id,
-                     projectName: {$ne: project.name}},
-                    {$set: {projectName: project.name}},
-                    { multi: true },
+            projectName: {$ne: project.name}},
+        {$set: {projectName: project.name}},
+        { multi: true },
         function(err, updateInfo) {
             if(err) {
                 log.warn('Timesheet is not updated after project re-naming', err);
@@ -288,11 +277,11 @@ function addArchivedFlag(findedUsers, projectId, archivedFlag) {
             return assignment;
         });
         users.update({_id: user._id},
-                     { $pull: {assignments: {projectId: projectId} } },
+            { $pull: {assignments: {projectId: projectId} } },
             function(err, result) {
                 if(!err) {
                     users.update({ _id: user._id },
-                                 { $push: { assignments: { $each: newAssignments } }},
+                        { $push: { assignments: { $each: newAssignments } }},
                         function(err, updatedUser){
                             if(!err) {
                                 if(archivedFlag) {
@@ -315,14 +304,14 @@ function deleteAssignments(projectId) {
         .toArray(function(err, findedUsers) {
             if(findedUsers) {
                 findedUsers.forEach(function(user) {
-                    users.update({_id: user._id},
-                                 { $pull: {assignments: {projectId: projectId} } },
-                         function(err, updatedUser){
-                             if(!err) {
-                                 log.info('User assignment is deleted: %s', user._id.toHexString());
-                             } else {
-                                 log.warn('Cannot delete user assignment', assignment);
-                             }
+                    users.update({_id: user._id, 'assignments.projectId': projectId},
+                        { $set: {'assignments.$.deleted': true}},
+                        function(err, updatedUser){
+                            if(!err) {
+                                log.info('User assignment is deleted: %s', user._id.toHexString());
+                            } else {
+                                log.warn('Cannot delete user assignment', assignment);
+                            }
                         });
                 });
             }
