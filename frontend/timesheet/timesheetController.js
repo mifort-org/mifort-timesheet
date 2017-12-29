@@ -996,13 +996,30 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
 
             $scope.getDefaultProject = function () {
                 var checked = $scope.getCheckedProjectFilters();
-                return checked.length ? checked[0] : $scope.projects[0];
+
+                for (var i = 0; i < checked.length; i++) {
+                    if (checked.length && checked[i].assignmentsUser) {
+                        return checked[i];
+                    }
+                    else if ($scope.projects[i].assignmentsUser) {
+                        return $scope.projects[i];
+                    }
+                }
+
+                $scope.projects[0].projectName = "Empty";
+                return $scope.projects[0];
             };
 
             $scope.setDefaultProject = function (log) {
                 var project = $scope.getDefaultProject();
-                log.projectId = project._id;
-                log.projectName = project.name;
+                if (project && $scope.projects[0].projectName !== "Empty") {
+                    log.projectId = project._id;
+                    log.projectName = project.name;
+                }
+                else {
+                    log.projectId = project._id;
+                    log.projectName = "";
+                }
             };
 
             $scope.addLogToArray = function (log, allLogs) {

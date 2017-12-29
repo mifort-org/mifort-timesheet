@@ -74,8 +74,8 @@
                 </thead>
 
                 <tbody ng-repeat="assignedEmployee in project.assignedEmployers track by $index">
-                <tr ng-if="currentProjectIndex >= 0"
-                    ng-repeat="assignment in assignedEmployee.assignments track by $index">
+                <tr ng-repeat="assignment in assignedEmployee.assignments track by $index"
+                    ng-if="currentProjectIndex >= 0" ng-hide="assignment.deleteAssignmentsUser">
                     <td>
                         <ui-select ng-model="assignedEmployee" class="blank-dropdown">
                             <ui-select-match placeholder="Select employee">{{$select.selected.displayName}}

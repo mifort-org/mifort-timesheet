@@ -110,23 +110,12 @@ exports.restReplaceAssignments = function(req, res, next) {
 
     var user = req.body;
     var assignments = user.assignments;
-    var users = db.userCollection();
-    users.update({ _id: user._id },
-                 { $pull: {assignments: {projectId: projectId} } },
-                 { multi: true },
-        function(err, result) {
-            if(!err) {
-                users.update({ _id: user._id },
-                             { $push: { assignments: { $each: assignments } }},
-                    function(err, updatedUser){
-                        res.json({ok: true}); //saved object???
-                        log.debug('-REST result: Replace assignments. Project id: %s',
-                            projectId.toHexString());
-                    });
-            } else {
-                next(err);
-            }
-        });
+
+    if (assignments[0]) {
+        assignmentsUser(req, res, next);
+    } else {
+        deleteAssignmentsUser(req, res, next);
+    }
 };
 
 exports.restUpdateUserRole = function(req, res, next) {
@@ -284,6 +273,95 @@ function findByExample(query, callback) {
     users.findOne(query, function(err, user){
         callback(err, user);
     });
+}
+
+function assignmentsUser(req, res, next) {
+    var projectId = utils.getProjectId(req);
+    var user = req.body;
+    var assignments = user.assignments;
+    var users = db.userCollection();
+    var projects = db.projectCollection();
+
+    users.update({_id: user._id, 'assignments.$.assignmentsUser': true},
+        {
+            $set: {
+                'assignments.$.assignmentsUser': true,
+                "assignments.$.deleteAssignmentsUser": false
+            }
+        },
+        {multi: true},
+        function (err, result) {
+            if (!err) {
+                users.update({_id: user._id, 'assignments.projectId': {$ne: assignments[0].projectId}},
+                    {$push: {assignments: {$each: assignments}}},
+                    function (err, updatedUser) {
+                        if (!err) {
+                            users.update({_id: user._id, 'assignments.projectId': projectId},
+                                {
+                                    $set: {
+                                        'assignments.$.assignmentsUser': true,
+                                        "assignments.$.deleteAssignmentsUser": false
+                                    }
+                                },
+                                {multi: true},
+                                function (err, result) {
+                                    if (!err) {
+                                        projects.update({_id: projectId},
+                                            {$set: {assignmentsUser: true}},
+                                            {multi: true},
+                                            function (err, result) {
+                                                if (!err) {
+                                                    log.debug('-REST result: Replace assignments. Project id: %s',
+                                                        projectId.toHexString());
+                                                    res.json(result);
+                                                } else {
+                                                    next(err);
+                                                }
+                                            });
+                                    } else {
+                                        next(err);
+                                    }
+                                });
+                        } else {
+                            next(err);
+                        }
+                    });
+            } else {
+                next(err);
+            }
+        });
+}
+
+function deleteAssignmentsUser(req, res, next) {
+    var projectId = utils.getProjectId(req);
+    var user = req.body;
+    var users = db.userCollection();
+    var projects = db.projectCollection();
+
+    users.update({
+            _id: user._id,
+            'assignments.projectId': projectId,
+            "assignments.deleteAssignmentsUser": false
+        },
+        {$set: {"assignments.$.deleteAssignmentsUser": true}},
+        {multi: true},
+        function (err, result) {
+            if (!err) {
+                projects.update({_id: projectId},
+                    {$set: {assignmentsUser: false}},
+                    {multi: true},
+                    function (err, result) {
+                        if (!err) {
+                            res.json(result);
+                        } else {
+                            next(err);
+                        }
+                    });
+
+            } else {
+                next(err);
+            }
+        });
 }
 
 function updateProjectName(findedUsers, project) {
