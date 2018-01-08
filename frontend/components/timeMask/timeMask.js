@@ -56,21 +56,21 @@ angular.module('mifortTimesheet')
 
                     if (hour > 8 && hour <= 16){
                         Notification({
-                                message: 'You have filled in more then 8h per day',
+                                message: 'You filled more than 8h per day',
                                 delay: 4000
                             }, 'minor-warning'
                         );
                     }
                     else if (hour > 16 && hour <= 24){
                         Notification({
-                                message: 'You have filled in more then 16h per day',
+                                message: 'You filled more than 16h per day',
                                 delay: 4000
                             }, 'warning'
                         );
                     }
                     else if (hour > 24){
                         Notification({
-                                message: 'You have filled in more then 24h per day',
+                                message: 'You filled more than 24h per day',
                                 delay: null
                             }, 'error'
                         );
