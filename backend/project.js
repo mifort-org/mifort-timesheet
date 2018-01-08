@@ -125,7 +125,7 @@ exports.restDeleteProject = function(req, res, next) {
             log.debug('-REST result:  Delete project. Project id: %s', projectId.toHexString());
         }
     });
-}
+};
 
 //Public API
 exports.saveInDb = function(project, callback) {
@@ -148,7 +148,8 @@ exports.generateDefaultProject = function(company) {
         defaultValues: company.defaultValues,
         availablePositions: constants.DEFAULT_AVAILABLE_POSITIONS,
         companyId: company._id,
-        active: true
+        active: true,
+        assignmentsUser: true
     };
 };
 

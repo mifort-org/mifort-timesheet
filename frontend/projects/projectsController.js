@@ -311,7 +311,9 @@ angular.module('mifortTimesheet.projects', ['ngRoute', 'constants'])
                         projectName: project.name,
                         role: project.availablePositions[0],
                         userId: userForAssignment._id,
-                        workload: ''
+                        workload: '',
+                        assignmentsUser: true,
+                        deleteAssignmentsUser: false
                     };
 
                     userForAssignment.assignments = [newAssignment];
@@ -337,10 +339,10 @@ angular.module('mifortTimesheet.projects', ['ngRoute', 'constants'])
                 if (!$scope.companyEmployees) return [];
                 var employees = [];
                 $scope.companyEmployees.forEach(function (employee) {
-                    if (!_.findWhere(project.assignedEmployers, {_id: employee._id})) {
+                    if (!_.findWhere(project.assignedEmployers, {_id: employee._id}) ||
+                        project.assignmentsUser == false || project.assignmentsUser == undefined) {
                         employees.push(employee);
-                    }
-                });
+                }});
                 return employees;
             };
 

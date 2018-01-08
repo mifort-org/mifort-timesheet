@@ -26,12 +26,14 @@ exports.createDefaultProject = function(company, user) {
         if(err) {
             log.error('Cannot save project!', {error: err});
         } else {
-            log.info('Defaul project is created!');
+            log.info('Default project is created!');
             if(user) {
                 user.assignments = [{
                     role: 'Owner',
                     projectName: savedProject.name,
-                    projectId: savedProject._id
+                    projectId: savedProject._id,
+                    assignmentsUser: true,
+                    deleteAssignmentsUser: false
                 }];
                 user.companyId = company._id;
                 users.save(user, function(err, updatedUser) {
