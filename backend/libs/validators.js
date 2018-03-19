@@ -191,13 +191,9 @@ exports.validateGetCompanyById = function(req, res, next) {
 };
 
 //Timesheet Rest API validation
-exports.validateGetTimesheetByDates = function(req, res, next) {
+exports.validateGetTimesheetsByDates = function(req, res, next) {
     req.checkParams(reqParams.userIdParam,
         util.format(invalidFormatMessageTemplate, reqParams.userIdParam))
-            .notEmpty().isObjectId();
-
-    req.checkQuery(reqParams.projectIdParam,
-        util.format(invalidFormatMessageTemplate, reqParams.projectIdParam))
             .notEmpty().isObjectId();
 
     req.checkQuery(reqParams.startDateParam,

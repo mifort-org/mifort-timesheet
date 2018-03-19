@@ -88,24 +88,22 @@ exports.restDelete = function(req, res, next) {
     });
 };
 
-exports.restGetByDates = function(req, res, next) {
+exports.restGetTimesheetsByDates = function(req, res, next) {
     var start = utils.getStartDate(req);
     var end = utils.getEndDate(req);
     var userId = utils.getUserId(req);
-    var projectId = utils.getProjectId(req);
 
-    log.debug('-REST call: Get timelogs by dates. Start date: %s, End date: %s, User Id: %s, Project Id: %s.',
-        start, end, userId.toHexString(), projectId.toHexString());
+     log.debug('-REST call: Get timelogs by dates. Start date: %s, End date: %s, User Id: %s.',
+        start, end, userId.toHexString());
 
     var timelogCollection = db.timelogCollection();
     var query = {
         userId : userId,
-        projectId: projectId,
         date : {$gte: start,
-                $lte: end}
+            $lte: end}
     };
 
-    timelogCollection.find(query,
+        timelogCollection.find(query,
                            {sort: [['date','ascending'], ['position','ascending']]})
             .toArray(function(err, timelogs) {
         returnTimelogArray(err, res, timelogs, next);
