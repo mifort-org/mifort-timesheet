@@ -21,8 +21,7 @@ var testDataImporter = require('./test_data_importer');
 var log = require('./logger');
 
 var mongodbUrl = process.env.MONGODB_URL || 'mongodb://localhost:27017/homogen';
-var mongoDbSessionStorageUrl = process.env.MONGODB_URL
-                                 || process.env.MONGO_SESSION_STORAGE_URL
+var mongoDbSessionStorageUrl = process.env.MONGO_SESSION_STORAGE_URL
                                  || 'mongodb://localhost:27017/homogen-sessions';
 
 var timelogCollectionName = 'timelogs';
