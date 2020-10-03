@@ -39,7 +39,9 @@ passport.deserializeUser(function(id, done) {
     if(ObjectID.isValid(id)) {
         users.findById(new ObjectID(id), function(error, user) {
             if(error) {
-                done(err);
+                console.error("Cannot get user");
+                console.error(error);
+                done(error);
             } else {
                 done(null, user);
             }
