@@ -20,8 +20,8 @@ var MongoClient = require('mongodb').MongoClient;
 var testDataImporter = require('./test_data_importer');
 var log = require('./logger');
 
-var mongodbUrl = process.env.MONGOLAB_URI || 'mongodb://localhost:27017/homogen';
-var mongoDbSessionStorageUrl = process.env.MONGOLAB_URI
+var mongodbUrl = process.env.MONGODB_URL || 'mongodb://localhost:27017/homogen';
+var mongoDbSessionStorageUrl = process.env.MONGODB_URL
                                  || process.env.MONGO_SESSION_STORAGE_URL
                                  || 'mongodb://localhost:27017/homogen-sessions';
 
