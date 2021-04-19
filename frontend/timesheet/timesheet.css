@@ -213,6 +213,9 @@
 .current-period-button {
   margin-bottom: 15px; }
 
+  .save-button {
+    margin-left: 0; }
+
 .timesheet-total {
   padding-left: 15px;
   color: #666;

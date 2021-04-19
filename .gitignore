@@ -11,3 +11,4 @@ deployment/
 tests_output/
 smoke/
 bower_components/
+.env

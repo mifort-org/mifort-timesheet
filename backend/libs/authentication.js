@@ -17,7 +17,8 @@
  */
 
 var passport = require('passport');
-var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+require('dotenv').config();
+var GoogleStrategy = require('passport-google-oauth20').Strategy;
 var ObjectID = require('mongodb').ObjectID;
 var log = require('./logger');
 
@@ -28,7 +29,6 @@ var constants = require('./config_constants');
 var GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || "YOUR_GOOGLE_CLIENT_ID";
 var GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET || "YOUR_GOOGLE_CLIENT_SECRET";
 var GOOGLE_CALLBACK = process.env.GOOGLE_CALLBACK || 'http://127.0.0.1:1313/oauth2callback';
-
 var loginRedirect = '/';
 
 passport.serializeUser(function(user, done)  {

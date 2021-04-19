@@ -484,6 +484,51 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                 });
             }
 
+            $scope.updateTimelogs = (logs) => {
+
+                const logsToSave = [];
+                const logsToDelete = [];
+        
+                logs.forEach(log => {
+                    if(log._id && !log.comment && !log.time) {
+                        logsToDelete.push(log);
+                    } else {
+                        if(!log._id){
+                            log._id = $scope.idsArray.pop();
+                        }
+                        const logSave = angular.copy(log);
+                        logSave.time = + logSave.time;
+                        logsToSave.push(logSave);
+                    }
+                })
+
+                if(!$scope.activeRequest) {
+                    $scope.activeRequest = true;
+                    timesheetService.updateTimesheet(logsToSave, logsToDelete).success((data) => {
+                        
+                        Notification.success('Changes saved');
+
+                        $scope.activeRequest = false;
+
+                        if ($scope.pendingChanges) {
+                            console.log('pending changes are saving...');
+                            $scope.pendingChanges = false;
+                            $scope.updateTimelogs(logs);
+                        } else {
+                            console.log('no pending changes');
+                        }
+                        if($scope.idsArray.length < 15){
+                            getIdForLogs();
+                        }
+                    }).error(() => {
+                        $scope.activeRequest = false;
+                    })
+                    
+                } else {
+                    $scope.pendingChanges = true;
+                }
+            }
+ 
             $scope.updateTimelog = function(log) {
 
                 if(log._id && !log.comment && !log.time) {
@@ -933,7 +978,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                 log.projectName = project ? project.name : '';
                 log.projectId = projectId;
                 log.timePlaceholder = Number(getTimePlaceholder(project));
-                $scope.updateTimelog(log);
+                //$scope.updateTimelog(log);
             };
 
             $scope.getWeekDay = function (date) {
@@ -1153,6 +1198,52 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                 }).error(function () {
                     Notification.error({message: 'Changes not saved', delay: null});
                 });
+            };
+
+            $scope.saveAllHours = function () {
+                //Notification({message: 'Button clicked!', delay: 5000}, 'warning');
+
+                const dailyHours = $scope.filteredLogs;
+
+                let status = 0;
+                dailyHours.forEach((dailyHour) => {
+                    if (dailyHour.time > 8 && dailyHour.time <= 16) {
+                        if(!status) {
+                            status = 1;
+                        }
+                    }
+                    if (dailyHour.time > 16 && dailyHour.time <= 24) {
+                        if(status < 2) {
+                            status = 2;
+                        }
+                    }
+                    if (dailyHour.time > 24) {
+                        status = 3;
+                        return;
+                    }
+                })
+
+                if(status === 1) {
+                    Notification({
+                        message: 'You have filled in more then 8h per day',
+                        delay: 4000
+                    }, 'minor-warning');
+                };
+                if(status === 2) {
+                    Notification({
+                        message: 'You have filled in more then 16h per day',
+                        delay: 4000
+                    }, 'warning');
+                };
+                if(status === 3) {
+                    Notification({
+                        message: 'You have filled in more then 24h per day',
+                        delay: null
+                    }, 'error');
+                }
+                console.log($scope.filteredLogs);
+                //console.log(dailyHours);
+                $scope.updateTimelogs($scope.filteredLogs)
             };
 
 
