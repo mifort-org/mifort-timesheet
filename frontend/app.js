@@ -47,9 +47,7 @@ angular.module('mifortTimesheet', [
 ])
     .config(['$routeProvider', '$httpProvider', '$locationProvider', function($routeProvider, $httpProvider, $locationProvider) {
         $routeProvider
-            //.when('/')
             .otherwise({redirectTo: '/login'});
-            //.otherwise({redirectTo: '/timesheet'});
 
         $httpProvider.interceptors.push('myHttpInterceptor');
 

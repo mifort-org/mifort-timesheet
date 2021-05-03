@@ -14,8 +14,6 @@
   limitations under the License.
 -->
 
-<!-- ng-change="onChangeDayHours()" -->
-
 <input ng-model-options="{debounce: 400}" class="timesheet-hours form-control time-mask-hours" type="text"
        ng-readonly="readonly" ng-class="{'reject':rejectColor, 'approve':approveColor, 'edit':edit, 'blockOneApprove':blockOneApprove}" ng-model="log.time"  min="0" max="24"
        placeholder="{{log ? log.timePlaceholder : ''}}" maxlength="6"/>

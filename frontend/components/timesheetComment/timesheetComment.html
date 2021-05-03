@@ -14,6 +14,4 @@
   limitations under the License.
 -->
 
-<!-- ng-change="updateTimelog(log)" -->
-
 <input ng-model-options="{debounce: 2000}" ng-disabled="!log.projectId" id="step3" class="timesheet-comment form-control" placeholder="{{log.placeholder}}" ng-readonly="readonly" type="text" ng-model="log.comment"  maxlength="500" ng-class="{'reject':rejectColor, 'approve':approveColor, 'edit':edit, 'blockOneApprove':blockOneApprove}"/>

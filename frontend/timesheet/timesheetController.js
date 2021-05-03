@@ -1201,49 +1201,23 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
             };
 
             $scope.saveAllHours = function () {
-                //Notification({message: 'Button clicked!', delay: 5000}, 'warning');
-
                 const dailyHours = $scope.filteredLogs;
 
-                let status = 0;
+                let statusError = false;
                 dailyHours.forEach((dailyHour) => {
-                    if (dailyHour.time > 8 && dailyHour.time <= 16) {
-                        if(!status) {
-                            status = 1;
-                        }
-                    }
-                    if (dailyHour.time > 16 && dailyHour.time <= 24) {
-                        if(status < 2) {
-                            status = 2;
-                        }
-                    }
                     if (dailyHour.time > 24) {
-                        status = 3;
+                        statusError = true;
+                        Notification({
+                            message: 'Error! You have filled in more then 24h per day.',
+                            delay: 4000
+                        }, 'error');
                         return;
                     }
                 })
 
-                if(status === 1) {
-                    Notification({
-                        message: 'You have filled in more then 8h per day',
-                        delay: 4000
-                    }, 'minor-warning');
-                };
-                if(status === 2) {
-                    Notification({
-                        message: 'You have filled in more then 16h per day',
-                        delay: 4000
-                    }, 'warning');
-                };
-                if(status === 3) {
-                    Notification({
-                        message: 'You have filled in more then 24h per day',
-                        delay: null
-                    }, 'error');
+                if(!statusError) {
+                    $scope.updateTimelogs($scope.filteredLogs);
                 }
-                console.log($scope.filteredLogs);
-                //console.log(dailyHours);
-                $scope.updateTimelogs($scope.filteredLogs)
             };
 
 
