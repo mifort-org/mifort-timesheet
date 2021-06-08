@@ -69,6 +69,16 @@ angular.module('mifortTimesheet')
                 };
 
             },
-            templateUrl: 'components/dropdownFilter/dropdownFilter.html?rel=' + appVersion
+            templateUrl: 'components/dropdownFilter/dropdownFilter.html?rel=' + appVersion,
+            controller: function($scope, $rootScope) {
+                $scope.resetFilters = () => {
+                    $scope.dynamicPopover.projectFilter.value.forEach((project, index) => {
+                        if(project.isChecked) {
+                            $scope.dynamicPopover.projectFilter.value[index].isChecked = false;
+                        }
+                    })
+                }
+                $rootScope.$on('resetFilters', $scope.resetFilters)
+            }
         };
     });
