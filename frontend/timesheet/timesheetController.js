@@ -161,7 +161,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                 });
             }
 
-            function monthlyPeriod () {
+            function isMonthlyPeriod () {
                 return $scope.periodType === 'Monthly'
             }
 
@@ -342,7 +342,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                 let savedPeriodIndex;
                 let currentPeriodIndex;
 
-                if(monthlyPeriod()) {
+                if(isMonthlyPeriod()) {
                     savedPeriodIndex = preferences.get('currentPeriodMonthIndex');
                 } else {
                     savedPeriodIndex = preferences.get('currentPeriodIndex');
@@ -382,7 +382,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                 if (savedRedirectDate){
                     const redirectDate = savedRedirectDate;
                     let indexNameLS;
-                    if(monthlyPeriod()) {
+                    if(isMonthlyPeriod()) {
                         indexNameLS = 'currentPeriodMonthIndex';
                     } else {
                         indexNameLS = 'currentPeriodIndex';
@@ -410,10 +410,10 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                         $scope.projectsByMonth.push(angular.copy(projectByMonth));
                         $scope.projectsByWeek.push(angular.copy(project));
                     }
-                    if(monthlyPeriod()) {
+                    if(isMonthlyPeriod()) {
                         project.periods = angular.copy($scope.projectsByMonth[idx].periods);
                     }
-                    if(isNotFirst && !monthlyPeriod()) {
+                    if(isNotFirst && !isMonthlyPeriod()) {
                         project.periods = angular.copy($scope.projectsByWeek[idx].periods);
                     }
 
@@ -880,7 +880,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                     loadLogs(projects, lastPeriod, $scope.currentPeriodIndex);
                 }
 
-                if(monthlyPeriod()) {
+                if(isMonthlyPeriod()) {
                     preferences.set('currentPeriodMonthIndex', $scope.currentPeriodIndex);
                 } else {
                     preferences.set('currentPeriodIndex', $scope.currentPeriodIndex);
@@ -897,7 +897,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                     loadLogs(projects, lastPeriod, $scope.currentPeriodIndex);
                 }
 
-                if(monthlyPeriod()) {
+                if(isMonthlyPeriod()) {
                     preferences.set('currentPeriodMonthIndex', $scope.currentPeriodIndex);
                 } else {
                     preferences.set('currentPeriodIndex', $scope.currentPeriodIndex);
@@ -911,7 +911,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                 let currentDatePeriod;
                 let savePeriodIndex;
 
-                if(monthlyPeriod()) {
+                if(isMonthlyPeriod()) {
                     if (!$scope.currentDatePeriodMonth) {
                         $scope.currentDatePeriodMonth = findCurrentPeriodIndex(projects[0].periods, today, true);
                     }
