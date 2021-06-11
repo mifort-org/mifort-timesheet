@@ -97,7 +97,14 @@
     .next-period.disabled:hover {
       background-position: 2px -1070px;
       cursor: not-allowed; }
-
+.previous-period.disabled {
+  background-position: 2px -1070px;
+  opacity: 0.2;
+}
+.previous-period.disabled:hover {
+  background-position: 2px -1070px;
+  cursor: not-allowed;
+}
 .next-period {
   background-position: 2px -1150px; }
   .next-period:hover {
@@ -211,7 +218,9 @@
   border-left: 3px #3eb5f1 solid; }
 
 .current-period-button {
-  margin-bottom: 15px; }
+  margin-bottom: 20px;
+  margin-left: 0;
+}
 
   .save-button {
     margin-left: 0; }
@@ -309,4 +318,20 @@
 .blockOneApprove {
   background-color: #fff !important; }
 
+.period-type {
+  width: 200px;
+  display: block;
+  margin-bottom: 15px;
+  font-size: 1.8em;
+  border: #a0a0a0 1px solid;
+}
+
+.period-type a, .period-type.open a {
+  padding: 14px 19px;
+}
+
+.period-type-inscription {
+  margin-bottom: 7.5px;
+  font-size: 1.8em;
+}
 /*# sourceMappingURL=timesheet.css.map */

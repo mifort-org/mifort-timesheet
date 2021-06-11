@@ -20,9 +20,29 @@
     <b>Timesheet of {{customUserName}}</b>
 </div>
 
-<button ng-click="showCurrentPeriod(projects)" class="primary-button current-period-button ng-scope">Current period</button>
+<button ng-click="showCurrentPeriod(projects)" class="primary-button current-period-button ng-scope" ng-if="!noAssignments">Current period</button>
 
-<div class="timesheet collapse-wrapper timesheet-collapse-wrapper clearfix">
+<p class="period-type-inscription" ng-if="!noAssignments">Choose a period format:</p>
+
+<span class="blank-dropdown period-type" uib-dropdown on-toggle="toggled(open)" ng-if="!noAssignments">
+    <a href id="simple-dropdown" ng-click="showButton()" ng-class="{'arrowHide':arrowHide}" uib-dropdown-toggle>
+        {{periodType}}
+    </a>
+
+    <ul uib-dropdown-menu aria-labelledby="simple-dropdown" ng-class="{'dropHide':dropHide}">
+        <!-- <li ng-repeat="project in projects">
+            <a href ng-click="assignProject(project._id, log)">{{project.name}}</a>
+        </li> -->
+        <li>
+            <a href ng-click="setPeriodType('Weekly')">Weekly</a>
+        </li>
+        <li>
+            <a href ng-click="setPeriodType('Monthly')">Monthly</a>
+        </li>
+    </ul>
+</span>
+
+<div class="timesheet collapse-wrapper timesheet-collapse-wrapper clearfix" ng-if="!noAssignments">
     <div uib-collapse="isCollapsed">
         <table ng-show="!loading" class="table table-bordered timesheet" id="{{$first ? 'step2' : ''}}">
             <thead ng-show="filteredLogs.length > 0">

@@ -166,6 +166,16 @@
     }
 }
 
+.previous-period.disabled {
+    background-position: 2px -1070px;
+    opacity: 0.2;
+    &:hover {
+        background-position: 2px -1070px;
+        cursor: not-allowed;
+    }
+}
+
+
 .add-timesheet,
 .remove-timesheet{
     position: relative;
@@ -278,6 +288,7 @@
 
 .current-period-button {
     margin-bottom: 20px;
+    margin-left: 0;
 }
 
 .save-button {
@@ -406,4 +417,25 @@
 }
 .blockOneApprove{
     background-color: #fff !important;
+}
+
+.period-type {
+    width: 200px;
+    display: block;
+    margin-bottom: 15px;
+    font-size: 1.8em;
+    border: #a0a0a0 1px solid;
+    a {
+        padding: 14px 19px;
+    }
+    &.open {
+        a {
+            padding: 14px 19px; 
+        }
+    }
+}
+  
+.period-type-inscription {
+margin-bottom: 7.5px;
+font-size: 1.8em;
 }
