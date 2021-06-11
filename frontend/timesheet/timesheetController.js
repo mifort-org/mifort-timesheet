@@ -161,6 +161,10 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                 });
             }
 
+            function monthlyPeriod () {
+                return $scope.periodType === 'Monthly'
+            }
+
             $scope.setPeriodType = (periodType) => {
                 const validValues = ['Weekly', 'Monthly'];
                 if(!validValues.includes(periodType)) {
@@ -259,6 +263,138 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                 }
             }
 
+            function addNewMonthPeriods ({
+                newMonthPeriods,
+                period,
+                currentMonth,
+                nextMonth
+            }) {
+                newMonthPeriods = angular.copy(newMonthPeriods);
+                const periodEndDate = moment(new Date(period.end));
+
+                if (nextMonth.isSame(periodEndDate, 'month')) {
+                    newMonthPeriods.push({
+                        start: nextMonth.startOf('month').format('MM/DD/YYYY')
+                    });
+                    currentMonth = nextMonth.format('MM/YYYY');
+                    return { currentMonth, newMonthPeriods }
+                } else {
+                    newMonthPeriods.push({
+                        start: nextMonth.startOf('month').format('MM/DD/YYYY'),
+                        end: nextMonth.endOf('month').format('MM/DD/YYYY')
+                    });
+                    nextMonth = nextMonth.add(1, 'month');
+                    return addNewMonthPeriods({ newMonthPeriods, period, currentMonth, nextMonth });
+                }
+            }
+
+            function createMonthPeriods (project) {
+                const monthPeriods = [];
+                const projectByMonth = angular.copy(project);
+                let currentMonth;
+
+                project.periods.forEach((period, index, arr) => {
+                    const periodStartDate = moment(new Date(period.start));
+
+                    const lastDayOfMonth = periodStartDate.endOf('month').format('MM/DD/YYYY');
+
+                    const periodStartMonth = moment(new Date(period.start)).format('MM/YYYY');
+                    const periodEndMonth = moment(new Date(period.end)).format('MM/YYYY');
+
+                    if(!monthPeriods.length) {
+                        monthPeriods.push({
+                            start: period.start
+                        });
+                        currentMonth = periodStartMonth;
+                    }
+                    if(periodStartMonth !== currentMonth) {
+                        monthPeriods[monthPeriods.length - 1].end = arr[index - 1].end;
+                        monthPeriods.push({
+                            start: period.start
+                        });
+                        currentMonth = periodStartMonth;
+                    }
+                    if(periodEndMonth !== currentMonth) {
+                        monthPeriods[monthPeriods.length - 1].end = lastDayOfMonth;
+                        const nextMonth = periodStartDate.add(1, 'month');
+                        const addedPeriods = addNewMonthPeriods({
+                            newMonthPeriods: [],
+                            period,
+                            currentMonth,
+                            nextMonth
+                        });
+                        currentMonth = addedPeriods.currentMonth;
+                        addedPeriods.newMonthPeriods.forEach(period => {
+                            monthPeriods.push(period);
+                        })
+                    }
+                    if(index === arr.length - 1) {
+                        monthPeriods[monthPeriods.length - 1].end = period.end;
+                    }
+                });
+
+                projectByMonth.periods = angular.copy(monthPeriods);
+
+                return projectByMonth
+            }
+
+            function setCurrentPeriodIndex (arr, periodIndex) {
+                let savedPeriodIndex;
+                let currentPeriodIndex;
+
+                if(monthlyPeriod()) {
+                    savedPeriodIndex = preferences.get('currentPeriodMonthIndex');
+                } else {
+                    savedPeriodIndex = preferences.get('currentPeriodIndex');
+                }
+
+                if(!arr[savedPeriodIndex]) {
+                    currentPeriodIndex = periodIndex;
+                } else if (typeof +savedPeriodIndex === 'number' && typeof savedPeriodIndex !== null) {
+                    currentPeriodIndex = +savedPeriodIndex;
+                } else {
+                    currentPeriodIndex = periodIndex;
+                }
+                return currentPeriodIndex
+            }
+
+            function findCurrentPeriodIndex (periods, today, showCurPeriod) {
+                let currentPeriodIndex;
+
+                periods.forEach(function (period, periodIndex, arr) {
+                    const momentStart = moment(new Date(period.start));
+                    const momentEnd = moment(new Date(period.end));
+
+                    const todayIsBetween = today.isBetween(momentStart, momentEnd);
+                    const todayIsStart = today.isSame(momentStart, 'day');
+                    const todayIsEnd = today.isSame(momentEnd, 'day');
+
+                    if (todayIsBetween || todayIsStart || todayIsEnd) {
+                        currentPeriodIndex = showCurPeriod ? periodIndex
+                        : setCurrentPeriodIndex(arr, periodIndex);
+                        return
+                    }
+                });
+                return currentPeriodIndex
+            }
+
+            function useRedirectDate (savedRedirectDate, periods) {
+                if (savedRedirectDate){
+                    const redirectDate = savedRedirectDate;
+                    let indexNameLS;
+                    if(monthlyPeriod()) {
+                        indexNameLS = 'currentPeriodMonthIndex';
+                    } else {
+                        indexNameLS = 'currentPeriodIndex';
+                    }
+                    periods.forEach(function (v, i) {
+                        if(v.start === redirectDate){
+                            preferences.set(indexNameLS, i);
+                        }
+                    });
+                }
+            }
+
             $scope.init = function (isCsvLoaded, isNotFirst) {
                 const savedRedirectDate = preferences.get("redirectDate");
                 if(savedRedirectDate && !moment(savedRedirectDate, '"MM/DD/YYYY"', true).isValid()) {
@@ -269,95 +405,22 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                     const today = moment();
 
                     if(!isNotFirst) {
-                        const monthPeriods = [];
-                        const projectByMonth = angular.copy(project);
-                        let currentMonth;
-                        project.periods.forEach((period, index, arr) => {
-                            if(!monthPeriods.length) {
-                                monthPeriods.push({
-                                    start: period.start
-                                });
-                                currentMonth = moment(new Date(period.start)).format('MM/YYYY');
-                            }
-                            if(moment(new Date(period.start)).format('MM/YYYY') !== currentMonth) {
-                                monthPeriods[monthPeriods.length - 1].end = arr[index - 1].end;
-                                monthPeriods.push({
-                                    start: period.start
-                                });
-                                currentMonth = moment(new Date(period.start)).format('MM/YYYY');
-                            }
-                            if(moment(new Date(period.end)).format('MM/YYYY') !== currentMonth) {
-                                monthPeriods[monthPeriods.length - 1].end = moment(new Date(period.start)).endOf('month').format('MM/DD/YYYY');
-                                let nextMonth = moment(new Date(period.start)).add(1, 'month');
-                                const addNewMonthPeriod = () => {
-                                    if (nextMonth.isSame(moment(new Date(period.end)), 'month')) {
-                                        monthPeriods.push({
-                                            start: nextMonth.startOf('month').format('MM/DD/YYYY')
-                                        });
-                                        currentMonth = nextMonth.format('MM/YYYY');
-                                    } else {
-                                        monthPeriods.push({
-                                            start: nextMonth.startOf('month').format('MM/DD/YYYY'),
-                                            end: nextMonth.endOf('month').format('MM/DD/YYYY')
-                                        });
-                                        nextMonth = nextMonth.add(1, 'month');
-                                        addNewMonthPeriod();
-                                    }
-                                }
-                                addNewMonthPeriod();
-                            }
-                            if(index === arr.length - 1) {
-                                monthPeriods[monthPeriods.length - 1].end = period.end;
-                            }
-                        });
-                        
-                        projectByMonth.periods = angular.copy(monthPeriods);
+                        const projectByMonth = createMonthPeriods(project);
+
                         $scope.projectsByMonth.push(angular.copy(projectByMonth));
                         $scope.projectsByWeek.push(angular.copy(project));
-                        if($scope.periodType === 'Monthly') {
-                            project.periods = angular.copy($scope.projectsByMonth[idx].periods);
-                        }
                     }
-                    if(isNotFirst) {
-                        if($scope.periodType === 'Monthly') {
-                            project.periods = angular.copy($scope.projectsByMonth[idx].periods);
-                        } else {
-                            project.periods = angular.copy($scope.projectsByWeek[idx].periods);
-                        }
+                    if(monthlyPeriod()) {
+                        project.periods = angular.copy($scope.projectsByMonth[idx].periods);
                     }
-                    project.periods.forEach(function (period, periodIndex, arr) {
-                        const momentStart = moment(new Date(period.start));
-                        const momentEnd = moment(new Date(period.end));
-                        if (today.isBetween(momentStart, momentEnd) || today.isSame(momentStart, 'day') || today.isSame(momentEnd, 'day')) {
-                            if ($scope.periodType === 'Monthly') {
-                                const savedPeriodIndex = preferences.get('currentPeriodMonthIndex');
-                                if(!arr[savedPeriodIndex]) {
-                                    $scope.currentPeriodIndex = periodIndex;
-                                } else if (typeof +savedPeriodIndex === 'number' && typeof savedPeriodIndex !== null) {
-                                    $scope.currentPeriodIndex = +savedPeriodIndex;
-                                } else {
-                                    $scope.currentPeriodIndex = periodIndex;
-                                }
-                            } else {
-                                const savedPeriodIndex = preferences.get('currentPeriodIndex');
-                                if(!arr[savedPeriodIndex]) {
-                                    $scope.currentPeriodIndex = periodIndex;
-                                } else if (typeof +savedPeriodIndex === 'number' && typeof savedPeriodIndex !== null) {
-                                    $scope.currentPeriodIndex = +savedPeriodIndex;
-                                } else {
-                                    $scope.currentPeriodIndex = periodIndex;
-                                }
-                            }
-                        }
-                    });
-                    if (savedRedirectDate){
-                        const redirectDate = savedRedirectDate;
-                        project.periods.forEach(function (v, i, arr) {
-                            if(v.start === redirectDate){
-                                preferences.set("currentPeriodIndex", i);
-                            }
-                        });
+                    if(isNotFirst && !monthlyPeriod()) {
+                        project.periods = angular.copy($scope.projectsByWeek[idx].periods);
                     }
+
+                    useRedirectDate(savedRedirectDate, project.periods);
+
+                    $scope.currentPeriodIndex = findCurrentPeriodIndex(project.periods, today);
+
                     promises.push(initPeriod(project, $scope.currentPeriodIndex));
                 });
 
@@ -817,7 +880,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                     loadLogs(projects, lastPeriod, $scope.currentPeriodIndex);
                 }
 
-                if($scope.periodType === 'Monthly') {
+                if(monthlyPeriod()) {
                     preferences.set('currentPeriodMonthIndex', $scope.currentPeriodIndex);
                 } else {
                     preferences.set('currentPeriodIndex', $scope.currentPeriodIndex);
@@ -834,7 +897,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                     loadLogs(projects, lastPeriod, $scope.currentPeriodIndex);
                 }
 
-                if($scope.periodType === 'Monthly') {
+                if(monthlyPeriod()) {
                     preferences.set('currentPeriodMonthIndex', $scope.currentPeriodIndex);
                 } else {
                     preferences.set('currentPeriodIndex', $scope.currentPeriodIndex);
@@ -845,56 +908,30 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                 preferences.remove("redirectDate");
                 const today = moment();
                 const lastPeriod = $scope.currentPeriodIndex;
+                let currentDatePeriod;
+                let savePeriodIndex;
 
-                if($scope.periodType === 'Monthly') {
+                if(monthlyPeriod()) {
                     if (!$scope.currentDatePeriodMonth) {
-                        projects[0].periods.some(function (period, index) {
-                            const momentStart = moment(new Date(period.start));
-                            const momentEnd = moment(new Date(period.end));
-    
-                            if (today.isBetween(momentStart, momentEnd) || today.isSame(momentStart, 'day') || today.isSame(momentEnd, 'day')) {
-                                $scope.currentDatePeriodMonth = index;
-    
-                                return true;
-                            }
-                        });
+                        $scope.currentDatePeriodMonth = findCurrentPeriodIndex(projects[0].periods, today, true);
                     }
-    
-                    const isCurrentExist = $scope.currentDatePeriodMonth !== undefined;
-    
-                    if(isCurrentExist) {
-                        $scope.currentPeriodIndex = $scope.currentDatePeriodMonth;
-                        loadLogs(projects, lastPeriod, $scope.currentDatePeriodMonth);
-                    }
-                    preferences.set('currentPeriodMonthIndex', $scope.currentPeriodIndex);
+                    currentDatePeriod = $scope.currentDatePeriodMonth;
+                    savePeriodIndex = 'currentPeriodMonthIndex';
                 } else {
                     if (!$scope.currentDatePeriod) {
-                        projects[0].periods.some(function (period, index) {
-                            const momentStart = moment(new Date(period.start));
-                            const momentEnd = moment(new Date(period.end));
-    
-                            if (today.isBetween(momentStart, momentEnd) || today.isSame(momentStart, 'day') || today.isSame(momentEnd, 'day')) {
-                                $scope.currentDatePeriod = index;
-    
-                                return true;
-                            }
-                        });
+                        $scope.currentDatePeriod = findCurrentPeriodIndex(projects[0].periods, today, true);
                     }
-    
-                    const isCurrentExist = $scope.currentDatePeriod !== undefined;
-    
-                    if(isCurrentExist) {
-                        $scope.currentPeriodIndex = $scope.currentDatePeriod;
-                        loadLogs(projects, lastPeriod, $scope.currentDatePeriod);
-                    }
-                    preferences.set('currentPeriodIndex', $scope.currentPeriodIndex);
+                    currentDatePeriod = $scope.currentDatePeriod;
+                    savePeriodIndex = 'currentPeriodIndex';
                 }
 
-                if($scope.periodType === 'Monthly') {
+                const isCurrentExist = currentDatePeriod !== undefined;
 
-                } else {
-
+                if(isCurrentExist) {
+                    $scope.currentPeriodIndex = currentDatePeriod;
+                    loadLogs(projects, lastPeriod, currentDatePeriod);
                 }
+                preferences.set(savePeriodIndex, $scope.currentPeriodIndex);
             };
 
             function loadLogs(projects, lastPeriod, targetPeriod) {
