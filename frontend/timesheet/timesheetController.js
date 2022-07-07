@@ -43,6 +43,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
             $scope.grid = {options: {reportFilters: []}};
             $scope.activeRequest = false;
             $scope.pendingChanges = false;
+            $scope.pendingLogs = {};
             $scope.timer = null;
             $scope.lastSaveTimeout = null;
             $scope.lastSavedLogs = [];
@@ -447,7 +448,9 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                             if ($scope.pendingChanges) {
                                 console.log('pending changes are saving...');
                                 $scope.pendingChanges = false;
-                                $scope.updateTimelog();
+                                const pendingLogsToSave = Object.values($scope.pendingLogs);
+                                $scope.pendingLogs = {};
+                                $scope.updateTimelogs(pendingLogsToSave);
                             } else {
                                 console.log('no pending changes');
                             }
@@ -458,8 +461,7 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                         }).error(function () {
                             $scope.activeRequest = false;
                         });
-                    }
-                    else {
+                    } else {
                         $scope.pendingChanges = true;
                     }
                 }, 500);
@@ -484,15 +486,66 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                 });
             }
 
+            $scope.updateTimelogs = (logs) => {
+
+                const logsToSave = [];
+                const logsToDelete = [];
+        
+                logs.forEach(log => {
+                    if(log._id && !log.comment && !log.time) {
+                        logsToDelete.push(log);
+                    } else {
+                        if(!log._id){
+                            log._id = $scope.idsArray.pop();
+                        }
+                        const logSave = angular.copy(log);
+                        logSave.time = + logSave.time;
+                        logsToSave.push(logSave);
+                    }
+                })
+
+                if(!$scope.activeRequest) {
+                    $scope.activeRequest = true;
+                    timesheetService.updateTimesheet(logsToSave, logsToDelete).success((data) => {
+                        
+                        Notification.success('Changes saved');
+
+                        $scope.activeRequest = false;
+
+                        if ($scope.pendingChanges) {
+                            console.log('pending changes are saving...');
+                            $scope.pendingChanges = false;
+                            const pendingLogsToSave = Object.values($scope.pendingLogs);
+                            $scope.pendingLogs = {};
+                            $scope.updateTimelogs(pendingLogsToSave);
+                        } else {
+                            console.log('no pending changes');
+                        }
+                        if($scope.idsArray.length < 15){
+                            getIdForLogs();
+                        }
+                    }).error(() => {
+                        $scope.activeRequest = false;
+                    })
+
+                } else {
+                    $scope.pendingChanges = true;
+                    logs.forEach((log) => {
+                        $scope.pendingLogs[log._id] = log;
+                    })
+                }
+            }
+ 
             $scope.updateTimelog = function(log) {
+                if (!log) return;
 
                 if(log._id && !log.comment && !log.time) {
                     deleteLogs(log);
-                }
-                else {
-                    if(!log._id){
+                } else {
+                    if(!log._id) {
                         log._id = $scope.idsArray.pop();
                     }
+
                     $scope.timer = $timeout(function () {
                         if (!$scope.activeRequest) {
                             $scope.activeRequest = true;
@@ -507,7 +560,9 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                                 if ($scope.pendingChanges) {
                                     console.log('pending changes are saving...');
                                     $scope.pendingChanges = false;
-                                    $scope.updateTimelog();
+                                    const pendingLogsToSave = Object.values($scope.pendingLogs);
+                                    $scope.pendingLogs = {};
+                                    $scope.updateTimelogs(pendingLogsToSave);
                                 } else {
                                     console.log('no pending changes');
                                 }
@@ -517,9 +572,9 @@ angular.module('mifortTimesheet.timesheet', ['ngRoute', 'constants'])
                             }).error(function () {
                                 $scope.activeRequest = false;
                             });
-                        }
-                        else {
+                        } else {
                             $scope.pendingChanges = true;
+                            $scope.pendingLogs[log._id] = log;
                         }
                     }, 500);
                 }
