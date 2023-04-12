@@ -1,6 +1,9 @@
 {
   "name": "mifort-timesheet",
   "version": "0.0.1",
+  "engines": {
+    "node": "10.x"
+  },
   "private": true,
   "scripts": {
     "postinstall": "grunt build",
