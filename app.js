@@ -87,10 +87,18 @@ if(process.env.APPLICATION_TEST) {
 //last step: init auth
 authentication.init(app);
 
+
+app.get('/health', function(req, res, next) {
+    log.info('Health!');
+    res.json({"ok": true});
+});
+
+
 //add auth.ensureAuthenticated for each Rest API
 app.use('/api', function(req, res, next){
     authentication.ensureAuthenticated(req, res, next);
 });
+
 
 //routing
 app.use('/api/v1', router.versionRouter);
