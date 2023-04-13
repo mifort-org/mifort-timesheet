@@ -34,7 +34,7 @@ MongoClient.connect(mongodbUrl, function(err, db) {
     if(err) {
         log.error('Mongo DB connection failed', {error: err});
     } else {
-        cachedDb = db.db('heroku_tlc5wfhl');
+        cachedDb = db.db(process.env.DB_NAME || 'heroku_tlc5wfhl');
         exports.db = cachedDb;
         log.info('Mongo DB: connected!');
         if(process.env.NODE_ENV !== 'production') {
