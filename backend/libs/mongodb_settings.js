@@ -30,7 +30,9 @@ var companyCollectionName = 'companies';
 var userCollectionName = 'users';
 var cachedDb;
 
-MongoClient.connect(mongodbUrl, function(err, db) {
+MongoClient.connect(mongodbUrl,
+    { useUnifiedTopology: true, useNewUrlParser: true },
+    function(err, db) {
     if(err) {
         log.error('Mongo DB connection failed', {error: err});
     } else {
